@@ -13,15 +13,13 @@ namespace Vts.Gui.Wpf
     public partial class MainWindow : Window
     {
         public static MainWindow Current;
-        private int _numMapViews;
-        private int _numPlotViews;
+        private int _numViews;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _numPlotViews = 0;
-            _numMapViews = 0;
+            _numViews = 0;
 
             Current = this;
         }
@@ -61,68 +59,31 @@ namespace Vts.Gui.Wpf
 
         public void Main_DuplicatePlotView_Executed(object viewModel)
         {
-            var thumb = new Thumb {Width = 0, Height = 0};
-            var vm = viewModel as PlotViewModel;
-            if (vm != null)
-            {
-                var plotView = new PlotView
-                {
-                    DataContext = vm,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    Margin = new Thickness(0, 0, 3, 0)
-                };
-                var plotBorder = new Border
-                {
-                    Background = Brushes.White,
-                    CornerRadius = new CornerRadius(5),
-                    BorderThickness = new Thickness(2),
-                    BorderBrush = Brushes.Gray
-                };
-                var plotPanel = new StackPanel();
-                var closeButton = new Button
-                {
-                    Content = "x",
-                    HorizontalAlignment = HorizontalAlignment.Right,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Margin = new Thickness(5),
-                    Width = 25,
-                    Height = 25
-                };
-                plotPanel.Children.Add(closeButton);
-                plotPanel.Children.Add(plotView);
-                plotPanel.Children.Add(thumb);
-                plotBorder.Child = plotPanel;
-                var newPlotWindow = new Popup
-                {
-                    Name = "wndPlotView" + _numPlotViews++,
-                    Child = plotBorder,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    Placement = PlacementMode.Relative,
-                    IsOpen = true,
-                    AllowsTransparency = true
-                };
-
-                closeButton.Click += (sender, e) => { newPlotWindow.IsOpen = false; };
-
-                newPlotWindow.MouseDown += (sender, e) => { thumb.RaiseEvent(e); };
-
-                thumb.DragDelta += (sender, e) =>
-                {
-                    newPlotWindow.HorizontalOffset += e.HorizontalChange;
-                    newPlotWindow.VerticalOffset += e.VerticalChange;
-                };
-            }
+            CreatePopupWindow(viewModel, "plot");
         }
 
         public void Main_DuplicateMapView_Executed(object viewModel)
         {
-            var thumb = new Thumb {Width = 0, Height = 0};
-            var vm = viewModel as MapViewModel;
-            if (vm != null)
+            CreatePopupWindow(viewModel, "map");
+        }
+
+        private void CreatePopupWindow(object viewModel, string type)
+        {
+            var thumb = new Thumb { Width = 0, Height = 0 };
+            object vm;
+            if (type == "map")
             {
-                var mapView = new MapView
+                vm = viewModel as MapViewModel;
+            }
+            else
+            {
+                vm = viewModel as PlotViewModel;
+            }
+            if (vm == null) return;
+            object duplicateView;
+            if (type == "map")
+            {
+                duplicateView = new MapView
                 {
                     DataContext = vm,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -134,29 +95,65 @@ namespace Vts.Gui.Wpf
                         MinWidth = 500
                     }
                 };
-                var mapPanel = new StackPanel {Background = Brushes.White};
-                mapPanel.Children.Add(mapView);
-                mapPanel.Children.Add(thumb);
-                var newMapWindow = new Popup
+            }
+            else
+            {
+                duplicateView = new PlotView
                 {
-                    Name = "wndMapView" + _numMapViews++,
-                    Child = mapPanel,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    Margin = new Thickness(0),
-                    Width = 700,
-                    Height = 540,
-                    IsOpen = true
-                };
-
-                newMapWindow.MouseDown += (sender, e) => { thumb.RaiseEvent(e); };
-
-                thumb.DragDelta += (sender, e) =>
-                {
-                    newMapWindow.HorizontalOffset += e.HorizontalChange;
-                    newMapWindow.VerticalOffset += e.VerticalChange;
+                    DataContext = vm,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    Margin = new Thickness(0, 0, 3, 0)
                 };
             }
+            var viewBorder = new Border
+            {
+                Background = Brushes.White,
+                CornerRadius = new CornerRadius(0),
+                BorderThickness = new Thickness(2),
+                BorderBrush = Brushes.Gray
+            };
+            var viewPanel = new StackPanel();
+            var closeButton = new Button
+            {
+                Content = "X",
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(5),
+                Width = 25,
+                Height = 25
+            };
+            viewPanel.Children.Add(closeButton);
+            viewPanel.Children.Add((UIElement)duplicateView);
+            viewPanel.Children.Add(thumb);
+            viewBorder.Child = viewPanel;
+            //Popup behavior is to always be on top so we need to find another solution for this control
+            var newViewWindow = new Popup
+            {
+                Name = "wndView" + _numViews++,
+                Child = viewBorder,
+                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Placement = PlacementMode.Relative,
+                IsOpen = true,
+                AllowsTransparency = true
+            };
+
+            closeButton.Click += (sender, e) => { newViewWindow.IsOpen = false; };
+
+            newViewWindow.MouseDown += (sender, e) =>
+            {
+                var popupWindow = (Popup) sender;
+                Topmost = false;
+                popupWindow.Focus();
+                thumb.RaiseEvent(e);
+            };
+
+            thumb.DragDelta += (sender, e) =>
+            {
+                newViewWindow.HorizontalOffset += e.HorizontalChange;
+                newViewWindow.VerticalOffset += e.VerticalChange;
+            };
         }
     }
 }
