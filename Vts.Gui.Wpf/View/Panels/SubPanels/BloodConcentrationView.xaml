@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Vts.Gui.Wpf.View.BloodConcentrationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Height="Auto">
+    <Grid x:Name="LayoutRoot" Background="White" Visibility="{Binding BloodConcentrationVM.DisplayBloodVM, Converter={StaticResource MyBooleanToVisibilityConverter}}">
+        <StackPanel Orientation="Vertical" >
+            <!-- Blood Concentration Labels -->
+            <TextBlock
+                Text="{Binding BloodConcentrationLabel}"
+                FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding TotalHbLabel}" Margin="3,0,3,0"/>
+                <TextBlock Text="{Binding BloodVolumeLabel}" Margin="3,0,3,0"/>
+                <TextBlock Text="{Binding StO2Label}" Margin="3,0,3,0"/>
+             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <!-- Blood Concentration values -->
+                <TextBox Text="{Binding TotalHb, Mode=TwoWay,Converter={StaticResource MyDoubleToStringConverter}, ConverterParameter=g3}" 
+                       Width="40"  Margin="30,0,0,0" KeyDown="TextBox_KeyDown"/>
+              <TextBox Text="{Binding BloodVolumeFraction, Mode=TwoWay,Converter={StaticResource MyDoubleToStringConverter}, ConverterParameter=g3}"
+                       Width="40"  Margin="65,0,0,0" KeyDown="TextBox_KeyDown"/>
+              <TextBox Text="{Binding StO2, Mode=TwoWay,Converter={StaticResource MyDoubleToStringConverter}, ConverterParameter=g3}"
+                       Width="40"  Margin="75,0,0,0" KeyDown="TextBox_KeyDown"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
