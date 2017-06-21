@@ -1,5 +1,4 @@
 ﻿using System;
-using Vts;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
 
@@ -13,9 +12,9 @@ namespace Vts.Gui.Wpf.ViewModel
     {
         private SimulationInput _simulationInput;
         private SimulationOptionsViewModel _simulationOptionsVM;
-        private OptionViewModel<string> _tissueTypeVM;
 
         private object _tissueInputVM;
+        private OptionViewModel<string> _tissueTypeVM;
 
         public SimulationInputViewModel(SimulationInput input)
         {
@@ -30,25 +29,25 @@ namespace Vts.Gui.Wpf.ViewModel
                 new[]
                 {
                     "MultiLayer",
-                    "SingleEllipsoid",
+                    "SingleEllipsoid"
                 });
 #endif
 
             _tissueTypeVM.PropertyChanged += (sender, args) =>
+            {
+                switch (_tissueTypeVM.SelectedValue)
                 {
-                    switch (_tissueTypeVM.SelectedValue)
-                    {
-                        case "MultiLayer":
-                             _simulationInput.TissueInput = new MultiLayerTissueInput();
-                            break;
-                        case "SingleEllipsoid":
-                            _simulationInput.TissueInput = new SingleEllipsoidTissueInput();
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                    UpdateTissueTypeVM(_simulationInput.TissueInput.TissueType);
-                };
+                    case "MultiLayer":
+                        _simulationInput.TissueInput = new MultiLayerTissueInput();
+                        break;
+                    case "SingleEllipsoid":
+                        _simulationInput.TissueInput = new SingleEllipsoidTissueInput();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                UpdateTissueTypeVM(_simulationInput.TissueInput.TissueType);
+            };
 
             UpdateTissueInputVM(_simulationInput.TissueInput);
         }
@@ -101,7 +100,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("TissueTypeVM");
             }
         }
-        
+
         public object TissueInputVM
         {
             get { return _tissueInputVM; }
@@ -137,10 +136,10 @@ namespace Vts.Gui.Wpf.ViewModel
             switch (tissueInput.TissueType)
             {
                 case "MultiLayer":
-                    TissueInputVM = new MultiRegionTissueViewModel((MultiLayerTissueInput)tissueInput);
+                    TissueInputVM = new MultiRegionTissueViewModel((MultiLayerTissueInput) tissueInput);
                     break;
                 case "SingleEllipsoid":
-                    TissueInputVM = new MultiRegionTissueViewModel((SingleEllipsoidTissueInput)tissueInput);
+                    TissueInputVM = new MultiRegionTissueViewModel((SingleEllipsoidTissueInput) tissueInput);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

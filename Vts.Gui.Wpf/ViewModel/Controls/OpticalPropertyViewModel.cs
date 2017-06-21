@@ -1,20 +1,42 @@
-using Vts;
-using Vts.Gui.Wpf.Model;
-using Vts.IO;
-
 namespace Vts.Gui.Wpf.ViewModel
 {
     /// <summary>
-    /// View model exposing the OpticalProperties model class with change notification
+    ///     View model exposing the OpticalProperties model class with change notification
     /// </summary>
     public class OpticalPropertyViewModel : BindableObject
     {
-        private string _Units;
-        private string _Title;
+        private bool _enableG;
         private bool _enableMua;
         private bool _enableMusp;
-        private bool _enableG;
         private bool _enableN;
+        private string _Title;
+        private string _Units;
+
+        public OpticalPropertyViewModel()
+            : this(
+                new OpticalProperties(0.01, 1.0, 0.8, 1.4),
+                IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
+                "")
+        {
+        }
+
+        public OpticalPropertyViewModel(OpticalProperties opticalProperties, string units, string title)
+            : this(opticalProperties, units, title, true, true, false, true)
+        {
+        }
+
+        public OpticalPropertyViewModel(OpticalProperties opticalProperties, string units, string title,
+            bool enableMua, bool enableMusp, bool enableG, bool enableN)
+        {
+            OpticalProperties = opticalProperties;
+            Units = units;
+            Title = title;
+
+            _enableMua = enableMua;
+            _enableMusp = enableMusp;
+            _enableG = enableG;
+            _enableN = enableN;
+        }
 
         public double Mua
         {
@@ -76,7 +98,10 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public bool ShowTitle { get { return !(Title == ""); } }
+        public bool ShowTitle
+        {
+            get { return !(Title == ""); }
+        }
 
         public bool EnableMua
         {
@@ -120,39 +145,17 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private OpticalProperties OpticalProperties { get; set; }
 
-        public OpticalPropertyViewModel() 
-            : this( 
-                new OpticalProperties(0.01, 1.0, 0.8, 1.4), 
-                IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(), 
-                "") { }
-
-        public OpticalPropertyViewModel(OpticalProperties opticalProperties, string units, string title)
-            : this(opticalProperties, units,title, true, true, false, true)
-        {
-
-        }
-        
-        public OpticalPropertyViewModel(OpticalProperties opticalProperties, string units, string title, 
-            bool enableMua, bool enableMusp, bool enableG, bool enableN)
-        {
-            OpticalProperties = opticalProperties;
-            Units = units;
-            Title = title;
-
-            _enableMua = enableMua;
-            _enableMusp = enableMusp;
-            _enableG = enableG;
-            _enableN = enableN;
-        }
-
         /// <summary>
-        /// Helper method. Can't be bound to.
+        ///     Helper method. Can't be bound to.
         /// </summary>
         /// <returns></returns>
-        public OpticalProperties GetOpticalProperties() { return OpticalProperties; }
+        public OpticalProperties GetOpticalProperties()
+        {
+            return OpticalProperties;
+        }
 
         /// <summary>
-        /// Helper method.
+        ///     Helper method.
         /// </summary>
         /// <returns></returns>
         public void SetOpticalProperties(OpticalProperties op)
@@ -170,7 +173,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public override string ToString()
         {
-            return OpticalProperties.ToString() + "; Units = " + Units;
+            return OpticalProperties + "; Units = " + Units;
         }
     }
 }

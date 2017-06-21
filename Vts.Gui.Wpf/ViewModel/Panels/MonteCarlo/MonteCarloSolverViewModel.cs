@@ -2,16 +2,13 @@
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Reflection;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Threading;
 using GalaSoft.MvvmLight.Command;
-using Vts;
+using Microsoft.Win32;
 using Vts.Common.Logging;
-using Vts.Gui.Wpf.Input;
 using Vts.Gui.Wpf.Model;
 using Vts.IO;
 using Vts.MonteCarlo;
@@ -20,28 +17,29 @@ using Vts.MonteCarlo.IO;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
-    /// <summary> 
-    /// View model implementing the Monte Carlo panel functionality (experimental)
+    /// <summary>
+    ///     View model implementing the Monte Carlo panel functionality (experimental)
     /// </summary>
     public class MonteCarloSolverViewModel : BindableObject
     {
         private const string TEMP_RESULTS_FOLDER = "mc_results_temp";
 
-        private static ILogger logger = LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MonteCarloSolverViewModel));
-
-        private MonteCarloSimulation _simulation;
-
-        private SimulationOutput _output;
-
-        private SimulationInputViewModel _simulationInputVM;
+        private static readonly ILogger logger =
+            LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MonteCarloSolverViewModel));
 
         private CancellationTokenSource _currentCancellationTokenSource;
+
+        private double[] _mapArrayBuffer;
 
         //private bool _firstTimeSaving;
 
         private bool _newResultsAvailable;
 
-        private double[] _mapArrayBuffer;
+        private SimulationOutput _output;
+
+        private MonteCarloSimulation _simulation;
+
+        private SimulationInputViewModel _simulationInputVM;
 
         public MonteCarloSolverViewModel()
         {
@@ -49,12 +47,15 @@ namespace Vts.Gui.Wpf.ViewModel
 
             _simulationInputVM = new SimulationInputViewModel(simulationInput);
 
-            var rho = ((ROfRhoDetectorInput)simulationInput.DetectorInputs.Where(d => d.TallyType == TallyType.ROfRho).First()).Rho;
+            var rho =
+                ((ROfRhoDetectorInput)
+                    simulationInput.DetectorInputs.Where(d => d.TallyType == TallyType.ROfRho).First()).Rho;
 
             ExecuteMonteCarloSolverCommand = new RelayCommand(() => MC_ExecuteMonteCarloSolver_Executed(null, null));
             CancelMonteCarloSolverCommand = new RelayCommand(() => MC_CancelMonteCarloSolver_Executed(null, null));
             LoadSimulationInputCommand = new RelayCommand(() => MC_LoadSimulationInput_Executed(null, null));
-            DownloadDefaultSimulationInputCommand = new RelayCommand(() => MC_DownloadDefaultSimulationInput_Executed(null, null));
+            DownloadDefaultSimulationInputCommand =
+                new RelayCommand(() => MC_DownloadDefaultSimulationInput_Executed(null, null));
             SaveSimulationResultsCommand = new RelayCommand(() => MC_SaveSimulationResults_Executed(null, null));
 
             _newResultsAvailable = false;
@@ -94,21 +95,23 @@ namespace Vts.Gui.Wpf.ViewModel
             if (!validationResult.IsValid)
             {
                 logger.Info(() => "\rSimulation input not valid.\rRule: " + validationResult.ValidationRule +
-                    (!string.IsNullOrEmpty(validationResult.Remarks) ? "\rDetails: " + validationResult.Remarks : "") + ".\r");
+                                  (!string.IsNullOrEmpty(validationResult.Remarks)
+                                      ? "\rDetails: " + validationResult.Remarks
+                                      : "") + ".\r");
                 return;
             }
 
             _simulation = new MonteCarloSimulation(input);
 
             _currentCancellationTokenSource = new CancellationTokenSource();
-            CancellationToken cancelToken = _currentCancellationTokenSource.Token;
-            TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            var cancelToken = _currentCancellationTokenSource.Token;
+            var scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
             var t = Task.Factory.StartNew(() => _simulation.Run(), TaskCreationOptions.LongRunning);
             //need to figure out how to replace all this code
             Action<Task<SimulationOutput>, object> mCAction = (antecedent, obj) =>
             {
-                MainWindow.Current.Dispatcher.BeginInvoke((Action)delegate()
+                MainWindow.Current.Dispatcher.BeginInvoke((Action) delegate
                 {
                     _output = antecedent.Result;
                     _newResultsAvailable = _simulation.ResultsAvailable;
@@ -122,7 +125,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
                         var detectorInput = (ROfRhoDetectorInput) rOfRhoDetectorInputs.First();
 
-                        double[] independentValues = detectorInput.Rho.AsEnumerable().ToArray();
+                        var independentValues = detectorInput.Rho.AsEnumerable().ToArray();
 
                         DoubleDataPoint[] points = null;
 
@@ -139,17 +142,15 @@ namespace Vts.Gui.Wpf.ViewModel
                         //}
                         //else
                         //{
-                        points = Enumerable.Zip(
-                            independentValues,
-                            _output.R_r,
+                        points = independentValues.Zip(_output.R_r,
                             (x, y) => new DoubleDataPoint(x, y)).ToArray();
                         //}
 
-                        PlotAxesLabels axesLabels = GetPlotLabels();
+                        var axesLabels = GetPlotLabels();
                         WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
                         //Commands.Plot_SetAxesLabels.Execute(axesLabels, null);
 
-                        string plotLabel = GetPlotLabel();
+                        var plotLabel = GetPlotLabel();
                         WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
                         //Commands.Plot_PlotValues.Execute(new[] { new PlotData(points, plotLabel) }, null);
                         logger.Info(() => "done.\r");
@@ -166,15 +167,15 @@ namespace Vts.Gui.Wpf.ViewModel
                         var zsMC = detectorInput.Z.AsEnumerable().ToArray();
 
                         var rhos =
-                            Enumerable.Zip(rhosMC.Skip(1), rhosMC.Take(rhosMC.Length - 1),
+                            rhosMC.Skip(1).Zip(rhosMC.Take(rhosMC.Length - 1),
                                 (first, second) => (first + second)/2).ToArray();
                         var zs =
-                            Enumerable.Zip(zsMC.Skip(1), rhosMC.Take(zsMC.Length - 1),
+                            zsMC.Skip(1).Zip(rhosMC.Take(zsMC.Length - 1),
                                 (first, second) => (first + second)/2).ToArray();
 
                         var dRhos =
-                            Enumerable.Select(rhos, rho => 2*Math.PI*Math.Abs(rho)*detectorInput.Rho.Delta).ToArray();
-                        var dZs = Enumerable.Select(zs, z => detectorInput.Rho.Delta).ToArray();
+                            rhos.Select(rho => 2*Math.PI*Math.Abs(rho)*detectorInput.Rho.Delta).ToArray();
+                        var dZs = zs.Select(z => detectorInput.Rho.Delta).ToArray();
 
                         if (_mapArrayBuffer == null || _mapArrayBuffer.Length != _output.Flu_rz.Length*2)
                         {
@@ -182,21 +183,21 @@ namespace Vts.Gui.Wpf.ViewModel
                         }
 
                         // flip the array (since it goes over zs and then rhos, while map wants rhos and then zs
-                        for (int zi = 0; zi < zs.Length; zi++)
+                        for (var zi = 0; zi < zs.Length; zi++)
                         {
-                            for (int rhoi = 0; rhoi < rhos.Length; rhoi++)
+                            for (var rhoi = 0; rhoi < rhos.Length; rhoi++)
                             {
                                 _mapArrayBuffer[rhoi + rhos.Length + rhos.Length*2*zi] = _output.Flu_rz[rhoi, zi];
                             }
                             var localRhoiForReverse = 0;
-                            for (int rhoi = rhos.Length - 1; rhoi >= 0; rhoi--, localRhoiForReverse++)
+                            for (var rhoi = rhos.Length - 1; rhoi >= 0; rhoi--, localRhoiForReverse++)
                             {
                                 _mapArrayBuffer[localRhoiForReverse + rhos.Length*2*zi] = _output.Flu_rz[rhoi, zi];
                             }
                         }
 
-                        var twoRhos = Enumerable.Concat(rhos.Reverse().Select(rho => -rho), rhos).ToArray();
-                        var twoDRhos = Enumerable.Concat(dRhos.Reverse(), dRhos).ToArray();
+                        var twoRhos = rhos.Reverse().Select(rho => -rho).Concat(rhos).ToArray();
+                        var twoDRhos = dRhos.Reverse().Concat(dRhos).ToArray();
 
                         var mapData = new MapData(_mapArrayBuffer, twoRhos, zs, twoDRhos, dZs);
 
@@ -222,7 +223,6 @@ namespace Vts.Gui.Wpf.ViewModel
                         DetectorIO.WriteDetectorToFile(result, TEMP_RESULTS_FOLDER);
                     }
                     logger.Info(() => "done.\r");
-
                 });
             };
             var c = t.ContinueWith(mCAction, null, cancelToken, TaskContinuationOptions.OnlyOnRanToCompletion, scheduler);
@@ -245,15 +245,15 @@ namespace Vts.Gui.Wpf.ViewModel
         private void MC_LoadSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             // Create OpenFileDialog 
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
+            var dialog = new OpenFileDialog
             {
                 DefaultExt = ".txt",
                 Filter = "TXT Files (*.txt)|*.txt"
             };
 
             // Display OpenFileDialog by calling ShowDialog method 
-            bool? result = dialog.ShowDialog();
-            
+            var result = dialog.ShowDialog();
+
             // if the file dialog returns true - file was selected 
             var filename = "";
             if (result == true)
@@ -278,7 +278,7 @@ namespace Vts.Gui.Wpf.ViewModel
                         logger.Info(() => "Simulation input not loaded - JSON format not valid.\r");
                     }
                 }
-                }
+            }
             else
             {
                 logger.Info(() => "JSON File not loaded.\r");
@@ -288,15 +288,15 @@ namespace Vts.Gui.Wpf.ViewModel
         private void MC_DownloadDefaultSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             // Create SaveFileDialog 
-            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog
+            var dialog = new SaveFileDialog
             {
                 DefaultExt = ".zip",
                 Filter = "ZIP Files (*.zip)|*.zip"
             };
 
             // Display OpenFileDialog by calling ShowDialog method 
-            bool? result = dialog.ShowDialog();
-            
+            var result = dialog.ShowDialog();
+
             // if the file dialog returns true - file was selected 
             var filename = "";
             if (result == true)
@@ -331,7 +331,7 @@ namespace Vts.Gui.Wpf.ViewModel
             if (_output != null && _newResultsAvailable)
             {
                 // Create SaveFileDialog 
-                var dialog = new Microsoft.Win32.SaveFileDialog
+                var dialog = new SaveFileDialog
                 {
                     DefaultExt = ".zip",
                     Filter = "Zip Files (*.zip)|*.zip"
@@ -369,10 +369,10 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private bool EnoughRoomInIsolatedStorage(double megabyteMinimum)
         {
-            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                var currentQuota = (isf.Quota / 1048576);
-                var spaceUsed = ((isf.Quota - isf.AvailableFreeSpace) / 1048576);
+                var currentQuota = isf.Quota/1048576;
+                var spaceUsed = (isf.Quota - isf.AvailableFreeSpace)/1048576;
                 if (currentQuota - spaceUsed < megabyteMinimum)
                 {
                     return false;
@@ -389,8 +389,8 @@ namespace Vts.Gui.Wpf.ViewModel
             //    IndependentVariableAxis.Rho,
             //    SolutionDomainType.ROfRho.GetInternationalizedString(),
             //    DependentVariableAxisUnits.PerMMSquared.GetInternationalizedString());
-            var rhoRange = (ROfRhoDetectorInput)_simulationInputVM.SimulationInput.DetectorInputs.FirstOrDefault();
-            
+            var rhoRange = (ROfRhoDetectorInput) _simulationInputVM.SimulationInput.DetectorInputs.FirstOrDefault();
+
             var axisType = IndependentVariableAxis.Rho;
             var axisUnits = IndependentVariableAxisUnits.MM;
             return new PlotAxesLabels(
@@ -401,14 +401,15 @@ namespace Vts.Gui.Wpf.ViewModel
                     AxisType = axisType,
                     AxisLabel = axisType.GetInternationalizedString(),
                     AxisUnits = axisUnits.GetInternationalizedString(),
-                    AxisRangeVM = new RangeViewModel(rhoRange.Rho, axisUnits.GetInternationalizedString(), axisType, "ROfRho")
+                    AxisRangeVM =
+                        new RangeViewModel(rhoRange.Rho, axisUnits.GetInternationalizedString(), axisType, "ROfRho")
                 });
         }
 
         private string GetPlotLabel()
         {
-            string nString = "N: " + _simulationInputVM.SimulationInput.N;
-            string awtString = "AWT: ";
+            var nString = "N: " + _simulationInputVM.SimulationInput.N;
+            var awtString = "AWT: ";
             switch (_simulationInputVM.SimulationInput.Options.AbsorptionWeightingType)
             {
                 case AbsorptionWeightingType.Analog:

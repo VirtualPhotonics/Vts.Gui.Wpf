@@ -1,8 +1,5 @@
-using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.CommandWpf;
-using Vts;
-using Vts.Gui.Wpf.ViewModel;
 
 namespace Vts.Gui.Wpf.Input
 {

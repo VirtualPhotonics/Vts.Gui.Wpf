@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Linq;
-using Vts;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
     /// <summary>
-    /// View model implementing domain sub-panel functionality (abstract - implemented for reflectance and fluence)
+    ///     View model implementing domain sub-panel functionality (abstract - implemented for reflectance and fluence)
     /// </summary>
     public class AbstractSolutionDomainOptionViewModel<TDomainType> : OptionViewModel<TDomainType>
     {
-        private OptionViewModel<IndependentVariableAxis> _IndependentVariableAxisOptionVM;
-
-        private IndependentAxisViewModel[] _independentAxesVMs;
+        private bool _allowMultiAxis;
         private ConstantAxisViewModel[] _constantAxesVMs;
 
         private double _ConstantAxisValueImageHeight;
         private double _ConstantAxisValueTwoImageHeight;
 
-        private bool _useSpectralInputs;
-        private bool _allowMultiAxis;
+        private IndependentAxisViewModel[] _independentAxesVMs;
+        private OptionViewModel<IndependentVariableAxis> _IndependentVariableAxisOptionVM;
 
         private bool _showIndependentAxisChoice;
+
+        private bool _useSpectralInputs;
 
         public AbstractSolutionDomainOptionViewModel(string groupName, TDomainType defaultType)
             : base(groupName)
@@ -33,9 +32,9 @@ namespace Vts.Gui.Wpf.ViewModel
         }
 
         public AbstractSolutionDomainOptionViewModel()
-            : this("", default(TDomainType)) { }
-
-        public event EventHandler SettingsLoaded = delegate { };
+            : this("", default(TDomainType))
+        {
+        }
 
         public OptionViewModel<IndependentVariableAxis> IndependentVariableAxisOptionVM
         {
@@ -116,8 +115,13 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("ShowIndependentAxisChoice");
             }
         }
-        
-        public virtual int NativeAxesCount { get { return 1; } }
+
+        public virtual int NativeAxesCount
+        {
+            get { return 1; }
+        }
+
+        public event EventHandler SettingsLoaded = delegate { };
 
         protected virtual void UpdateAxes()
         {
@@ -143,7 +147,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     AxisType = IndependentVariableAxisOptionVM.UnSelectedValues[i],
                     AxisLabel = IndependentVariableAxisOptionVM.UnSelectedDisplayNames[i],
                     AxisUnits = IndependentVariableAxisOptionVM.UnSelectedValues[i].GetUnits(),
-                    AxisValue = IndependentVariableAxisOptionVM.UnSelectedValues[i].GetDefaultConstantAxisValue(),
+                    AxisValue = IndependentVariableAxisOptionVM.UnSelectedValues[i].GetDefaultConstantAxisValue()
                 }).ToArray();
 
             // assign callbacks

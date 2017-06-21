@@ -6,14 +6,14 @@ namespace Vts.Gui.Wpf.Model
 {
     public class Test
     {
-        private IDataPoint[][] _myDataPoints;
+        private readonly IDataPoint[][] _myDataPoints;
 
         public Test()
         {
             _myDataPoints = new IDataPoint[2][];
         }
 
-        void TestMethod()
+        private void TestMethod()
         {
             var dp = new ComplexDataPoint(0, 0);
             var complex_number = dp.Y;
@@ -29,13 +29,10 @@ namespace Vts.Gui.Wpf.Model
 
     public class ComplexDataPoint : IDataPoint
     {
-        private double _x;
-        private Complex _y;
-
         public ComplexDataPoint(double x, Complex y)
         {
-            _x = x;
-            _y = y;
+            X = x;
+            Y = y;
         }
 
         //
@@ -45,11 +42,7 @@ namespace Vts.Gui.Wpf.Model
         // Returns:
         //     The X-coordinate value of this ComplexDataPoint
         //     structure. The default value is 0.
-        public double X
-        {
-            get { return _x; }
-            set { _x = value; }
-        }
+        public double X { get; set; }
 
         //
         // Summary:
@@ -58,11 +51,7 @@ namespace Vts.Gui.Wpf.Model
         // Returns:
         //     The SY-coordinate value of this ComplexDataPoint
         //     structure. The default value is 0.
-        public Complex Y
-        {
-            get { return _y; }
-            set { _y = value; }
-        }
+        public Complex Y { get; set; }
 
         // Summary:
         //     Compares two ComplexDataPoint structures for inequality
@@ -116,7 +105,7 @@ namespace Vts.Gui.Wpf.Model
         //     false.
         public override bool Equals(object o)
         {
-            return this.Equals((ComplexDataPoint)o);
+            return Equals((ComplexDataPoint) o);
         }
 
         //
@@ -134,6 +123,7 @@ namespace Vts.Gui.Wpf.Model
         {
             return X == value.X && Y == value.Y;
         }
+
         //
         // Summary:
         //     Returns the hash code for this ComplexDataPoint.
@@ -160,9 +150,6 @@ namespace Vts.Gui.Wpf.Model
 
     public class DoubleDataPoint : IDataPoint
     {
-        private double _x;
-        private double _y;
-
         //
         // Summary:
         //     Initializes a DoubleDataPoint structure that contains the specified
@@ -176,8 +163,8 @@ namespace Vts.Gui.Wpf.Model
         //     The y-coordinate value of the DoubleDataPoint structure.
         public DoubleDataPoint(double x, double y)
         {
-            _x = x;
-            _y = y;
+            X = x;
+            Y = y;
         }
 
         //
@@ -187,11 +174,8 @@ namespace Vts.Gui.Wpf.Model
         // Returns:
         //     The X-coordinate value of this
         //     structure. The default value is 0.
-        public double X
-        {
-            get { return _x; }
-            set { _x = value; }
-        }
+        public double X { get; set; }
+
         //
         // Summary:
         //     Gets or sets the Y-coordinate value 
@@ -199,11 +183,7 @@ namespace Vts.Gui.Wpf.Model
         // Returns:
         //     The SY-coordinate value of this
         //     structure. The default value is 0.
-        public double Y
-        {
-            get { return _y; }
-            set { _y = value; }
-        }
+        public double Y { get; set; }
 
         // Summary:
         //     Compares two DoubleDataPoint structures for inequality
@@ -257,7 +237,7 @@ namespace Vts.Gui.Wpf.Model
         //     false.
         public override bool Equals(object o)
         {
-            return this.Equals((DoubleDataPoint)o);
+            return Equals((DoubleDataPoint) o);
         }
 
         //
@@ -275,6 +255,7 @@ namespace Vts.Gui.Wpf.Model
         {
             return X == value.X && Y == value.Y;
         }
+
         //
         // Summary:
         //     Returns the hash code for this DoubleDataPoint.

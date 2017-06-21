@@ -16,5 +16,5 @@ namespace Vts.Gui.Wpf.View
             if (tbx != null && e.Key == Key.Enter)
                 tbx.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         }
-   }
+    }
 }

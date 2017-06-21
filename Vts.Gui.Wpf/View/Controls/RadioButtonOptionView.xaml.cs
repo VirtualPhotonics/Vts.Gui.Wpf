@@ -7,7 +7,6 @@ namespace Vts.Gui.Wpf.View
         public RadioButtonOptionView()
         {
             InitializeComponent();
-
         }
     }
 }

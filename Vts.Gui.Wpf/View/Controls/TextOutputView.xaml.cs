@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using Vts.Gui.Wpf.ViewModel;
 
@@ -7,23 +8,24 @@ namespace Vts.Gui.Wpf.View
     public partial class TextOutputView : UserControl
     {
         private TextOutputViewModel _textOutputVM;
+
         public TextOutputView()
         {
             InitializeComponent();
 
-            this.Loaded += TextOutputView_Loaded;
+            Loaded += TextOutputView_Loaded;
         }
 
-        void TextOutputView_Loaded(object sender, RoutedEventArgs e)
+        private void TextOutputView_Loaded(object sender, RoutedEventArgs e)
         {
-            _textOutputVM = this.DataContext as TextOutputViewModel;
+            _textOutputVM = DataContext as TextOutputViewModel;
             if (_textOutputVM != null)
             {
                 _textOutputVM.PropertyChanged += textOutputVM_PropertyChanged;
             }
         }
 
-        void textOutputVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void textOutputVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Text")
             {
@@ -31,11 +33,12 @@ namespace Vts.Gui.Wpf.View
             }
         }
 
+        //    {
+        //    if (this.DataContext != null)
+        //{
+
 
         //public void AppendText(string s)
-        //{
-        //    if (this.DataContext != null)
-        //    {
         //        TextOutputViewModel vm = (TextOutputViewModel)this.DataContext;
         //        if (vm != null)
         //        {

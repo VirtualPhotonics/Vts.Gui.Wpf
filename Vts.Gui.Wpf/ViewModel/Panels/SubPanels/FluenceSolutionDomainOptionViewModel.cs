@@ -1,15 +1,18 @@
 using System;
-using Vts;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
     /// <summary>
-    /// View model implementing Fluence domain sub-panel functionality
+    ///     View model implementing Fluence domain sub-panel functionality
     /// </summary>
     public class FluenceSolutionDomainOptionViewModel : AbstractSolutionDomainOptionViewModel<FluenceSolutionDomainType>
     {
+        private bool _isFluenceOfRhoAndZAndFtEnabled;
+
+        private bool _isFluenceOfRhoAndZAndTimeEnabled;
+
         public FluenceSolutionDomainOptionViewModel(string groupName, FluenceSolutionDomainType defaultType)
             : base(groupName, defaultType)
         {
@@ -21,7 +24,7 @@ namespace Vts.Gui.Wpf.ViewModel
             FluenceOfRhoAndZAndFtOption = Options[FluenceSolutionDomainType.FluenceOfRhoAndZAndFt];
             FluenceOfFxAndZAndFtOption = Options[FluenceSolutionDomainType.FluenceOfFxAndZAndFt];
 
-            this.PropertyChanged += (sender, args) =>
+            PropertyChanged += (sender, args) =>
             {
                 if (sender is FluenceSolutionDomainOptionViewModel && args.PropertyName == "SelectedValue")
                 {
@@ -32,7 +35,9 @@ namespace Vts.Gui.Wpf.ViewModel
         }
 
         public FluenceSolutionDomainOptionViewModel()
-            : this("", FluenceSolutionDomainType.FluenceOfRhoAndZ) { }
+            : this("", FluenceSolutionDomainType.FluenceOfRhoAndZ)
+        {
+        }
 
         public OptionModel<FluenceSolutionDomainType> FluenceOfRhoAndZOption { get; private set; }
         public OptionModel<FluenceSolutionDomainType> FluenceOfFxAndZOption { get; private set; }
@@ -41,15 +46,19 @@ namespace Vts.Gui.Wpf.ViewModel
         public OptionModel<FluenceSolutionDomainType> FluenceOfRhoAndZAndFtOption { get; private set; }
         public OptionModel<FluenceSolutionDomainType> FluenceOfFxAndZAndFtOption { get; private set; }
 
-        private bool _isFluenceOfRhoAndZAndTimeEnabled;
-        private bool _isFluenceOfRhoAndZAndFtEnabled;
+        public string IndependentAxisLabel
+        {
+            get { return StringLookup.GetLocalizedString("Label_IndependentAxis"); }
+        }
 
-        public string IndependentAxisLabel { get { return StringLookup.GetLocalizedString("Label_IndependentAxis"); } }
-        public string AtLabel { get { return StringLookup.GetLocalizedString("Label_At"); } }
+        public string AtLabel
+        {
+            get { return StringLookup.GetLocalizedString("Label_At"); }
+        }
 
         public bool IsFluenceOfRhoAndZAndTimeEnabled
         {
-            get { return _isFluenceOfRhoAndZAndTimeEnabled;}
+            get { return _isFluenceOfRhoAndZAndTimeEnabled; }
             set
             {
                 _isFluenceOfRhoAndZAndTimeEnabled = value;
@@ -69,8 +78,11 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public override int NativeAxesCount { get { return 1; } }
-        
+        public override int NativeAxesCount
+        {
+            get { return 1; }
+        }
+
         private void UpdateOptions()
         {
             switch (SelectedValue)
@@ -78,33 +90,34 @@ namespace Vts.Gui.Wpf.ViewModel
                 case FluenceSolutionDomainType.FluenceOfRhoAndZ:
                     IndependentVariableAxisOptionVM =
                         new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                            new[] { IndependentVariableAxis.Rho});
-                    FluenceOfRhoAndZOption.IsSelected = true; //added to force the radio button when it is changed programatically
+                            new[] {IndependentVariableAxis.Rho});
+                    FluenceOfRhoAndZOption.IsSelected = true;
+                        //added to force the radio button when it is changed programatically
                     break;
                 case FluenceSolutionDomainType.FluenceOfFxAndZ:
                     IndependentVariableAxisOptionVM =
                         new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                            new[] { IndependentVariableAxis.Fx});
+                            new[] {IndependentVariableAxis.Fx});
                     break;
                 case FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
                     IndependentVariableAxisOptionVM =
                         new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                            new[] { IndependentVariableAxis.Rho, IndependentVariableAxis.Time });
+                            new[] {IndependentVariableAxis.Rho, IndependentVariableAxis.Time});
                     break;
                 case FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
                     IndependentVariableAxisOptionVM =
                         new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                            new[] { IndependentVariableAxis.Fx, IndependentVariableAxis.Time });
+                            new[] {IndependentVariableAxis.Fx, IndependentVariableAxis.Time});
                     break;
                 case FluenceSolutionDomainType.FluenceOfRhoAndZAndFt:
                     IndependentVariableAxisOptionVM =
                         new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                            new[] { IndependentVariableAxis.Rho, IndependentVariableAxis.Ft });
+                            new[] {IndependentVariableAxis.Rho, IndependentVariableAxis.Ft});
                     break;
                 case FluenceSolutionDomainType.FluenceOfFxAndZAndFt:
                     IndependentVariableAxisOptionVM =
                         new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                            new[] { IndependentVariableAxis.Fx, IndependentVariableAxis.Ft });
+                            new[] {IndependentVariableAxis.Fx, IndependentVariableAxis.Ft});
                     break;
                 default:
                     throw new NotImplementedException("SelectedValue");
@@ -115,7 +128,9 @@ namespace Vts.Gui.Wpf.ViewModel
 
             UpdateAxes();
             //The independent axis should not be visible, this panel already has modulation frequency
-            ShowIndependentAxisChoice = (ShowIndependentAxisChoice && ((SelectedValue != FluenceSolutionDomainType.FluenceOfRhoAndZAndFt) && (SelectedValue != FluenceSolutionDomainType.FluenceOfRhoAndZAndTime)));
+            ShowIndependentAxisChoice = ShowIndependentAxisChoice &&
+                                        (SelectedValue != FluenceSolutionDomainType.FluenceOfRhoAndZAndFt) &&
+                                        (SelectedValue != FluenceSolutionDomainType.FluenceOfRhoAndZAndTime);
         }
     }
 }

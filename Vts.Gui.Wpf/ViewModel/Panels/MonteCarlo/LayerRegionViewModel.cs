@@ -1,15 +1,14 @@
-﻿using Vts;
-using Vts.MonteCarlo.Extensions;
+﻿using Vts.MonteCarlo.Extensions;
 using Vts.MonteCarlo.Tissues;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
     public class LayerRegionViewModel : BindableObject
     {
-        private LayerTissueRegion _region;
         private string _name;
-        private RangeViewModel _zRangeVM;
         private OpticalPropertyViewModel _opticalPropertyVM;
+        private readonly LayerTissueRegion _region;
+        private RangeViewModel _zRangeVM;
 
         public LayerRegionViewModel(LayerTissueRegion region, string name)
         {
@@ -59,7 +58,14 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public bool IsLayer { get { return true; } }
-        public bool IsEllipsoid { get { return false; } }
+        public bool IsLayer
+        {
+            get { return true; }
+        }
+
+        public bool IsEllipsoid
+        {
+            get { return false; }
+        }
     }
 }

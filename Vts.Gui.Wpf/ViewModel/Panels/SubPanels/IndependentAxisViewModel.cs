@@ -1,13 +1,11 @@
-﻿using Vts;
-
-namespace Vts.Gui.Wpf.ViewModel
+﻿namespace Vts.Gui.Wpf.ViewModel
 {
     public class IndependentAxisViewModel : BindableObject
     {
-        private IndependentVariableAxis _axisType;
         private string _axisLabel;
-        private string _axisUnits;
         private RangeViewModel _axisRangeVM;
+        private IndependentVariableAxis _axisType;
+        private string _axisUnits;
 
         public IndependentVariableAxis AxisType
         {

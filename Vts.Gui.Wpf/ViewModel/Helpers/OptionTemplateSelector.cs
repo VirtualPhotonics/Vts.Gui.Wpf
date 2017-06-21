@@ -1,28 +1,20 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using Vts;
 using Vts.Gui.Wpf.Model;
 
 namespace Vts.Gui.Wpf.Helpers
 {
     public class OptionTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate MultiSelectTemplate
-        {
-            get;
-            set;
-        }
+        public DataTemplate MultiSelectTemplate { get; set; }
 
-        public DataTemplate SingleSelectTemplate
-        {
-            get;
-            set;
-        }
+        public DataTemplate SingleSelectTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            Window window = Application.Current.MainWindow;
-            var option = item as OptionModel<IndependentVariableAxis>; //this works for independent axis but it needs to be more general
+            var window = Application.Current.MainWindow;
+            var option = item as OptionModel<IndependentVariableAxis>;
+                //this works for independent axis but it needs to be more general
             if (option != null)
             {
                 if (option.MultiSelectEnabled)

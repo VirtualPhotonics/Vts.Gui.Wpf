@@ -1,23 +1,23 @@
 using System.Collections.Generic;
-using Vts;
 using Vts.Common;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
     /// <summary>
-    /// View model exposing the DoubleRange model class with change notification
+    ///     View model exposing the DoubleRange model class with change notification
     /// </summary>
     public class RangeViewModel : BindableObject
     {
+        private IndependentVariableAxis _axisType;
+        private bool _enableNumber;
         // Range model - backing store for public properties
-        private DoubleRange _range;
+        private readonly DoubleRange _range;
+        private string _title;
 
         private string _units;
-        private string _title;
-        private bool _enableNumber;
-        private IndependentVariableAxis _axisType;
-        
-        public RangeViewModel(DoubleRange range, string units, IndependentVariableAxis axisType, string title, bool enableNumber)
+
+        public RangeViewModel(DoubleRange range, string units, IndependentVariableAxis axisType, string title,
+            bool enableNumber)
         {
             _range = range;
             Units = units;
@@ -28,21 +28,23 @@ namespace Vts.Gui.Wpf.ViewModel
             // todo: does this do anything? (start, stop, number already directly modified)
             _range.PropertyChanged += (s, a) =>
             {
-                this.OnPropertyChanged("Start");
-                this.OnPropertyChanged("Stop");
-                this.OnPropertyChanged("Number");
+                OnPropertyChanged("Start");
+                OnPropertyChanged("Stop");
+                OnPropertyChanged("Number");
             };
         }
 
         public RangeViewModel(DoubleRange range, string units, IndependentVariableAxis axisType, string title)
-            : this(range,units,axisType,title,true)
+            : this(range, units, axisType, title, true)
         {
         }
 
-        public RangeViewModel() : this(new DoubleRange(1.0, 6.0, 60), "mm", IndependentVariableAxis.Rho, "Range:", true) { }
+        public RangeViewModel() : this(new DoubleRange(1.0, 6.0, 60), "mm", IndependentVariableAxis.Rho, "Range:", true)
+        {
+        }
 
         /// <summary>
-        /// A double representing the start of the range
+        ///     A double representing the start of the range
         /// </summary>
         public double Start
         {
@@ -55,7 +57,7 @@ namespace Vts.Gui.Wpf.ViewModel
         }
 
         /// <summary>
-        /// A double representing the end of the range
+        ///     A double representing the end of the range
         /// </summary>
         public double Stop
         {
@@ -68,7 +70,7 @@ namespace Vts.Gui.Wpf.ViewModel
         }
 
         /// <summary>
-        /// An integer representing the number of values in the range
+        ///     An integer representing the number of values in the range
         /// </summary>
         public int Number
         {

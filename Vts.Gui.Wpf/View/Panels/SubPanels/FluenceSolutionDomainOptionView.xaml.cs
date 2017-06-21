@@ -18,7 +18,7 @@ namespace Vts.Gui.Wpf.View
             if (stackPanel != null)
                 stackPanel.VerticalAlignment = VerticalAlignment.Top;
         }
-        
+
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             var tbx = sender as TextBox;

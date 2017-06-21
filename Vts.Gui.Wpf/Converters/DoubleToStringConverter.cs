@@ -1,12 +1,13 @@
 using System;
+using System.Globalization;
 using System.Windows.Data;
 
 namespace Vts.Gui.Wpf.Converters
 {
-    public class DoubleToStringConverter: IValueConverter
+    public class DoubleToStringConverter : IValueConverter
     {
-
         #region IValueConverter Members
+
         // Summary:
         //     Modifies the source data before passing it to the target for display in the
         //     UI.
@@ -27,20 +28,17 @@ namespace Vts.Gui.Wpf.Converters
         // Returns:
         //     The value to be passed to the target dependency property.
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (!(value is double))
                 throw new ArgumentException("Value must be a double");
 
             if (parameter != null)
             {
-                return ((double)value).ToString((string)parameter);
+                return ((double) value).ToString((string) parameter);
             }
-            else
-            {
-                return ((double)value).ToString();
-            }
-                
+            return ((double) value).ToString();
+
             //string numberUnformatted = value.ToString();
             //int ind = numberUnformatted.IndexOf(".");
             //int numberOfDecimals = 2;
@@ -62,12 +60,10 @@ namespace Vts.Gui.Wpf.Converters
             //    decimalPart = decimalPart.Substring(0, numberOfDecimals);
 
             //return integerPart + "." + decimalPart; ;
-
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            
             return value;
         }
 

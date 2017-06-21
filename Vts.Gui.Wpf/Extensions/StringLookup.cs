@@ -6,62 +6,58 @@ using Vts.Gui.Wpf.Resources;
 namespace Vts.Gui.Wpf.Extensions
 {
     /// <summary>
-    /// Class to retrieve strings from a resources file
+    ///     Class to retrieve strings from a resources file
     /// </summary>
     public static class StringLookup
     {
         /// <summary>
-        /// Method to retrieve the correct language string for the VTS GUI
+        ///     Method to retrieve the correct language string for the VTS GUI
         /// </summary>
         /// <param name="stringName">The complete name of the string to lookup</param>
         /// <returns>string in the correct language</returns>
         public static string GetLocalizedString(string stringName)
         {
-            ResourceManager rm = new ResourceManager("Vts.Gui.Wpf.Resources.Strings", typeof(Strings).Assembly);
+            var rm = new ResourceManager("Vts.Gui.Wpf.Resources.Strings", typeof(Strings).Assembly);
 
-            string s = rm.GetString(stringName, Thread.CurrentThread.CurrentCulture);
+            var s = rm.GetString(stringName, Thread.CurrentThread.CurrentCulture);
             if (s != null)
             {
                 return s;
             }
-            else
-            {
-                return "";
-            }
+            return "";
         }
-        
+
         /// <summary>
-        /// Method to retrieve the correct language string for the VTS GUI
+        ///     Method to retrieve the correct language string for the VTS GUI
         /// </summary>
         /// <param name="stringType">Type of string in the interface(Tooltip, label, title etc)</param>
         /// <param name="stringName">Name of the string</param>
         /// <returns>string in the correct language</returns>
         public static string GetLocalizedString(string stringType, string stringName)
         {
-            string baseString = stringType;
-            string name = stringName;
+            var baseString = stringType;
+            var name = stringName;
 
             return GetLocalizedString(baseString + "_" + name);
         }
 
         /// <summary>
-        /// Uses the Enums from the VTS to look up strings for the GUI
+        ///     Uses the Enums from the VTS to look up strings for the GUI
         /// </summary>
         /// <param name="enumType"></param>
         /// <returns></returns>
         public static string GetLocalizedString(this Enum enumType)
         {
-            string baseString = enumType.GetType().ToString();
-            string type = baseString.Substring(baseString.IndexOf('.') + 1);
-            string name = enumType.ToString();
+            var baseString = enumType.GetType().ToString();
+            var type = baseString.Substring(baseString.IndexOf('.') + 1);
+            var name = enumType.ToString();
 
-            ResourceManager rm = new ResourceManager("Vts.Gui.Wpf.Resources.Strings", typeof(Strings).Assembly);
+            var rm = new ResourceManager("Vts.Gui.Wpf.Resources.Strings", typeof(Strings).Assembly);
 
-            string s = rm.GetString(type + "_" + name, Thread.CurrentThread.CurrentCulture);
+            var s = rm.GetString(type + "_" + name, Thread.CurrentThread.CurrentCulture);
             if (s != null)
                 return s;
-            else
-                return "";
+            return "";
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,7 +8,7 @@ namespace Vts.Gui.Wpf.View
 {
     public partial class MapView : UserControl
     {
-        public MapView() 
+        public MapView()
         {
             InitializeComponent();
         }

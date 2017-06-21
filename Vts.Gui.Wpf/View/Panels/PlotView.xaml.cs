@@ -15,7 +15,6 @@ namespace Vts.Gui.Wpf.View
         private void ExportImage_Click(object sender, RoutedEventArgs e)
         {
             ImageTools.SaveUIElementToPngImage(MyChart);
-            
         }
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)

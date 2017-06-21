@@ -1,20 +1,18 @@
 ﻿<UserControl x:Class="Vts.Gui.Wpf.View.ComboBoxOptionView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
         <TextBlock
-            x:Name="Header" Text="{Binding GroupName}" 
-            Visibility="{Binding ShowTitle, Converter={StaticResource MyBooleanToVisibilityConverter}}" 
-            FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,2,0"
-            />
+            x:Name="Header" Text="{Binding GroupName}"
+            Visibility="{Binding ShowTitle, Converter={StaticResource MyBooleanToVisibilityConverter}}"
+            FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,2,0" />
         <ComboBox
             ItemsSource="{Binding Options.Values}"
             SelectedValue="{Binding SelectedValue, Mode=TwoWay}"
             DisplayMemberPath="DisplayName"
             SelectedValuePath="Value"
             Height="22"
-            FontSize="11">
-        </ComboBox>
+            FontSize="11" />
     </StackPanel>
 </UserControl>

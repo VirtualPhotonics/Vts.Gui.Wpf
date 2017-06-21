@@ -1,19 +1,20 @@
-using Vts;
 using Vts.Common;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
     /// <summary>
-    /// View model exposing the Position model class with change notification
+    ///     View model exposing the Position model class with change notification
     /// </summary>
     public class PositionViewModel : BindableObject
     {
         // Position model - backing store for public properties
-        private Position _position;
-        private string _units;
+        private readonly Position _position;
         private string _title;
+        private string _units;
 
-        public PositionViewModel() : this(new Position(0,0,0), "mm", "Position:") { }
+        public PositionViewModel() : this(new Position(0, 0, 0), "mm", "Position:")
+        {
+        }
 
         public PositionViewModel(Position position, string units, string title)
         {
@@ -21,9 +22,9 @@ namespace Vts.Gui.Wpf.ViewModel
             Units = units;
             Title = title;
         }
-        
+
         /// <summary>
-        /// A double representing the x-component of the position
+        ///     A double representing the x-component of the position
         /// </summary>
         public double X
         {
@@ -36,7 +37,7 @@ namespace Vts.Gui.Wpf.ViewModel
         }
 
         /// <summary>
-        /// A double representing the y-component of the position
+        ///     A double representing the y-component of the position
         /// </summary>
         public double Y
         {
@@ -49,7 +50,7 @@ namespace Vts.Gui.Wpf.ViewModel
         }
 
         /// <summary>
-        /// A double representing the z-component of the position
+        ///     A double representing the z-component of the position
         /// </summary>
         public double Z
         {

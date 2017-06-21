@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Vts;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Model;
 
@@ -11,30 +10,32 @@ namespace Vts.Gui.Wpf.ViewModel
     // http://www.thejoyofcode.com/ViewModels_and_CheckListBoxes.aspx
 
     /// <summary>
-    /// View model exposing Enum choices with change notification
+    ///     View model exposing Enum choices with change notification
     /// </summary>
     public class OptionViewModel<TValue> : BindableObject
     {
-        private TValue _SelectedValue;
-        private string _SelectedDisplayName;
-        private bool _ShowTitle;
-        private string _GroupName;
         private bool _enableMultiSelect;
-        private TValue[] _selectedValues;
-        private string[] _selectedDisplayNames;
-        private TValue[] _unSelectedValues;
-        private string[] _unSelectedDisplayNames;
+        private string _GroupName;
         private Dictionary<TValue, OptionModel<TValue>> _Options;
+        private string _SelectedDisplayName;
+        private string[] _selectedDisplayNames;
+        private TValue _SelectedValue;
+        private TValue[] _selectedValues;
+        private bool _ShowTitle;
+        private string[] _unSelectedDisplayNames;
+        private TValue[] _unSelectedValues;
 
-        
-        public OptionViewModel(string groupName, bool showTitle, TValue initialValue, TValue[] allValues, bool enableMultiSelect = false)
+
+        public OptionViewModel(string groupName, bool showTitle, TValue initialValue, TValue[] allValues,
+            bool enableMultiSelect = false)
         {
             ShowTitle = showTitle;
             GroupName = groupName;
             _enableMultiSelect = enableMultiSelect;
 
             // todo: CreateAvailableOptions should be owned by either this class or an OptionModelService class
-            Options = OptionModel<TValue>.CreateAvailableOptions(OnOptionPropertyChanged, groupName, initialValue, allValues, _enableMultiSelect);
+            Options = OptionModel<TValue>.CreateAvailableOptions(OnOptionPropertyChanged, groupName, initialValue,
+                allValues, _enableMultiSelect);
 
             SelectedValue = initialValue;
 
@@ -77,7 +78,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _SelectedValue = value;
-                this.OnPropertyChanged("SelectedValue");
+                OnPropertyChanged("SelectedValue");
             }
         }
 
@@ -87,7 +88,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _SelectedDisplayName = value;
-                this.OnPropertyChanged("SelectedDisplayName");
+                OnPropertyChanged("SelectedDisplayName");
             }
         }
 
@@ -97,7 +98,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _ShowTitle = value;
-                this.OnPropertyChanged("ShowTitle");
+                OnPropertyChanged("ShowTitle");
             }
         }
 
@@ -107,7 +108,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _GroupName = value;
-                this.OnPropertyChanged("GroupName");
+                OnPropertyChanged("GroupName");
             }
         }
 
@@ -117,7 +118,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _enableMultiSelect = value;
-                this.OnPropertyChanged("EnableMultiSelect");
+                OnPropertyChanged("EnableMultiSelect");
             }
         }
 
@@ -128,7 +129,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _selectedValues = value;
-                this.OnPropertyChanged("SelectedValues");
+                OnPropertyChanged("SelectedValues");
             }
         }
 
@@ -138,7 +139,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _selectedDisplayNames = value;
-                this.OnPropertyChanged("SelectedDisplayNames");
+                OnPropertyChanged("SelectedDisplayNames");
             }
         }
 
@@ -148,7 +149,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _unSelectedValues = value;
-                this.OnPropertyChanged("UnSelectedValues");
+                OnPropertyChanged("UnSelectedValues");
             }
         }
 
@@ -158,7 +159,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _unSelectedDisplayNames = value;
-                this.OnPropertyChanged("UnSelectedDisplayNames");
+                OnPropertyChanged("UnSelectedDisplayNames");
             }
         }
 
@@ -168,18 +169,17 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _Options = value;
-                this.OnPropertyChanged("Options");
+                OnPropertyChanged("Options");
             }
         }
 
-        void OnOptionPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnOptionPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            OptionModel<TValue> option = sender as OptionModel<TValue>;
+            var option = sender as OptionModel<TValue>;
             if (option.IsSelected)
             {
-                this.SelectedValue = option.Value;
-                this.SelectedDisplayName = option.DisplayName;
-
+                SelectedValue = option.Value;
+                SelectedDisplayName = option.DisplayName;
             }
 
             UpdateOptionsNamesAndValues();
@@ -212,10 +212,10 @@ namespace Vts.Gui.Wpf.ViewModel
             _selectedDisplayNames = selectedOptions.Select(item => item.Value.DisplayName).ToArray();
             _unSelectedValues = unSelectedOptions.Select(item => item.Value.Value).ToArray();
             _unSelectedDisplayNames = unSelectedOptions.Select(item => item.Value.DisplayName).ToArray();
-            this.OnPropertyChanged("SelectedValues");
-            this.OnPropertyChanged("SelectedDisplayNames");
-            this.OnPropertyChanged("UnSelectedValues");
-            this.OnPropertyChanged("UnSelectedDisplayNames");
+            OnPropertyChanged("SelectedValues");
+            OnPropertyChanged("SelectedDisplayNames");
+            OnPropertyChanged("UnSelectedValues");
+            OnPropertyChanged("UnSelectedDisplayNames");
         }
     }
 }

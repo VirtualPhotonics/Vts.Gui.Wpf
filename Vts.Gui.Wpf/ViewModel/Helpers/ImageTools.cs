@@ -3,18 +3,19 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace Vts.Gui.Wpf.ViewModel.Helpers
 {
     /// <summary>
-    /// Contains static helper methods to generate images of UIElements
+    ///     Contains static helper methods to generate images of UIElements
     /// </summary>
     public static class ImageTools
     {
         public static void SaveUIElementToPngImage(Visual element)
         {
             // Create SaveFileDialog 
-            var dialog = new Microsoft.Win32.SaveFileDialog
+            var dialog = new SaveFileDialog
             {
                 DefaultExt = ".png",
                 Filter = "PNG Files (*.png)|*.png"
@@ -31,9 +32,9 @@ namespace Vts.Gui.Wpf.ViewModel.Helpers
                 filename = dialog.FileName;
             }
             if (filename == "") return;
-            
-            var width = (int)(double)element.GetValue(FrameworkElement.ActualWidthProperty);
-            var height = (int)(double)element.GetValue(FrameworkElement.ActualHeightProperty);
+
+            var width = (int) (double) element.GetValue(FrameworkElement.ActualWidthProperty);
+            var height = (int) (double) element.GetValue(FrameworkElement.ActualHeightProperty);
             var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
             var vRect = new Rectangle
             {

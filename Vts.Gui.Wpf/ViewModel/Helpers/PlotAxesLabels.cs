@@ -1,7 +1,7 @@
 namespace Vts.Gui.Wpf.ViewModel
 {
     /// <summary>
-    /// Data structure to hold data for plot information
+    ///     Data structure to hold data for plot information
     /// </summary>
     public class PlotAxesLabels
     {

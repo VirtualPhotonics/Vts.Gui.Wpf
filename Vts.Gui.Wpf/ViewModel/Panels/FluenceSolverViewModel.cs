@@ -4,44 +4,61 @@ using System.Linq;
 using System.Numerics;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
-using Vts;
 using Vts.Common;
+using Vts.Factories;
+using Vts.Gui.Wpf.Extensions;
+using Vts.Gui.Wpf.Model;
 using Vts.IO;
 using Vts.Modeling.ForwardSolvers;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Helpers;
 using Vts.MonteCarlo.Tissues;
-using Vts.Factories;
-using Vts.Gui.Wpf.Extensions;
-using Vts.Gui.Wpf.Input;
-using Vts.Gui.Wpf.Model;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
     /// <summary>
-    /// View model implementing Fluence Solver panel functionality
+    ///     View model implementing Fluence Solver panel functionality
     /// </summary>
     public class FluenceSolverViewModel : BindableObject
     {
-        private OptionViewModel<MapType> _MapTypeOptionVM;
-        private FluenceSolutionDomainOptionViewModel _FluenceSolutionDomainTypeOptionVM;
-        private FluenceSolutionDomainOptionViewModel _AbsorbedEnergySolutionDomainTypeOptionVM;
-        private FluenceSolutionDomainOptionViewModel _PhotonHittingDensitySolutionDomainTypeOptionVM;
-        private OptionViewModel<ForwardSolverType> _ForwardSolverTypeOptionVM;
-        //private OptionViewModel<ForwardAnalysisType> _ForwardAnalysisTypeOptionVM;
+        // the following function determines a flattened mua array for layered tissue
+        private static readonly Func<ILayerOpticalPropertyRegion[], double[], double[], double[]>
+            getRhoZMuaArrayFromLayerRegions = (regions, rhos, zs) =>
+            {
+                var numBins = rhos.Length*zs.Length;
+                var muaArray = new double[numBins];
+                for (var i = 0; i < zs.Length; i++)
+                {
+                    var layerIndex = DetectorBinning.WhichBin(zs[i], regions.Select(r => r.ZRange.Stop).ToArray());
+                    for (var j = 0; j < rhos.Length; j++)
+                    {
+                        muaArray[i*rhos.Length + j] = regions[layerIndex].RegionOP.Mua;
+                    }
+                }
+                return muaArray;
+            };
 
-        private RangeViewModel _RhoRangeVM;
-        private RangeViewModel _ZRangeVM;
-        private double _SourceDetectorSeparation;
-        private double _TimeModulationFrequency;
-        
-        private object _tissueInputVM; // either an OpticalPropertyViewModel or a MultiRegionTissueViewModel is stored here, and dynamically displayed
+        private FluenceSolutionDomainOptionViewModel _AbsorbedEnergySolutionDomainTypeOptionVM;
 
         // private fields to cache created instances of tissue inputs, created on-demand in GetTissueInputVM (vs up-front in constructor)
         private OpticalProperties _currentHomogeneousOpticalProperties;
-        private SemiInfiniteTissueInput _currentSemiInfiniteTissueInput;
         private MultiLayerTissueInput _currentMultiLayerTissueInput;
+        private SemiInfiniteTissueInput _currentSemiInfiniteTissueInput;
         private SingleEllipsoidTissueInput _currentSingleEllipsoidTissueInput;
+        private FluenceSolutionDomainOptionViewModel _FluenceSolutionDomainTypeOptionVM;
+        private OptionViewModel<ForwardSolverType> _ForwardSolverTypeOptionVM;
+        private OptionViewModel<MapType> _MapTypeOptionVM;
+        private FluenceSolutionDomainOptionViewModel _PhotonHittingDensitySolutionDomainTypeOptionVM;
+        //private OptionViewModel<ForwardAnalysisType> _ForwardAnalysisTypeOptionVM;
+
+        private RangeViewModel _RhoRangeVM;
+        private double _SourceDetectorSeparation;
+        private double _TimeModulationFrequency;
+
+        private object _tissueInputVM;
+            // either an OpticalPropertyViewModel or a MultiRegionTissueViewModel is stored here, and dynamically displayed
+
+        private RangeViewModel _ZRangeVM;
 
         public FluenceSolverViewModel()
         {
@@ -64,34 +81,39 @@ namespace Vts.Gui.Wpf.ViewModel
                     ForwardSolverType.TwoLayerSDA
                 }); // explicitly enabling these for the workshop;
 
-            FluenceSolutionDomainTypeOptionVM = new FluenceSolutionDomainOptionViewModel("Fluence Solution Domain", FluenceSolutionDomainType.FluenceOfRhoAndZ);
+            FluenceSolutionDomainTypeOptionVM = new FluenceSolutionDomainOptionViewModel("Fluence Solution Domain",
+                FluenceSolutionDomainType.FluenceOfRhoAndZ);
             FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
             FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
-            AbsorbedEnergySolutionDomainTypeOptionVM = new FluenceSolutionDomainOptionViewModel("Absorbed Energy Solution Domain", FluenceSolutionDomainType.FluenceOfRhoAndZ);
+            AbsorbedEnergySolutionDomainTypeOptionVM =
+                new FluenceSolutionDomainOptionViewModel("Absorbed Energy Solution Domain",
+                    FluenceSolutionDomainType.FluenceOfRhoAndZ);
             AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
             AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
-            PhotonHittingDensitySolutionDomainTypeOptionVM = new FluenceSolutionDomainOptionViewModel("PHD Solution Domain", FluenceSolutionDomainType.FluenceOfRhoAndZ);
+            PhotonHittingDensitySolutionDomainTypeOptionVM =
+                new FluenceSolutionDomainOptionViewModel("PHD Solution Domain",
+                    FluenceSolutionDomainType.FluenceOfRhoAndZ);
             PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
             PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
-            PropertyChangedEventHandler updateSolutionDomain = (sender, args) => 
+            PropertyChangedEventHandler updateSolutionDomain = (sender, args) =>
             {
                 if (args.PropertyName == "IndependentAxisType")
                 {
-                    RhoRangeVM = ((FluenceSolutionDomainOptionViewModel)sender).IndependentAxesVMs[0].AxisRangeVM;
+                    RhoRangeVM = ((FluenceSolutionDomainOptionViewModel) sender).IndependentAxesVMs[0].AxisRangeVM;
                 }
                 // todo: must this fire on ANY property, or is there a specific one we can listen to, as above?
-                this.OnPropertyChanged("IsTimeFrequencyDomain");
+                OnPropertyChanged("IsTimeFrequencyDomain");
             };
             FluenceSolutionDomainTypeOptionVM.PropertyChanged += updateSolutionDomain;
             AbsorbedEnergySolutionDomainTypeOptionVM.PropertyChanged += updateSolutionDomain;
             PhotonHittingDensitySolutionDomainTypeOptionVM.PropertyChanged += updateSolutionDomain;
 
             MapTypeOptionVM = new OptionViewModel<MapType>(
-                "Map Type", 
+                "Map Type",
                 new[]
                 {
-                    MapType.Fluence, 
-                    MapType.AbsorbedEnergy, 
+                    MapType.Fluence,
+                    MapType.AbsorbedEnergy,
                     MapType.PhotonHittingDensity
                 });
 
@@ -108,15 +130,15 @@ namespace Vts.Gui.Wpf.ViewModel
             };
 
             ForwardSolverTypeOptionVM.PropertyChanged += (sender, args) =>
-                    {
-                        OnPropertyChanged("ForwardSolver");
-                        OnPropertyChanged("IsGaussianForwardModel");
-                        OnPropertyChanged("IsMultiRegion");
-                        OnPropertyChanged("IsSemiInfinite");
-                        TissueInputVM = GetTissueInputVM(IsMultiRegion ? "MultiLayer" : "SemiInfinite");
-                        UpdateAvailableOptions();
-                        OnPropertyChanged("IsTimeFrequencyDomain");
-                    };
+            {
+                OnPropertyChanged("ForwardSolver");
+                OnPropertyChanged("IsGaussianForwardModel");
+                OnPropertyChanged("IsMultiRegion");
+                OnPropertyChanged("IsSemiInfinite");
+                TissueInputVM = GetTissueInputVM(IsMultiRegion ? "MultiLayer" : "SemiInfinite");
+                UpdateAvailableOptions();
+                OnPropertyChanged("IsTimeFrequencyDomain");
+            };
 
             ExecuteFluenceSolverCommand = new RelayCommand(() => ExecuteFluenceSolver_Executed(null, null));
         }
@@ -136,6 +158,7 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             get { return ForwardSolverTypeOptionVM.SelectedValue.IsGaussianForwardModel(); }
         }
+
         public bool IsMultiRegion
         {
             get { return ForwardSolverTypeOptionVM.SelectedValue.IsMultiRegionForwardModel(); }
@@ -146,21 +169,35 @@ namespace Vts.Gui.Wpf.ViewModel
             get { return !ForwardSolverTypeOptionVM.SelectedValue.IsMultiRegionForwardModel(); }
         }
 
-        public bool IsFluence { get { return MapTypeOptionVM.SelectedValue == MapType.Fluence; } }
-        public bool IsAbsorbedEnergy { get { return MapTypeOptionVM.SelectedValue == MapType.AbsorbedEnergy; } }
-        public bool IsPhotonHittingDensity { get { return MapTypeOptionVM.SelectedValue == MapType.PhotonHittingDensity; } }
-        public bool IsTimeFrequencyDomain 
-        { 
-            get 
-            { 
-                return 
-                    (MapTypeOptionVM.SelectedValue == MapType.Fluence && 
-                     FluenceSolutionDomainTypeOptionVM.SelectedValue == FluenceSolutionDomainType.FluenceOfRhoAndZAndFt) || 
-                    (MapTypeOptionVM.SelectedValue == MapType.AbsorbedEnergy && 
-                     AbsorbedEnergySolutionDomainTypeOptionVM.SelectedValue == FluenceSolutionDomainType.FluenceOfRhoAndZAndFt) || 
+        public bool IsFluence
+        {
+            get { return MapTypeOptionVM.SelectedValue == MapType.Fluence; }
+        }
+
+        public bool IsAbsorbedEnergy
+        {
+            get { return MapTypeOptionVM.SelectedValue == MapType.AbsorbedEnergy; }
+        }
+
+        public bool IsPhotonHittingDensity
+        {
+            get { return MapTypeOptionVM.SelectedValue == MapType.PhotonHittingDensity; }
+        }
+
+        public bool IsTimeFrequencyDomain
+        {
+            get
+            {
+                return
+                    (MapTypeOptionVM.SelectedValue == MapType.Fluence &&
+                     FluenceSolutionDomainTypeOptionVM.SelectedValue == FluenceSolutionDomainType.FluenceOfRhoAndZAndFt) ||
+                    (MapTypeOptionVM.SelectedValue == MapType.AbsorbedEnergy &&
+                     AbsorbedEnergySolutionDomainTypeOptionVM.SelectedValue ==
+                     FluenceSolutionDomainType.FluenceOfRhoAndZAndFt) ||
                     (MapTypeOptionVM.SelectedValue == MapType.PhotonHittingDensity &&
-                     PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue == FluenceSolutionDomainType.FluenceOfRhoAndZAndFt); 
-            } 
+                     PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue ==
+                     FluenceSolutionDomainType.FluenceOfRhoAndZAndFt);
+            }
         }
 
         public OptionViewModel<MapType> MapTypeOptionVM
@@ -172,6 +209,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("MapTypeOptionVM");
             }
         }
+
         public FluenceSolutionDomainOptionViewModel FluenceSolutionDomainTypeOptionVM
         {
             get { return _FluenceSolutionDomainTypeOptionVM; }
@@ -181,6 +219,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("FluenceSolutionDomainTypeOptionVM");
             }
         }
+
         public FluenceSolutionDomainOptionViewModel AbsorbedEnergySolutionDomainTypeOptionVM
         {
             get { return _AbsorbedEnergySolutionDomainTypeOptionVM; }
@@ -190,6 +229,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("AbsorbedEnergySolutionDomainTypeOptionVM");
             }
         }
+
         public FluenceSolutionDomainOptionViewModel PhotonHittingDensitySolutionDomainTypeOptionVM
         {
             get { return _PhotonHittingDensitySolutionDomainTypeOptionVM; }
@@ -199,6 +239,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("PhotonHittingDensitySolutionDomainTypeOptionVM");
             }
         }
+
         public OptionViewModel<ForwardSolverType> ForwardSolverTypeOptionVM
         {
             get { return _ForwardSolverTypeOptionVM; }
@@ -208,6 +249,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("ForwardSolverTypeOptionVM");
             }
         }
+
         public RangeViewModel RhoRangeVM
         {
             get { return _RhoRangeVM; }
@@ -217,6 +259,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("RhoRangeVM");
             }
         }
+
         public double SourceDetectorSeparation
         {
             get { return _SourceDetectorSeparation; }
@@ -226,6 +269,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("SourceDetectorSeparation");
             }
         }
+
         public double TimeModulationFrequency
         {
             get { return _TimeModulationFrequency; }
@@ -235,6 +279,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("TimeModulationFrequency");
             }
         }
+
         public RangeViewModel ZRangeVM
         {
             get { return _ZRangeVM; }
@@ -255,16 +300,55 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public string SolutionDomainLabel { get { return StringLookup.GetLocalizedString("Label_ForwardSolver"); } }
-        public string GaussianBeamLabel { get { return StringLookup.GetLocalizedString("Label_GaussianBeam"); } }
-        public string GaussianBeamUnitsLabel { get { return StringLookup.GetLocalizedString("Measurement_mm"); } }
-        public string SourceDetectorLabel { get { return StringLookup.GetLocalizedString("Label_SourceDetector"); } }
-        public string SourceDetectorUnitsLabel { get { return StringLookup.GetLocalizedString("Measurement_mm"); } }
-        public string ModulationFrequencyLabel { get { return StringLookup.GetLocalizedString("Label_ModulationFrequency"); } }
-        public string ModulationFrequencyUnitsLabel { get { return StringLookup.GetLocalizedString("Measurement_GHz"); } }
-        public string RhoRangeLabel { get { return StringLookup.GetLocalizedString("Label_RhoRange"); } }
-        public string ZRangeLabel { get { return StringLookup.GetLocalizedString("Label_zRange"); } }
-        public string GenerateFluenceButtonLabel { get { return StringLookup.GetLocalizedString("Button_GenerateFluence"); } }
+        public string SolutionDomainLabel
+        {
+            get { return StringLookup.GetLocalizedString("Label_ForwardSolver"); }
+        }
+
+        public string GaussianBeamLabel
+        {
+            get { return StringLookup.GetLocalizedString("Label_GaussianBeam"); }
+        }
+
+        public string GaussianBeamUnitsLabel
+        {
+            get { return StringLookup.GetLocalizedString("Measurement_mm"); }
+        }
+
+        public string SourceDetectorLabel
+        {
+            get { return StringLookup.GetLocalizedString("Label_SourceDetector"); }
+        }
+
+        public string SourceDetectorUnitsLabel
+        {
+            get { return StringLookup.GetLocalizedString("Measurement_mm"); }
+        }
+
+        public string ModulationFrequencyLabel
+        {
+            get { return StringLookup.GetLocalizedString("Label_ModulationFrequency"); }
+        }
+
+        public string ModulationFrequencyUnitsLabel
+        {
+            get { return StringLookup.GetLocalizedString("Measurement_GHz"); }
+        }
+
+        public string RhoRangeLabel
+        {
+            get { return StringLookup.GetLocalizedString("Label_RhoRange"); }
+        }
+
+        public string ZRangeLabel
+        {
+            get { return StringLookup.GetLocalizedString("Label_zRange"); }
+        }
+
+        public string GenerateFluenceButtonLabel
+        {
+            get { return StringLookup.GetLocalizedString("Button_GenerateFluence"); }
+        }
 
         private OpticalPropertyViewModel OpticalPropertyVM
         {
@@ -276,20 +360,21 @@ namespace Vts.Gui.Wpf.ViewModel
             get { return _tissueInputVM as MultiRegionTissueViewModel; }
         }
 
-        void ExecuteFluenceSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ExecuteFluenceSolver_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var mapData = ExecuteForwardSolver();
 
             WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
 
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("Fluence Solver: " + OpticalPropertyVM + "\r");
+            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("Fluence Solver: " + OpticalPropertyVM +
+                                                                                "\r");
         }
 
         private PlotAxesLabels GetPlotLabels()
         {
             var sd = GetSelectedSolutionDomain();
 
-            PlotAxesLabels axesLabels = new PlotAxesLabels(
+            var axesLabels = new PlotAxesLabels(
                 sd.SelectedDisplayName, sd.SelectedValue.GetUnits(),
                 sd.IndependentAxesVMs.First(),
                 sd.ConstantAxesVMs);
@@ -333,7 +418,8 @@ namespace Vts.Gui.Wpf.ViewModel
                     if (AbsorbedEnergySolutionDomainTypeOptionVM.SelectedValue ==
                         FluenceSolutionDomainType.FluenceOfRhoAndZAndFt)
                     {
-                        AbsorbedEnergySolutionDomainTypeOptionVM.SelectedValue = FluenceSolutionDomainType.FluenceOfRhoAndZ;
+                        AbsorbedEnergySolutionDomainTypeOptionVM.SelectedValue =
+                            FluenceSolutionDomainType.FluenceOfRhoAndZ;
                         OnPropertyChanged("AbsorbedEnergySolutionDomainTypeOptionVM");
                     }
                 }
@@ -354,7 +440,8 @@ namespace Vts.Gui.Wpf.ViewModel
                     if (PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue ==
                         FluenceSolutionDomainType.FluenceOfRhoAndZAndFt)
                     {
-                        PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue = FluenceSolutionDomainType.FluenceOfRhoAndZ;
+                        PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue =
+                            FluenceSolutionDomainType.FluenceOfRhoAndZ;
                         OnPropertyChanged("PhotonHittingDensitySolutionDomainTypeOptionVM");
                     }
                 }
@@ -379,31 +466,36 @@ namespace Vts.Gui.Wpf.ViewModel
                 case "SemiInfinite":
                     if (_currentSemiInfiniteTissueInput == null)
                     {
-                        _currentSemiInfiniteTissueInput = new SemiInfiniteTissueInput(new SemiInfiniteTissueRegion(_currentHomogeneousOpticalProperties));
+                        _currentSemiInfiniteTissueInput =
+                            new SemiInfiniteTissueInput(
+                                new SemiInfiniteTissueRegion(_currentHomogeneousOpticalProperties));
                     }
                     return new OpticalPropertyViewModel(
-                        ((SemiInfiniteTissueInput)_currentSemiInfiniteTissueInput).Regions.First().RegionOP,
-                         IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
+                        _currentSemiInfiniteTissueInput.Regions.First().RegionOP,
+                        IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
                         "Optical Properties:");
                     break;
                 case "MultiLayer":
                     if (_currentMultiLayerTissueInput == null)
                     {
                         _currentMultiLayerTissueInput = new MultiLayerTissueInput(new ITissueRegion[]
-                            { 
-                                new LayerTissueRegion(new DoubleRange(0, 2), _currentHomogeneousOpticalProperties.Clone() ), 
-                                new LayerTissueRegion(new DoubleRange(2, double.PositiveInfinity), _currentHomogeneousOpticalProperties.Clone() ), 
-                            });
+                        {
+                            new LayerTissueRegion(new DoubleRange(0, 2), _currentHomogeneousOpticalProperties.Clone()),
+                            new LayerTissueRegion(new DoubleRange(2, double.PositiveInfinity),
+                                _currentHomogeneousOpticalProperties.Clone())
+                        });
                     }
                     return new MultiRegionTissueViewModel(_currentMultiLayerTissueInput);
                 case "SingleEllipsoid":
                     if (_currentSingleEllipsoidTissueInput == null)
                     {
                         _currentSingleEllipsoidTissueInput = new SingleEllipsoidTissueInput(
-                            new EllipsoidTissueRegion(new Position(0, 0, 10), 5, 5, 5, new OpticalProperties(0.05, 1.0, 0.8, 1.4)),
+                            new EllipsoidTissueRegion(new Position(0, 0, 10), 5, 5, 5,
+                                new OpticalProperties(0.05, 1.0, 0.8, 1.4)),
                             new ITissueRegion[]
-                            { 
-                                new LayerTissueRegion(new DoubleRange(0, double.PositiveInfinity), _currentHomogeneousOpticalProperties.Clone()), 
+                            {
+                                new LayerTissueRegion(new DoubleRange(0, double.PositiveInfinity),
+                                    _currentHomogeneousOpticalProperties.Clone())
                             });
                     }
                     return new MultiRegionTissueViewModel(_currentSingleEllipsoidTissueInput);
@@ -411,21 +503,23 @@ namespace Vts.Gui.Wpf.ViewModel
                     throw new ArgumentOutOfRangeException();
             }
         }
+
         // todo: rename? this was to get a concise name for the legend
         private string GetLegendLabel()
         {
-            string modelString =
+            var modelString =
                 ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.DistributedPointSourceSDA ||
                 ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.PointSourceSDA ||
                 ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.DistributedGaussianSourceSDA
-                ? "Model - SDA\r" : "Model - MC scaled\r";
-            string opString = "μa=" + OpticalPropertyVM.Mua + "\rμs'=" + OpticalPropertyVM.Musp;
+                    ? "Model - SDA\r"
+                    : "Model - MC scaled\r";
+            var opString = "μa=" + OpticalPropertyVM.Mua + "\rμs'=" + OpticalPropertyVM.Musp;
             if (IsMultiRegion)
             {
                 ITissueRegion[] regions = null;
                 if (ForwardSolver is TwoLayerSDAForwardSolver)
                 {
-                    regions = ((MultiRegionTissueViewModel)TissueInputVM).GetTissueInput().Regions;
+                    regions = ((MultiRegionTissueViewModel) TissueInputVM).GetTissueInput().Regions;
                     opString =
                         "μa1=" + regions[0].RegionOP.Mua + " μs'1=" + regions[0].RegionOP.Musp + "\r" +
                         "μa2=" + regions[1].RegionOP.Mua + " μs'2=" + regions[1].RegionOP.Musp;
@@ -433,26 +527,28 @@ namespace Vts.Gui.Wpf.ViewModel
             }
             else
             {
-                var opticalProperties = ((OpticalPropertyViewModel)TissueInputVM).GetOpticalProperties();
+                var opticalProperties = ((OpticalPropertyViewModel) TissueInputVM).GetOpticalProperties();
                 opString = "μa=" + opticalProperties.Mua + " \rμs'=" + opticalProperties.Musp;
             }
 
             return modelString + opString;
         }
 
-        public MapData ExecuteForwardSolver() // todo: simplify method calls to ComputationFactory, as with Forward/InverseSolver(s)
+        public MapData ExecuteForwardSolver()
+            // todo: simplify method calls to ComputationFactory, as with Forward/InverseSolver(s)
         {
-            var opticalProperties = GetOpticalProperties(); // could be OpticalProperties[] or IOpticalPropertyRegion[][]
+            var opticalProperties = GetOpticalProperties();
+                // could be OpticalProperties[] or IOpticalPropertyRegion[][]
 
             //double[] rhos = RhoRangeVM.Values.Reverse().Concat(RhoRangeVM.Values).ToArray();
-            double[] rhos = RhoRangeVM.Values.Reverse().Select(rho => -rho).Concat(RhoRangeVM.Values).ToArray();
-            double[] zs = ZRangeVM.Values.ToArray();
+            var rhos = RhoRangeVM.Values.Reverse().Select(rho => -rho).Concat(RhoRangeVM.Values).ToArray();
+            var zs = ZRangeVM.Values.ToArray();
 
-            double[][] independentValues = new[] { rhos, zs };
+            double[][] independentValues = {rhos, zs};
 
             var sd = GetSelectedSolutionDomain();
             // todo: too much thinking at the VM layer?
-            double[] constantValues = new double[0];
+            var constantValues = new double[0];
 
             if (ComputationFactory.IsSolverWithConstantValues(sd.SelectedValue))
             {
@@ -462,12 +558,12 @@ namespace Vts.Gui.Wpf.ViewModel
                         constantValues = new[] {TimeModulationFrequency};
                         break;
                     default:
-                        constantValues =  new[] {sd.ConstantAxesVMs[0].AxisValue};
+                        constantValues = new[] {sd.ConstantAxesVMs[0].AxisValue};
                         break;
                 }
             }
 
-            IndependentVariableAxis[] independentAxes = 
+            var independentAxes =
                 GetIndependentVariableAxesInOrder(
                     sd.IndependentVariableAxisOptionVM.SelectedValue,
                     IndependentVariableAxis.Z);
@@ -484,7 +580,7 @@ namespace Vts.Gui.Wpf.ViewModel
                             sd.SelectedValue,
                             independentAxes,
                             independentValues,
-                            ((IOpticalPropertyRegion[][])opticalProperties)[0],
+                            ((IOpticalPropertyRegion[][]) opticalProperties)[0],
                             constantValues);
                 }
                 else
@@ -495,17 +591,20 @@ namespace Vts.Gui.Wpf.ViewModel
                             sd.SelectedValue,
                             independentAxes,
                             independentValues,
-                            ((OpticalProperties[])opticalProperties)[0],
+                            ((OpticalProperties[]) opticalProperties)[0],
                             constantValues);
                 }
 
                 switch (MapTypeOptionVM.SelectedValue)
                 {
                     case MapType.Fluence:
-                        results = fluence.Select(f=>f.Magnitude).ToArray();
+                        results = fluence.Select(f => f.Magnitude).ToArray();
                         break;
                     case MapType.AbsorbedEnergy:
-                        results = ComputationFactory.GetAbsorbedEnergy(fluence,((OpticalProperties[])opticalProperties)[0].Mua).Select(a => a.Magnitude).ToArray(); // todo: is this correct?? DC 12/08/12
+                        results =
+                            ComputationFactory.GetAbsorbedEnergy(fluence,
+                                ((OpticalProperties[]) opticalProperties)[0].Mua).Select(a => a.Magnitude).ToArray();
+                            // todo: is this correct?? DC 12/08/12
                         break;
                     case MapType.PhotonHittingDensity:
                         switch (PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue)
@@ -516,7 +615,7 @@ namespace Vts.Gui.Wpf.ViewModel
                                     fluence.ToArray(),
                                     SourceDetectorSeparation,
                                     TimeModulationFrequency,
-                                    (OpticalProperties[])opticalProperties,
+                                    (OpticalProperties[]) opticalProperties,
                                     independentValues[0],
                                     independentValues[1]).ToArray();
                                 break;
@@ -529,7 +628,6 @@ namespace Vts.Gui.Wpf.ViewModel
                     default:
                         throw new ArgumentOutOfRangeException("MapType");
                 }
-
             }
             else
             {
@@ -537,127 +635,114 @@ namespace Vts.Gui.Wpf.ViewModel
                 if (IsMultiRegion)
                 {
                     fluence = ComputationFactory.ComputeFluence(
-                            ForwardSolverTypeOptionVM.SelectedValue,
-                            sd.SelectedValue,
-                            independentAxes,
-                            independentValues,
-                            ((IOpticalPropertyRegion[][])opticalProperties)[0],
-                            constantValues).ToArray();
+                        ForwardSolverTypeOptionVM.SelectedValue,
+                        sd.SelectedValue,
+                        independentAxes,
+                        independentValues,
+                        ((IOpticalPropertyRegion[][]) opticalProperties)[0],
+                        constantValues).ToArray();
                 }
                 else
                 {
                     fluence = ComputationFactory.ComputeFluence(
-                            ForwardSolverTypeOptionVM.SelectedValue,
-                            sd.SelectedValue,
-                            independentAxes,
-                            independentValues,
-                            (OpticalProperties[])opticalProperties,
-                            constantValues).ToArray();
+                        ForwardSolverTypeOptionVM.SelectedValue,
+                        sd.SelectedValue,
+                        independentAxes,
+                        independentValues,
+                        (OpticalProperties[]) opticalProperties,
+                        constantValues).ToArray();
                 }
 
                 switch (MapTypeOptionVM.SelectedValue)
-                    {
-                        case MapType.Fluence:
-                            results = fluence;
-                            break;
-                        case MapType.AbsorbedEnergy:
-                            if (IsMultiRegion)
+                {
+                    case MapType.Fluence:
+                        results = fluence;
+                        break;
+                    case MapType.AbsorbedEnergy:
+                        if (IsMultiRegion)
+                        {
+                            if (ForwardSolver is TwoLayerSDAForwardSolver)
                             {
-                                if (ForwardSolver is TwoLayerSDAForwardSolver)
-                                {
-                                    var regions = ((MultiRegionTissueViewModel)TissueInputVM).GetTissueInput().Regions
-                                        .Select(region => (ILayerOpticalPropertyRegion)region).ToArray();
-                                    var muas = getRhoZMuaArrayFromLayerRegions(regions, rhos, zs);
-                                    results = ComputationFactory.GetAbsorbedEnergy(fluence, muas).ToArray();
-                                }
-                                else
-                                {
-                                    return null;
-                                }
+                                var regions = ((MultiRegionTissueViewModel) TissueInputVM).GetTissueInput().Regions
+                                    .Select(region => (ILayerOpticalPropertyRegion) region).ToArray();
+                                var muas = getRhoZMuaArrayFromLayerRegions(regions, rhos, zs);
+                                results = ComputationFactory.GetAbsorbedEnergy(fluence, muas).ToArray();
                             }
                             else
                             {
-                                // Note: the line below was originally overwriting the multi-region results. I think this was a bug (DJC 7/11/14)
-                                results = ComputationFactory.GetAbsorbedEnergy(fluence, ((OpticalProperties[])opticalProperties)[0].Mua).ToArray(); 
+                                return null;
                             }
-                            break;
-                        case MapType.PhotonHittingDensity:
-                            switch (PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue)
-                            {
-                                case FluenceSolutionDomainType.FluenceOfRhoAndZ:
-                                    if (IsMultiRegion)
-                                    {
-                                        var nop = (IOpticalPropertyRegion[][]) opticalProperties;
-                                        results = ComputationFactory.GetPHD(
-                                            ForwardSolverTypeOptionVM.SelectedValue,
-                                            fluence,
-                                            SourceDetectorSeparation,
-                                            (from LayerTissueRegion tissue in nop[0] select tissue.RegionOP).ToArray(),
-                                            independentValues[0],
-                                            independentValues[1]).ToArray();
-                                    }
-                                    else
-                                    {
-                                        results = ComputationFactory.GetPHD(
-                                            ForwardSolverTypeOptionVM.SelectedValue,
-                                            fluence,
-                                            SourceDetectorSeparation,
-                                            (OpticalProperties[])opticalProperties,
-                                            independentValues[0],
-                                            independentValues[1]).ToArray();
-                                    }
-                                    break;
-                                case FluenceSolutionDomainType.FluenceOfFxAndZ:
-                                    break;
-                                case FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
-                                    break;
-                                case FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
-                                    break;
-                                default:
-                                throw new ArgumentOutOfRangeException("PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue");
-                            }
-                            break;
+                        }
+                        else
+                        {
+                            // Note: the line below was originally overwriting the multi-region results. I think this was a bug (DJC 7/11/14)
+                            results =
+                                ComputationFactory.GetAbsorbedEnergy(fluence,
+                                    ((OpticalProperties[]) opticalProperties)[0].Mua).ToArray();
+                        }
+                        break;
+                    case MapType.PhotonHittingDensity:
+                        switch (PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue)
+                        {
+                            case FluenceSolutionDomainType.FluenceOfRhoAndZ:
+                                if (IsMultiRegion)
+                                {
+                                    var nop = (IOpticalPropertyRegion[][]) opticalProperties;
+                                    results = ComputationFactory.GetPHD(
+                                        ForwardSolverTypeOptionVM.SelectedValue,
+                                        fluence,
+                                        SourceDetectorSeparation,
+                                        (from LayerTissueRegion tissue in nop[0] select tissue.RegionOP).ToArray(),
+                                        independentValues[0],
+                                        independentValues[1]).ToArray();
+                                }
+                                else
+                                {
+                                    results = ComputationFactory.GetPHD(
+                                        ForwardSolverTypeOptionVM.SelectedValue,
+                                        fluence,
+                                        SourceDetectorSeparation,
+                                        (OpticalProperties[]) opticalProperties,
+                                        independentValues[0],
+                                        independentValues[1]).ToArray();
+                                }
+                                break;
+                            case FluenceSolutionDomainType.FluenceOfFxAndZ:
+                                break;
+                            case FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
+                                break;
+                            case FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(
+                                    "PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue");
+                        }
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException("MapTypeOptionVM.SelectedValue");
-                    }  
                 }
+            }
 
             // flip the array (since it goes over zs and then rhos, while map wants rhos and then zs
-            double[] destinationArray = new double[results.Length];
+            var destinationArray = new double[results.Length];
             long index = 0;
-            for (int rhoi = 0; rhoi < rhos.Length; rhoi++)
+            for (var rhoi = 0; rhoi < rhos.Length; rhoi++)
             {
-                for (int zi = 0; zi < zs.Length; zi++)
+                for (var zi = 0; zi < zs.Length; zi++)
                 {
-                    destinationArray[rhoi + rhos.Length * zi] = results[index++];
+                    destinationArray[rhoi + rhos.Length*zi] = results[index++];
                 }
             }
 
             var dRho = 1D;
             var dZ = 1D;
-            var dRhos = Enumerable.Select(rhos, rho => 2 * Math.PI * Math.Abs(rho) * dRho).ToArray();
-            var dZs = Enumerable.Select(zs, z => dZ).ToArray();
+            var dRhos = rhos.Select(rho => 2*Math.PI*Math.Abs(rho)*dRho).ToArray();
+            var dZs = zs.Select(z => dZ).ToArray();
             //var twoRhos = Enumerable.Concat(rhos.Reverse(), rhos).ToArray();
             //var twoDRhos = Enumerable.Concat(dRhos.Reverse(), dRhos).ToArray();
 
             return new MapData(destinationArray, rhos, zs, dRhos, dZs);
         }
-        
-        // the following function determines a flattened mua array for layered tissue
-        private static Func<ILayerOpticalPropertyRegion[], double[], double[], double[]> getRhoZMuaArrayFromLayerRegions = (regions, rhos, zs) =>
-        {
-            int numBins = rhos.Length * zs.Length;
-            var muaArray = new double[numBins];
-            for (int i = 0; i < zs.Length; i++)
-            {
-                var layerIndex = DetectorBinning.WhichBin(zs[i], regions.Select(r => r.ZRange.Stop).ToArray());
-                for (int j = 0; j < rhos.Length; j++)
-                {
-                    muaArray[i * rhos.Length + j] = regions[layerIndex].RegionOP.Mua;
-                }
-            }
-            return muaArray;
-        };
 
         private static IndependentVariableAxis[] GetIndependentVariableAxesInOrder(params IndependentVariableAxis[] axes)
         {
@@ -674,13 +759,14 @@ namespace Vts.Gui.Wpf.ViewModel
             switch (MapTypeOptionVM.SelectedValue)
             {
                 case MapType.Fluence:
-                    return this.FluenceSolutionDomainTypeOptionVM;
+                    return FluenceSolutionDomainTypeOptionVM;
                 case MapType.AbsorbedEnergy:
                     return AbsorbedEnergySolutionDomainTypeOptionVM;
                 case MapType.PhotonHittingDensity:
                     return PhotonHittingDensitySolutionDomainTypeOptionVM;
                 default:
-                    throw new ArgumentException("No solution domain of the specified type exists.", "MapTypeOptionVM.SelectedValue");
+                    throw new ArgumentException("No solution domain of the specified type exists.",
+                        "MapTypeOptionVM.SelectedValue");
             }
         }
 
@@ -717,10 +803,15 @@ namespace Vts.Gui.Wpf.ViewModel
 
             if (IsMultiRegion && MultiRegionTissueVM != null)
             {
-                return new[] { MultiRegionTissueVM.GetTissueInput().Regions.Select(region => (IOpticalPropertyRegion)region).ToArray() };
+                return new[]
+                {
+                    MultiRegionTissueVM.GetTissueInput()
+                        .Regions.Select(region => (IOpticalPropertyRegion) region)
+                        .ToArray()
+                };
             }
 
-            return new[] { OpticalPropertyVM.GetOpticalProperties() };
+            return new[] {OpticalPropertyVM.GetOpticalProperties()};
         }
     }
 }

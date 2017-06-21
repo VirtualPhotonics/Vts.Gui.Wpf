@@ -5,54 +5,54 @@
         xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
         Title="Virtual Tissue Simulator" Height="800" Width="1200">
     <Window.DataContext>
-        <viewModel:WindowViewModel></viewModel:WindowViewModel>
+        <viewModel:WindowViewModel />
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="6*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="520" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TabControl x:Name="InputTabControl" 
-                    Grid.Row="0" 
-                    Grid.Column="0" 
+        <TabControl x:Name="InputTabControl"
+                    Grid.Row="0"
+                    Grid.Column="0"
                     Padding="20"
                     SelectionChanged="InputTabControl_SelectionChanged">
             <TabItem Name="TabSpectral" Header="Spectral Panel">
-                <view:SpectralMappingView 
-                            DataContext="{Binding SpectralMappingVM}"
-                            Background="White" 
-                            HorizontalAlignment="Left"/>
+                <view:SpectralMappingView
+                    DataContext="{Binding SpectralMappingVM}"
+                    Background="White"
+                    HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Name="TabForward" Header="Forward Solver/Analysis Panel">
                 <view:ForwardSolverView
-                            DataContext="{Binding ForwardSolverVM}"
-                            Background="White" 
-                            HorizontalAlignment="Left"/>
+                    DataContext="{Binding ForwardSolverVM}"
+                    Background="White"
+                    HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Name="TabInverse" Header="Inverse Solver Panel">
                 <view:InverseSolverView
-                            DataContext="{Binding InverseSolverVM}"
-                            Background="White" 
-                            HorizontalAlignment="Left"/>
+                    DataContext="{Binding InverseSolverVM}"
+                    Background="White"
+                    HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Name="TabFluence" Header="Fluence/Interrogation Solver Panel">
                 <view:FluenceSolverView
-                            DataContext="{Binding FluenceSolverVM}"
-                            Background="White" 
-                            HorizontalAlignment="Left"/>
+                    DataContext="{Binding FluenceSolverVM}"
+                    Background="White"
+                    HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Name="TabMonteCarlo" Header="Monte Carlo Solver Panel">
                 <view:MonteCarloSolverView
-                            DataContext="{Binding MonteCarloSolverVM}"
-                            Background="White" 
-                            HorizontalAlignment="Left"/>
+                    DataContext="{Binding MonteCarloSolverVM}"
+                    Background="White"
+                    HorizontalAlignment="Left" />
             </TabItem>
         </TabControl>
-        <TabControl x:Name="OutputTabControl"  
+        <TabControl x:Name="OutputTabControl"
                     Grid.Row="0"
                     Grid.Column="1"
                     Width="Auto"
@@ -60,46 +60,46 @@
             <TabItem Name="TabPlot">
                 <TabItem.Header>
                     <ContentControl DataContext="{Binding PlotVM}">
-                        <StackPanel Orientation="Horizontal" >
-                            <TextBlock Text="Plot View"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Plot View" />
                             <Button VerticalAlignment="Bottom" Command="{Binding DuplicateWindowCommand}" Margin="2">
-                                <Rectangle Width="5" Height="5" Fill="Black"/>
+                                <Rectangle Width="5" Height="5" Fill="Black" />
                             </Button>
                         </StackPanel>
                     </ContentControl>
                 </TabItem.Header>
                 <view:PlotView
-                            DataContext="{Binding PlotVM}"
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch" />
+                    DataContext="{Binding PlotVM}"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch" />
             </TabItem>
             <TabItem Name="TabMap" Visibility="Collapsed">
                 <TabItem.Header>
                     <ContentControl DataContext="{Binding MapVM}">
-                        <StackPanel Orientation="Horizontal" >
-                            <TextBlock Text="Map View"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Map View" />
                             <Button VerticalAlignment="Bottom" Command="{Binding DuplicateWindowCommand}" Margin="2">
-                                <Rectangle Width="5" Height="5" Fill="Black"/>
+                                <Rectangle Width="5" Height="5" Fill="Black" />
                             </Button>
                         </StackPanel>
                     </ContentControl>
                 </TabItem.Header>
                 <view:MapView
-                            DataContext="{Binding MapVM}"
-                            VerticalAlignment="Stretch"
-                            HorizontalAlignment="Stretch"
-                            Margin="0,0,3,0"/>
+                    DataContext="{Binding MapVM}"
+                    VerticalAlignment="Stretch"
+                    HorizontalAlignment="Stretch"
+                    Margin="0,0,3,0" />
             </TabItem>
         </TabControl>
         <view:TextOutputView
-                    DataContext="{Binding TextOutputVM}"
-                    VerticalAlignment="Stretch"
-                    HorizontalAlignment="Stretch"
-					Grid.Column="0"
-                    Grid.Row="1" 
-                    Grid.ColumnSpan="2" 
-                    Margin="3"
-                    Width="Auto"
-                    Height="Auto" />
+            DataContext="{Binding TextOutputVM}"
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch"
+            Grid.Column="0"
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="3"
+            Width="Auto"
+            Height="Auto" />
     </Grid>
 </Window>

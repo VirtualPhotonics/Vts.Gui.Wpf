@@ -1,5 +1,4 @@
-﻿using Vts;
-using Vts.MonteCarlo;
+﻿using Vts.MonteCarlo;
 
 #if WHITELIST
 using Vts.Gui.Wpf.ViewModel.Application;
@@ -9,23 +8,26 @@ namespace Vts.Gui.Wpf.ViewModel
 {
     public class SimulationOptionsViewModel : BindableObject
     {
-        private SimulationOptions _simulationOptions;
         private OptionViewModel<AbsorptionWeightingType> _absorptionWeightingTypeVM;
-        private OptionViewModel<RandomNumberGeneratorType> _randomNumberGeneratorTypeVM;
         private OptionViewModel<PhaseFunctionType> _phaseFunctionTypeVM;
-        
+        private OptionViewModel<RandomNumberGeneratorType> _randomNumberGeneratorTypeVM;
+        private SimulationOptions _simulationOptions;
+
         public SimulationOptionsViewModel(SimulationOptions options)
         {
             _simulationOptions = options; // use the property to invoke the appropriate change notification
-            
+
 #if WHITELIST 
             _absorptionWeightingTypeVM = new OptionViewModel<AbsorptionWeightingType>("Absorption Weighting Type:", false, _simulationOptions.AbsorptionWeightingType, WhiteList.AbsorptionWeightingTypes);
             _randomNumberGeneratorTypeVM = new OptionViewModel<RandomNumberGeneratorType>("Random Number Generator Type:", false, _simulationOptions.RandomNumberGeneratorType, WhiteList.RandomNumberGeneratorTypes);
             _phaseFunctionTypeVM = new OptionViewModel<PhaseFunctionType>("Phase Function Type:", false, _simulationOptions.PhaseFunctionType, WhiteList.PhaseFunctionTypes);
 #else
-            _absorptionWeightingTypeVM = new OptionViewModel<AbsorptionWeightingType>("Absorption Weighting Type:", false, _simulationOptions.AbsorptionWeightingType);
-            _randomNumberGeneratorTypeVM = new OptionViewModel<RandomNumberGeneratorType>("Random Number Generator:", false, _simulationOptions.RandomNumberGeneratorType);
-            _phaseFunctionTypeVM = new OptionViewModel<PhaseFunctionType>("Phase Function Type:", false, _simulationOptions.PhaseFunctionType);
+            _absorptionWeightingTypeVM = new OptionViewModel<AbsorptionWeightingType>("Absorption Weighting Type:",
+                false, _simulationOptions.AbsorptionWeightingType);
+            _randomNumberGeneratorTypeVM = new OptionViewModel<RandomNumberGeneratorType>("Random Number Generator:",
+                false, _simulationOptions.RandomNumberGeneratorType);
+            _phaseFunctionTypeVM = new OptionViewModel<PhaseFunctionType>("Phase Function Type:", false,
+                _simulationOptions.PhaseFunctionType);
 #endif
 
             _absorptionWeightingTypeVM.PropertyChanged += (sender, args) =>

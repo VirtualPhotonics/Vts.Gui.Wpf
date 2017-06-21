@@ -6,15 +6,32 @@ namespace Vts.Gui.Wpf.View
 {
     public class ScatteringTemplateSelector : UserControl
     {
+        public static readonly DependencyProperty ScatteringTypeProperty = DependencyProperty.Register(
+            "ScatteringType",
+            typeof(string),
+            typeof(ScatteringTemplateSelector),
+            new PropertyMetadata(string.Empty, UpdateScatteringType));
+
+        public ScatteringTemplateSelector()
+        {
+            Loaded += (s, a) => ScatteringType = "Vts.SpectralMapping.PowerLawScatterer";
+        }
+
         public DataTemplate MieScatteringTemplate { get; set; }
         public DataTemplate PowerLawScatteringTemplate { get; set; }
         public DataTemplate IntralipidScatteringTemplate { get; set; }
+
+        public string ScatteringType
+        {
+            get { return (string) GetValue(ScatteringTypeProperty); }
+            set { SetValue(ScatteringTypeProperty, value); }
+        }
 
         private static void UpdateScatteringType(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             var selector = obj as ScatteringTemplateSelector;
 
-            string scattType = e.NewValue as string;
+            var scattType = e.NewValue as string;
             if (scattType == typeof(MieScatterer).FullName)
             {
                 selector.Content = selector.MieScatteringTemplate.LoadContent() as UIElement;
@@ -27,23 +44,6 @@ namespace Vts.Gui.Wpf.View
             {
                 selector.Content = selector.IntralipidScatteringTemplate.LoadContent() as UIElement;
             }
-        }
-
-        public static readonly DependencyProperty ScatteringTypeProperty = DependencyProperty.Register(
-            "ScatteringType", 
-            typeof(string), 
-            typeof(ScatteringTemplateSelector),
-            new PropertyMetadata(string.Empty, UpdateScatteringType));
-
-        public string ScatteringType
-        {
-            get { return (string)GetValue(ScatteringTypeProperty); }
-            set { SetValue(ScatteringTypeProperty, value); }
-        }
-
-        public ScatteringTemplateSelector()
-        {
-            Loaded += (s, a) => ScatteringType = "Vts.SpectralMapping.PowerLawScatterer";
         }
     }
 }

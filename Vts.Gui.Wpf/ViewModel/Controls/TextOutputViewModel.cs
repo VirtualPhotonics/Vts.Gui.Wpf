@@ -1,8 +1,4 @@
-using System;
-using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
-using Vts;
-using Vts.Gui.Wpf.Input;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -21,16 +17,16 @@ namespace Vts.Gui.Wpf.ViewModel
         public string Text
         {
             get { return _Text; }
-            set 
+            set
             {
-                _Text = value; 
+                _Text = value;
                 OnPropertyChanged("Text");
             }
         }
 
-        void PostMessage_Executed(object sender)
+        private void PostMessage_Executed(object sender)
         {
-            string s = sender as string;
+            var s = sender as string;
             if (s != null)
                 Text += s;
         }

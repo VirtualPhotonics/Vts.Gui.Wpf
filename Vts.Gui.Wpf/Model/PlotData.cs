@@ -4,9 +4,9 @@ using System.Windows;
 namespace Vts.Gui.Wpf.Model
 {
     /// <summary>
-    /// Class to hold all data necessary for describing a single line plot
-    /// Needs to be bolstered to allow for multiple descriptors, powerful enough
-    /// to support a view of a particular data set
+    ///     Class to hold all data necessary for describing a single line plot
+    ///     Needs to be bolstered to allow for multiple descriptors, powerful enough
+    ///     to support a view of a particular data set
     /// </summary>
     public class PlotData
     {
@@ -24,6 +24,5 @@ namespace Vts.Gui.Wpf.Model
 
         public IDataPoint[] Points { get; set; }
         public string Title { get; set; }
-
     }
 }

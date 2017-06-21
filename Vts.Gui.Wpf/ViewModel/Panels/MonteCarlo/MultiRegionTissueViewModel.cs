@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Vts;
 using Vts.Extensions;
 using Vts.MonteCarlo;
-using Vts.MonteCarlo.Extensions;
 using Vts.MonteCarlo.Tissues;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
     public class MultiRegionTissueViewModel : BindableObject
     {
-        private ITissueInput _input;
+        private int _currentRegionIndex;
+        private readonly ITissueInput _input;
 
         private ObservableCollection<object> _regionsVM;
-
-        private int _currentRegionIndex;
 
         public MultiRegionTissueViewModel(ITissueInput input)
         {
@@ -24,21 +21,23 @@ namespace Vts.Gui.Wpf.ViewModel
             switch (input.TissueType)
             {
                 case "MultiLayer":
-                    var multiLayerTissueInput = ((MultiLayerTissueInput)_input);
+                    var multiLayerTissueInput = (MultiLayerTissueInput) _input;
                     _regionsVM = new ObservableCollection<object>(
-                        multiLayerTissueInput.Regions.Select((r, i) => (object)new LayerRegionViewModel(
-                            (LayerTissueRegion)r,
+                        multiLayerTissueInput.Regions.Select((r, i) => (object) new LayerRegionViewModel(
+                            (LayerTissueRegion) r,
                             "Layer " + i)));
                     break;
                 case "SingleEllipsoid":
-                    var singleEllipsoidTissueInput = ((SingleEllipsoidTissueInput) _input);
+                    var singleEllipsoidTissueInput = (SingleEllipsoidTissueInput) _input;
                     _regionsVM = new ObservableCollection<object>(
                         singleEllipsoidTissueInput.LayerRegions
-                            .Select((r, i) => (object)new LayerRegionViewModel(
-                                (LayerTissueRegion)r,
+                            .Select((r, i) => (object) new LayerRegionViewModel(
+                                (LayerTissueRegion) r,
                                 "Layer " + i))
-                            .Concat(new EllipsoidRegionViewModel((EllipsoidTissueRegion)singleEllipsoidTissueInput.EllipsoidRegion,
-                                "Ellipsoid Region")));
+                            .Concat(
+                                new EllipsoidRegionViewModel(
+                                    (EllipsoidTissueRegion) singleEllipsoidTissueInput.EllipsoidRegion,
+                                    "Ellipsoid Region")));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -47,7 +46,7 @@ namespace Vts.Gui.Wpf.ViewModel
             _currentRegionIndex = 0;
         }
 
-        public MultiRegionTissueViewModel() 
+        public MultiRegionTissueViewModel()
             : this(new MultiLayerTissueInput())
         {
         }
@@ -69,16 +68,23 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 //if(value<_layerRegionsVM.Count && value >=0)
                 //{
-                    _currentRegionIndex = value;
-                    OnPropertyChanged("CurrentRegionIndex");
-                    OnPropertyChanged("MinimumRegionIndex");
-                    OnPropertyChanged("MaximumRegionIndex");
+                _currentRegionIndex = value;
+                OnPropertyChanged("CurrentRegionIndex");
+                OnPropertyChanged("MinimumRegionIndex");
+                OnPropertyChanged("MaximumRegionIndex");
                 //}
             }
         }
 
-        public int MinimumRegionIndex { get { return 0; } }
-        public int MaximumRegionIndex { get { return _regionsVM != null ? _regionsVM.Count - 1 : 0; } }
+        public int MinimumRegionIndex
+        {
+            get { return 0; }
+        }
+
+        public int MaximumRegionIndex
+        {
+            get { return _regionsVM != null ? _regionsVM.Count - 1 : 0; }
+        }
 
         public ITissueInput GetTissueInput()
         {

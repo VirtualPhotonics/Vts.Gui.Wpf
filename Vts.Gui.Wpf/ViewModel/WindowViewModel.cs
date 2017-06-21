@@ -1,11 +1,9 @@
 using System.Reflection;
-using Vts;
-using Vts.Gui.Wpf.Extensions;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
     /// <summary>
-    /// View model implementing highest-level panel functionality for the general-purpose ATK
+    ///     View model implementing highest-level panel functionality for the general-purpose ATK
     /// </summary>
     public class WindowViewModel : BindableObject
     {
@@ -33,12 +31,14 @@ namespace Vts.Gui.Wpf.ViewModel
         public PlotViewModel PlotVM { get; private set; }
         public MapViewModel MapVM { get; private set; }
         public TextOutputViewModel TextOutputVM { get; private set; }
+
         public string Version
         {
             get
             {
                 var currentVersion = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
-                return currentVersion.Version.Major.ToString() + "." + currentVersion.Version.Minor.ToString() + "." + currentVersion.Version.Build.ToString();
+                return currentVersion.Version.Major + "." + currentVersion.Version.Minor + "." +
+                       currentVersion.Version.Build;
                 //              return currentVersion.Version.ToString(); // This line returns all 4 version numbers Major.Minor.Build.Revision
             }
         }

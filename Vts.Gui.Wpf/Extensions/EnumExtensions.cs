@@ -1,5 +1,4 @@
 using System;
-using Vts;
 using Vts.Common;
 
 namespace Vts.Gui.Wpf.Extensions
@@ -54,7 +53,8 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Wavelength:
                     return 2;
                 default:
-                    throw new NotImplementedException("Independent axis " + axis + " is not implemented for this software feature.");
+                    throw new NotImplementedException("Independent axis " + axis +
+                                                      " is not implemented for this software feature.");
             }
         }
 
@@ -71,7 +71,8 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Wavelength:
                     return false;
                 default:
-                    throw new NotImplementedException("Independent axis " + axis + " is not implemented for this software feature.");
+                    throw new NotImplementedException("Independent axis " + axis +
+                                                      " is not implemented for this software feature.");
             }
         }
 
@@ -88,7 +89,8 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Wavelength:
                     return false;
                 default:
-                    throw new NotImplementedException("Independent axis " + axis + " is not implemented for this software feature.");
+                    throw new NotImplementedException("Independent axis " + axis +
+                                                      " is not implemented for this software feature.");
             }
         }
 
@@ -105,7 +107,8 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Wavelength:
                     return false;
                 default:
-                    throw new NotImplementedException("Independent axis " + axis + " is not implemented for this software feature.");
+                    throw new NotImplementedException("Independent axis " + axis +
+                                                      " is not implemented for this software feature.");
             }
         }
 
@@ -122,10 +125,11 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Z:
                     return false;
                 default:
-                    throw new NotImplementedException("Independent axis " + axis + " is not implemented for this software feature.");
+                    throw new NotImplementedException("Independent axis " + axis +
+                                                      " is not implemented for this software feature.");
             }
         }
-        
+
         public static string GetUnits(this IndependentVariableAxis axis)
         {
             switch (axis)
@@ -201,6 +205,7 @@ namespace Vts.Gui.Wpf.Extensions
                     return DependentVariableAxisUnits.PerMMPerGHz.GetInternationalizedString();
             }
         }
+
         public static DoubleRange GetDefaultRange(this IndependentVariableAxis independentAxisType)
         {
             switch (independentAxisType)
@@ -209,7 +214,7 @@ namespace Vts.Gui.Wpf.Extensions
                 default:
                     return new DoubleRange(0.5D, 9.5D, 19); // units=mm
                 case IndependentVariableAxis.Time:
-                    return new DoubleRange(0D, 0.05D, 51);  // units=ns
+                    return new DoubleRange(0D, 0.05D, 51); // units=ns
                 case IndependentVariableAxis.Fx:
                     return new DoubleRange(0D, 0.5D, 51);
                 case IndependentVariableAxis.Ft:
@@ -236,10 +241,11 @@ namespace Vts.Gui.Wpf.Extensions
                     return 650.0;
             }
         }
-        
-        //public static RangeViewModel GetDefaultIndependentAxisRange(this IndependentVariableAxis independentAxisType)
-        //{
-        //    return new RangeViewModel(independentAxisType.GetDefaultRange(), independentAxisType.GetUnits(), independentAxisType, independentAxisType.GetTitle());
+
         //}
+        //    return new RangeViewModel(independentAxisType.GetDefaultRange(), independentAxisType.GetUnits(), independentAxisType, independentAxisType.GetTitle());
+        //{
+
+        //public static RangeViewModel GetDefaultIndependentAxisRange(this IndependentVariableAxis independentAxisType)
     }
 }

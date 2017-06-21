@@ -1,21 +1,20 @@
-﻿using Vts;
-using Vts.MonteCarlo.Extensions;
+﻿using Vts.MonteCarlo.Extensions;
 using Vts.MonteCarlo.Tissues;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
     public class EllipsoidRegionViewModel : BindableObject
     {
-        private EllipsoidTissueRegion _region;
         private string _name;
-        private string _units;
         private OpticalPropertyViewModel _opticalPropertyVM;
+        private readonly EllipsoidTissueRegion _region;
+        private string _units;
 
         public EllipsoidRegionViewModel(EllipsoidTissueRegion region, string name)
         {
             _region = region;
             _name = name ?? "";
-            _opticalPropertyVM = new OpticalPropertyViewModel(_region.RegionOP, "mm-1", "", true, true,true, false);
+            _opticalPropertyVM = new OpticalPropertyViewModel(_region.RegionOP, "mm-1", "", true, true, true, false);
         }
 
         public EllipsoidRegionViewModel() : this(new EllipsoidTissueRegion(), "")
@@ -71,7 +70,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("Dx");
             }
         }
-        
+
         public double Dy
         {
             get { return _region.Dy; }
@@ -102,13 +101,25 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public string Units { get { return "mm"; } }
-        public bool IsLayer { get { return false; } }
-        public bool IsEllipsoid { get { return true; } }
+        public string Units
+        {
+            get { return "mm"; }
+        }
+
+        public bool IsLayer
+        {
+            get { return false; }
+        }
+
+        public bool IsEllipsoid
+        {
+            get { return true; }
+        }
+
+        //}
+        //    return _region;
+        //{
 
         //public EllipsoidRegion GetEllipsoidRegion()
-        //{
-        //    return _region;
-        //}
     }
 }

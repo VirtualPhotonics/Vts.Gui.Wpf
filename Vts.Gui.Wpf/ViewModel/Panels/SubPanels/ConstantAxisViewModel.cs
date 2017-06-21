@@ -1,14 +1,13 @@
-﻿using Vts;
-using Vts.Gui.Wpf.Input;
+﻿using Vts.Gui.Wpf.Input;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
     public class ConstantAxisViewModel : BindableObject
     {
-        private double _axisValue;
-        private string _axisUnits;
         private string _axisLabel;
         private IndependentVariableAxis _axisType;
+        private string _axisUnits;
+        private double _axisValue;
         private int _imageHeight = 50;
 
         public IndependentVariableAxis AxisType
