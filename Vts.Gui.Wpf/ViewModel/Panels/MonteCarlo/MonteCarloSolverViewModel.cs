@@ -1,7 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.IO.IsolatedStorage;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,6 +14,8 @@ using Vts.IO;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Detectors;
 using Vts.MonteCarlo.IO;
+using System.IO;
+using System.Windows.Documents;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -306,23 +308,22 @@ namespace Vts.Gui.Wpf.ViewModel
             }
             if (filename != "")
             {
-            }
-            using (var stream = new FileStream(filename, FileMode.Create))
-            {
-                var files = SimulationInputProvider.GenerateAllSimulationInputs().Select(input =>
-                    new
-                    {
-                        Name = "infile_" + input.OutputName + ".txt",
-                        Input = input
-                    });
-
-                foreach (var file in files)
+                using (var stream = new FileStream(filename, FileMode.Create))
                 {
-                    file.Input.ToFile(file.Name);
+                    var files = SimulationInputProvider.GenerateAllSimulationInputs().Select(input =>
+                        new
+                        {
+                            Name = "infile_" + input.OutputName + ".txt",
+                            Input = input
+                        });
+ 
+                    foreach (var file in files)
+                    {
+                        file.Input.ToFile(file.Name);
+                    }
+                    FileIO.ZipFiles(files.Select(file => file.Name), "", stream);
+                    logger.Info(() => "Template simulation input files exported to a zip file.\r");
                 }
-                var allFiles = files.Concat(files);
-                FileIO.ZipFiles(files.Select(file => file.Name), "", stream);
-                logger.Info(() => "Template simulation input files exported to a zip file.\r");
             }
         }
 
@@ -349,13 +350,36 @@ namespace Vts.Gui.Wpf.ViewModel
                 }
                 if (filename == "") return;
                 var input = _simulationInputVM.SimulationInput;
+                if (Directory.Exists(TEMP_RESULTS_FOLDER))
+                {
+                    var currentAssembly = Assembly.GetExecutingAssembly();
+                    // copy the MATLAB files to isolated storage and get their names so they can be included in the zip file
+                    var matlabFiles = FileIO.CopyFolderFromEmbeddedResources("Matlab", TEMP_RESULTS_FOLDER, currentAssembly.FullName, false);
+                    var adjustedMatlabFilenames = new List<string>();
+                    foreach (var fileName in matlabFiles)
+                    {
+                        adjustedMatlabFilenames.Add(Path.Combine(TEMP_RESULTS_FOLDER, fileName));
+                    }
+                    // get all the files we want to zip up
+                    var fileNames = Directory.GetFiles(TEMP_RESULTS_FOLDER);
+                    // then, zip all the files together and store *that* .zip to default bin folder
+                    var allFiles = adjustedMatlabFilenames.Concat(fileNames).Distinct();
+                    try
+                    {
+                        FileIO.ZipFiles(allFiles, "", input.OutputName + ".zip");
+                    }
+                    catch (SecurityException)
+                    {
+                        logger.Error(() => "\rProblem saving results to file.\r");
+                    }
+                } 
                 try
                 {
                     using (var stream = new FileStream(filename, FileMode.Create))
                     {
                         using (var zipStream = StreamFinder.GetFileStream(input.OutputName + ".zip", FileMode.Open))
                         {
-                            FileIO.CopyStream(stream, zipStream);
+                            FileIO.CopyStream(zipStream, stream);
                         }
                     }
                     logger.Info(() => "Finished copying results to user file.\r");
@@ -365,20 +389,6 @@ namespace Vts.Gui.Wpf.ViewModel
                     logger.Error(() => "Problem exporting results to user file...sorry user :(\r");
                 }
             }
-        }
-
-        private bool EnoughRoomInIsolatedStorage(double megabyteMinimum)
-        {
-            using (var isf = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                var currentQuota = isf.Quota/1048576;
-                var spaceUsed = (isf.Quota - isf.AvailableFreeSpace)/1048576;
-                if (currentQuota - spaceUsed < megabyteMinimum)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         private PlotAxesLabels GetPlotLabels()

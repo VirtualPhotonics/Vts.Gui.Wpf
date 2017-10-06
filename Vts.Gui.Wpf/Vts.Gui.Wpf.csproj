@@ -388,13 +388,23 @@
       <Link>AutoMapper.Net4.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\AUTHORS.txt" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\ChangeLog.txt" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\jsonopt.m" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\license.txt" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\LICENSE_BSD.txt" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\loadjson.m" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\loadubjson.m" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\mergestruct.m" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\README.txt" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\savejson.m" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\saveubjson.m" />
+    <EmbeddedResource Include="Resources\Matlab\jsonlab\varargin2struct.m" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\logo-small.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Matlab\jsonlab\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
