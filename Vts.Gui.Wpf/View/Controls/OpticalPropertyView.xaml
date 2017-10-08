@@ -2,11 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:Vts.Gui.Wpf.ViewModel">
-
+    
     <!-- This is to provide design-time support. It is expected that the ViewModel be created in the constructor -->
-    <UserControl.DataContext>
+    <!--<UserControl.DataContext>
         <vm:OpticalPropertyViewModel />
-    </UserControl.DataContext>
+    </UserControl.DataContext>--> 
     <StackPanel Orientation="Vertical">
         <TextBlock
             Text="{Binding Title}"

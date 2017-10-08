@@ -57,7 +57,8 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _regionsVM = value;
-                OnPropertyChanged("LayerRegionsVM");
+                //OnPropertyChanged("LayerRegionsVM");
+                OnPropertyChanged("RegionsVM"); // ckh: RegionsVM is what is bound in xaml, LayerRegionsVM is in old comment
             }
         }
 
