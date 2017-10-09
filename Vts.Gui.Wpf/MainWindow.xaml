@@ -21,12 +21,6 @@
                     Grid.Column="0"
                     Padding="20"
                     SelectionChanged="InputTabControl_SelectionChanged">
-            <TabItem Name="TabSpectral" Header="Spectral Panel">
-                <view:SpectralMappingView
-                    DataContext="{Binding SpectralMappingVM}"
-                    Background="White"
-                    HorizontalAlignment="Left" />
-            </TabItem>
             <TabItem Name="TabForward" Header="Forward Solver/Analysis Panel">
                 <view:ForwardSolverView
                     DataContext="{Binding ForwardSolverVM}"
@@ -36,6 +30,12 @@
             <TabItem Name="TabInverse" Header="Inverse Solver Panel">
                 <view:InverseSolverView
                     DataContext="{Binding InverseSolverVM}"
+                    Background="White"
+                    HorizontalAlignment="Left" />
+            </TabItem>
+            <TabItem Name="TabSpectral" Header="Spectral Panel">
+                <view:SpectralMappingView
+                    DataContext="{Binding SpectralMappingVM}"
                     Background="White"
                     HorizontalAlignment="Left" />
             </TabItem>
