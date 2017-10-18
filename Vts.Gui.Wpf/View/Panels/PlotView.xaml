@@ -14,7 +14,8 @@
             <RowDefinition Height="145" />
         </Grid.RowDefinitions>
         <!-- Chart control for the plot -->
-        <oxy:PlotView x:Name="MyChart" Grid.Row="0" Model="{Binding PlotModel}" MinHeight="460" MinWidth="515" />
+        <!--<oxy:PlotView x:Name="MyChart" Grid.Row="0" Model="{Binding PlotModel}" MinHeight="460" MinWidth="515" />-->
+        <oxy:PlotView x:Name="MyChart" Grid.Row="0" Model="{Binding PlotModel}" />
         <!-- Hide legend checkbox -->
         <CheckBox Grid.Row="1"
                   HorizontalAlignment="Right"
