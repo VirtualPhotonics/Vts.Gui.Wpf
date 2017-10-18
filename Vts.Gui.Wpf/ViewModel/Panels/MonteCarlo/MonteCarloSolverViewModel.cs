@@ -15,7 +15,10 @@ using Vts.MonteCarlo;
 using Vts.MonteCarlo.Detectors;
 using Vts.MonteCarlo.IO;
 using System.IO;
+using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -79,168 +82,152 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        private void MC_ExecuteMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void MC_ExecuteMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //if (!EnoughRoomInIsolatedStorage(50))
-            //{
-            //    logger.Info(() => "\rSimulation not run. Please allocate more than 50MB of storage space.\r");
-            //    Commands.IsoStorage_IncreaseSpaceQuery.Execute();
-            //    return;
-            //}
+            _currentCancellationTokenSource = new CancellationTokenSource();
 
+            try
+            {
+                var input = _simulationInputVM.SimulationInput;
+
+                MainWindow.Current.Wait.Visibility = Visibility.Visible;
+                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Begin();
+                var task = Task.Run(() => RunMonteCarloSimulation(input, _currentCancellationTokenSource.Token), _currentCancellationTokenSource.Token);
+                await task;
+                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                await Task.Run(() => MC_SaveTemporaryResults(input), _currentCancellationTokenSource.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private async Task RunMonteCarloSimulation(SimulationInput input, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
             _newResultsAvailable = false;
-
-            var input = _simulationInputVM.SimulationInput;
-
 
             var validationResult = SimulationInputValidation.ValidateInput(input);
             if (!validationResult.IsValid)
             {
                 logger.Info(() => "\rSimulation input not valid.\rRule: " + validationResult.ValidationRule +
-                                  (!string.IsNullOrEmpty(validationResult.Remarks)
-                                      ? "\rDetails: " + validationResult.Remarks
-                                      : "") + ".\r");
+                                    (!string.IsNullOrEmpty(validationResult.Remarks)
+                                        ? "\rDetails: " + validationResult.Remarks
+                                        : "") + ".\r");
                 return;
             }
 
             _simulation = new MonteCarloSimulation(input);
 
-            _currentCancellationTokenSource = new CancellationTokenSource();
-            var cancelToken = _currentCancellationTokenSource.Token;
-            var scheduler = TaskScheduler.FromCurrentSynchronizationContext();
-
-            var t = Task.Factory.StartNew(() => _simulation.Run(), TaskCreationOptions.LongRunning);
-            //need to figure out how to replace all this code
-            Action<Task<SimulationOutput>, object> mCAction = (antecedent, obj) =>
+            _output = await Task.Run(() => _simulation.Run(), cancellationToken);
+            if (_output != null)
             {
-                MainWindow.Current.Dispatcher.BeginInvoke((Action) delegate
+                _newResultsAvailable = _simulation.ResultsAvailable;
+
+                var rOfRhoDetectorInputs = _simulationInputVM.SimulationInput.DetectorInputs.
+                    Where(di => di.Name == "ROfRho");
+
+                if (rOfRhoDetectorInputs.Any())
                 {
-                    _output = antecedent.Result;
-                    _newResultsAvailable = _simulation.ResultsAvailable;
+                    logger.Info(() => "Creating R(rho) plot...");
 
-                    var rOfRhoDetectorInputs = _simulationInputVM.SimulationInput.DetectorInputs.
-                        Where(di => di.Name == "ROfRho");
+                    var detectorInput = (ROfRhoDetectorInput)rOfRhoDetectorInputs.First();
 
-                    if (rOfRhoDetectorInputs.Any())
-                    {
-                        logger.Info(() => "Creating R(rho) plot...");
+                    var independentValues = detectorInput.Rho.AsEnumerable().ToArray();
 
-                        var detectorInput = (ROfRhoDetectorInput) rOfRhoDetectorInputs.First();
+                    DoubleDataPoint[] points = null;
 
-                        var independentValues = detectorInput.Rho.AsEnumerable().ToArray();
+                    points = independentValues.Zip(_output.R_r,
+                        (x, y) => new DoubleDataPoint(x, y)).ToArray();
 
-                        DoubleDataPoint[] points = null;
+                    var axesLabels = GetPlotLabels();
+                    WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
 
-                        //var showPlusMinusStdev = true;
-                        //if(showPlusMinusStdev && _output.R_r2 != null)
-                        //{
-                        //    var stdev = Enumerable.Zip(_output.R_r, _output.R_r2, (r, r2) => Math.Sqrt((r2 - r * r) / nPhotons)).ToArray();
-                        //    var rMinusStdev = Enumerable.Zip(_output.R_r, stdev, (r,std) => r-std).ToArray();
-                        //    var rPlusStdev = Enumerable.Zip(_output.R_r, stdev, (r,std) => r+std).ToArray();
-                        //    points = Enumerable.Zip(
-                        //        independentValues.Concat(independentValues).Concat(independentValues),
-                        //        rMinusStdev.Concat(_output.R_r).Concat(rPlusStdev),
-                        //        (x, y) => new Point(x, y));
-                        //}
-                        //else
-                        //{
-                        points = independentValues.Zip(_output.R_r,
-                            (x, y) => new DoubleDataPoint(x, y)).ToArray();
-                        //}
-
-                        var axesLabels = GetPlotLabels();
-                        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
-                        //Commands.Plot_SetAxesLabels.Execute(axesLabels, null);
-
-                        var plotLabel = GetPlotLabel();
-                        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
-                        //Commands.Plot_PlotValues.Execute(new[] { new PlotData(points, plotLabel) }, null);
-                        logger.Info(() => "done.\r");
-                    }
-
-                    var fluenceDetectorInputs = _simulationInputVM.SimulationInput.DetectorInputs.
-                        Where(di => di.Name == "FluenceOfRhoAndZ");
-
-                    if (fluenceDetectorInputs.Any())
-                    {
-                        logger.Info(() => "Creating Fluence(rho,z) map...");
-                        var detectorInput = (FluenceOfRhoAndZDetectorInput) fluenceDetectorInputs.First();
-                        var rhosMC = detectorInput.Rho.AsEnumerable().ToArray();
-                        var zsMC = detectorInput.Z.AsEnumerable().ToArray();
-
-                        var rhos =
-                            rhosMC.Skip(1).Zip(rhosMC.Take(rhosMC.Length - 1),
-                                (first, second) => (first + second)/2).ToArray();
-                        var zs =
-                            zsMC.Skip(1).Zip(rhosMC.Take(zsMC.Length - 1),
-                                (first, second) => (first + second)/2).ToArray();
-
-                        var dRhos =
-                            rhos.Select(rho => 2*Math.PI*Math.Abs(rho)*detectorInput.Rho.Delta).ToArray();
-                        var dZs = zs.Select(z => detectorInput.Rho.Delta).ToArray();
-
-                        if (_mapArrayBuffer == null || _mapArrayBuffer.Length != _output.Flu_rz.Length*2)
-                        {
-                            _mapArrayBuffer = new double[_output.Flu_rz.Length*2];
-                        }
-
-                        // flip the array (since it goes over zs and then rhos, while map wants rhos and then zs
-                        for (var zi = 0; zi < zs.Length; zi++)
-                        {
-                            for (var rhoi = 0; rhoi < rhos.Length; rhoi++)
-                            {
-                                _mapArrayBuffer[rhoi + rhos.Length + rhos.Length*2*zi] = _output.Flu_rz[rhoi, zi];
-                            }
-                            var localRhoiForReverse = 0;
-                            for (var rhoi = rhos.Length - 1; rhoi >= 0; rhoi--, localRhoiForReverse++)
-                            {
-                                _mapArrayBuffer[localRhoiForReverse + rhos.Length*2*zi] = _output.Flu_rz[rhoi, zi];
-                            }
-                        }
-
-                        var twoRhos = rhos.Reverse().Select(rho => -rho).Concat(rhos).ToArray();
-                        var twoDRhos = dRhos.Reverse().Concat(dRhos).ToArray();
-
-                        var mapData = new MapData(_mapArrayBuffer, twoRhos, zs, twoDRhos, dZs);
-
-                        //Commands.Maps_PlotMap.Execute(mapData, null);
-                        WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
-                        logger.Info(() => "done.\r");
-                    }
-
-                    // save results to isolated storage
-                    logger.Info(() => "Saving simulation results to temporary directory...");
-                    //var detectorFolder = Path.Combine(TEMP_RESULTS_FOLDER, input.OutputName);
-
-                    //// create the root directory
-                    //FileIO.CreateDirectory(TEMP_RESULTS_FOLDER);
-                    // create the detector directory, removing stale files first if they exist
-                    FileIO.CreateEmptyDirectory(TEMP_RESULTS_FOLDER);
-
-                    // write detector to file
-                    input.ToFile(Path.Combine(TEMP_RESULTS_FOLDER, "infile_" + input.OutputName + ".txt"));
-                    foreach (var result in _output.ResultsDictionary.Values)
-                    {
-                        // save all detector data to the specified folder
-                        DetectorIO.WriteDetectorToFile(result, TEMP_RESULTS_FOLDER);
-                    }
+                    var plotLabel = GetPlotLabel();
+                    WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] { new PlotData(points, plotLabel) });
                     logger.Info(() => "done.\r");
-                });
-            };
-            var c = t.ContinueWith(mCAction, null, cancelToken, TaskContinuationOptions.OnlyOnRanToCompletion, scheduler);
+                }
+
+                var fluenceDetectorInputs = _simulationInputVM.SimulationInput.DetectorInputs.
+                    Where(di => di.Name == "FluenceOfRhoAndZ");
+
+                if (fluenceDetectorInputs.Any())
+                {
+                    logger.Info(() => "Creating Fluence(rho,z) map...");
+                    var detectorInput = (FluenceOfRhoAndZDetectorInput)fluenceDetectorInputs.First();
+                    var rhosMC = detectorInput.Rho.AsEnumerable().ToArray();
+                    var zsMC = detectorInput.Z.AsEnumerable().ToArray();
+
+                    var rhos =
+                        rhosMC.Skip(1).Zip(rhosMC.Take(rhosMC.Length - 1),
+                            (first, second) => (first + second) / 2).ToArray();
+                    var zs =
+                        zsMC.Skip(1).Zip(rhosMC.Take(zsMC.Length - 1),
+                            (first, second) => (first + second) / 2).ToArray();
+
+                    var dRhos =
+                        rhos.Select(rho => 2 * Math.PI * Math.Abs(rho) * detectorInput.Rho.Delta).ToArray();
+                    var dZs = zs.Select(z => detectorInput.Rho.Delta).ToArray();
+
+                    if (_mapArrayBuffer == null || _mapArrayBuffer.Length != _output.Flu_rz.Length * 2)
+                    {
+                        _mapArrayBuffer = new double[_output.Flu_rz.Length * 2];
+                    }
+
+                    // flip the array (since it goes over zs and then rhos, while map wants rhos and then zs
+                    for (var zi = 0; zi < zs.Length; zi++)
+                    {
+                        for (var rhoi = 0; rhoi < rhos.Length; rhoi++)
+                        {
+                            _mapArrayBuffer[rhoi + rhos.Length + rhos.Length * 2 * zi] = _output.Flu_rz[rhoi, zi];
+                        }
+                        var localRhoiForReverse = 0;
+                        for (var rhoi = rhos.Length - 1; rhoi >= 0; rhoi--, localRhoiForReverse++)
+                        {
+                            _mapArrayBuffer[localRhoiForReverse + rhos.Length * 2 * zi] = _output.Flu_rz[rhoi, zi];
+                        }
+                    }
+
+                    var twoRhos = rhos.Reverse().Select(rho => -rho).Concat(rhos).ToArray();
+                    var twoDRhos = dRhos.Reverse().Concat(dRhos).ToArray();
+
+                    var mapData = new MapData(_mapArrayBuffer, twoRhos, zs, twoDRhos, dZs);
+
+                    WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
+                    logger.Info(() => "done.\r");
+                }
+            }
         }
 
-        private void MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void MC_SaveTemporaryResults(SimulationInput input)
         {
-            if (_currentCancellationTokenSource != null)
+            // save results to bin folder
+            logger.Info(() => "Saving simulation results to temporary directory...");
+
+            // create the root directory
+            // create the detector directory, removing stale files first if they exist
+            FileIO.CreateEmptyDirectory(TEMP_RESULTS_FOLDER);
+
+            // write detector to file
+            input.ToFile(Path.Combine(TEMP_RESULTS_FOLDER, "infile_" + input.OutputName + ".txt"));
+            foreach (var result in _output.ResultsDictionary.Values)
             {
-                _currentCancellationTokenSource.Cancel(true);
-                _currentCancellationTokenSource = null;
-                //logger.Info(() => "Simulation cancelled.\n");
+                // save all detector data to the specified folder
+                DetectorIO.WriteDetectorToFile(result, TEMP_RESULTS_FOLDER);
             }
+            logger.Info(() => "done.\r");
+        }
+
+        private async void MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
             if (_simulation != null && _simulation.IsRunning)
             {
-                Task.Factory.StartNew(() => _simulation.Cancel());
+                await Task.Run(()=> _simulation.Cancel());
+                _currentCancellationTokenSource.Cancel();
+                logger.Info(() => "Simulation cancelled.\n");
             }
         }
 

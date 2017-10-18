@@ -7,6 +7,17 @@
     <Window.DataContext>
         <viewModel:WindowViewModel />
     </Window.DataContext>
+    <Window.Resources>
+        <Storyboard x:Key="WaitStoryboard">
+            <DoubleAnimation
+                Storyboard.TargetName="WaitObject"
+                Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
+                From="0"
+                To="360"
+                Duration="0:0:2"
+                RepeatBehavior="Forever" />
+        </Storyboard>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="6*" />
@@ -101,5 +112,38 @@
             Margin="3"
             Width="Auto"
             Height="Auto" />
+        <Canvas Name="Wait"
+                Grid.Column="1"
+                Grid.Row="0"
+                Visibility="Hidden"
+                Width="50" 
+                Height="50" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Path Name="WaitShadow" Data="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+				s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+				c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" 
+                  Stretch="Fill" 
+				  Fill="White"
+				  Margin="0" Height="50" Width="50">
+            	<Path.Effect>
+            		<DropShadowEffect Opacity="0.25" ShadowDepth="3"/>
+            	</Path.Effect>
+            </Path>
+            <Path Name="WaitObject" Data="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+				s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+				c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" 
+                  RenderTransformOrigin="0.5, 0.5"
+                  Stretch="Fill"
+                  Margin="0" Width="50" Height="50">
+                <Path.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                        <GradientStop Color="#FF7BBDED"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Path.Fill>
+                <Path.RenderTransform>
+                    <RotateTransform Angle="0" />
+                </Path.RenderTransform>
+            </Path>
+        </Canvas>
     </Grid>
 </Window>

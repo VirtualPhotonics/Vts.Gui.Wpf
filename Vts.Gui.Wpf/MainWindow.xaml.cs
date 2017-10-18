@@ -18,9 +18,7 @@ namespace Vts.Gui.Wpf
         public MainWindow()
         {
             InitializeComponent();
-
             _numViews = 0;
-
             Current = this;
         }
 
