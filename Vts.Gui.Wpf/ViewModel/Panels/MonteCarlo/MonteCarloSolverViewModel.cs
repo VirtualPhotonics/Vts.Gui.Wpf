@@ -92,8 +92,98 @@ namespace Vts.Gui.Wpf.ViewModel
 
                 MainWindow.Current.Wait.Visibility = Visibility.Visible;
                 ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Begin();
-                var task = Task.Run(() => RunMonteCarloSimulation(input, _currentCancellationTokenSource.Token), _currentCancellationTokenSource.Token);
-                await task;
+                _newResultsAvailable = false;
+
+                var validationResult = SimulationInputValidation.ValidateInput(input);
+                if (!validationResult.IsValid)
+                {
+                    logger.Info(() => "\rSimulation input not valid.\rRule: " + validationResult.ValidationRule +
+                                      (!string.IsNullOrEmpty(validationResult.Remarks)
+                                          ? "\rDetails: " + validationResult.Remarks
+                                          : "") + ".\r");
+                    return;
+                }
+
+                _simulation = new MonteCarloSimulation(input);
+
+                _output = await Task.Run(() => _simulation.Run(), _currentCancellationTokenSource.Token);
+                if (_output != null)
+                {
+                    _newResultsAvailable = _simulation.ResultsAvailable;
+
+                    var rOfRhoDetectorInputs = _simulationInputVM.SimulationInput.DetectorInputs.
+                        Where(di => di.Name == "ROfRho");
+
+                    if (rOfRhoDetectorInputs.Any())
+                    {
+                        logger.Info(() => "Creating R(rho) plot...");
+
+                        var detectorInput = (ROfRhoDetectorInput)rOfRhoDetectorInputs.First();
+
+                        var independentValues = detectorInput.Rho.AsEnumerable().ToArray();
+
+                        DoubleDataPoint[] points = null;
+
+                        points = independentValues.Zip(_output.R_r,
+                            (x, y) => new DoubleDataPoint(x, y)).ToArray();
+
+                        var axesLabels = GetPlotLabels();
+                        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+
+                        var plotLabel = GetPlotLabel();
+                        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] { new PlotData(points, plotLabel) });
+                        logger.Info(() => "done.\r");
+                    }
+
+                    var fluenceDetectorInputs = _simulationInputVM.SimulationInput.DetectorInputs.
+                        Where(di => di.Name == "FluenceOfRhoAndZ");
+
+                    if (fluenceDetectorInputs.Any())
+                    {
+                        logger.Info(() => "Creating Fluence(rho,z) map...");
+                        var detectorInput = (FluenceOfRhoAndZDetectorInput)fluenceDetectorInputs.First();
+                        var rhosMC = detectorInput.Rho.AsEnumerable().ToArray();
+                        var zsMC = detectorInput.Z.AsEnumerable().ToArray();
+
+                        var rhos =
+                            rhosMC.Skip(1).Zip(rhosMC.Take(rhosMC.Length - 1),
+                                (first, second) => (first + second) / 2).ToArray();
+                        var zs =
+                            zsMC.Skip(1).Zip(rhosMC.Take(zsMC.Length - 1),
+                                (first, second) => (first + second) / 2).ToArray();
+
+                        var dRhos =
+                            rhos.Select(rho => 2 * Math.PI * Math.Abs(rho) * detectorInput.Rho.Delta).ToArray();
+                        var dZs = zs.Select(z => detectorInput.Rho.Delta).ToArray();
+
+                        if (_mapArrayBuffer == null || _mapArrayBuffer.Length != _output.Flu_rz.Length * 2)
+                        {
+                            _mapArrayBuffer = new double[_output.Flu_rz.Length * 2];
+                        }
+
+                        // flip the array (since it goes over zs and then rhos, while map wants rhos and then zs
+                        for (var zi = 0; zi < zs.Length; zi++)
+                        {
+                            for (var rhoi = 0; rhoi < rhos.Length; rhoi++)
+                            {
+                                _mapArrayBuffer[rhoi + rhos.Length + rhos.Length * 2 * zi] = _output.Flu_rz[rhoi, zi];
+                            }
+                            var localRhoiForReverse = 0;
+                            for (var rhoi = rhos.Length - 1; rhoi >= 0; rhoi--, localRhoiForReverse++)
+                            {
+                                _mapArrayBuffer[localRhoiForReverse + rhos.Length * 2 * zi] = _output.Flu_rz[rhoi, zi];
+                            }
+                        }
+
+                        var twoRhos = rhos.Reverse().Select(rho => -rho).Concat(rhos).ToArray();
+                        var twoDRhos = dRhos.Reverse().Concat(dRhos).ToArray();
+
+                        var mapData = new MapData(_mapArrayBuffer, twoRhos, zs, twoDRhos, dZs);
+
+                        WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
+                        logger.Info(() => "done.\r");
+                    }
+                }
                 ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
                 await Task.Run(() => MC_SaveTemporaryResults(input), _currentCancellationTokenSource.Token);
@@ -102,103 +192,6 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
-            }
-        }
-
-        private async Task RunMonteCarloSimulation(SimulationInput input, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            _newResultsAvailable = false;
-
-            var validationResult = SimulationInputValidation.ValidateInput(input);
-            if (!validationResult.IsValid)
-            {
-                logger.Info(() => "\rSimulation input not valid.\rRule: " + validationResult.ValidationRule +
-                                    (!string.IsNullOrEmpty(validationResult.Remarks)
-                                        ? "\rDetails: " + validationResult.Remarks
-                                        : "") + ".\r");
-                return;
-            }
-
-            _simulation = new MonteCarloSimulation(input);
-
-            _output = await Task.Run(() => _simulation.Run(), cancellationToken);
-            if (_output != null)
-            {
-                _newResultsAvailable = _simulation.ResultsAvailable;
-
-                var rOfRhoDetectorInputs = _simulationInputVM.SimulationInput.DetectorInputs.
-                    Where(di => di.Name == "ROfRho");
-
-                if (rOfRhoDetectorInputs.Any())
-                {
-                    logger.Info(() => "Creating R(rho) plot...");
-
-                    var detectorInput = (ROfRhoDetectorInput)rOfRhoDetectorInputs.First();
-
-                    var independentValues = detectorInput.Rho.AsEnumerable().ToArray();
-
-                    DoubleDataPoint[] points = null;
-
-                    points = independentValues.Zip(_output.R_r,
-                        (x, y) => new DoubleDataPoint(x, y)).ToArray();
-
-                    var axesLabels = GetPlotLabels();
-                    WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
-
-                    var plotLabel = GetPlotLabel();
-                    WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] { new PlotData(points, plotLabel) });
-                    logger.Info(() => "done.\r");
-                }
-
-                var fluenceDetectorInputs = _simulationInputVM.SimulationInput.DetectorInputs.
-                    Where(di => di.Name == "FluenceOfRhoAndZ");
-
-                if (fluenceDetectorInputs.Any())
-                {
-                    logger.Info(() => "Creating Fluence(rho,z) map...");
-                    var detectorInput = (FluenceOfRhoAndZDetectorInput)fluenceDetectorInputs.First();
-                    var rhosMC = detectorInput.Rho.AsEnumerable().ToArray();
-                    var zsMC = detectorInput.Z.AsEnumerable().ToArray();
-
-                    var rhos =
-                        rhosMC.Skip(1).Zip(rhosMC.Take(rhosMC.Length - 1),
-                            (first, second) => (first + second) / 2).ToArray();
-                    var zs =
-                        zsMC.Skip(1).Zip(rhosMC.Take(zsMC.Length - 1),
-                            (first, second) => (first + second) / 2).ToArray();
-
-                    var dRhos =
-                        rhos.Select(rho => 2 * Math.PI * Math.Abs(rho) * detectorInput.Rho.Delta).ToArray();
-                    var dZs = zs.Select(z => detectorInput.Rho.Delta).ToArray();
-
-                    if (_mapArrayBuffer == null || _mapArrayBuffer.Length != _output.Flu_rz.Length * 2)
-                    {
-                        _mapArrayBuffer = new double[_output.Flu_rz.Length * 2];
-                    }
-
-                    // flip the array (since it goes over zs and then rhos, while map wants rhos and then zs
-                    for (var zi = 0; zi < zs.Length; zi++)
-                    {
-                        for (var rhoi = 0; rhoi < rhos.Length; rhoi++)
-                        {
-                            _mapArrayBuffer[rhoi + rhos.Length + rhos.Length * 2 * zi] = _output.Flu_rz[rhoi, zi];
-                        }
-                        var localRhoiForReverse = 0;
-                        for (var rhoi = rhos.Length - 1; rhoi >= 0; rhoi--, localRhoiForReverse++)
-                        {
-                            _mapArrayBuffer[localRhoiForReverse + rhos.Length * 2 * zi] = _output.Flu_rz[rhoi, zi];
-                        }
-                    }
-
-                    var twoRhos = rhos.Reverse().Select(rho => -rho).Concat(rhos).ToArray();
-                    var twoDRhos = dRhos.Reverse().Concat(dRhos).ToArray();
-
-                    var mapData = new MapData(_mapArrayBuffer, twoRhos, zs, twoDRhos, dZs);
-
-                    WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
-                    logger.Info(() => "done.\r");
-                }
             }
         }
 
