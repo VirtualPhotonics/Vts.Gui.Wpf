@@ -39,6 +39,9 @@ namespace Vts.Gui.Wpf.ViewModel
         //private bool _firstTimeSaving;
 
         private bool _newResultsAvailable;
+        private bool _canRunSimulation;
+        private bool _canCancelSimulation;
+        private bool _canSaveResults;
 
         private SimulationOutput _output;
 
@@ -63,6 +66,9 @@ namespace Vts.Gui.Wpf.ViewModel
                 new RelayCommand(() => MC_DownloadDefaultSimulationInput_Executed(null, null));
             SaveSimulationResultsCommand = new RelayCommand(() => MC_SaveSimulationResults_Executed(null, null));
 
+            _canRunSimulation = true;
+            _canCancelSimulation = false;
+            _canSaveResults = false;
             _newResultsAvailable = false;
         }
 
@@ -71,6 +77,35 @@ namespace Vts.Gui.Wpf.ViewModel
         public RelayCommand LoadSimulationInputCommand { get; private set; }
         public RelayCommand DownloadDefaultSimulationInputCommand { get; private set; }
         public RelayCommand SaveSimulationResultsCommand { get; private set; }
+
+        public bool CanRunSimulation
+        {
+            get { return _canRunSimulation; }
+            set
+            {
+                _canRunSimulation = value;
+                OnPropertyChanged("CanRunSimulation");
+            }
+        }
+
+        public bool CanCancelSimulation
+        {
+            get { return _canCancelSimulation; }
+            set
+            {
+                _canCancelSimulation = value;
+                OnPropertyChanged("CanCancelSimulation");
+            }
+        }
+        public bool CanSaveResults
+        {
+            get { return _canSaveResults; }
+            set
+            {
+                _canSaveResults = value;
+                OnPropertyChanged("CanSaveResults");
+            }
+        }
 
         public SimulationInputViewModel SimulationInputVM
         {
@@ -85,6 +120,9 @@ namespace Vts.Gui.Wpf.ViewModel
         private async void MC_ExecuteMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             _currentCancellationTokenSource = new CancellationTokenSource();
+            CanRunSimulation = false;
+            CanCancelSimulation = true;
+            CanSaveResults = false;
 
             try
             {
@@ -186,7 +224,10 @@ namespace Vts.Gui.Wpf.ViewModel
                 }
                 ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                CanRunSimulation = true;
                 await Task.Run(() => MC_SaveTemporaryResults(input), _currentCancellationTokenSource.Token);
+                CanCancelSimulation = false;
+                CanSaveResults = true;
             }
             catch (OperationCanceledException)
             {
@@ -195,7 +236,7 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        private async void MC_SaveTemporaryResults(SimulationInput input)
+        private void MC_SaveTemporaryResults(SimulationInput input)
         {
             // save results to bin folder
             logger.Info(() => "Saving simulation results to temporary directory...");
@@ -208,6 +249,8 @@ namespace Vts.Gui.Wpf.ViewModel
             input.ToFile(Path.Combine(TEMP_RESULTS_FOLDER, "infile_" + input.OutputName + ".txt"));
             foreach (var result in _output.ResultsDictionary.Values)
             {
+                //check the cancellation token
+                _currentCancellationTokenSource.Token.ThrowIfCancellationRequested();
                 // save all detector data to the specified folder
                 DetectorIO.WriteDetectorToFile(result, TEMP_RESULTS_FOLDER);
             }
@@ -216,15 +259,17 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private async void MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            CanCancelSimulation = false;
+            CanRunSimulation = true;
             if (_simulation != null && _simulation.IsRunning)
             {
                 await Task.Run(()=> _simulation.Cancel());
-                _currentCancellationTokenSource.Cancel();
-                logger.Info(() => "Simulation cancelled.\n");
             }
+            _currentCancellationTokenSource.Cancel();
+            logger.Info(() => "Simulation cancelled.\n");
         }
 
-        private void MC_LoadSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void MC_LoadSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             // Create OpenFileDialog 
             var dialog = new OpenFileDialog
@@ -245,25 +290,34 @@ namespace Vts.Gui.Wpf.ViewModel
             }
             if (filename != "")
             {
-                using (var stream = new FileStream(filename, FileMode.Open))
+                CanRunSimulation = false;
+                var simulationInput = await Task.Run(() => MC_ReadSimulationInputFromFile(filename));
+                if (simulationInput != null)
                 {
-                    var simulationInput = FileIO.ReadFromJsonStream<SimulationInput>(stream);
-
-                    var validationResult = SimulationInputValidation.ValidateInput(simulationInput);
-                    if (validationResult.IsValid)
-                    {
-                        _simulationInputVM.SimulationInput = simulationInput;
-                        logger.Info(() => "Simulation input loaded.\r");
-                    }
-                    else
-                    {
-                        logger.Info(() => "Simulation input not loaded - JSON format not valid.\r");
-                    }
+                    SimulationInputVM.SimulationInput = simulationInput;
                 }
             }
             else
             {
                 logger.Info(() => "JSON File not loaded.\r");
+            }
+            CanRunSimulation = true;
+        }
+
+        private SimulationInput MC_ReadSimulationInputFromFile(string filename)
+        {
+            using (var stream = new FileStream(filename, FileMode.Open))
+            {
+                var simulationInput = FileIO.ReadFromJsonStream<SimulationInput>(stream);
+
+                var validationResult = SimulationInputValidation.ValidateInput(simulationInput);
+                if (validationResult.IsValid)
+                {
+                    logger.Info(() => "Simulation input loaded.\r");
+                    return simulationInput;
+                }
+                logger.Info(() => "Simulation input not loaded - JSON format not valid.\r");
+                return null;
             }
         }
 

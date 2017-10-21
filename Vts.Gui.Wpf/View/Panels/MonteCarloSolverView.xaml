@@ -12,9 +12,7 @@
         <TextBlock Text="Specify Inputs From File (recommended)" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
             <TextBlock Text="(Check out this useful " VerticalAlignment="Center" />
-            <!--<HyperlinkButton NavigateUri="http://www.jsoneditoronline.org/" TargetName="_blank">
-                <TextBlock Text="JSON" VerticalAlignment="Center" />
-            </HyperlinkButton>-->
+            <TextBlock Text="http://www.jsoneditoronline.org/" /> <!-- In Silverlight this was a hyperlink, find a replacement for WPF app -->
             <TextBlock Text=" manipulation tool)" VerticalAlignment="Center" />
         </StackPanel>
 
@@ -60,29 +58,30 @@
                 </StackPanel>
             </StackPanel>
             <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVM, Mode=TwoWay}" />
-            <!-- Move these to the MultiRegionOpticalPropertyView:
-                                                <client:LayoutTransformer Margin="2,2,4,2" UseLayoutRounding="True" VerticalAlignment="Center">
-                                        <client:LayoutTransformer.LayoutTransform>
-                                            <RotateTransform Angle="-90"/>
-                                        </client:LayoutTransformer.LayoutTransform>
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                                    </client:LayoutTransformer>
-                                    <StackPanel Orientation="Vertical">
-            -->
-
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button VerticalAlignment="Bottom" Command="{Binding ExecuteMonteCarloSolverCommand}"
+            <Button VerticalAlignment="Bottom" 
+                    Command="{Binding ExecuteMonteCarloSolverCommand}"
+                    IsEnabled="{Binding CanRunSimulation, Mode=TwoWay}"
                     Content="Run Simulation"
-                    Width="120" Height="30" Margin="5" />
-            <Button VerticalAlignment="Bottom" Command="{Binding CancelMonteCarloSolverCommand}"
+                    Width="120" 
+                    Height="30" 
+                    Margin="5" />
+            <Button VerticalAlignment="Bottom" 
+                    Command="{Binding CancelMonteCarloSolverCommand}"
+                    IsEnabled="{Binding CanCancelSimulation, Mode=TwoWay}"
                     Content="Cancel Simulation"
-                    Width="120" Height="30" Margin="5" />
-            <Button VerticalAlignment="Bottom" Command="{Binding SaveSimulationResultsCommand}"
+                    Width="120" 
+                    Height="30" 
+                    Margin="5" />
+            <Button VerticalAlignment="Bottom" 
+                    Command="{Binding SaveSimulationResultsCommand}"
+                    IsEnabled="{Binding CanSaveResults, Mode=TwoWay}"
                     Content="Save Simulation Results"
-                    Width="160" Height="30" Margin="5" />
+                    Width="160" 
+                    Height="30" 
+                    Margin="5" />
         </StackPanel>
-
     </StackPanel>
 </UserControl>
