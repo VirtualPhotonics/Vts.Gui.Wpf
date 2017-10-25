@@ -1,9 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Vts.Gui.Wpf.View;
 using Vts.Gui.Wpf.ViewModel;
+using Vts.Common.Logging;
 
 namespace Vts.Gui.Wpf
 {
@@ -14,9 +17,18 @@ namespace Vts.Gui.Wpf
     {
         public static MainWindow Current;
         private int _numViews;
+        private static Vts.Common.Logging.ILogger logger;
 
         public MainWindow()
         {
+            logger = LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MainWindow));
+            var observableTarget =
+                NLog.LogManager.Configuration.AllTargets.FirstOrDefault(target => target is ObservableTarget);
+            if (observableTarget != null)
+            {
+                ((IObservable<string>)observableTarget).Subscribe(
+                    msg => WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(msg));
+            }
             InitializeComponent();
             _numViews = 0;
             Current = this;
