@@ -224,8 +224,8 @@ namespace Vts.Gui.Wpf.ViewModel
                 }
                 ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
-                CanRunSimulation = true;
                 await Task.Run(() => MC_SaveTemporaryResults(input), _currentCancellationTokenSource.Token);
+                CanRunSimulation = true;
                 CanCancelSimulation = false;
                 CanSaveResults = true;
             }

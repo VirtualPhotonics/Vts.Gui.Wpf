@@ -113,7 +113,9 @@ namespace Vts.Gui.Wpf
                     DataContext = vm,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Stretch,
-                    Margin = new Thickness(0, 0, 3, 0)
+                    Margin = new Thickness(0, 0, 3, 0),
+                    MinWidth = 500,
+                    MinHeight = 600
                 };
             }
             var viewBorder = new Border
