@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using Vts.Gui.Wpf.View;
 using Vts.Gui.Wpf.ViewModel;
@@ -156,7 +157,8 @@ namespace Vts.Gui.Wpf
 
             newViewWindow.MouseDown += (sender, e) =>
             {
-                var popupWindow = (Popup) sender;
+                if (e.ChangedButton != MouseButton.Left) return;
+                var popupWindow = (Popup)sender;
                 Topmost = false;
                 popupWindow.Focus();
                 thumb.RaiseEvent(e);
