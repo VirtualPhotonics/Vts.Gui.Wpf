@@ -101,8 +101,10 @@ namespace Vts.Gui.Wpf
                     Margin = new Thickness(0, 0, 3, 0),
                     MapImage =
                     {
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        VerticalAlignment = VerticalAlignment.Stretch,
                         Stretch = Stretch.Uniform,
-                        MinWidth = 500
+                        Margin = new Thickness(0,0,10,0)
                     }
                 };
             }
@@ -114,7 +116,6 @@ namespace Vts.Gui.Wpf
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Stretch,
                     Margin = new Thickness(0, 0, 3, 0),
-                    MinWidth = 500,
                     MinHeight = 600
                 };
             }
