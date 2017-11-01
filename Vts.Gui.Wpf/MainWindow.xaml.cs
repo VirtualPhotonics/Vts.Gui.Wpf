@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using Vts.Gui.Wpf.View;
 using Vts.Gui.Wpf.ViewModel;
@@ -101,8 +102,10 @@ namespace Vts.Gui.Wpf
                     Margin = new Thickness(0, 0, 3, 0),
                     MapImage =
                     {
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        VerticalAlignment = VerticalAlignment.Stretch,
                         Stretch = Stretch.Uniform,
-                        MinWidth = 500
+                        Margin = new Thickness(0,0,10,0)
                     }
                 };
             }
@@ -114,7 +117,6 @@ namespace Vts.Gui.Wpf
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Stretch,
                     Margin = new Thickness(0, 0, 3, 0),
-                    MinWidth = 500,
                     MinHeight = 600
                 };
             }
@@ -155,7 +157,8 @@ namespace Vts.Gui.Wpf
 
             newViewWindow.MouseDown += (sender, e) =>
             {
-                var popupWindow = (Popup) sender;
+                if (e.ChangedButton != MouseButton.Left) return;
+                var popupWindow = (Popup)sender;
                 Topmost = false;
                 popupWindow.Focus();
                 thumb.RaiseEvent(e);
