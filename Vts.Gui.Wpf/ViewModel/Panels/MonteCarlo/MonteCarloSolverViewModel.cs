@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Windows;
+using System.Windows.Media.Animation;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -14,11 +17,7 @@ using Vts.IO;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Detectors;
 using Vts.MonteCarlo.IO;
-using System.IO;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
+
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -220,6 +219,12 @@ namespace Vts.Gui.Wpf.ViewModel
 
                         WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
                         logger.Info(() => "done.\r");
+
+                        // put map view on top if no R(rho) plot
+                        if (!rOfRhoDetectorInputs.Any())
+                        {
+                            MainWindow.Current.Main_PutMapViewOnTop_Executed();
+                        }
                     }
                 }
                 ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();

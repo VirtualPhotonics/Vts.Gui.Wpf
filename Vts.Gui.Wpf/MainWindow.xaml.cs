@@ -170,5 +170,10 @@ namespace Vts.Gui.Wpf
                 newViewWindow.VerticalOffset += e.VerticalChange;
             };
         }
+
+        public void Main_PutMapViewOnTop_Executed()
+        {
+            OutputTabControl.SelectedItem = OutputTabControl.Items[1];
+        }
     }
 }
