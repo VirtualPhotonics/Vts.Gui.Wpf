@@ -171,9 +171,9 @@ namespace Vts.Gui.Wpf
             };
         }
 
-        public void Main_PutMapViewOnTop_Executed()
+        public void Main_SelectView_Executed(int tab)
         {
-            OutputTabControl.SelectedItem = OutputTabControl.Items[1];
+            OutputTabControl.SelectedItem = tab == 1 ? OutputTabControl.Items[1] : OutputTabControl.Items[0];
         }
     }
 }

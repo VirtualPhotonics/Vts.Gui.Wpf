@@ -41,6 +41,7 @@ namespace Vts.Gui.Wpf.ViewModel
         private bool _canRunSimulation;
         private bool _canCancelSimulation;
         private bool _canSaveResults;
+        private bool _canLoadInputFile;
 
         private SimulationOutput _output;
 
@@ -65,6 +66,8 @@ namespace Vts.Gui.Wpf.ViewModel
                 new RelayCommand(() => MC_DownloadDefaultSimulationInput_Executed(null, null));
             SaveSimulationResultsCommand = new RelayCommand(() => MC_SaveSimulationResults_Executed(null, null));
 
+            _canLoadInputFile = true;
+            _canRunSimulation = true;
             _canRunSimulation = true;
             _canCancelSimulation = false;
             _canSaveResults = false;
@@ -96,6 +99,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("CanCancelSimulation");
             }
         }
+
         public bool CanSaveResults
         {
             get { return _canSaveResults; }
@@ -103,6 +107,16 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 _canSaveResults = value;
                 OnPropertyChanged("CanSaveResults");
+            }
+        }
+
+        public bool CanLoadInputFile
+        {
+            get { return _canLoadInputFile; }
+            set
+            {
+                _canLoadInputFile = value;
+                OnPropertyChanged("CanLoadInputFile");
             }
         }
 
@@ -120,6 +134,7 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             _currentCancellationTokenSource = new CancellationTokenSource();
             CanRunSimulation = false;
+            CanLoadInputFile = false;
             CanCancelSimulation = true;
             CanSaveResults = false;
 
@@ -219,18 +234,15 @@ namespace Vts.Gui.Wpf.ViewModel
 
                         WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
                         logger.Info(() => "done.\r");
-
-                        // put map view on top if no R(rho) plot
-                        if (!rOfRhoDetectorInputs.Any())
-                        {
-                            MainWindow.Current.Main_PutMapViewOnTop_Executed();
-                        }
                     }
+                    // put map view on top if no R(rho) plot otherwise show plot view
+                    MainWindow.Current.Main_SelectView_Executed(rOfRhoDetectorInputs.Any() ? 0 : 1);
                 }
                 ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
                 await Task.Run(() => MC_SaveTemporaryResults(input), _currentCancellationTokenSource.Token);
                 CanRunSimulation = true;
+                CanLoadInputFile = true;
                 CanCancelSimulation = false;
                 CanSaveResults = true;
             }
@@ -266,6 +278,7 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             CanCancelSimulation = false;
             CanRunSimulation = true;
+            CanLoadInputFile = true;
             if (_simulation != null && _simulation.IsRunning)
             {
                 await Task.Run(()=> _simulation.Cancel());
@@ -296,6 +309,7 @@ namespace Vts.Gui.Wpf.ViewModel
             if (filename != "")
             {
                 CanRunSimulation = false;
+                CanLoadInputFile = false;
                 var simulationInput = await Task.Run(() => MC_ReadSimulationInputFromFile(filename));
                 if (simulationInput != null)
                 {
@@ -307,6 +321,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 logger.Info(() => "JSON File not loaded.\r");
             }
             CanRunSimulation = true;
+            CanLoadInputFile = true;
         }
 
         private SimulationInput MC_ReadSimulationInputFromFile(string filename)
