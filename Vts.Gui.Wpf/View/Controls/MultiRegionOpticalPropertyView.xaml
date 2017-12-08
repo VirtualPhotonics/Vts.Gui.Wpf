@@ -4,19 +4,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
+             xmlns:toolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
 
     <StackPanel Orientation="Vertical">
         <TextBlock Text="Tissue Input" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Currently selected region:" VerticalAlignment="Center" />
+            <TextBlock Text="Currently selected region:" VerticalAlignment="Center" />              
+            <toolkit:DecimalUpDown Name="nudRegionIndex" Value="{Binding CurrentRegionIndex, Mode=TwoWay}" 
+                                   Minimum="{Binding MinimumRegionIndex}" Maximum="{Binding MaximumRegionIndex}"
+                                   Width="40" HorizontalAlignment="Left" />
         </StackPanel>
-
-        <ListBox SelectedIndex="{Binding Value, ElementName=nudRegionIndex, Mode=TwoWay}"
-                 ItemsSource="{Binding RegionsVM, Mode=TwoWay}" MaxHeight="150" Margin="5">
-            <!-- <ListBox SelectedIndex="{Binding Value, ElementName=nudRegionIndex, Mode=TwoWay}"  ItemsSource="{Binding LayerRegionsVM, Mode=TwoWay}" MaxHeight="150" Margin="5">-->
-            <!-- <ListBox SelectedIndex="{Binding CurrentRegionIndex, Mode=TwoWay}" ItemsSource="{Binding LayerRegionsVM, Mode=TwoWay}" MaxHeight="150" Margin="5">-->
+         
+        <ListBox x:Name="opListBox" SelectedIndex="{Binding Value, ElementName=nudRegionIndex, Mode=TwoWay}"
+                 ItemsSource="{Binding RegionsVM, Mode=TwoWay}" MaxHeight="180" Margin="5" SelectionChanged="ListBox_SelectionChanged">
+             <!--<ListBox SelectedIndex="{Binding Value, ElementName=nudRegionIndex, Mode=TwoWay}"  ItemsSource="{Binding LayerRegionsVM, Mode=TwoWay}" MaxHeight="150" Margin="5"></ListBox>
+             <ListBox SelectedIndex="{Binding CurrentRegionIndex, Mode=TwoWay}" ItemsSource="{Binding LayerRegionsVM, Mode=TwoWay}" MaxHeight="150" Margin="5"></ListBox>-->
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Gray" BorderThickness="1.5">
