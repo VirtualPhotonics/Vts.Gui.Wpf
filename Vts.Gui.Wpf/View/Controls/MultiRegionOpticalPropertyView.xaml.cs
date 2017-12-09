@@ -16,7 +16,10 @@ namespace Vts.Gui.Wpf.View
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-             opListBox.ScrollIntoView(opListBox.Items[opListBox.SelectedIndex]);
+            if ((opListBox.SelectedIndex <= nudRegionIndex.Maximum) && (opListBox.SelectedIndex >= nudRegionIndex.Minimum))
+            {
+                opListBox.ScrollIntoView(opListBox.Items[opListBox.SelectedIndex]);
+            }
         }
 
     }
