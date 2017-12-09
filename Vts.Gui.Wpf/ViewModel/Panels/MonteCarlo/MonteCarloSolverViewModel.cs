@@ -137,6 +137,11 @@ namespace Vts.Gui.Wpf.ViewModel
             CanLoadInputFile = false;
             CanCancelSimulation = true;
             CanSaveResults = false;
+            var mapView = false;
+            var plotView = false;
+
+            //clear the map in case there is no new mapview
+            WindowViewModel.Current.MapVM.ClearMap.Execute(null);
 
             try
             {
@@ -184,6 +189,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
                         var plotLabel = GetPlotLabel();
                         WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] { new PlotData(points, plotLabel) });
+                        plotView = true;
                         logger.Info(() => "done.\r");
                     }
 
@@ -193,7 +199,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     if (fluenceDetectorInputs.Any())
                     {
                         logger.Info(() => "Creating Fluence(rho,z) map...");
-                        var detectorInput = (FluenceOfRhoAndZDetectorInput)fluenceDetectorInputs.First();
+                        var detectorInput = (FluenceOfRhoAndZDetectorInput) fluenceDetectorInputs.First();
                         var rhosMC = detectorInput.Rho.AsEnumerable().ToArray();
                         var zsMC = detectorInput.Z.AsEnumerable().ToArray();
 
@@ -233,10 +239,14 @@ namespace Vts.Gui.Wpf.ViewModel
                         var mapData = new MapData(_mapArrayBuffer, twoRhos, zs, twoDRhos, dZs);
 
                         WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
+                        mapView = true;
                         logger.Info(() => "done.\r");
                     }
-                    // put map view on top if no R(rho) plot otherwise show plot view
-                    MainWindow.Current.Main_SelectView_Executed(rOfRhoDetectorInputs.Any() ? 0 : 1);
+                    // put map view on top if no plot and plot view on top if no map otherwise stay on current view
+                    if (!(plotView && mapView))
+                    {
+                        MainWindow.Current.Main_SelectView_Executed(rOfRhoDetectorInputs.Any() ? 0 : 1);
+                    }
                 }
                 ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;

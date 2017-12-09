@@ -53,12 +53,14 @@ namespace Vts.Gui.Wpf.ViewModel
 
             //Commands.Maps_PlotMap.Executed += Maps_PlotMap_Executed;
             PlotMap = new RelayCommand<object>(PlotMap_Executed);
+            ClearMap = new RelayCommand<object>(ClearMap_Executed);
 
             ExportDataToTextCommand = new RelayCommand(() => Maps_ExportDataToText_Executed(null, null));
             DuplicateWindowCommand = new RelayCommand(() => Map_DuplicateWindow_Executed(null, null));
         }
 
         public RelayCommand<object> PlotMap { get; set; }
+        public RelayCommand<object> ClearMap { get; set; }
         public RelayCommand DuplicateWindowCommand { get; set; }
         public RelayCommand ExportDataToTextCommand { get; set; }
 
@@ -247,6 +249,13 @@ namespace Vts.Gui.Wpf.ViewModel
                 UpdateStats();
                 UpdateImages();
             }
+        }
+
+        private void ClearMap_Executed(object sender)
+        {
+            if (Bitmap == null) return;
+            Bitmap = null;
+            OnPropertyChanged("Bitmap");
         }
 
         private void PlotMap_Executed(object sender)
