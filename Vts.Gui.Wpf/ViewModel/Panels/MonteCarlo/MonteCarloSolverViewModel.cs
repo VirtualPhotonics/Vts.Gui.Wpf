@@ -17,7 +17,8 @@ using Vts.IO;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Detectors;
 using Vts.MonteCarlo.IO;
-
+using System.Runtime.Caching;
+using System.Windows.Forms;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -42,8 +43,12 @@ namespace Vts.Gui.Wpf.ViewModel
         private bool _canCancelSimulation;
         private bool _canSaveResults;
         private bool _canLoadInputFile;
+        private bool _canDownloadInfiles;
+
+        private string _cancelButtonText;
 
         private SimulationOutput _output;
+        private ObjectCache _cache = MemoryCache.Default;
 
         private MonteCarloSimulation _simulation;
 
@@ -56,8 +61,8 @@ namespace Vts.Gui.Wpf.ViewModel
             _simulationInputVM = new SimulationInputViewModel(simulationInput);
 
             var rho =
-                ((ROfRhoDetectorInput)
-                    simulationInput.DetectorInputs.Where(d => d.TallyType == TallyType.ROfRho).First()).Rho;
+            ((ROfRhoDetectorInput)
+                simulationInput.DetectorInputs.Where(d => d.TallyType == TallyType.ROfRho).First()).Rho;
 
             ExecuteMonteCarloSolverCommand = new RelayCommand(() => MC_ExecuteMonteCarloSolver_Executed(null, null));
             CancelMonteCarloSolverCommand = new RelayCommand(() => MC_CancelMonteCarloSolver_Executed(null, null));
@@ -66,12 +71,14 @@ namespace Vts.Gui.Wpf.ViewModel
                 new RelayCommand(() => MC_DownloadDefaultSimulationInput_Executed(null, null));
             SaveSimulationResultsCommand = new RelayCommand(() => MC_SaveSimulationResults_Executed(null, null));
 
+            _canDownloadInfiles = true;
             _canLoadInputFile = true;
             _canRunSimulation = true;
             _canRunSimulation = true;
             _canCancelSimulation = false;
             _canSaveResults = false;
             _newResultsAvailable = false;
+            _cancelButtonText = "Cancel";
         }
 
         public RelayCommand ExecuteMonteCarloSolverCommand { get; private set; }
@@ -79,6 +86,26 @@ namespace Vts.Gui.Wpf.ViewModel
         public RelayCommand LoadSimulationInputCommand { get; private set; }
         public RelayCommand DownloadDefaultSimulationInputCommand { get; private set; }
         public RelayCommand SaveSimulationResultsCommand { get; private set; }
+
+        public string CancelButtonText
+        {
+            get { return _cancelButtonText; }
+            set
+            {
+                _cancelButtonText = value;
+                OnPropertyChanged("CancelButtonText");
+            }
+        }
+
+        public bool CanDownloadInfiles
+        {
+            get { return _canDownloadInfiles; }
+            set
+            {
+                _canDownloadInfiles = value;
+                OnPropertyChanged("CanDownloadInfiles");
+            }
+        }
 
         public bool CanRunSimulation
         {
@@ -136,6 +163,7 @@ namespace Vts.Gui.Wpf.ViewModel
             CanRunSimulation = false;
             CanLoadInputFile = false;
             CanCancelSimulation = true;
+            CancelButtonText = "Cancel Simulation";
             CanSaveResults = false;
             var mapView = false;
             var plotView = false;
@@ -148,7 +176,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 var input = _simulationInputVM.SimulationInput;
 
                 MainWindow.Current.Wait.Visibility = Visibility.Visible;
-                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Begin();
+                ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Begin();
                 _newResultsAvailable = false;
 
                 var validationResult = SimulationInputValidation.ValidateInput(input);
@@ -168,14 +196,14 @@ namespace Vts.Gui.Wpf.ViewModel
                 {
                     _newResultsAvailable = _simulation.ResultsAvailable;
 
-                    var rOfRhoDetectorInputs = _simulationInputVM.SimulationInput.DetectorInputs.
-                        Where(di => di.Name == "ROfRho");
+                    var rOfRhoDetectorInputs =
+                        _simulationInputVM.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho");
 
                     if (rOfRhoDetectorInputs.Any())
                     {
                         logger.Info(() => "Creating R(rho) plot...");
 
-                        var detectorInput = (ROfRhoDetectorInput)rOfRhoDetectorInputs.First();
+                        var detectorInput = (ROfRhoDetectorInput) rOfRhoDetectorInputs.First();
 
                         var independentValues = detectorInput.Rho.AsEnumerable().ToArray();
 
@@ -188,13 +216,13 @@ namespace Vts.Gui.Wpf.ViewModel
                         WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
 
                         var plotLabel = GetPlotLabel();
-                        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] { new PlotData(points, plotLabel) });
+                        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
                         plotView = true;
                         logger.Info(() => "done.\r");
                     }
 
-                    var fluenceDetectorInputs = _simulationInputVM.SimulationInput.DetectorInputs.
-                        Where(di => di.Name == "FluenceOfRhoAndZ");
+                    var fluenceDetectorInputs =
+                        _simulationInputVM.SimulationInput.DetectorInputs.Where(di => di.Name == "FluenceOfRhoAndZ");
 
                     if (fluenceDetectorInputs.Any())
                     {
@@ -248,19 +276,104 @@ namespace Vts.Gui.Wpf.ViewModel
                         MainWindow.Current.Main_SelectView_Executed(rOfRhoDetectorInputs.Any() ? 0 : 1);
                     }
                 }
-                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
-                await Task.Run(() => MC_SaveTemporaryResults(input), _currentCancellationTokenSource.Token);
+                await Task.Run(() => MC_CacheSimulationResults(input), _currentCancellationTokenSource.Token);
                 CanRunSimulation = true;
                 CanLoadInputFile = true;
+                CancelButtonText = "Cancel";
                 CanCancelSimulation = false;
                 CanSaveResults = true;
             }
             catch (OperationCanceledException)
             {
-                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void MC_CacheSimulationResults(SimulationInput input)
+        {
+            // cache the simulation results
+            logger.Info(() => "Caching simulation results");
+
+            CacheItemPolicy policy = new CacheItemPolicy
+            {
+                SlidingExpiration = TimeSpan.FromHours(2)
+            };
+
+            _cache.Set("SimulationInput", input, policy);
+            _cache.Set("SimulationOutput", _output, policy);
+            logger.Info(() => "done.\r");
+        }
+
+        private async void MC_SaveSimulationResultsFromCache()
+        {
+            var input = _cache["SimulationInput"] as SimulationInput;
+            var output = _cache["SimulationOutput"] as SimulationOutput;
+            if (input == null || output == null)
+            {
+                return;
+            }
+            using (var dialog = new FolderBrowserDialog())
+            {
+                var dialogResult = dialog.ShowDialog();
+                if (dialogResult == DialogResult.OK)
+                {
+                    // create the root directory
+                    try
+                    {
+                        var folder = Path.Combine(dialog.SelectedPath, "results");
+                        if (Directory.Exists(folder) && Directory.EnumerateFileSystemEntries(folder).Any())
+                        {
+                            // there are files in this directory, ok to delete them?
+                            var messageBoxResult =
+                                System.Windows.MessageBox.Show(
+                                    "The sub folder \"results\" already exists and contains files, these files will be deleted, are you sure you want to continue?",
+                                    "Delete Confirmation", MessageBoxButton.YesNo);
+                            if (messageBoxResult == MessageBoxResult.No)
+                            {
+                                return;
+                            }
+                        }
+                        logger.Info(() => "Saving simulation results...");
+                        CanSaveResults = false;
+                        CanRunSimulation = false;
+                        CanLoadInputFile = false;
+                        CanCancelSimulation = true;
+                        CancelButtonText = "Cancel Save";
+                        await Task.Run(() => MC_SaveSimulationResultsToFolder(input, output, folder),
+                            _currentCancellationTokenSource.Token);
+                        CanSaveResults = true;
+                        CanRunSimulation = true;
+                        CanLoadInputFile = true;
+                        CancelButtonText = "Cancel";
+                        CanCancelSimulation = false;
+
+                        logger.Info(() => "done.\r");
+                    }
+                    catch (Exception)
+                    {
+                        logger.Info(() => "Unable to save files.");
+                    }
+                }
+            }
+        }
+
+        private void MC_SaveSimulationResultsToFolder(SimulationInput input, SimulationOutput output, string folder)
+        {
+            FileIO.CreateEmptyDirectory(folder);
+
+            // write detector to file
+            input.ToFile(Path.Combine(folder, "infile_" + input.OutputName + ".txt"));
+            foreach (var result in output.ResultsDictionary.Values)
+            {
+                // save all detector data to the specified folder
+                DetectorIO.WriteDetectorToFile(result, folder);
+            }
+            // copy the MATLAB files to the folder also
+            var currentAssembly = Assembly.GetExecutingAssembly();
+            FileIO.CopyFolderFromEmbeddedResources("Matlab", folder, currentAssembly.FullName, false);
         }
 
         private void MC_SaveTemporaryResults(SimulationInput input)
@@ -270,18 +383,25 @@ namespace Vts.Gui.Wpf.ViewModel
 
             // create the root directory
             // create the detector directory, removing stale files first if they exist
-            FileIO.CreateEmptyDirectory(TEMP_RESULTS_FOLDER);
-
-            // write detector to file
-            input.ToFile(Path.Combine(TEMP_RESULTS_FOLDER, "infile_" + input.OutputName + ".txt"));
-            foreach (var result in _output.ResultsDictionary.Values)
+            try
             {
-                //check the cancellation token
-                _currentCancellationTokenSource.Token.ThrowIfCancellationRequested();
-                // save all detector data to the specified folder
-                DetectorIO.WriteDetectorToFile(result, TEMP_RESULTS_FOLDER);
+                FileIO.CreateEmptyDirectory(TEMP_RESULTS_FOLDER);
+
+                // write detector to file
+                input.ToFile(Path.Combine(TEMP_RESULTS_FOLDER, "infile_" + input.OutputName + ".txt"));
+                foreach (var result in _output.ResultsDictionary.Values)
+                {
+                    //check the cancellation token
+                    _currentCancellationTokenSource.Token.ThrowIfCancellationRequested();
+                    // save all detector data to the specified folder
+                    DetectorIO.WriteDetectorToFile(result, TEMP_RESULTS_FOLDER);
+                }
+                logger.Info(() => "done.\r");
             }
-            logger.Info(() => "done.\r");
+            catch (Exception)
+            {
+                logger.Info(() => "Unable to save temporary files.");
+            }
         }
 
         private async void MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -291,16 +411,16 @@ namespace Vts.Gui.Wpf.ViewModel
             CanLoadInputFile = true;
             if (_simulation != null && _simulation.IsRunning)
             {
-                await Task.Run(()=> _simulation.Cancel());
+                await Task.Run(() => _simulation.Cancel());
             }
             _currentCancellationTokenSource.Cancel();
-            logger.Info(() => "Simulation cancelled.\n");
+            logger.Info(() => "Cancelled.\n");
         }
 
         private async void MC_LoadSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             // Create OpenFileDialog 
-            var dialog = new OpenFileDialog
+            var dialog = new Microsoft.Win32.OpenFileDialog
             {
                 DefaultExt = ".txt",
                 Filter = "TXT Files (*.txt)|*.txt"
@@ -351,107 +471,162 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        private void MC_DownloadDefaultSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void MC_DownloadDefaultSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            // Create SaveFileDialog 
-            var dialog = new SaveFileDialog
+            using (var dialog = new FolderBrowserDialog())
             {
-                DefaultExt = ".zip",
-                Filter = "ZIP Files (*.zip)|*.zip"
-            };
-
-            // Display OpenFileDialog by calling ShowDialog method 
-            var result = dialog.ShowDialog();
-
-            // if the file dialog returns true - file was selected 
-            var filename = "";
-            if (result == true)
-            {
-                // Get the filename from the dialog 
-                filename = dialog.FileName;
-            }
-            if (filename != "")
-            {
-                using (var stream = new FileStream(filename, FileMode.Create))
+                var dialogResult = dialog.ShowDialog();
+                if (dialogResult == DialogResult.OK)
                 {
-                    var files = SimulationInputProvider.GenerateAllSimulationInputs().Select(input =>
-                        new
-                        {
-                            Name = "infile_" + input.OutputName + ".txt",
-                            Input = input
-                        });
- 
-                    foreach (var file in files)
+                    // create the root directory
+                    try
                     {
-                        file.Input.ToFile(file.Name);
+                        var folder = Path.Combine(dialog.SelectedPath, "infiles");
+                        if (Directory.Exists(folder) && Directory.EnumerateFileSystemEntries(folder).Any())
+                        {
+                            // there are files in this directory, ok to delete them?
+                            var messageBoxResult =
+                                System.Windows.MessageBox.Show(
+                                    "The sub folder \"infiles\" already exists and contains files, these files will be deleted, are you sure you want to continue?",
+                                    "Delete Confirmation", MessageBoxButton.YesNo);
+                            if (messageBoxResult == MessageBoxResult.No)
+                            {
+                                return;
+                            }
+                        }
+                        logger.Info(() => "Downloading infiles...");
+                        CanDownloadInfiles = false;
+                        await Task.Run(() => MC_DownloadDefaultSimulationInputToFolder(folder));
+                        CanDownloadInfiles = true;
+                        logger.Info(() => "done.\r");
                     }
-                    FileIO.ZipFiles(files.Select(file => file.Name), "", stream);
-                    logger.Info(() => "Template simulation input files exported to a zip file.\r");
+                    catch (Exception)
+                    {
+                        logger.Info(() => "Unable to save files.");
+                    }
                 }
             }
         }
+
+        private void MC_DownloadDefaultSimulationInputToFolder(string folder)
+        {
+            FileIO.CreateEmptyDirectory(folder);
+            var files = SimulationInputProvider.GenerateAllSimulationInputs().Select(input =>
+                new
+                {
+                    Name = "infile_" + input.OutputName + ".txt",
+                    Input = input
+                });
+
+            foreach (var file in files)
+            {
+                file.Input.ToFile(Path.Combine(folder, file.Name));
+            }
+        }
+
+    //private void MC_DownloadDefaultSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
+        //{
+        //    // Create SaveFileDialog 
+        //    var dialog = new Microsoft.Win32.SaveFileDialog
+        //    {
+        //        DefaultExt = ".zip",
+        //        Filter = "ZIP Files (*.zip)|*.zip"
+        //    };
+
+        //    // Display OpenFileDialog by calling ShowDialog method 
+        //    var result = dialog.ShowDialog();
+
+        //    // if the file dialog returns true - file was selected 
+        //    var filename = "";
+        //    if (result == true)
+        //    {
+        //        // Get the filename from the dialog 
+        //        filename = dialog.FileName;
+        //    }
+        //    if (filename != "")
+        //    {
+        //        using (var stream = new FileStream(filename, FileMode.Create))
+        //        {
+        //            var files = SimulationInputProvider.GenerateAllSimulationInputs().Select(input =>
+        //                new
+        //                {
+        //                    Name = "infile_" + input.OutputName + ".txt",
+        //                    Input = input
+        //                });
+ 
+        //            foreach (var file in files)
+        //            {
+        //                file.Input.ToFile(file.Name);
+        //            }
+        //            FileIO.ZipFiles(files.Select(file => file.Name), "", stream);
+        //            logger.Info(() => "Template simulation input files exported to a zip file.\r");
+        //        }
+        //    }
+        //}
 
         private void MC_SaveSimulationResults_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (_output != null && _newResultsAvailable)
             {
-                // Create SaveFileDialog 
-                var dialog = new SaveFileDialog
-                {
-                    DefaultExt = ".zip",
-                    Filter = "Zip Files (*.zip)|*.zip"
-                };
+                MC_SaveSimulationResultsFromCache();
 
-                // Display OpenFileDialog by calling ShowDialog method 
-                var result = dialog.ShowDialog();
+                //// Create SaveFileDialog 
+                //var dialog = new Microsoft.Win32.SaveFileDialog
+                //{
+                //    DefaultExt = ".zip",
+                //    Filter = "Zip Files (*.zip)|*.zip"
+                //};
 
-                // if the file dialog returns true - file was selected 
-                var filename = "";
-                if (result == true)
-                {
-                    // Get the filename from the dialog 
-                    filename = dialog.FileName;
-                }
-                if (filename == "") return;
-                var input = _simulationInputVM.SimulationInput;
-                if (Directory.Exists(TEMP_RESULTS_FOLDER))
-                {
-                    var currentAssembly = Assembly.GetExecutingAssembly();
-                    // copy the MATLAB files to isolated storage and get their names so they can be included in the zip file
-                    var matlabFiles = FileIO.CopyFolderFromEmbeddedResources("Matlab", TEMP_RESULTS_FOLDER, currentAssembly.FullName, false);
-                    var adjustedMatlabFilenames = new List<string>();
-                    foreach (var fileName in matlabFiles)
-                    {
-                        adjustedMatlabFilenames.Add(Path.Combine(TEMP_RESULTS_FOLDER, fileName));
-                    }
-                    // get all the files we want to zip up
-                    var fileNames = Directory.GetFiles(TEMP_RESULTS_FOLDER);
-                    // then, zip all the files together and store *that* .zip to default bin folder
-                    var allFiles = adjustedMatlabFilenames.Concat(fileNames).Distinct();
-                    try
-                    {
-                        FileIO.ZipFiles(allFiles, "", input.OutputName + ".zip");
-                    }
-                    catch (SecurityException)
-                    {
-                        logger.Error(() => "\rProblem saving results to file.\r");
-                    }
-                } 
-                try
-                {
-                    using (var stream = new FileStream(filename, FileMode.Create))
-                    {
-                        using (var zipStream = StreamFinder.GetFileStream(input.OutputName + ".zip", FileMode.Open))
-                        {
-                            FileIO.CopyStream(zipStream, stream);
-                        }
-                    }
-                    logger.Info(() => "Finished copying results to user file.\r");
-                }
-                catch (SecurityException)
-                {
-                    logger.Error(() => "Problem exporting results to user file...sorry user :(\r");
-                }
+                //// Display OpenFileDialog by calling ShowDialog method 
+                //var result = dialog.ShowDialog();
+
+                //// if the file dialog returns true - file was selected 
+                //var filename = "";
+                //if (result == true)
+                //{
+                //    // Get the filename from the dialog 
+                //    filename = dialog.FileName;
+                //}
+                //if (filename == "") return;
+                //var input = _simulationInputVM.SimulationInput;
+                //if (Directory.Exists(TEMP_RESULTS_FOLDER))
+                //{
+                //    var currentAssembly = Assembly.GetExecutingAssembly();
+                //    // copy the MATLAB files to isolated storage and get their names so they can be included in the zip file
+                //    var matlabFiles = FileIO.CopyFolderFromEmbeddedResources("Matlab", TEMP_RESULTS_FOLDER, currentAssembly.FullName, false);
+                //    var adjustedMatlabFilenames = new List<string>();
+                //    foreach (var fileName in matlabFiles)
+                //    {
+                //        adjustedMatlabFilenames.Add(Path.Combine(TEMP_RESULTS_FOLDER, fileName));
+                //    }
+                //    // get all the files we want to zip up
+                //    var fileNames = Directory.GetFiles(TEMP_RESULTS_FOLDER);
+                //    // then, zip all the files together and store *that* .zip to default bin folder
+                //    var allFiles = adjustedMatlabFilenames.Concat(fileNames).Distinct();
+                //    try
+                //    {
+                //        FileIO.ZipFiles(allFiles, "", input.OutputName + ".zip");
+                //    }
+                //    catch (SecurityException)
+                //    {
+                //        logger.Error(() => "\rProblem saving results to file.\r");
+                //    }
+                //} 
+                //try
+                //{
+                //    using (var stream = new FileStream(filename, FileMode.Create))
+                //    {
+                //        using (var zipStream = StreamFinder.GetFileStream(input.OutputName + ".zip", FileMode.Open))
+                //        {
+                //            FileIO.CopyStream(zipStream, stream);
+                //        }
+                //    }
+                //    logger.Info(() => "Finished copying results to user file.\r");
+                //}
+                //catch (SecurityException)
+                //{
+                //    logger.Error(() => "Problem exporting results to user file...sorry user :(\r");
+                //}
             }
         }
 

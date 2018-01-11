@@ -22,6 +22,7 @@
                     Content="Load Input File"
                     Width="180" Height="30" Margin="5" />
             <Button VerticalAlignment="Bottom" Command="{Binding DownloadDefaultSimulationInputCommand}"
+                    IsEnabled="{Binding CanDownloadInfiles, Mode=TwoWay}"
                     Content="Download Prototype Input Files"
                     Width="180" Height="30" Margin="5" />
         </StackPanel>
@@ -72,7 +73,7 @@
             <Button VerticalAlignment="Bottom" 
                     Command="{Binding CancelMonteCarloSolverCommand}"
                     IsEnabled="{Binding CanCancelSimulation, Mode=TwoWay}"
-                    Content="Cancel Simulation"
+                    Content="{Binding CancelButtonText, Mode=TwoWay}"
                     Width="120" 
                     Height="30" 
                     Margin="5" />
