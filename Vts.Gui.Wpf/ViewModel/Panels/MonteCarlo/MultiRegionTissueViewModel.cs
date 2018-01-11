@@ -67,13 +67,13 @@ namespace Vts.Gui.Wpf.ViewModel
             get { return _currentRegionIndex; }
             set
             {
-                //if(value<_layerRegionsVM.Count && value >=0)
-                //{
-                _currentRegionIndex = value;
-                OnPropertyChanged("CurrentRegionIndex");
-                OnPropertyChanged("MinimumRegionIndex");
-                OnPropertyChanged("MaximumRegionIndex");
-                //}
+                if ((value < _regionsVM.Count) && (value >= 0))
+                {
+                    _currentRegionIndex = value;
+                    OnPropertyChanged("CurrentRegionIndex");
+                    OnPropertyChanged("MinimumRegionIndex");
+                    OnPropertyChanged("MaximumRegionIndex");
+                }
             }
         }
 
