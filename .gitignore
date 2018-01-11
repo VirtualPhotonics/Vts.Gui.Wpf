@@ -35,6 +35,7 @@
 [Bb]in/
 [Cc]lient[Bb]in
 [Dd]ebug*/
+[Rr]elease/
 [Bb]uild/
 obj/
 vts_libraries/
