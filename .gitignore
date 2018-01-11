@@ -40,6 +40,10 @@ obj/
 vts_libraries/
 [Pp]ackages/
 
+# Visual Studio ignores #
+###########################
+.vs/
+
 # MATLAB Specific ignores #
 ###########################
 [Rr]esults*/
