@@ -109,9 +109,7 @@
             Grid.Column="0"
             Grid.Row="1"
             Grid.ColumnSpan="2"
-            Margin="3"
-            Width="Auto"
-            Height="Auto" />
+            Margin="3" />
         <Canvas Name="Wait"
                 Grid.Column="1"
                 Grid.Row="0"
