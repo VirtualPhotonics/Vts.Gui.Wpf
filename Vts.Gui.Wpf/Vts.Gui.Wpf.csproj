@@ -33,6 +33,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'WhiteList|AnyCPU'">
+    <OutputPath>bin\WhiteList\</OutputPath>
+    <DefineConstants>TRACE;WHITELIST</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=3.1.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.3.1.0\lib\net40\AutoMapper.dll</HintPath>
@@ -174,6 +184,7 @@
     <Compile Include="Extensions\LocalizedStrings.cs" />
     <Compile Include="Extensions\StringLookup.cs" />
     <Compile Include="Resources\Strings.Designer.cs" />
+    <Compile Include="ViewModel\Application\WhiteList.cs" />
     <Compile Include="ViewModel\Controls\OptionViewModel.cs" />
     <Compile Include="ViewModel\Controls\PositionViewModel.cs" />
     <Compile Include="ViewModel\Controls\TextOutputViewModel.cs">
