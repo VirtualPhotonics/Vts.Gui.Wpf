@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
 
@@ -16,11 +17,14 @@ namespace Vts.Gui.Wpf.ViewModel
         private object _tissueInputVM;
         private OptionViewModel<string> _tissueTypeVM;
 
+        private string _outputName;
+
         public SimulationInputViewModel(SimulationInput input)
         {
             _simulationInput = input; // use the property to invoke the appropriate change notification
 
             _simulationOptionsVM = new SimulationOptionsViewModel(_simulationInput.Options);
+            _outputName = input.OutputName;
 
 #if WHITELIST 
             TissueTypeVM = new OptionViewModel<string>("Tissue Type:", true, _simulationInput.TissueInput.TissueType, WhiteList.TissueTypes);
@@ -32,7 +36,13 @@ namespace Vts.Gui.Wpf.ViewModel
                     "SingleEllipsoid"
                 });
 #endif
-
+            _simulationOptionsVM.PropertyChanged += (sender, args) =>
+            {
+                if (_simulationOptionsVM.TrackStatistics && _simulationOptionsVM.OutputFolder != null)
+                {
+                    _simulationInput.OutputName = Path.Combine(_simulationOptionsVM.OutputFolder, _outputName) ;
+                }
+            };
             _tissueTypeVM.PropertyChanged += (sender, args) =>
             {
                 switch (_tissueTypeVM.SelectedValue)
@@ -67,6 +77,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("N");
                 _simulationOptionsVM.SimulationOptions = _simulationInput.Options;
                 UpdateTissueInputVM(_simulationInput.TissueInput);
+                _outputName = _simulationInput.OutputName;
             }
         }
 

@@ -1,5 +1,9 @@
-﻿using Vts.MonteCarlo;
-
+﻿using GalaSoft.MvvmLight.Command;
+using Vts.MonteCarlo;
+using System;
+using System.IO;
+using System.Windows.Forms;
+using System.Windows.Input;
 #if WHITELIST
 using Vts.Gui.Wpf.ViewModel.Application;
 #endif
@@ -10,8 +14,13 @@ namespace Vts.Gui.Wpf.ViewModel
     {
         private OptionViewModel<AbsorptionWeightingType> _absorptionWeightingTypeVM;
         private OptionViewModel<PhaseFunctionType> _phaseFunctionTypeVM;
+
+        public RelayCommand SetStatisticsFolderCommand { get; private set; }
+
         private OptionViewModel<RandomNumberGeneratorType> _randomNumberGeneratorTypeVM;
         private SimulationOptions _simulationOptions;
+
+        private string _outputFolder;
 
         public SimulationOptionsViewModel(SimulationOptions options)
         {
@@ -29,6 +38,7 @@ namespace Vts.Gui.Wpf.ViewModel
             _phaseFunctionTypeVM = new OptionViewModel<PhaseFunctionType>("Phase Function Type:", false,
                 _simulationOptions.PhaseFunctionType);
 #endif
+            SetStatisticsFolderCommand = new RelayCommand(() => MC_SetStatisticsFolder_Executed(null, null));
 
             _absorptionWeightingTypeVM.PropertyChanged += (sender, args) =>
                 _simulationOptions.AbsorptionWeightingType = _absorptionWeightingTypeVM.SelectedValue;
@@ -36,6 +46,33 @@ namespace Vts.Gui.Wpf.ViewModel
                 _simulationOptions.RandomNumberGeneratorType = _randomNumberGeneratorTypeVM.SelectedValue;
             _phaseFunctionTypeVM.PropertyChanged += (sender, args) =>
                 _simulationOptions.PhaseFunctionType = _phaseFunctionTypeVM.SelectedValue;
+        }
+
+        private void MC_SetStatisticsFolder_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (TrackStatistics)
+            {
+                using (var dialog = new FolderBrowserDialog())
+                {
+                    var dialogResult = dialog.ShowDialog();
+                    if (dialogResult == DialogResult.OK)
+                    {
+                        // create the root directory
+                        try
+                        {
+                            OutputFolder = dialog.SelectedPath;
+                        }
+                        catch (Exception)
+                        {
+                            TrackStatistics = false;
+                        }
+                    }
+                    else
+                    {
+                        TrackStatistics = false;
+                    }
+                }
+            }
         }
 
         public SimulationOptionsViewModel() : this(new SimulationOptions())
@@ -78,6 +115,16 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 _simulationOptions.TrackStatistics = value;
                 OnPropertyChanged("TrackStatistics");
+            }
+        }
+
+        public string OutputFolder
+        {
+            get { return _outputFolder; }
+            set
+            {
+                _outputFolder = value;
+                OnPropertyChanged("OutputFolder");
             }
         }
 

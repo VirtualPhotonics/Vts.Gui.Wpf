@@ -37,6 +37,7 @@ namespace Vts.Gui.Wpf.ViewModel
         private double[] _mapArrayBuffer;
 
         //private bool _firstTimeSaving;
+        private string _outputName;
 
         private bool _newResultsAvailable;
         private bool _canRunSimulation;
@@ -59,6 +60,7 @@ namespace Vts.Gui.Wpf.ViewModel
             var simulationInput = SimulationInputProvider.PointSourceTwoLayerTissueROfRhoDetector();
 
             _simulationInputVM = new SimulationInputViewModel(simulationInput);
+            _outputName = simulationInput.OutputName;
 
             var rho =
             ((ROfRhoDetectorInput)
@@ -365,7 +367,7 @@ namespace Vts.Gui.Wpf.ViewModel
             FileIO.CreateEmptyDirectory(folder);
 
             // write detector to file
-            input.ToFile(Path.Combine(folder, "infile_" + input.OutputName + ".txt"));
+            input.ToFile(Path.Combine(folder, "infile_" + _outputName + ".txt"));
             foreach (var result in output.ResultsDictionary.Values)
             {
                 // save all detector data to the specified folder
@@ -388,7 +390,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 FileIO.CreateEmptyDirectory(TEMP_RESULTS_FOLDER);
 
                 // write detector to file
-                input.ToFile(Path.Combine(TEMP_RESULTS_FOLDER, "infile_" + input.OutputName + ".txt"));
+                input.ToFile(Path.Combine(TEMP_RESULTS_FOLDER, "infile_" + _outputName + ".txt"));
                 foreach (var result in _output.ResultsDictionary.Values)
                 {
                     //check the cancellation token
@@ -443,6 +445,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 var simulationInput = await Task.Run(() => MC_ReadSimulationInputFromFile(filename));
                 if (simulationInput != null)
                 {
+                    _outputName = simulationInput.OutputName;
                     SimulationInputVM.SimulationInput = simulationInput;
                 }
             }
