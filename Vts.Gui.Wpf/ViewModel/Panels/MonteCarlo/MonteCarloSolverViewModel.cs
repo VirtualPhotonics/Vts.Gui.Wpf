@@ -184,7 +184,8 @@ namespace Vts.Gui.Wpf.ViewModel
                 var validationResult = SimulationInputValidation.ValidateInput(input);
                 if (!validationResult.IsValid)
                 {
-                    logger.Info(() => "\rSimulation input not valid.\rRule: " + validationResult.ValidationRule +
+                    logger.Info(() => "\rSimulation input not valid.  Cancel simulation and try again" +
+                                      "\rRule: " + validationResult.ValidationRule +
                                       (!string.IsNullOrEmpty(validationResult.Remarks)
                                           ? "\rDetails: " + validationResult.Remarks
                                           : "") + ".\r");
@@ -290,6 +291,11 @@ namespace Vts.Gui.Wpf.ViewModel
             catch (OperationCanceledException)
             {
                 ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+            }
+            finally
+            {
+                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
             }
         }
