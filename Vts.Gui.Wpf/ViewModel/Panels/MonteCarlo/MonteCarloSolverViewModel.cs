@@ -19,6 +19,7 @@ using Vts.MonteCarlo.Detectors;
 using Vts.MonteCarlo.IO;
 using System.Runtime.Caching;
 using System.Windows.Forms;
+using Vts.MonteCarlo.Tissues;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -184,11 +185,17 @@ namespace Vts.Gui.Wpf.ViewModel
                 var validationResult = SimulationInputValidation.ValidateInput(input);
                 if (!validationResult.IsValid)
                 {
-                    logger.Info(() => "\rSimulation input not valid.  Cancel simulation and try again" +
+                    logger.Info(() => "Simulation input not valid.  Cancel simulation and try again" +
                                       "\rRule: " + validationResult.ValidationRule +
                                       (!string.IsNullOrEmpty(validationResult.Remarks)
                                           ? "\rDetails: " + validationResult.Remarks
                                           : "") + ".\r");
+                    return;
+                }
+
+                if (!MC_ValidateInputForMCPlots(input))
+                {
+                    CanRunSimulation = false;
                     return;
                 }
 
@@ -298,6 +305,32 @@ namespace Vts.Gui.Wpf.ViewModel
                 ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
             }
+        }
+
+        /// <summary>
+        /// This method goes beyond the regular SimulationInput validation performed in SimulationInputValidation class.
+        /// The validation performed here checks that the input can be plotted, i.e., tissue and detectors have 
+        /// cylindrical symmetry.
+        /// </summary>
+        /// <param name="input">Simulation input</param>
+        private static bool MC_ValidateInputForMCPlots(SimulationInput input)
+        {
+            if ((!(input.TissueInput is MultiLayerTissueInput)) && (!(input.TissueInput is SingleEllipsoidTissueInput)))
+            {
+                logger.Info(() => "Simulation input not valid for Monte Carlo Solver Panel plotting. " +
+                                  "Plotting available for only tissue definitions with cylindrical symmetry. " + 
+                                  "Please load another infile.\r");
+                return false;
+            }
+            if ((!input.DetectorInputs.Any(d => d.TallyType == TallyType.ROfRho)) &&
+                (!input.DetectorInputs.Any(d => d.TallyType == TallyType.FluenceOfRhoAndZ)))  
+            {
+                logger.Info(() => "Simulation input not valid for Monte Carlo panel plotting. " +
+                                  "Plotting available for only R(rho) and Fluence(rho,z) detector definitions. " + 
+                                  "Please load another infile.\r");
+                return false;
+            }
+            return true;
         }
 
         private void MC_CacheSimulationResults(SimulationInput input)
@@ -453,14 +486,20 @@ namespace Vts.Gui.Wpf.ViewModel
                 {
                     _outputName = simulationInput.OutputName;
                     SimulationInputVM.SimulationInput = simulationInput;
+                    CanRunSimulation = true;
+                    CanLoadInputFile = true;
+                }
+                else
+                {
+                    CanLoadInputFile = true;
                 }
             }
             else
             {
                 logger.Info(() => "JSON File not loaded.\r");
             }
-            CanRunSimulation = true;
-            CanLoadInputFile = true;
+            //CanRunSimulation = true;
+            //CanLoadInputFile = true;
         }
 
         private SimulationInput MC_ReadSimulationInputFromFile(string filename)
@@ -472,10 +511,14 @@ namespace Vts.Gui.Wpf.ViewModel
                 var validationResult = SimulationInputValidation.ValidateInput(simulationInput);
                 if (validationResult.IsValid)
                 {
+                    if (!MC_ValidateInputForMCPlots(simulationInput))
+                    {
+                        return null;
+                    }
                     logger.Info(() => "Simulation input loaded.\r");
                     return simulationInput;
                 }
-                logger.Info(() => "Simulation input not loaded - JSON format not valid.\r");
+                logger.Info(() => "Simulation input not loaded - JSON format not valid.\r"); // CKH: msg correct?
                 return null;
             }
         }
