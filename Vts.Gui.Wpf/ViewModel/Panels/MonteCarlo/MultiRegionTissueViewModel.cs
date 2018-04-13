@@ -39,6 +39,18 @@ namespace Vts.Gui.Wpf.ViewModel
                                     (EllipsoidTissueRegion) singleEllipsoidTissueInput.EllipsoidRegion,
                                     "Ellipsoid Region")));
                     break;
+                case "SingleVoxel":
+                    var singleVoxelTissueInput = (SingleVoxelTissueInput)_input;
+                    _regionsVM = new ObservableCollection<object>(
+                        singleVoxelTissueInput.LayerRegions
+                            .Select((r, i) => (object)new LayerRegionViewModel(
+                                (LayerTissueRegion)r,
+                                "Layer " + i))
+                            .Concat(
+                                new VoxelRegionViewModel(
+                                    (VoxelTissueRegion)singleVoxelTissueInput.VoxelRegion,
+                                    "Voxel Region")));
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

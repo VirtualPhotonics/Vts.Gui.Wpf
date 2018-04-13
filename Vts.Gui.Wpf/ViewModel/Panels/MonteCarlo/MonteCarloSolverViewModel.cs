@@ -193,9 +193,8 @@ namespace Vts.Gui.Wpf.ViewModel
                     return;
                 }
 
-                if (!MC_ValidateInputForMCPlots(input))
+                if (!MC_CheckInfileForMCPlots(input))
                 {
-                    CanRunSimulation = false;
                     return;
                 }
 
@@ -310,27 +309,29 @@ namespace Vts.Gui.Wpf.ViewModel
         /// <summary>
         /// This method goes beyond the regular SimulationInput validation performed in SimulationInputValidation class.
         /// The validation performed here checks that the input can be plotted, i.e., tissue and detectors have 
-        /// cylindrical symmetry.
+        /// cylindrical symmetry.  It also checks if a database output is specified and specifies that a new infile
+        /// be specified because database files cannot be cached.
         /// </summary>
         /// <param name="input">Simulation input</param>
-        private static bool MC_ValidateInputForMCPlots(SimulationInput input)
+        private static bool MC_CheckInfileForMCPlots(SimulationInput input)
         {
+            var infileIsValid = true;
             if ((!(input.TissueInput is MultiLayerTissueInput)) && (!(input.TissueInput is SingleEllipsoidTissueInput)))
             {
-                logger.Info(() => "Simulation input not valid for Monte Carlo Solver Panel plotting. " +
-                                  "Plotting available for only tissue definitions with cylindrical symmetry. " + 
-                                  "Please load another infile.\r");
-                return false;
+                logger.Info(() => "Warning: No plots will be displayed for tissue specified in infile.\r");
             }
             if ((!input.DetectorInputs.Any(d => d.TallyType == TallyType.ROfRho)) &&
                 (!input.DetectorInputs.Any(d => d.TallyType == TallyType.FluenceOfRhoAndZ)))  
             {
-                logger.Info(() => "Simulation input not valid for Monte Carlo panel plotting. " +
-                                  "Plotting available for only R(rho) and Fluence(rho,z) detector definitions. " + 
-                                  "Please load another infile.\r");
-                return false;
+                logger.Info(() => "Warning: No plots will be displayed for detector(s) specified in infile.\r");
             }
-            return true;
+            if (input.Options.Databases.Count != 0)
+            {
+                logger.Info(() => "Error: Database output specified in infile.  Please specify another infile or run infile with MCCL.\r");
+                infileIsValid = false;
+            }
+            return infileIsValid;
+
         }
 
         private void MC_CacheSimulationResults(SimulationInput input)
@@ -489,17 +490,13 @@ namespace Vts.Gui.Wpf.ViewModel
                     CanRunSimulation = true;
                     CanLoadInputFile = true;
                 }
-                else
-                {
-                    CanLoadInputFile = true;
-                }
             }
             else
             {
                 logger.Info(() => "JSON File not loaded.\r");
             }
-            //CanRunSimulation = true;
-            //CanLoadInputFile = true;
+            CanRunSimulation = true;
+            CanLoadInputFile = true;
         }
 
         private SimulationInput MC_ReadSimulationInputFromFile(string filename)
@@ -511,14 +508,13 @@ namespace Vts.Gui.Wpf.ViewModel
                 var validationResult = SimulationInputValidation.ValidateInput(simulationInput);
                 if (validationResult.IsValid)
                 {
-                    if (!MC_ValidateInputForMCPlots(simulationInput))
+                    if (MC_CheckInfileForMCPlots(simulationInput))
                     {
-                        return null;
+                        logger.Info(() => "Simulation input loaded.\r");
+                        return simulationInput;
                     }
-                    logger.Info(() => "Simulation input loaded.\r");
-                    return simulationInput;
                 }
-                logger.Info(() => "Simulation input not loaded - JSON format not valid.\r"); // CKH: msg correct?
+                logger.Info(() => "Simulation input not loaded.\r"); 
                 return null;
             }
         }
@@ -690,7 +686,12 @@ namespace Vts.Gui.Wpf.ViewModel
             //    IndependentVariableAxis.Rho,
             //    SolutionDomainType.ROfRho.GetInternationalizedString(),
             //    DependentVariableAxisUnits.PerMMSquared.GetInternationalizedString());
-            var rhoRange = (ROfRhoDetectorInput) _simulationInputVM.SimulationInput.DetectorInputs.FirstOrDefault();
+
+            //var rhoRange = (ROfRhoDetectorInput) _simulationInputVM.SimulationInput.DetectorInputs.FirstOrDefault();
+            var rOfRhoDetectorInputs =
+                _simulationInputVM.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho");
+            var detectorInput = (ROfRhoDetectorInput)rOfRhoDetectorInputs.First();
+            var rhoRange = detectorInput.Rho;
 
             var axisType = IndependentVariableAxis.Rho;
             var axisUnits = IndependentVariableAxisUnits.MM;
@@ -703,7 +704,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     AxisLabel = axisType.GetInternationalizedString(),
                     AxisUnits = axisUnits.GetInternationalizedString(),
                     AxisRangeVM =
-                        new RangeViewModel(rhoRange.Rho, axisUnits.GetInternationalizedString(), axisType, "ROfRho")
+                        new RangeViewModel(rhoRange, axisUnits.GetInternationalizedString(), axisType, "ROfRho")
                 });
         }
 

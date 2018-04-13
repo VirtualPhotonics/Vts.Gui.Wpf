@@ -197,6 +197,7 @@
     <Compile Include="ViewModel\Panels\ForwardSolverViewModel.cs" />
     <Compile Include="ViewModel\Panels\InverseSolverViewModel.cs" />
     <Compile Include="ViewModel\Panels\MapViewModel.cs" />
+    <Compile Include="ViewModel\Panels\MonteCarlo\VoxelRegionViewModel.cs" />
     <Compile Include="ViewModel\Panels\MonteCarlo\EllipsoidRegionViewModel.cs" />
     <Compile Include="ViewModel\Panels\MonteCarlo\LayerRegionViewModel.cs" />
     <Compile Include="ViewModel\Panels\MonteCarlo\MonteCarloSolverViewModel.cs" />

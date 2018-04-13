@@ -33,7 +33,8 @@ namespace Vts.Gui.Wpf.ViewModel
                 new[]
                 {
                     "MultiLayer",
-                    "SingleEllipsoid"
+                    "SingleEllipsoid",
+                    "SingleVoxel"
                 });
 #endif
             _simulationOptionsVM.PropertyChanged += (sender, args) =>
@@ -52,6 +53,9 @@ namespace Vts.Gui.Wpf.ViewModel
                         break;
                     case "SingleEllipsoid":
                         _simulationInput.TissueInput = new SingleEllipsoidTissueInput();
+                        break;
+                    case "SingleVoxel":
+                        _simulationInput.TissueInput = new SingleVoxelTissueInput();
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -135,6 +139,9 @@ namespace Vts.Gui.Wpf.ViewModel
                 case "SingleEllipsoid":
                     _simulationInput.TissueInput = new SingleEllipsoidTissueInput();
                     break;
+                case "SingleVoxel":
+                    _simulationInput.TissueInput = new SingleVoxelTissueInput();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -151,6 +158,9 @@ namespace Vts.Gui.Wpf.ViewModel
                     break;
                 case "SingleEllipsoid":
                     TissueInputVM = new MultiRegionTissueViewModel((SingleEllipsoidTissueInput) tissueInput);
+                    break;
+                case "SingleVoxel":
+                    TissueInputVM = new MultiRegionTissueViewModel((SingleVoxelTissueInput)tissueInput);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
