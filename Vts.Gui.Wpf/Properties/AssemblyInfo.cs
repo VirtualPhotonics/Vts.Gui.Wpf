@@ -7,9 +7,9 @@ using System.Windows;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Vts.Gui.Wpf")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The WPF GUI provides a simple interface to access some basic functionality of the Virtual Tissue Simulator.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Virtual Photonics")]
 [assembly: AssemblyProduct("Vts.Gui.Wpf")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
@@ -52,5 +52,5 @@ using System.Windows;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
