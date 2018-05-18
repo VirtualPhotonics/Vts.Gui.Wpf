@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vts.Gui.Wpf", "Vts.Gui.Wpf\Vts.Gui.Wpf.csproj", "{76E7AD7F-7526-48E4-A567-D678786B7CD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vts.Gui.Wpf.Test", "Vts.Gui.Wpf.Test\Vts.Gui.Wpf.Test.csproj", "{51A96A1E-B043-46E1-92D2-F1CDFAF0647B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vts.Gui.Wpf.Test", "Vts.Gui.Wpf.Test\Vts.Gui.Wpf.Test.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,18 +20,18 @@ Global
 		{76E7AD7F-7526-48E4-A567-D678786B7CD7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{76E7AD7F-7526-48E4-A567-D678786B7CD7}.WhiteList|Any CPU.ActiveCfg = WhiteList|Any CPU
 		{76E7AD7F-7526-48E4-A567-D678786B7CD7}.WhiteList|Any CPU.Build.0 = WhiteList|Any CPU
-		{51A96A1E-B043-46E1-92D2-F1CDFAF0647B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{51A96A1E-B043-46E1-92D2-F1CDFAF0647B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{51A96A1E-B043-46E1-92D2-F1CDFAF0647B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{51A96A1E-B043-46E1-92D2-F1CDFAF0647B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{51A96A1E-B043-46E1-92D2-F1CDFAF0647B}.WhiteList|Any CPU.ActiveCfg = Release|Any CPU
-		{51A96A1E-B043-46E1-92D2-F1CDFAF0647B}.WhiteList|Any CPU.Build.0 = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.WhiteList|Any CPU.ActiveCfg = Release|Any CPU
+		{8EDF4429-251A-416D-BB68-93F227191BCF}.WhiteList|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FAF45EEF-8D91-4D67-BA4B-73115C582617}
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35
+		SolutionGuid = {FAF45EEF-8D91-4D67-BA4B-73115C582617}
 	EndGlobalSection
 EndGlobal
