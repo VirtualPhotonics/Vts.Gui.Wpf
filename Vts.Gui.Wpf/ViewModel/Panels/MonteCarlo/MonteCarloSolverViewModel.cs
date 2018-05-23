@@ -193,7 +193,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     return;
                 }
 
-                if (!MC_CheckInfileForMCPlots(input))
+                if (!MC_InfileIsValidForGUI(input))
                 {
                     return;
                 }
@@ -310,10 +310,11 @@ namespace Vts.Gui.Wpf.ViewModel
         /// This method goes beyond the regular SimulationInput validation performed in SimulationInputValidation class.
         /// The validation performed here checks that the input can be plotted, i.e., tissue and detectors have 
         /// cylindrical symmetry.  It also checks if a database output is specified and specifies that a new infile
-        /// be specified because database files cannot be cached.
+        /// be specified because database files cannot be cached. Finally it checks if TrackStatistics is true
+        /// and if so, logs to the user to verify selection using TrackStatistics check box 
         /// </summary>
         /// <param name="input">Simulation input</param>
-        private static bool MC_CheckInfileForMCPlots(SimulationInput input)
+        private static bool MC_InfileIsValidForGUI(SimulationInput input)
         {
             var infileIsValid = true;
             if ((!(input.TissueInput is MultiLayerTissueInput)) && (!(input.TissueInput is SingleEllipsoidTissueInput)))
@@ -329,6 +330,11 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 logger.Info(() => "Error: Database output specified in infile.  Please specify another infile or run infile with MCCL.\r");
                 infileIsValid = false;
+            }
+
+            if (input.Options.TrackStatistics == true)
+            {
+                logger.Info(() => "Warning: TrackStatistics set to true in infile.  Please uncheck then recheck Track Statistics checkbox to specify output location.\r");
             }
             return infileIsValid;
 
@@ -508,7 +514,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 var validationResult = SimulationInputValidation.ValidateInput(simulationInput);
                 if (validationResult.IsValid)
                 {
-                    if (MC_CheckInfileForMCPlots(simulationInput))
+                    if (MC_InfileIsValidForGUI(simulationInput))
                     {
                         logger.Info(() => "Simulation input loaded.\r");
                         return simulationInput;
