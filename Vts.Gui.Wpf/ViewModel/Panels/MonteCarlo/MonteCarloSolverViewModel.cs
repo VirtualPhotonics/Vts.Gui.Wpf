@@ -331,11 +331,6 @@ namespace Vts.Gui.Wpf.ViewModel
                 logger.Info(() => "Error: Database output specified in infile.  Please specify another infile or run infile with MCCL.\r");
                 infileIsValid = false;
             }
-            if (input.Options.TrackStatistics == true)
-            {
-                logger.Info(() => "Warning: Since TrackStatistics is set to true in infile, you will be prompted for statistics file output location when you run simulation.\r");
-                _simulationInputVM.SimulationOptionsVM.SetStatisticsFolderCommand.Execute(null);
-            }
             return infileIsValid;
         }
 
@@ -494,6 +489,10 @@ namespace Vts.Gui.Wpf.ViewModel
                     SimulationInputVM.SimulationInput = simulationInput;
                     CanRunSimulation = true;
                     CanLoadInputFile = true;
+                    if (simulationInput.Options.TrackStatistics)
+                    {
+                        _simulationInputVM.SimulationOptionsVM.SetStatisticsFolderCommand.Execute(null);
+                    }
                 }
             }
             else
