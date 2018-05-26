@@ -26,7 +26,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
         /// Verifies that RangeViewModel constructor with arguments works correctly
         /// </summary>
         [Test]
-        public void verify_constructor_with_argumenbts_sets_properties_correctly()
+        public void verify_constructor_with_arguments_sets_properties_correctly()
         {
             var rangeVM = new RangeViewModel(
                 new DoubleRange(0.0, 100.0, 101), 

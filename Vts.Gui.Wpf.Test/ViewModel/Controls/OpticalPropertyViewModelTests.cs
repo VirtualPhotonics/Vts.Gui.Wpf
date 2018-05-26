@@ -10,7 +10,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
     public class OpticalPropertyViewModelTests
     {
         /// <summary>
-        /// Verifies that TextOutputViewModel default constructor instantiates properties correctly
+        /// Verifies that OpticalPropertyViewModel default constructor instantiates properties correctly
         /// </summary>
         [Test]
         public void verify_default_constructor_sets_properties_correctly()
