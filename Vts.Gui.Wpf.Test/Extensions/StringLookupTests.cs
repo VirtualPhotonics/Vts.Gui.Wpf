@@ -7,7 +7,7 @@ namespace Vts.Gui.Wpf.Test.Extensions
     /// Tests StringLookup classe
     /// </summary>
     [TestFixture]
-    public class StringLookuplTests
+    public class StringLookupTests
     {
         /// <summary>
         /// Verifies method GetLocalizedString works properly for string in Resources/Strings.resx

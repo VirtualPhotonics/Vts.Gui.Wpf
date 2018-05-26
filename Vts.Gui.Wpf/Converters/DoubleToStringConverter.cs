@@ -64,7 +64,8 @@ namespace Vts.Gui.Wpf.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value;
+            //return value; // previous code
+            return System.Convert.ToDouble(value); // code fix ckh 5/26/18
         }
 
         #endregion

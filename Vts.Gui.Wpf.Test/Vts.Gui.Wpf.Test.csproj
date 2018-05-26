@@ -62,6 +62,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\ResourceToStringConverterTests.cs" />
+    <Compile Include="Converters\DoubleToStringConverterTests.cs" />
+    <Compile Include="Converters\BooleanToVisiblityConverterTests.cs" />
     <Compile Include="Extensions\EnumExtensionsTests.cs" />
     <Compile Include="Extensions\StringLookupTests.cs" />
     <Compile Include="Model\OptionModelTests.cs" />
