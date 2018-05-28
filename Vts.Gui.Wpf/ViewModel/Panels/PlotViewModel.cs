@@ -104,7 +104,7 @@ namespace Vts.Gui.Wpf.ViewModel
             ImagLabels = new List<string>();
             PhaseLabels = new List<string>();
             AmplitudeLabels = new List<string>();
-            ;
+            
             Labels = new List<string>();
             PlotTitles = new List<string>();
             DataSeriesCollection = new List<DataPointCollection>();

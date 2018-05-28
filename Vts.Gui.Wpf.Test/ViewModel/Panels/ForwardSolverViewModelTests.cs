@@ -1,10 +1,5 @@
 ﻿using NUnit.Framework;
-using System.IO;
-using Vts.Common;
-using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel;
-using Vts.MonteCarlo;
-using Vts.MonteCarlo.Tissues;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
 {
@@ -69,8 +64,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         //    viewModel.SolutionDomainTypeOptionVM.SelectedValue = SolutionDomainType.ROfRho;
         //    viewModel.ExecuteForwardSolverCommand.Execute(null);
         //    PlotViewModel plotViewModel = windowViewModel.PlotVM;
-        //    //Assert.AreEqual(plotViewModel.PlotValues.
+        //    Assert.AreEqual(plotViewModel.PlotValues.
 
+        //    }
         //}
     }
 }
