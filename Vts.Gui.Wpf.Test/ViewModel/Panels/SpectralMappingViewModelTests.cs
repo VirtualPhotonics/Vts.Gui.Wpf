@@ -88,6 +88,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             viewModel.PlotMuaSpectrumCommand.Execute(null);
             Assert.AreEqual(windowViewModel.PlotVM.Labels[0], "μa spectra");
             Assert.AreEqual(windowViewModel.PlotVM.Title, "μa [mm-1] versus λ [nm]");
+            // can't verify plotted data because inside private object
+            TextOutputViewModel textOutputViewModel = windowViewModel.TextOutputVM;
+            Assert.AreEqual(textOutputViewModel.Text,
+                "Plot View: plot cleared due to independent axis variable change\rPlotted μa spectrum; wavelength range [nm]: [650, 1000]\r");
         }
 
 
@@ -102,6 +106,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             viewModel.PlotMuspSpectrumCommand.Execute(null);
             Assert.AreEqual(windowViewModel.PlotVM.Labels[0], "μs' spectra");
             Assert.AreEqual(windowViewModel.PlotVM.Title, "μs' [mm-1] versus λ [nm]");
+            TextOutputViewModel textOutputViewModel = windowViewModel.TextOutputVM;
+            Assert.AreEqual(textOutputViewModel.Text,
+                "Plot View: plot cleared due to independent axis variable change\rPlotted μs' spectrum; wavelength range [nm]: [650, 1000]\r");
+
         }
     }
 }

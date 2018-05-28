@@ -38,6 +38,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
+    <Reference Include="MPFitLib">
+      <HintPath>..\packages\csmpfit.1.1.1\lib\net20\MPFitLib.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -80,11 +83,17 @@
     <Compile Include="ViewModel\Controls\OpticalPropertyViewModelTests.cs" />
     <Compile Include="ViewModel\Controls\RangeViewModelTests.cs" />
     <Compile Include="ViewModel\Controls\TextOutputViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\FluenceSolverViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\InverseSolverViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SpectralMappingViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\MapViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\PlotViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\ForwardSolverViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\MonteCarlo\MonteCarloSolverViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\SubPanels\SolutionDomainOptionViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\SubPanels\FluenceSolutionDomainOptionViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\SubPanels\BloodConcentrationViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\SubPanels\AbstractSolutionDomainOptionViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
