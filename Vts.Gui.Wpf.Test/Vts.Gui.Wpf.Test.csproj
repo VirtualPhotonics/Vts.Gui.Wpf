@@ -85,6 +85,12 @@
     <Compile Include="ViewModel\Controls\TextOutputViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\FluenceSolverViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\InverseSolverViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\MonteCarlo\SimulationInputViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\MonteCarlo\MultiRegionTissueViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\MonteCarlo\SimulationOptionsViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\MonteCarlo\VoxelRegionViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\MonteCarlo\LayerRegionViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\MonteCarlo\EllipsoidRegionViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SpectralMappingViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\MapViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\PlotViewModelTests.cs" />

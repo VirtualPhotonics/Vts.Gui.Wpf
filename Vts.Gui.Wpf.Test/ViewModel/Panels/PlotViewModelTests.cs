@@ -113,8 +113,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
 
         /// <summary>
         /// ClearPlotSingleCommand changes DataSeriesCollection which is private so not tested
-        /// ExportDataToText requires DialogBox interface input so not tested
-        /// DuplicateWindowCommand requires MainWindow command to clone so not tested
+        /// ExportDataToTextCommand brings up Dialog window so not tested
+        /// DuplicateWindowCommand - not sure if can test 
         /// </summary>
 
     }

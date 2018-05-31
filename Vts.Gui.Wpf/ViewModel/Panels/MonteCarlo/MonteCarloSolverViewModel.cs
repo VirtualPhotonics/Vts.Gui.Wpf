@@ -2,15 +2,12 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Animation;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
-using Microsoft.Win32;
 using Vts.Common.Logging;
 using Vts.Gui.Wpf.Model;
 using Vts.IO;

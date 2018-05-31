@@ -1,12 +1,9 @@
 ﻿using NUnit.Framework;
-using GalaSoft.MvvmLight.Command;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Mime;
 using System.Threading;
-using Vts.Gui.Wpf.View;
-using Vts.MonteCarlo;
 using Vts.Gui.Wpf.ViewModel;
+using Vts.MonteCarlo;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
 {
@@ -78,64 +75,55 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             Assert.AreEqual(viewModel.CancelButtonText,"Cancel");
         }
 
-        ///// <summary>
-        ///// Write an infile to be read and verify MC_ReadSimulationInputFromFile method runs successfully.
-        ///// </summary>
-        //[Test]
-        //public void validate_MC_ReadSimulationInputFromFile_runs_successfully()
-        //{
-        //    MonteCarloSolverViewModel viewModel = new MonteCarloSolverViewModel();
-        //    // create default simulation input
-        //    SimulationInput simulationInput = new SimulationInput();
-        //    // write it to file
-        //    simulationInput.ToFile("infile_test");
-        //    var privateObject = new PrivateObject(viewModel);
-        //    var returnedSimulationInput = viewModel.Invoke("MC_ReadSimulationInputFromFile");
-        //    // I can't call MC_ReadSimulationInputFromFile because private
-        //    Assert.IsTrue(viewModel.CanRunSimulation);
-        //    Assert.IsTrue(viewModel.CanLoadInputFile);
-        //}
+        // The following tests verify the Relay Commands
 
-        // the following set of test validate the relay commands
+        /// <summary>
+        /// LoadSimulationInputCommand brings up Dialog window so not tested
+        /// DownloadDefaultSimulationInputCommand brings up Dialog window so not tested
+        /// SaveSimulationResultsCommand brings up Dialog window so not tested
+        /// </summary>
 
+        /// <summary>
+        /// Execute Monte Carlo Solver command that fails and verify properties are set correctly
+        /// </summary>
+        [Test]
+        public void validate_ExecuteMonteCarloSolverCommand_failure_sets_properties_correctly()
+        {
+            var viewModel = new MonteCarloSolverViewModel();
+            // this execution of ExecuteMonteCarloSolverCommand errors in "try"
+            // because threading not established, so values are as initialized
+            viewModel.ExecuteMonteCarloSolverCommand.Execute(null);
+            Assert.IsFalse(viewModel.CanRunSimulation);
+            Assert.IsFalse(viewModel.CanLoadInputFile);
+            Assert.IsTrue(viewModel.CanCancelSimulation);
+            Assert.IsFalse(viewModel.CanSaveResults);
+            Assert.IsTrue(viewModel.CancelButtonText == "Cancel Simulation");
+        }
         ///// <summary>
-        ///// Load default SimulationInput and verify LoadSimulationInputCommand executes successfully.
-        ///// This opens a dialog window so not sure how to code unit test
-        ///// </summary>
-        //[Test]
-        //public void validate_LoadSimulationInputCommand_executes_successfully()
-        //{
-        //    WindowViewModel windowViewModel = new WindowViewModel();
-        //    var viewModel = windowViewModel.MonteCarloSolverVM;
-        //    SimulationInput simulationInput = new SimulationInput();
-        //    viewModel.SimulationInputVM = new SimulationInputViewModel(simulationInput);
-        //    viewModel.LoadSimulationInputCommand.Execute(null);
-        //    Assert.IsTrue(viewModel.CanRunSimulation);
-        //    Assert.IsTrue(viewModel.CanLoadInputFile);
-        //}
-
-        ///// <summary>
-        ///// Execute Monte Carlo Solver command with default infile and verify properties are set correctly
+        ///// Execute Monte Carlo Solver command that runs and verify properties are set correctly
+        ///// This commented out because threading setup not working yet
         ///// </summary>
         //[Test]
         //public void validate_ExecuteMonteCarloSolverCommand_executes_successfully()
         //{
         //    MainWindow mainWindow = null;
-        //    // need to instantiate MainWindow which is needed in main "try"
+        //    // need to instantiate MainWindow which is needed in main "try" - found following code on stack overflow
         //    Thread thread = new Thread(() =>
         //    {
         //        mainWindow = new MainWindow();
-        //        //mainWindow.Closed += (s, e) => mainWindow.Dispatcher.InvokeShutdown();
-        //        //mainWindow.Show();
-        //        //System.Windows.Threading.Dispatcher.Run();
+        //        mainWindow.Closed += (s, e) => mainWindow.Dispatcher.InvokeShutdown();
+        //        mainWindow.Show();
+        //        System.Windows.Threading.Dispatcher.Run();
         //    });
-        //    thread.ApartmentState = ApartmentState.STA;
+        //    thread.SetApartmentState(ApartmentState.STA); 
         //    thread.Start();
-        //    //var mainWindow = new MainWindow();
+        //    //thread.Join();
 
-        //    var viewModel = WindowViewModel.Current.MonteCarloSolverVM;
-        //    mainWindow.DataContext = viewModel;
-
+        //    var viewModel = new MonteCarloSolverViewModel();
+        //    //mainWindow.DataContext = viewModel;
+            
+        //    // this execution of ExecuteMonteCarloSolverCommand errors in "try"
+        //    // because threading not established, so values are as initialized
         //    viewModel.ExecuteMonteCarloSolverCommand.Execute(null);
         //    Assert.IsTrue(viewModel.CanRunSimulation);
         //    Assert.IsTrue(viewModel.CanLoadInputFile);
@@ -144,21 +132,25 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         //    Assert.IsTrue(viewModel.CancelButtonText == "Cancel");
         //}
 
+        ///// <summary>
+        ///// verify that 
+        ///// </summary>
         //[Test]
         //public void verify_all_infiles_in_download_run_successfully()
         //{
-        //    MonteCarloSolverViewModel viewModel = new MonteCarloSolverViewModel();
+        //    var windowViewModel = new WindowViewModel();
+        //    var viewModel = windowViewModel.MonteCarloSolverVM;
         //    foreach (var folder in listOfInfileFolders)
         //    {
-        //        SimulationInput simulationInput = new SimulationInput("infile_" + folder + ".txt");
+        //        string infileName = "infile_" + folder + ".txt";
+        //        var simulationInput = SimulationInput.FromFile(infileName);
         //        //specify infile
-        //        viewModel.SimulationInputVM(simulationInput);
-        //        // load infile
-        //        viewModel.LoadSimulationInputCommand.Execute(null);
+        //        viewModel.SimulationInputVM.SimulationInput = simulationInput;
         //        // run infile
         //        viewModel.ExecuteMonteCarloSolverCommand.Execute(null);
-        //        // 
-        //        Assert.IsTrue(Directory.Exists())
+        //        // verify text output is correct
+        //        TextOutputViewModel textOutputViewModel = windowViewModel.TextOutputVM;
+        //        Assert.AreEqual(textOutputViewModel.Text, "");
         //    }
 
         //}

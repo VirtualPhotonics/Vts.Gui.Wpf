@@ -9,34 +9,6 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
     [TestFixture]
     public class FluenceSolutionDomainOptionViewModelTests
     {
-        public FluenceSolutionDomainOptionViewModelTests()
-        {
-            // constructor logic if needed goes here
-        }
-
-        /// <summary>
-        /// setup and tear down
-        /// </summary>
-        [OneTimeSetUp]
-        public void setup()
-        {
-            //clear_folders_and_files();
-
-        }
-
-        [OneTimeTearDown]
-        public void clear_folders_and_files()
-        {
-            //foreach (var folder in listOfInfileFolders)
-            //{
-            //    if (Directory.Exists(folder))
-            //    {
-            //        Directory.Delete(folder);
-            //    }
-            //}
-
-        }
-
         /// <summary>
         /// Verifies that FluenceSolutionDomainOptionModel default constructor instantiates sub viewmodels
         /// </summary>
