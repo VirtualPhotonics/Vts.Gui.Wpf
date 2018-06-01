@@ -72,7 +72,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             viewModel.SolveInverseCommand.Execute(null);
             Assert.AreEqual(plotViewModel.Labels[2], "\nCalculated:\rModel - nurbs\rμa=0.0129 \rμs'=0.9255");
             Assert.AreEqual(textOutputViewModel.Text,
-                "Simulated Measured Data: μa=0.01 μs'=1 g=0.8 n=1.4; Units = 1/mm\rInitial Guess: μa=0.01 μs'=1 g=0.8 n=1.4; Units = 1/mm \rInverse Solution Results: \r   Optimization parameter(s): MuaMusp \r   Initial Guess: μa=0.01 μs'=1 g=0.8 n=1.4; Units = 1/mm \r   Exact: μa=0.01 μs'=1 g=0.8 n=1.4; Units = 1/mm \r   At Converged Values: μa=0.0129 μs'=0.9255 g=0.8 n=1.4; Units = 1/mm \r   Computed Percent Error: μa = 28.9% μs' Error = 7.45% \r");
+                "Simulated Measured Data: μa=0.01 μs'=1 g=0.8 n=1.4; Units = 1/mm\rInitial Guess: μa=0.01 μs'=1 g=0.8 n=1.4; Units = 1/mm \rInverse Solution Results: \r   Optimization parameter(s): MuaMusp \r   Initial Guess: μa=0.01 μs'=1 g=0.8 n=1.4; Units = 1/mm \r   Exact: μa=0.01 μs'=1 g=0.8 n=1.4; Units = 1/mm \r   At Converged Values: μa=0.0129 μs'=0.9255 g=0.8 n=1.4; Units = 1/mm \r   Percent Error: μa = 28.9%  μs' = 7.45% \r");
         }
     }
 }
