@@ -507,8 +507,8 @@ namespace Vts.Gui.Wpf.ViewModel
                     int tempMuspError = (int)(10000.0 * Math.Abs(ResultOpticalPropertyVM.Musp - MeasuredOpticalPropertyVM.Musp) / MeasuredOpticalPropertyVM.Musp);
                     muspError = tempMuspError / 100.0;
                 }
-                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   Computed Percent Error: " + "μa = " + muaError +
-                                                                                    "% μs' Error = " + muspError + "% \r");
+                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   Percent Error: " + "μa = " + muaError +
+                                                                                    "%  μs' = " + muspError + "% \r");
             }
 
             var axesLabels = GetPlotLabels();
