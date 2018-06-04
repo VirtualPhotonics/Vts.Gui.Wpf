@@ -12,6 +12,8 @@
                                      VerticalAlignment="Top" />
         </StackPanel>
         <!-- Map Type -->
+        <TextBlock Text="Map Type" Margin="0,3,0,0"
+                   FontWeight="Bold" Width="150" HorizontalAlignment="Left" />
         <view:RadioButtonOptionView DataContext="{Binding MapTypeOptionVM}" HorizontalAlignment="Left"
                                     VerticalAlignment="Top" />
         <!-- Gaussian Beam Diameter -->

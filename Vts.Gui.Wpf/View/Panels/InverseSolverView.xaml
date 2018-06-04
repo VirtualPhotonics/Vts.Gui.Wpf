@@ -40,11 +40,17 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
         <!-- Optimization paramters -->
+        <TextBlock Text="Optimization Paramters" Margin="0,5,0,0"
+                   FontWeight="Bold" Width="150" HorizontalAlignment="Left" />
         <view:RadioButtonOptionView DataContext="{Binding InverseFitTypeOptionVM}" HorizontalAlignment="Left"
                                     VerticalAlignment="Top" Margin="0,3,0,0" />
+
         <!-- Optimizer Type -->
+        <TextBlock Text="Optimizer Type" Margin="0,5,0,0"
+            FontWeight="Bold" Width="120" HorizontalAlignment="Left" />
         <view:RadioButtonOptionView DataContext="{Binding OptimizerTypeOptionVM}" HorizontalAlignment="Left"
                                     VerticalAlignment="Top" Margin="0,3,0,0" />
+       
         <!-- Optical Properties -->
         <Grid Margin="3,0,0,0">
             <Grid.RowDefinitions>
