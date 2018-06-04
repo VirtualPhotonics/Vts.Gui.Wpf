@@ -114,7 +114,25 @@ namespace Vts.Gui.Wpf.ViewModel
             PlotModel = new PlotModel
             {
                 Title = "",
-                LegendPlacement = LegendPlacement.Outside
+                LegendPlacement = LegendPlacement.Outside,
+                DefaultColors = new List<OxyColor>
+                {
+                    OxyColor.FromRgb(0x00, 0x99, 0x00),     //GREEN
+                    OxyColor.FromRgb(0xD6, 0x89, 0x10),     //DARK ORANGE
+                    OxyColor.FromRgb(0xFF, 0x22, 0x00),     //RED
+                    OxyColor.FromRgb(0x00, 0x00, 0xFF),     //BLUE
+                    OxyColor.FromRgb(0xFF, 0x33, 0xFF),     //MAGENTA
+			        OxyColor.FromRgb(0x00, 0xEE, 0x00),     //LIGHT GREEN
+                    OxyColor.FromRgb(0x99, 0x33, 0xFF),     //PURPLE 
+                    OxyColor.FromRgb(0x33, 0x99, 0xFF),     //LIGHT BLUE  
+                    OxyColor.FromRgb(0x99, 0x99, 0x00),     //OLIVE GREEN                    
+                    OxyColor.FromRgb(0xA0, 0x52, 0x2D),     //BROWN   
+                    OxyColor.FromRgb(0x00, 0x80, 0x80),     //TEAL                    
+                    OxyColor.FromRgb(0xDC, 0x14, 0x3C),     //CRIMSON RED
+                    OxyColor.FromRgb(0x00, 0xFF, 0xFF),     //CYAN
+                    OxyColor.FromRgb(0x80, 0x80, 0x80),     //DARK GRAY 
+                    OxyColor.FromRgb(0xFF, 0xC0, 0xB4)      //PINK                     
+                }
             };
             PlotType = ReflectancePlotType.ForwardSolver;
             _HoldOn = true;
