@@ -3,6 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <HeaderedItemsControl x:Name="ParentControl" ItemsSource="{Binding Options.Values}"
                           ItemTemplateSelector="{StaticResource OptionTemplateSelector}">
+        <HeaderedItemsControl.Template>
+            <ControlTemplate TargetType="{x:Type HeaderedItemsControl}">
+                <StackPanel Orientation="Vertical">
+                    <ContentPresenter ContentSource="Header" />
+                    <ItemsPresenter />
+                </StackPanel>
+            </ControlTemplate>
+        </HeaderedItemsControl.Template>
         <HeaderedItemsControl.Header>
             <TextBlock Text="{Binding GroupName, Mode=TwoWay}"
                        Visibility="{Binding ShowTitle, Converter={StaticResource MyBooleanToVisibilityConverter}}"
