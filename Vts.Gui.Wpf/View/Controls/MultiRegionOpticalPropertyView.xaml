@@ -11,7 +11,9 @@
     <StackPanel Orientation="Vertical">
         <TextBlock Text="Tissue Input" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Currently selected region:" VerticalAlignment="Center" />              
+            <TextBlock Text="Currently selected region:" 
+                       VerticalAlignment="Center"
+                       Margin="0,0,4,0" />              
             <toolkit:DecimalUpDown Name="nudRegionIndex" Value="{Binding CurrentRegionIndex, Mode=TwoWay}" 
                                    Minimum="{Binding MinimumRegionIndex}" Maximum="{Binding MaximumRegionIndex}"
                                    Width="40" HorizontalAlignment="Left" />

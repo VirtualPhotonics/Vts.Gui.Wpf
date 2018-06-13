@@ -66,7 +66,9 @@ namespace Vts.Gui.Wpf.ViewModel
             ZRangeVM = new RangeViewModel(new DoubleRange(0.1, 19.9, 300), "mm", IndependentVariableAxis.Z, "");
             SourceDetectorSeparation = 10.0;
             TimeModulationFrequency = 0.1;
-            _tissueInputVM = new OpticalPropertyViewModel();
+            _tissueInputVM = new OpticalPropertyViewModel(new OpticalProperties(),
+                IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
+                "Optical Properties");
 
             // right now, we're doing manual databinding to the selected item. need to enable databinding 
             // confused, though - do we need to use strings? or, how to make generics work with dependency properties?
@@ -473,7 +475,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     return new OpticalPropertyViewModel(
                         _currentSemiInfiniteTissueInput.Regions.First().RegionOP,
                         IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
-                        "Optical Properties:");
+                        "Optical Properties");
                     break;
                 case "MultiLayer":
                     if (_currentMultiLayerTissueInput == null)

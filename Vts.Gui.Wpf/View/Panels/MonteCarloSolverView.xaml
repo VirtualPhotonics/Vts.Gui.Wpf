@@ -29,39 +29,55 @@
         
         <ContentControl IsEnabled="{Binding CanRunSimulation, Mode=TwoWay}">
 
-        <StackPanel DataContext="{Binding SimulationInputVM, Mode=TwoWay}">
+        <StackPanel DataContext="{Binding SimulationInputVM, Mode=TwoWay}"
+                    Margin="0,10,0,0">
             <TextBlock Text="Basic Info" FontWeight="Bold" />
-            <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
+            <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                 <TextBlock Text="Number of Photons:" VerticalAlignment="Center" />
-                <TextBox Text="{Binding N, Mode=TwoWay}" Width="100" Margin="2,0,0,0" KeyDown="TextBox_KeyDown" />
+                <TextBox Text="{Binding N, Mode=TwoWay}" Width="100" Margin="4,0,0,0" KeyDown="TextBox_KeyDown" />
             </StackPanel>
 
-            <StackPanel Orientation="Vertical" DataContext="{Binding SimulationOptionsVM}">
+            <StackPanel Orientation="Vertical" 
+                        DataContext="{Binding SimulationOptionsVM}"
+                        Margin="0,10,0,0">
                 <TextBlock Text="Simulation Options" FontWeight="Bold" />
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="3,0,0,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,5,0,0">
                     <!--<CheckBox IsChecked="{Binding TallySecondMoment, Mode=TwoWay}" VerticalAlignment="Center" />
                     <TextBlock Text="Tally second moment" VerticalAlignment="Center" Margin="0,0,10,0" />-->
-                        <CheckBox IsChecked="{Binding TrackStatistics, Mode=TwoWay}" VerticalAlignment="Center" Command="{Binding SetStatisticsFolderCommand}" />
+                        <CheckBox IsChecked="{Binding TrackStatistics, Mode=TwoWay}" 
+                                  VerticalAlignment="Center" 
+                                  Command="{Binding SetStatisticsFolderCommand}" />
                     <TextBlock Text="Track statistics" VerticalAlignment="Center" TextAlignment="Left"
-                               Margin="0,0,10,0" />
+                               Margin="4,0,10,0" />
                     <TextBlock Text="Seed:" VerticalAlignment="Center" />
-                    <TextBox Text="{Binding Seed, Mode=TwoWay}" Width="60" VerticalAlignment="Center" Margin="2,0,0,0"
+                    <TextBox Text="{Binding Seed, Mode=TwoWay}" Width="60" VerticalAlignment="Center" Margin="4,0,0,0"
                              KeyDown="TextBox_KeyDown" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
-                    <TextBlock Text="Absorption Weighting Type:" VerticalAlignment="Center" />
+                <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
+                    <TextBlock Text="Absorption Weighting Type:" 
+                               VerticalAlignment="Center"
+                               FontWeight="DemiBold" 
+                               Margin="0,0,4,0" />
                     <view:RadioButtonOptionView DataContext="{Binding AbsorptionWeightingTypeVM, Mode=TwoWay}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="Collapsed" Margin="3,0,0,0">
-                    <TextBlock Text="Random NumberGenerator Type:" VerticalAlignment="Center" />
+                <StackPanel Orientation="Horizontal" Visibility="Collapsed" Margin="10,5,0,0">
+                    <TextBlock Text="Random NumberGenerator Type:" 
+                               VerticalAlignment="Center"
+                               FontWeight="DemiBold"
+                               Margin="0,0,4,0"/>
                     <view:RadioButtonOptionView DataContext="{Binding RandomNumberGeneratorTypeVM, Mode=TwoWay}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
-                    <TextBlock Text="Phase Function Type:" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
+                    <TextBlock Text="Phase Function Type:" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Left"
+                               FontWeight="DemiBold"
+                               Margin="0,0,4,0"/>
                     <view:RadioButtonOptionView DataContext="{Binding PhaseFunctionTypeVM, Mode=TwoWay}" />
                 </StackPanel>
             </StackPanel>
-            <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVM, Mode=TwoWay}" />
+            <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVM, Mode=TwoWay}"
+                                                 Margin="0,10,0,0"/>
         </StackPanel>
         </ContentControl>
         

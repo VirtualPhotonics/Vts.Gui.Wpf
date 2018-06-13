@@ -398,7 +398,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     return new OpticalPropertyViewModel(
                         _currentSemiInfiniteTissueInput.Regions.First().RegionOP,
                         IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
-                        "Optical Properties:");
+                        "Optical Properties");
                     break;
                 case "MultiLayer":
                     if (_currentMultiLayerTissueInput == null)

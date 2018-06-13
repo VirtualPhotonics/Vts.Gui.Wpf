@@ -160,7 +160,7 @@
     <value>Fwd Solver:</value>
   </data>
   <data name="Label_GaussianBeam" xml:space="preserve">
-    <value>Gaussian Beam Diameter</value>
+    <value>Gaussian Beam Diameter:</value>
   </data>
   <data name="Label_InverseSolver" xml:space="preserve">
     <value>Inv Solver:</value>

@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:view="clr-namespace:Vts.Gui.Wpf.View">
-    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+    <StackPanel Orientation="Vertical" 
+                VerticalAlignment="Top">
         <!-- Solver Engines -->
         <Grid>
             <Grid.ColumnDefinitions>
@@ -13,39 +14,61 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="0" Grid.Row="0"
+            <TextBlock Grid.Column="0" 
+                       Grid.Row="0"
                        Text="{Binding SolutionDomainLabel}"
-                       FontWeight="Bold" Width="75" VerticalAlignment="Center" HorizontalAlignment="Left" />
-            <view:ComboBoxOptionView Grid.Column="1" Grid.Row="0"
+                       FontWeight="Bold" 
+                       Width="75" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Left" />
+            <view:ComboBoxOptionView Grid.Column="1" 
+                                     Grid.Row="0"
                                      DataContext="{Binding MeasuredForwardSolverTypeOptionVM}"
-                                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,3,0,0" />
-            <TextBlock Grid.Column="0" Grid.Row="1"
+                                     HorizontalAlignment="Left" 
+                                     VerticalAlignment="Top" 
+                                     Margin="3,3,0,0" />
+            <TextBlock Grid.Column="0" 
+                       Grid.Row="1"
                        Text="{Binding InverseSolverLabel}"
-                       FontWeight="Bold" Width="75" VerticalAlignment="Center" HorizontalAlignment="Left" />
-            <view:ComboBoxOptionView Grid.Column="1" Grid.Row="1"
+                       FontWeight="Bold" 
+                       Width="75" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Left" />
+            <view:ComboBoxOptionView Grid.Column="1" 
+                                     Grid.Row="1"
                                      DataContext="{Binding InverseForwardSolverTypeOptionVM}"
-                                     HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,3,0,0" />
+                                     HorizontalAlignment="Left" 
+                                     VerticalAlignment="Top" 
+                                     Margin="3,3,0,0" />
         </Grid>
 
         <!-- Solution Domain -->
-        <view:SolutionDomainOptionView DataContext="{Binding SolutionDomainTypeOptionVM}" HorizontalAlignment="Left"
-                                       VerticalAlignment="Top" Margin="0,3,0,0" />
+        <view:SolutionDomainOptionView DataContext="{Binding SolutionDomainTypeOptionVM}" 
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top" 
+                                       Margin="0,10,0,0" />
         <!-- Detection Parameters -->
-        <ItemsControl ItemsSource="{Binding AllRangeVMs, UpdateSourceTrigger=PropertyChanged}">
+        <ItemsControl ItemsSource="{Binding AllRangeVMs, UpdateSourceTrigger=PropertyChanged}"
+                      Margin="0,10,0,0">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <view:RangeView DataContext="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    <view:RangeView DataContext="{Binding}" 
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Top"
                                     Margin="0,3,0,0" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
         <!-- Optimization paramters -->
-        <view:RadioButtonOptionView DataContext="{Binding InverseFitTypeOptionVM}" HorizontalAlignment="Left"
-                                    VerticalAlignment="Top" Margin="0,3,0,0" />
+        <view:RadioButtonOptionView DataContext="{Binding InverseFitTypeOptionVM}" 
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top" 
+                                    Margin="0,10,0,0" />
 
         <!-- Optimizer Type -->
         <view:RadioButtonOptionView DataContext="{Binding OptimizerTypeOptionVM}" HorizontalAlignment="Left"
-                                    VerticalAlignment="Top" Margin="0,3,0,0" />
+                                    VerticalAlignment="Top" 
+                                    Margin="0,10,0,0" />
        
         <!-- Optical Properties -->
         <Grid Margin="3,0,0,0">
@@ -58,23 +81,34 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <!-- TODO: Need to put these TextBlocks into the resources -->
-            <StackPanel VerticalAlignment="Bottom" Grid.Row="0" Grid.Column="0"
+            <StackPanel VerticalAlignment="Bottom" 
+                        Grid.Row="0" 
+                        Grid.Column="0"
                         Visibility="{Binding ShowOpticalProperties, Converter={StaticResource MyBooleanToVisibilityConverter}}">
-                <TextBlock HorizontalAlignment="Left">Forward Simulation</TextBlock>
-                <TextBlock HorizontalAlignment="Left">Optical Properties:</TextBlock>
+                <TextBlock HorizontalAlignment="Left"
+                           FontWeight="DemiBold">Forward Simulation</TextBlock>
+                <TextBlock HorizontalAlignment="Left"
+                           FontWeight="DemiBold">Optical Properties:</TextBlock>
             </StackPanel>
-            <StackPanel Grid.Row="0" Grid.Column="1"
+            <StackPanel Grid.Row="0" 
+                        Grid.Column="1"
                         Visibility="{Binding ShowOpticalProperties, Converter={StaticResource MyBooleanToVisibilityConverter}}">
                 <view:OpticalPropertyView DataContext="{Binding MeasuredOpticalPropertyVM}" />
             </StackPanel>
-            <StackPanel VerticalAlignment="Bottom" Grid.Row="1" Grid.Column="0">
-                <TextBlock HorizontalAlignment="Left">Initial Guess:</TextBlock>
-                <TextBlock HorizontalAlignment="Left">Optical Properties:</TextBlock>
+            <StackPanel VerticalAlignment="Bottom" 
+                        Grid.Row="1" 
+                        Grid.Column="0">
+                <TextBlock HorizontalAlignment="Left"
+                           FontWeight="DemiBold">Initial Guess:</TextBlock>
+                <TextBlock HorizontalAlignment="Left"
+                           FontWeight="DemiBold">Optical Properties:</TextBlock>
             </StackPanel>
             <view:OpticalPropertyView DataContext="{Binding InitialGuessOpticalPropertyVM}" Grid.Row="1"
                                       Grid.Column="1" />
         </Grid>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" 
+                    VerticalAlignment="Center"
+                    Margin="0,10,0,0">
             <StackPanel VerticalAlignment="Bottom">
                 <TextBlock Text="{Binding PercentNoiseLabel}" />
                 <TextBox Width="40" Text="{Binding  PercentNoise, Mode=TwoWay}" />
@@ -84,16 +118,16 @@
                 Command="{Binding SimulateMeasuredDataCommand}"
                 VerticalAlignment="Bottom"
                 Content="{Binding PlotMeasuredButtonLabel}"
-                Width="120" Height="30" Margin="2,2" />
+                Width="120" Height="30" Margin="2,0,2,0" />
             <Button
                 Command="{Binding CalculateInitialGuessCommand}"
                 VerticalAlignment="Bottom"
                 Content="{Binding PlotInitialGuessButtonLabel}"
-                Width="120" Height="30" Margin="2,2" />
+                Width="120" Height="30" Margin="2,0,2,0" />
             <Button
                 Command="{Binding SolveInverseCommand}"
                 VerticalAlignment="Bottom"
-                Width="120" Height="30" Margin="2,2"
+                Width="120" Height="30" Margin="2,0,2,0"
                 Content="{Binding InverseSolverButtonLabel}" />
         </StackPanel>
     </StackPanel>

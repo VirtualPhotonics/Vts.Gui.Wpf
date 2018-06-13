@@ -87,7 +87,7 @@
             Visibility="{Binding ShowIndependentAxisChoice, Converter={StaticResource MyBooleanToVisibilityConverter}}"
             Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left"
             LayoutUpdated="StackPanel_LayoutUpdated" Margin="0,1,0,0">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                 <TextBlock Text="{Binding IndependentAxisLabel}"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
                            FontWeight="Bold" />

@@ -60,13 +60,14 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
-            <!-- Blood Concentration -->
-            <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical"
+                        Margin="0,10,0,0">
+                <!-- Blood Concentration -->
                 <view:BloodConcentrationView
                     DataContext="{Binding BloodConcentrationVM}"
                     Visibility="{Binding DisplayBloodVM, Converter={StaticResource MyBooleanToVisibilityConverter}}"
                     Margin="0,3,0,0" />
-                <StackPanel Margin="0,3,0,0">
+                <StackPanel Margin="0,10,0,0">
                     <!-- Scatterer Type -->
                     <view:RadioButtonOptionView DataContext="{Binding ScatteringTypeVM}" />
                     <!-- Intralipid parameters -->
@@ -121,7 +122,7 @@
                     </view:ScatteringTemplateSelector>
                 </StackPanel>
                 <!-- Wavelength Range -->
-                <StackPanel Orientation="Vertical" Margin="0,3,0,0" VerticalAlignment="Top">
+                <StackPanel Orientation="Vertical" Margin="0,10,0,0" VerticalAlignment="Top">
                     <!-- Single-λ Calculator -->
                     <TextBlock Text="Single-λ Calculator" FontWeight="Bold" VerticalAlignment="Center"
                                HorizontalAlignment="Left" Margin="0,3,0,0" />
@@ -160,7 +161,9 @@
                             </StackPanel>
                         </Grid>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal" 
+                                VerticalAlignment="Top"
+                                Margin="0,10,0,0">
                         <view:RangeView DataContext="{Binding WavelengthRangeVM}" Margin="0,3,0,0"
                                         VerticalAlignment="Top" />
                         <!-- Plot Buttons -->
