@@ -743,20 +743,8 @@ namespace Vts.Gui.Wpf.ViewModel
                     Title = title,
                     ColorTag = "ColorTag"
                 });
-                //if (DataSeriesCollection.Count > 0 && points[0] is ComplexDataPoint)
-                //{
-                //    RealLabels.Add(title + "\r(real)" + customLabel);
-                //    PhaseLabels.Add(title + "\r(phase)" + customLabel);
-                //    ImagLabels.Add(title + "\r(imag)" + customLabel);
-                //    AmplitudeLabels.Add(title + "\r(amp)" + customLabel);
-                //}
-                //else
-                //{
-                //    Labels.Add(title + customLabel); // has to happen before updating the bound collection
-                //}
+                PlotTitles.Add(Title);
             }
-            PlotTitles.Add(Title);
-
             UpdatePlotSeries();
         }
 
