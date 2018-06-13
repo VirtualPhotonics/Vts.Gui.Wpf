@@ -117,21 +117,21 @@ namespace Vts.Gui.Wpf.ViewModel
                 LegendPlacement = LegendPlacement.Outside,
                 DefaultColors = new List<OxyColor>
                 {
-                    OxyColor.FromRgb(0x00, 0x99, 0x00),     //GREEN
-                    OxyColor.FromRgb(0xD6, 0x89, 0x10),     //DARK ORANGE
-                    OxyColor.FromRgb(0xFF, 0x22, 0x00),     //RED
-                    OxyColor.FromRgb(0x00, 0x00, 0xFF),     //BLUE
-                    OxyColor.FromRgb(0xFF, 0x33, 0xFF),     //MAGENTA
-			        OxyColor.FromRgb(0x00, 0xEE, 0x00),     //LIGHT GREEN
-                    OxyColor.FromRgb(0x99, 0x33, 0xFF),     //PURPLE 
-                    OxyColor.FromRgb(0x33, 0x99, 0xFF),     //LIGHT BLUE  
-                    OxyColor.FromRgb(0x99, 0x99, 0x00),     //OLIVE GREEN                    
-                    OxyColor.FromRgb(0xA0, 0x52, 0x2D),     //BROWN   
-                    OxyColor.FromRgb(0x00, 0x80, 0x80),     //TEAL                    
-                    OxyColor.FromRgb(0xDC, 0x14, 0x3C),     //CRIMSON RED
-                    OxyColor.FromRgb(0x00, 0xFF, 0xFF),     //CYAN
-                    OxyColor.FromRgb(0x80, 0x80, 0x80),     //DARK GRAY 
-                    OxyColor.FromRgb(0xFF, 0xC0, 0xB4)      //PINK                     
+                    OxyColor.FromRgb(0x00, 0x80, 0x00),     // Green
+                    OxyColor.FromRgb(0xD6, 0x89, 0x10),     // Dark Orange
+                    OxyColor.FromRgb(0xFF, 0x22, 0x00),     // Red
+                    OxyColor.FromRgb(0x00, 0x00, 0xFF),     // Blue
+                    OxyColor.FromRgb(0xC4, 0x15, 0xC4),     // Dark Magenta
+                    OxyColor.FromRgb(0x00, 0xBF, 0xBF),     // Turquoise
+                    OxyColor.FromRgb(0x4F, 0x4F, 0x4F),     // Dark Grey 
+                    OxyColor.FromRgb(0x33, 0x99, 0xFF),     // Light Blue  
+                    OxyColor.FromRgb(0xA0, 0x52, 0x2D),     // Brown
+                    OxyColor.FromRgb(0x00, 0x80, 0x80),     // Teal                    
+                    OxyColor.FromRgb(0xDC, 0x14, 0x3C),     // Crimson Red
+                    OxyColor.FromRgb(0x80, 0x80, 0x80),     // Grey
+                    OxyColor.FromRgb(0x00, 0x00, 0x80),     // Navy Blue
+                    OxyColor.FromRgb(0x99, 0x99, 0x00),     // Olive Green                   
+                    OxyColor.FromRgb(0x80, 0x00, 0x00),     // Maroon                    
                 }
             };
             PlotType = ReflectancePlotType.ForwardSolver;
