@@ -8,10 +8,12 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using OxyPlot;
+using OxyPlot.Axes;
 using OxyPlot.Series;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
+using FontWeights = OxyPlot.FontWeights;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -258,6 +260,9 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             get { return StringLookup.GetLocalizedString("Label_MaxY"); }
         }
+
+        private string XAxis { get; set; }
+        private string YAxis { get; set; }
 
         private List<DataPointCollection> DataSeriesCollection { get; set; }
         //private IList<IList<IDataPoint>> DataSeriesCollectionToggle { get; set; }
@@ -617,6 +622,10 @@ namespace Vts.Gui.Wpf.ViewModel
                 // set CurrentIndependtVariableAxis prior to setting Title because property
                 // might ClearPlot including Title
                 CurrentIndependentVariableAxis = labels.IndependentAxis.AxisType;
+                // set the x and y axis labels
+                XAxis = labels.IndependentAxis.AxisLabel + " [" + labels.IndependentAxis.AxisUnits + "]";
+                YAxis = labels.DependentAxisName + " [" + labels.DependentAxisUnits + "]";
+
                 Title = labels.DependentAxisName + " [" + labels.DependentAxisUnits + "] versus " +
                         labels.IndependentAxis.AxisLabel + " [" + labels.IndependentAxis.AxisUnits + "]";
 
@@ -677,27 +686,6 @@ namespace Vts.Gui.Wpf.ViewModel
                         }
                     }
                 }
-
-                //using (var stream = StreamFinder.GetLocalFilestreamFromSaveFileDialog("txt"))
-                //{
-                //    if (stream != null)
-                //    {
-                //        using (StreamWriter sw = new StreamWriter(stream))
-                //        {
-                //            sw.Write("%");
-                //            _Labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Y)" + "\t"));
-                //            sw.WriteLine();
-                //            for (int i = 0; i < _PlotSeriesCollection[0].Length; i++)
-                //            {
-                //                sw.WriteLine();
-                //                for (int j = 0; j < _PlotSeriesCollection.Count; j++)
-                //                {
-                //                    sw.Write(_PlotSeriesCollection[j][i].X + "\t" + _PlotSeriesCollection[j][i].Y + "\t");
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
             }
         }
 
@@ -988,6 +976,9 @@ namespace Vts.Gui.Wpf.ViewModel
                 PlotModel.Title = PlotTitles[PlotTitles.Count - 1];
                 PlotSeriesCollection.Add(tempPointArrayA.ToArray());
             }
+            PlotModel.Axes.Clear();
+            PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = XAxis, TitleFontWeight = FontWeights.Bold });
+            PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = YAxis, TitleFontWeight = FontWeights.Bold });
         }
 
         /// <summary>
