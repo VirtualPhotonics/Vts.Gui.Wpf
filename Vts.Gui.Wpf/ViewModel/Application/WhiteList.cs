@@ -27,7 +27,7 @@ namespace Vts.Gui.Wpf.ViewModel.Application
                 {
                     ForwardSolverType.PointSourceSDA,
                     ForwardSolverType.DistributedPointSourceSDA,
-                    ForwardSolverType.DistributedGaussianSourceSDA,
+                    //ForwardSolverType.DistributedGaussianSourceSDA,
                     ForwardSolverType.MonteCarlo,
                     ForwardSolverType.Nurbs,
                     //ForwardSolverType.TwoLayerSDA, 
