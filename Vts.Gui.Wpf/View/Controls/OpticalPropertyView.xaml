@@ -12,7 +12,7 @@
             Text="{Binding Title}"
             FontWeight="Bold"
             Visibility="{Binding ShowTitle}" />
-        <StackPanel x:Name="LayoutRoot" Orientation="Horizontal" Margin="0,3,0,0">
+        <StackPanel x:Name="LayoutRoot" Orientation="Horizontal" Margin="3,0,0,0">
             <StackPanel Orientation="Vertical" Width="70">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                     <TextBlock Text="μa [" />

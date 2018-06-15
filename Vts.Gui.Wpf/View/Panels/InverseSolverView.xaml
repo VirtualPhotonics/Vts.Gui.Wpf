@@ -48,8 +48,7 @@
                                        VerticalAlignment="Top" 
                                        Margin="0,10,0,0" />
         <!-- Detection Parameters -->
-        <ItemsControl ItemsSource="{Binding AllRangeVMs, UpdateSourceTrigger=PropertyChanged}"
-                      Margin="0,10,0,0">
+        <ItemsControl ItemsSource="{Binding AllRangeVMs, UpdateSourceTrigger=PropertyChanged}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <view:RangeView DataContext="{Binding}" 

@@ -32,10 +32,10 @@
         <view:SolutionDomainOptionView DataContext="{Binding SolutionDomainTypeOptionVM}" 
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top" 
-                                       Margin="0,10,0,0" />
+                                       Margin="0,15,0,0" />
         <!-- Detection Parameters -->
         <ItemsControl ItemsSource="{Binding AllRangeVMs, UpdateSourceTrigger=PropertyChanged}" 
-                      Margin="0,10,0,0">
+                      Margin="0,0,0,0">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <view:RangeView DataContext="{Binding}" 
