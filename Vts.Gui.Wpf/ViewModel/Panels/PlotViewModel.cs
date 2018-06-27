@@ -121,19 +121,16 @@ namespace Vts.Gui.Wpf.ViewModel
                 {
                     OxyColor.FromRgb(0x00, 0x80, 0x00),     // Green
                     OxyColor.FromRgb(0xD6, 0x89, 0x10),     // Dark Orange
-                    OxyColor.FromRgb(0xFF, 0x22, 0x00),     // Red
+                    OxyColor.FromRgb(0xDC, 0x14, 0x3C),     // Crimson Red
                     OxyColor.FromRgb(0x00, 0x00, 0xFF),     // Blue
                     OxyColor.FromRgb(0xC4, 0x15, 0xC4),     // Dark Magenta
                     OxyColor.FromRgb(0x00, 0xBF, 0xBF),     // Turquoise
-                    OxyColor.FromRgb(0x4F, 0x4F, 0x4F),     // Dark Grey 
-                    OxyColor.FromRgb(0x33, 0x99, 0xFF),     // Light Blue  
-                    OxyColor.FromRgb(0xA0, 0x52, 0x2D),     // Brown
-                    OxyColor.FromRgb(0x00, 0x80, 0x80),     // Teal                    
-                    OxyColor.FromRgb(0xDC, 0x14, 0x3C),     // Crimson Red
-                    OxyColor.FromRgb(0x80, 0x80, 0x80),     // Grey
+                    OxyColor.FromRgb(0x4F, 0x4F, 0x4F),     // Dark Grey
+                    OxyColor.FromRgb(0x33, 0x99, 0xFF),     // Light Blue
+                    OxyColor.FromRgb(0x80, 0x00, 0x00),     // Maroon
+                    OxyColor.FromRgb(0x00, 0x80, 0x80),     // Teal
                     OxyColor.FromRgb(0x00, 0x00, 0x80),     // Navy Blue
-                    OxyColor.FromRgb(0x99, 0x99, 0x00),     // Olive Green                   
-                    OxyColor.FromRgb(0x80, 0x00, 0x00),     // Maroon                    
+                    OxyColor.FromRgb(0x99, 0x99, 0x00),     // Olive Green
                 }
             };
             PlotType = ReflectancePlotType.ForwardSolver;
