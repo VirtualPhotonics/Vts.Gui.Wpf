@@ -46,6 +46,17 @@ namespace Vts.Gui.Wpf.Test.Converters
                 typeof(String),
                 null, // no parameters
                 System.Globalization.CultureInfo.CurrentCulture).Equals(12.0));
+            Assert.That(dtsConverter.ConvertBack(
+                "t", // string to convert
+                typeof(String),
+                null, // no parameters
+                System.Globalization.CultureInfo.CurrentCulture).Equals(0));
+            var exception = Assert.Throws<ArgumentException>(() => dtsConverter.ConvertBack(
+                12, // int value
+                typeof(String),
+                null, // no parameters
+                System.Globalization.CultureInfo.CurrentCulture));
+            Assert.That(exception.Message, Is.EqualTo("Value must be a string"));
         }
 
     }

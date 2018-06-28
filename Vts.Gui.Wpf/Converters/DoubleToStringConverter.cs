@@ -64,8 +64,14 @@ namespace Vts.Gui.Wpf.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            //return value; // previous code
-            return System.Convert.ToDouble(value); // code fix ckh 5/26/18
+            if (!(value is string))
+                throw new ArgumentException("Value must be a string");
+
+            if (double.TryParse((string) value, out var d))
+            {
+                return d;
+            }
+            return 0;
         }
 
         #endregion
