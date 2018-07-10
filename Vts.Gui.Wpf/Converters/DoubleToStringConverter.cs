@@ -66,12 +66,11 @@ namespace Vts.Gui.Wpf.Converters
         {
             if (!(value is string))
                 throw new ArgumentException("Value must be a string");
-
-            if (double.TryParse((string) value, out var d))
-            {
+            var d1;            
+            if (double.TryParse((string) value, out d1))            
                 return d;
-            }
-            return 0;
+            else
+                return 0;
         }
 
         #endregion
