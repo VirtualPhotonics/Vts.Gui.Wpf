@@ -66,8 +66,8 @@ namespace Vts.Gui.Wpf.Converters
         {
             if (!(value is string))
                 throw new ArgumentException("Value must be a string");
-            var d1;            
-            if (double.TryParse((string) value, out d1))            
+            double d;            
+            if (double.TryParse((string) value, out d))            
                 return d;
             else
                 return 0;
