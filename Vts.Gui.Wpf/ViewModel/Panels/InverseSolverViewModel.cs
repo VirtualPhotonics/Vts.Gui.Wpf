@@ -592,12 +592,26 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public InverseSolutionResult SolveInverse()
         {
+            var lowerBounds = new double[] { 0, 0, 0, 0 };
+            var upperBounds = new double[] { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity };
+
             var measuredOpticalProperties = GetMeasuredOpticalProperties();
             var measuredDataValues = GetSimulatedMeasuredData();
 
             var dependentValues = measuredDataValues.ToArray();
             var initGuessOpticalProperties = GetInitialGuessOpticalProperties();
             var initGuessParameters = GetParametersInOrder(initGuessOpticalProperties);
+
+            // replace unconstrained L-M optimization with constrained version
+            // this solves problem of when distributed source solution produces neg OPs during inversion
+            //var fit = ComputationFactory.SolveInverse(
+            //    InverseForwardSolverTypeOptionVM.SelectedValue,
+            //    OptimizerTypeOptionVM.SelectedValue,
+            //    SolutionDomainTypeOptionVM.SelectedValue,
+            //    dependentValues,
+            //    dependentValues, // set standard deviation, sd, to measured (works w/ or w/o noise)
+            //    InverseFitTypeOptionVM.SelectedValue,
+            //    initGuessParameters.Values.ToArray());
 
             var fit = ComputationFactory.SolveInverse(
                 InverseForwardSolverTypeOptionVM.SelectedValue,
@@ -606,7 +620,8 @@ namespace Vts.Gui.Wpf.ViewModel
                 dependentValues,
                 dependentValues, // set standard deviation, sd, to measured (works w/ or w/o noise)
                 InverseFitTypeOptionVM.SelectedValue,
-                initGuessParameters.Values.ToArray());
+                initGuessParameters.Values.ToArray(),
+                lowerBounds, upperBounds);
 
             var fitOpticalProperties = ComputationFactory.UnFlattenOpticalProperties(fit);
 
