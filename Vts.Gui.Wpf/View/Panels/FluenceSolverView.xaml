@@ -141,7 +141,7 @@
                 HorizontalAlignment="Right"
                 Command="{Binding ExecuteFluenceSolverCommand}"
                 Content="{Binding GenerateFluenceButtonLabel}"
-                Height="30" Padding="5,0,5,0" Margin="5" />
+                Height="25" Padding="5,0,5,0" Margin="5" />
         </StackPanel>
     </StackPanel>
 </UserControl>

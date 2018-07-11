@@ -20,11 +20,11 @@
             <Button VerticalAlignment="Bottom" Command="{Binding LoadSimulationInputCommand}"
                     IsEnabled="{Binding CanLoadInputFile, Mode=TwoWay}"
                     Content="Load Input File"
-                    Width="180" Height="30" Margin="5" />
+                    Width="180" Height="25" Margin="5" />
             <Button VerticalAlignment="Bottom" Command="{Binding DownloadDefaultSimulationInputCommand}"
                     IsEnabled="{Binding CanDownloadInfiles, Mode=TwoWay}"
                     Content="Download Prototype Input Files"
-                    Width="180" Height="30" Margin="5" />
+                    Width="180" Height="25" Margin="5" />
         </StackPanel>
         
         <ContentControl IsEnabled="{Binding CanRunSimulation, Mode=TwoWay}">
@@ -87,21 +87,21 @@
                     IsEnabled="{Binding CanRunSimulation, Mode=TwoWay}"
                     Content="Run Simulation"
                     Width="120" 
-                    Height="30" 
+                    Height="25" 
                     Margin="5" />
             <Button VerticalAlignment="Bottom" 
                     Command="{Binding CancelMonteCarloSolverCommand}"
                     IsEnabled="{Binding CanCancelSimulation, Mode=TwoWay}"
                     Content="{Binding CancelButtonText, Mode=TwoWay}"
                     Width="120" 
-                    Height="30" 
+                    Height="25" 
                     Margin="5" />
             <Button VerticalAlignment="Bottom" 
                     Command="{Binding SaveSimulationResultsCommand}"
                     IsEnabled="{Binding CanSaveResults, Mode=TwoWay}"
                     Content="Save Simulation Results"
                     Width="160" 
-                    Height="30" 
+                    Height="25" 
                     Margin="5" />
         </StackPanel>
     </StackPanel>

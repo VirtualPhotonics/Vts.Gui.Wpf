@@ -117,16 +117,16 @@
                 Command="{Binding SimulateMeasuredDataCommand}"
                 VerticalAlignment="Bottom"
                 Content="{Binding PlotMeasuredButtonLabel}"
-                Width="120" Height="30" Margin="2,0,2,0" />
+                Width="120" Height="25" Margin="2,0,2,0" />
             <Button
                 Command="{Binding CalculateInitialGuessCommand}"
                 VerticalAlignment="Bottom"
                 Content="{Binding PlotInitialGuessButtonLabel}"
-                Width="120" Height="30" Margin="2,0,2,0" />
+                Width="120" Height="25" Margin="2,0,2,0" />
             <Button
                 Command="{Binding SolveInverseCommand}"
                 VerticalAlignment="Bottom"
-                Width="120" Height="30" Margin="2,0,2,0"
+                Width="120" Height="25" Margin="2,0,2,0"
                 Content="{Binding InverseSolverButtonLabel}" />
         </StackPanel>
     </StackPanel>
