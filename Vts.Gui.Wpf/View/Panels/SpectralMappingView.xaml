@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
-             Height="Auto" Width="410">
+             Height="Auto" Width="440">
     <Grid x:Name="LayoutRoot" Background="White" HorizontalAlignment="Left">
         <StackPanel Orientation="Vertical">
             <Grid>
@@ -137,6 +137,7 @@
                         <Button Command="{Binding UpdateWavelength}"
                                 CommandParameter="{Binding Wavelength}"
                                 Margin="5,0,0,0" Height="25" VerticalAlignment="Center"
+                                Padding="5,0"
                                 Content="Update" />
                         <Grid Margin="5,0,0,0" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
@@ -169,10 +170,12 @@
                         <Button
                             Command="{Binding PlotMuaSpectrumCommand}"
                             Margin="10,2,0,0" Height="25" VerticalAlignment="Bottom"
+                            Padding="10,0"
                             Content="{Binding PlotMuaButtonLabel}" />
                         <Button
                             Command="{Binding PlotMuspSpectrumCommand}"
                             Margin="10,2,0,0" Height="25" VerticalAlignment="Bottom"
+                            Padding="10,0"
                             Content="{Binding PlotMusPrimeButtonLabel}" />
                     </StackPanel>
                 </StackPanel>
