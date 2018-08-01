@@ -98,11 +98,13 @@ namespace Vts.Gui.Wpf.ViewModel
             OpticalProperties = new OpticalProperties(0.01, 1, 0.8, 1.4);
             Wavelength = 650;
 
+            ResetConcentrations = new RelayCommand<object>(ResetConcentrations_Executed);
             UpdateWavelength = new RelayCommand<object>(UpdateWavelength_Executed);
             PlotMuaSpectrumCommand = new RelayCommand(PlotMuaSpectrum_Executed);
             PlotMuspSpectrumCommand = new RelayCommand(PlotMuspSpectrum_Executed);
         }
 
+        public RelayCommand<object> ResetConcentrations { get; set; }
         public RelayCommand<object> UpdateWavelength { get; set; }
         public RelayCommand PlotMuaSpectrumCommand { get; set; }
         public RelayCommand PlotMuspSpectrumCommand { get; set; }
@@ -241,7 +243,6 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 _wavelength = value;
                 UpdateOpticalProperties();
-                //Commands.Spec_UpdateWavelength.Execute(_wavelength);
                 OnPropertyChanged("Wavelength");
             }
         }
@@ -320,6 +321,13 @@ namespace Vts.Gui.Wpf.ViewModel
             OnPropertyChanged("OpticalProperties");
             WindowViewModel.Current.ForwardSolverVM.UpdateOpticalProperties_Executed();
             //Commands.Spec_UpdateOpticalProperties.Execute(OpticalProperties, null);
+        }
+
+        private void ResetConcentrations_Executed(object obj)
+        {
+            var _tissue = (Tissue)obj;
+            _tissue.Absorbers = TissueProvider.CreateAbsorbers(_tissue.TissueType);
+            SelectedTissue = _tissue;
         }
 
         private void PlotMuaSpectrum_Executed()
