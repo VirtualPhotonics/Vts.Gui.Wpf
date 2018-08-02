@@ -85,10 +85,10 @@
                         Grid.Column="0"
                         Visibility="{Binding ShowOpticalProperties, Converter={StaticResource MyBooleanToVisibilityConverter}}">
                 <TextBlock HorizontalAlignment="Left"
-                           Text="{Binding Path=MainResource.Label_ForwardSimulation, Source={StaticResource LocalizedStrings}}"
+                           Text="{Binding ConverterParameter=Label_ForwardSimulation, Converter={StaticResource MyResourceToStringConverter}}"
                            FontWeight="DemiBold" />
                 <TextBlock HorizontalAlignment="Left"
-                           Text="{Binding Path=MainResource.Label_OpticalProperties, Source={StaticResource LocalizedStrings}}"
+                           Text="{Binding ConverterParameter=Label_OpticalProperties, Converter={StaticResource MyResourceToStringConverter}}"
                            FontWeight="DemiBold" />
             </StackPanel>
             <StackPanel Grid.Row="0" 
@@ -100,10 +100,10 @@
                         Grid.Row="1" 
                         Grid.Column="0">
                 <TextBlock HorizontalAlignment="Left"
-                           Text="{Binding Path=MainResource.Label_InitialGuess, Source={StaticResource LocalizedStrings}}"
+                           Text="{Binding ConverterParameter=Label_InitialGuess, Converter={StaticResource MyResourceToStringConverter}}"
                            FontWeight="DemiBold" />
                 <TextBlock HorizontalAlignment="Left"
-                           Text="{Binding Path=MainResource.Label_OpticalProperties, Source={StaticResource LocalizedStrings}}"
+                           Text="{Binding ConverterParameter=Label_OpticalProperties, Converter={StaticResource MyResourceToStringConverter}}"
                            FontWeight="DemiBold" />
             </StackPanel>
             <view:OpticalPropertyView DataContext="{Binding InitialGuessOpticalPropertyVM}" Grid.Row="1"

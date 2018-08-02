@@ -28,7 +28,7 @@
                     <!-- STEADY-STATE -->
                     <TextBlock
                         Grid.Row="0" Grid.Column="0"
-                        Text="{Binding Path=MainResource.Label_SteadyState, Source={StaticResource LocalizedStrings}}" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        Text="{Binding ConverterParameter=Label_SteadyState, Converter={StaticResource MyResourceToStringConverter}}" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="0" Grid.Column="1"
                         DataContext="{Binding FluenceOfRhoAndZOption}"
@@ -50,20 +50,20 @@
                         DataContext="{Binding FluenceOfRhoAndZAndTimeOption}"
                         IsEnabled="{Binding IsEnabled, Mode=OneWay}"
                         Tag="{Binding ID}"
-                        Content="{Binding Path=MainResource.Label_PHDOfRhoAndZAndTime, Source={StaticResource LocalizedStrings}}"
+                        Content="{Binding ConverterParameter=Label_PHDOfRhoAndZAndTime, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="PHDSolutionDomainOptionView" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="1" Grid.Column="2"
                         DataContext="{Binding FluenceOfFxAndZAndTOption}" IsEnabled="False"
                         Tag="{Binding ID}"
-                        Content="{Binding Path=MainResource.Label_PHDOfFxAndZAndTime, Source={StaticResource LocalizedStrings}}"
+                        Content="{Binding ConverterParameter=Label_PHDOfFxAndZAndTime, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="PHDSolutionDomainOptionView" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <!-- FREQUENCY-DOMAIN -->
                     <TextBlock
                         Grid.Row="2" Grid.Column="0"
-                        Text="{Binding Path=MainResource.Label_FrequencyDomain, Source={StaticResource LocalizedStrings}}" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        Text="{Binding ConverterParameter=Label_FrequencyDomain, Converter={StaticResource MyResourceToStringConverter}}" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="2" Grid.Column="1"
                         DataContext="{Binding FluenceOfRhoAndZAndFtOption}"
@@ -75,7 +75,7 @@
                         Grid.Row="2" Grid.Column="2"
                         DataContext="{Binding FluenceOfFxAndZAndFtOption}" IsEnabled="False"
                         Tag="{Binding ID}"
-                        Content="{Binding Path=MainResource.Label_PHDOfFxAndZAndFt, Source={StaticResource LocalizedStrings}}"
+                        Content="{Binding ConverterParameter=Label_PHDOfFxAndZAndFt, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="PHDSolutionDomainOptionView" VerticalAlignment="Center" HorizontalAlignment="Left" />
                 </Grid>
@@ -88,13 +88,13 @@
             Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"
             LayoutUpdated="StackPanel_LayoutUpdated" Margin="3,1,0,0">
             <TextBlock
-                Text="{Binding Path=MainResource.Label_IndependentAxis, Source={StaticResource LocalizedStrings}}"
+                Text="{Binding ConverterParameter=Label_IndependentAxis, Converter={StaticResource MyResourceToStringConverter}}"
                 VerticalAlignment="Center" HorizontalAlignment="Left" />
             <!-- Radio button options -->
             <view:RadioButtonOptionView DataContext="{Binding IndependentVariableAxisOptionVM}"
                                         VerticalContentAlignment="Center"
                                         VerticalAlignment="Center" HorizontalAlignment="Left" />
-            <TextBlock Text="{Binding Path=MainResource.Label_At, Source={StaticResource LocalizedStrings}}"
+            <TextBlock Text="{Binding ConverterParameter=Label_At, Converter={StaticResource MyResourceToStringConverter}}"
                        VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3,0,0,0" />
             <TextBlock Text="{Binding ConstantAxisLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"
                        Margin="3,0,0,0" />

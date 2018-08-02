@@ -5,7 +5,7 @@
     <Grid Background="White">
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Path=MainResource.Label_PowerLaw, Source={StaticResource LocalizedStrings}}" />
+                <TextBlock Text="{Binding ConverterParameter=Label_PowerLaw, Converter={StaticResource MyResourceToStringConverter}}" />
                 <TextBlock Text="A*λ" />
                 <TextBlock Text="(-b)" VerticalAlignment="Top" />
             </StackPanel>

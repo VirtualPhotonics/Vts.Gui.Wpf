@@ -1060,7 +1060,7 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SimulationOptions.
+        ///   Looks up a localized string similar to Simulation Options.
         /// </summary>
         public static string Label_SimulationOptions {
             get {

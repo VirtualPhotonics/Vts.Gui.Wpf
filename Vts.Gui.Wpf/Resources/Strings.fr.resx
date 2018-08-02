@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Button_GenerateFluence" xml:space="preserve">
-    <value>Generate Fluence/Interrogation Map</value>
+    <value>Générer Fluence/Interrogation Map</value>
   </data>
   <data name="Button_InverseSolver" xml:space="preserve">
-    <value>Run Inverse Solver</value>
+    <value>Exécuter Solver Inverse</value>
   </data>
   <data name="Button_PlotInitialGuess" xml:space="preserve">
-    <value>Plot Initial Guess</value>
+    <value>Plot Estimation Initiale</value>
   </data>
   <data name="Button_PlotMeasured" xml:space="preserve">
-    <value>Plot Measured Data</value>
+    <value>Plot Données Mesurées</value>
   </data>
   <data name="Button_PlotMua" xml:space="preserve">
     <value>Plot μa Spectrum</value>
@@ -139,22 +139,22 @@
     <value>Plot Reflectance</value>
   </data>
   <data name="IndependentVariableAxis_Ft" xml:space="preserve">
-    <value>Temporal Frequencies</value>
+    <value>Fréquences Temporel</value>
   </data>
   <data name="IndependentVariableAxis_Fx" xml:space="preserve">
-    <value>Spatial Frequencies</value>
+    <value>Fréquences Spatial</value>
   </data>
   <data name="IndependentVariableAxis_Rho" xml:space="preserve">
-    <value>Detector Positions</value>
+    <value>Positions du Détecteur</value>
   </data>
   <data name="IndependentVariableAxis_Time" xml:space="preserve">
-    <value>Detection Times</value>
+    <value>Temps de Détection</value>
   </data>
   <data name="IndependentVariableAxis_Wavelength" xml:space="preserve">
-    <value>Wavelengths</value>
+    <value>Longueurs d'Onde</value>
   </data>
   <data name="Label_AbsorberConcentrations" xml:space="preserve">
-    <value>Absorber Concentrations</value>
+    <value>Concentrations d'Absorbeur</value>
   </data>
   <data name="Label_ForwardSolver" xml:space="preserve">
     <value>Fwd Solver:</value>
@@ -178,7 +178,7 @@
     <value>Source Detector Separation:</value>
   </data>
   <data name="Label_TissueTypes" xml:space="preserve">
-    <value>Tissue Types</value>
+    <value>Types de Tissus</value>
   </data>
   <data name="Label_zRange" xml:space="preserve">
     <value>z Range:</value>
@@ -196,22 +196,22 @@
     <value>Medium n</value>
   </data>
   <data name="Value_ParticleN" xml:space="preserve">
-    <value>Particle n</value>
+    <value>Particule n</value>
   </data>
   <data name="Value_ParticleRadius" xml:space="preserve">
-    <value>Particle radius</value>
+    <value>Radius de Particule</value>
   </data>
   <data name="Value_VolumeFraction" xml:space="preserve">
     <value>Volume Fraction</value>
   </data>
   <data name="Label_At" xml:space="preserve">
-    <value>at</value>
+    <value>à</value>
   </data>
   <data name="Label_BloodConcentration" xml:space="preserve">
-    <value>Blood Concentration</value>
+    <value>Concentration Sanguine</value>
   </data>
   <data name="Label_BloodVolume" xml:space="preserve">
-    <value>Blood volume [vol. frac.]:</value>
+    <value>Volume de Sang [vol. frac.]:</value>
   </data>
   <data name="Label_AOfFxAndZ" xml:space="preserve">
     <value>A(fx,z)</value>
@@ -277,16 +277,16 @@
     <value>Total Hb [μM]:</value>
   </data>
   <data name="Button_ClearAll" xml:space="preserve">
-    <value>Clear All</value>
+    <value>Toute Effacer</value>
   </data>
   <data name="Button_ClearNewest" xml:space="preserve">
-    <value>Clear Newest</value>
+    <value>Effacer Dernier</value>
   </data>
   <data name="Button_ExportData" xml:space="preserve">
-    <value>Export Data</value>
+    <value>Exporter Données</value>
   </data>
   <data name="Button_ExportImage" xml:space="preserve">
-    <value>Export As Image</value>
+    <value>Exporter Image</value>
   </data>
   <data name="Label_FluenceOfFxAndZ" xml:space="preserve">
     <value>Φ(fx,z)</value>
@@ -307,10 +307,10 @@
     <value>Φ(ρ,z,t)</value>
   </data>
   <data name="Label_HoldOn" xml:space="preserve">
-    <value>Hold On</value>
+    <value>Conserver</value>
   </data>
   <data name="Label_HideKey" xml:space="preserve">
-    <value>Hide Key</value>
+    <value>Cacher Légende</value>
   </data>
   <data name="Label_PlotToggle" xml:space="preserve">
     <value>Plot Toggle:</value>
@@ -322,13 +322,13 @@
     <value>Plot Label:</value>
   </data>
   <data name="Label_XAxisSpacing" xml:space="preserve">
-    <value>X Axis Spacing:</value>
+    <value>Espacement X Axis:</value>
   </data>
   <data name="Label_YAxisSpacing" xml:space="preserve">
-    <value>Y Axis Spacing:</value>
+    <value>Espacement Y Axis:</value>
   </data>
   <data name="Label_AutoScale" xml:space="preserve">
-    <value>Auto Scale</value>
+    <value>Echelle Automatique</value>
   </data>
   <data name="Label_Max" xml:space="preserve">
     <value>Max:</value>
@@ -385,22 +385,22 @@
     <value>GHz</value>
   </data>
   <data name="Button_Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Annuler</value>
   </data>
   <data name="Button_DownloadPrototypeInputFiles" xml:space="preserve">
-    <value>Download Prototype Input Files</value>
+    <value>Downloader Fichier Prototype</value>
   </data>
   <data name="Button_LoadInputFile" xml:space="preserve">
-    <value>Load Input File</value>
+    <value>Ouvrir Fichier</value>
   </data>
   <data name="Button_RunSimulation" xml:space="preserve">
-    <value>Run Simulation</value>
+    <value>Exécuter Simulation</value>
   </data>
   <data name="Button_SaveSimulationResults" xml:space="preserve">
-    <value>Save Simulation Results</value>
+    <value>Sauvegarder Simulation</value>
   </data>
   <data name="Label_BasicInfo" xml:space="preserve">
-    <value>Basic Info</value>
+    <value>Info Fondamental</value>
   </data>
   <data name="Label_ForwardSimulation" xml:space="preserve">
     <value>Forward Simulation</value>
@@ -409,7 +409,7 @@
     <value>Initial Guess</value>
   </data>
   <data name="Label_NumberOfPhotons" xml:space="preserve">
-    <value>Number of Photons:</value>
+    <value>Nombre de Photons:</value>
   </data>
   <data name="Label_OpticalProperties" xml:space="preserve">
     <value>Optical Properties:</value>
@@ -421,7 +421,7 @@
     <value>Optimizer Type</value>
   </data>
   <data name="Label_Analog" xml:space="preserve">
-    <value>Analog</value>
+    <value>Analogique</value>
   </data>
   <data name="Label_AWT" xml:space="preserve">
     <value>Absorption Weighting Type:</value>
@@ -442,7 +442,7 @@
     <value>http://www.jsoneditoronline.org</value>
   </data>
   <data name="Label_MultiAxisSelection" xml:space="preserve">
-    <value>allow multi-axis selection</value>
+    <value>permettre sélection multi-axis</value>
   </data>
   <data name="Label_PhaseFunctionType" xml:space="preserve">
     <value>Phase Function Type:</value>
@@ -454,37 +454,37 @@
     <value>Seed:</value>
   </data>
   <data name="Label_SelectedRegion" xml:space="preserve">
-    <value>Currently selected region:</value>
+    <value>Région Actuellement Sélectionnée:</value>
   </data>
   <data name="Label_SpecifyInputsFromFile" xml:space="preserve">
-    <value>Specify Inputs From File (recommended)</value>
+    <value>Spécifier les Entrées du Fichier (recommandé)</value>
   </data>
   <data name="Label_SteadyState" xml:space="preserve">
     <value>Steady-State</value>
   </data>
   <data name="Label_TimeDomain" xml:space="preserve">
-    <value>Time-Domain</value>
+    <value>Domaine-Temporel</value>
   </data>
   <data name="Label_TissueInput" xml:space="preserve">
-    <value>Tissue Input</value>
+    <value>Données Tissus</value>
   </data>
   <data name="Label_TrackStatistics" xml:space="preserve">
     <value>Track Statistics</value>
   </data>
   <data name="Label_UseSpectralPanel" xml:space="preserve">
-    <value>use spectral panel inputs</value>
+    <value>utiliser les données du panneau spectral</value>
   </data>
   <data name="Button_ResetValues" xml:space="preserve">
-    <value>Reset Values</value>
+    <value>Remettre Valeurs</value>
   </data>
   <data name="Button_Update" xml:space="preserve">
-    <value>Update</value>
+    <value>Réviser</value>
   </data>
   <data name="Label_Air" xml:space="preserve">
     <value> (Air)</value>
   </data>
   <data name="Label_Atnm" xml:space="preserve">
-    <value>At λ [nm] =</value>
+    <value>à λ [nm] =</value>
   </data>
   <data name="Label_Calculator" xml:space="preserve">
     <value>Single-λ Calculator</value>
@@ -514,13 +514,13 @@
     <value>scatter radius</value>
   </data>
   <data name="Label_SimulationOptions" xml:space="preserve">
-    <value>Simulation Options</value>
+    <value>Options de Simulation</value>
   </data>
   <data name="Label_StartStop" xml:space="preserve">
     <value>Start/Stop:</value>
   </data>
   <data name="Label_Tissue" xml:space="preserve">
-    <value> (Tissue)</value>
+    <value> (Tissus)</value>
   </data>
   <data name="Label_VoxelRegion" xml:space="preserve">
     <value>Voxel Region</value>
@@ -529,40 +529,40 @@
     <value>mm-1</value>
   </data>
   <data name="Range_Begin" xml:space="preserve">
-    <value>Begin</value>
+    <value>Début</value>
   </data>
   <data name="Range_End" xml:space="preserve">
-    <value>End</value>
+    <value>Fin</value>
   </data>
   <data name="Range_Number" xml:space="preserve">
-    <value>Number</value>
+    <value>Nombre</value>
   </data>
   <data name="Tab_Fluence" xml:space="preserve">
-    <value>Fluence/Interrogation Solver Panel</value>
+    <value>Panneau Solver Fluence/Interrogation</value>
   </data>
   <data name="Tab_ForwardSolver" xml:space="preserve">
-    <value>Forward Solver/Analysis Panel</value>
+    <value>Panneau Forward Solver/Analysis</value>
   </data>
   <data name="Tab_InverseSolver" xml:space="preserve">
-    <value>Inverse Solver Panel</value>
+    <value>Panneau Solver Inverse</value>
   </data>
   <data name="Tab_MapView" xml:space="preserve">
-    <value>Map View</value>
+    <value>Vue de Plan</value>
   </data>
   <data name="Tab_MonteCarlo" xml:space="preserve">
-    <value>Monte Carlo Solver Panel</value>
+    <value>Panneau Monte Carlo</value>
   </data>
   <data name="Tab_PlotView" xml:space="preserve">
-    <value>Plot View</value>
+    <value>Vue de Plot</value>
   </data>
   <data name="Tab_Spectral" xml:space="preserve">
-    <value>Spectral Panel</value>
+    <value>Panneau Spectral</value>
   </data>
   <data name="Button_CancelSave" xml:space="preserve">
-    <value>Cancel Save</value>
+    <value>Annuler Sauvegarder</value>
   </data>
   <data name="Button_CancelSimulation" xml:space="preserve">
-    <value>Cancel Simulation</value>
+    <value>Annuler Simulation</value>
   </data>
   <data name="Message_SaveSimulationResults" xml:space="preserve">
     <value>Saving simulation results...</value>

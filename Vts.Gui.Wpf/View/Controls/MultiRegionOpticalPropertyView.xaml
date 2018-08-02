@@ -9,9 +9,9 @@
              d:DesignHeight="300" d:DesignWidth="400">
 
     <StackPanel Orientation="Vertical">
-        <TextBlock Text="{Binding Path=MainResource.Label_TissueInput, Source={StaticResource LocalizedStrings}}" FontWeight="Bold" />
+        <TextBlock Text="{Binding ConverterParameter=Label_TissueInput, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding Path=MainResource.Label_SelectedRegion, Source={StaticResource LocalizedStrings}}" 
+            <TextBlock Text="{Binding ConverterParameter=Label_SelectedRegion, Converter={StaticResource MyResourceToStringConverter}}" 
                        VerticalAlignment="Center"
                        Margin="0,0,4,0" />              
             <toolkit:DecimalUpDown Name="nudRegionIndex" Value="{Binding CurrentRegionIndex, Mode=TwoWay}" 
@@ -36,8 +36,8 @@
                                         Margin="5,0,0,0"
                                         Visibility="{Binding IsLayer, Converter={StaticResource MyBooleanToVisibilityConverter}}">
                                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <TextBlock Text="{Binding Path=MainResource.Label_LayerHeight, Source={StaticResource LocalizedStrings}}" />
-                                    <TextBlock Text="{Binding Path=MainResource.Label_StartStop, Source={StaticResource LocalizedStrings}}" />
+                                    <TextBlock Text="{Binding ConverterParameter=Label_LayerHeight, Converter={StaticResource MyResourceToStringConverter}}" />
+                                    <TextBlock Text="{Binding ConverterParameter=Label_StartStop, Converter={StaticResource MyResourceToStringConverter}}" />
                                 </StackPanel>
                                 <StackPanel>
                                     <view:RangeView DataContext="{Binding ZRangeVM}" Margin="20,0" />
@@ -112,8 +112,8 @@
 
                             <StackPanel Orientation="Horizontal" Margin="5,0,0,5">
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
-                                    <TextBlock Text="{Binding Path=MainResource.Label_Layer, Source={StaticResource LocalizedStrings}}" />
-                                    <TextBlock Text="{Binding Path=MainResource.Label_OpticalProperties, Source={StaticResource LocalizedStrings}}" />
+                                    <TextBlock Text="{Binding ConverterParameter=Label_Layer, Converter={StaticResource MyResourceToStringConverter}}" />
+                                    <TextBlock Text="{Binding ConverterParameter=Label_OpticalProperties, Converter={StaticResource MyResourceToStringConverter}}" />
                                 </StackPanel>
                                 <StackPanel VerticalAlignment="Top">
                                     <view:OpticalPropertyView DataContext="{Binding OpticalPropertyVM}" />

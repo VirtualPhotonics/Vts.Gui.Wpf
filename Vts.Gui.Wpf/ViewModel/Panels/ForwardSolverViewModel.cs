@@ -48,7 +48,7 @@ namespace Vts.Gui.Wpf.ViewModel
             _showOpticalProperties = true;
             _useSpectralPanelData = false;
 
-            _allRangeVMs = new[] {new RangeViewModel {Title = Strings.IndependentVariableAxis_Rho}};
+            _allRangeVMs = new[] {new RangeViewModel {Title = StringLookup.GetLocalizedString("IndependentVariableAxis_Rho")}};
 
 #if WHITELIST 
             ForwardSolverTypeOptionVM = new OptionViewModel<ForwardSolverType>("Forward Model",false, WhiteList.ForwardSolverTypes);

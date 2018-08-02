@@ -14,7 +14,7 @@
                     <CheckBox IsChecked="{Binding UseSpectralInputs, Mode=TwoWay}"
                               Visibility="{Binding EnableSpectralPanelInputs, Converter={StaticResource MyBooleanToVisibilityConverter}}"
                               HorizontalAlignment="Left" Margin="22,0,0,0"
-                              Content="{Binding Path=MainResource.Label_UseSpectralPanel, Source={StaticResource LocalizedStrings}}">
+                              Content="{Binding ConverterParameter=Label_UseSpectralPanel, Converter={StaticResource MyResourceToStringConverter}}">
                     </CheckBox>
                 </StackPanel>
             </HeaderedContentControl.Header>
@@ -33,7 +33,7 @@
                     <!-- STEADY-STATE -->
                     <TextBlock
                         Grid.Row="0" Grid.Column="0"
-                        Text="{Binding Path=MainResource.Label_SteadyState, Source={StaticResource LocalizedStrings}}" 
+                        Text="{Binding ConverterParameter=Label_SteadyState, Converter={StaticResource MyResourceToStringConverter}}" 
                         Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="0" Grid.Column="1"
@@ -50,7 +50,7 @@
                     <!-- TIME-DOMAIN -->
                     <TextBlock
                         Grid.Row="1" Grid.Column="0"
-                        Text="{Binding Path=MainResource.Label_TimeDomain, Source={StaticResource LocalizedStrings}}" 
+                        Text="{Binding ConverterParameter=Label_TimeDomain, Converter={StaticResource MyResourceToStringConverter}}" 
                         Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="1" Grid.Column="1"
@@ -67,7 +67,7 @@
                     <!-- FREQUENCY-DOMAIN -->
                     <TextBlock
                         Grid.Row="2" Grid.Column="0"
-                        Text="{Binding Path=MainResource.Label_FrequencyDomain, Source={StaticResource LocalizedStrings}}" 
+                        Text="{Binding ConverterParameter=Label_FrequencyDomain, Converter={StaticResource MyResourceToStringConverter}}" 
                         Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="2" Grid.Column="1"
@@ -97,7 +97,7 @@
                 <CheckBox IsChecked="{Binding AllowMultiAxis, Mode=TwoWay}"
                           IsEnabled="{Binding EnableMultiAxis, Mode=OneWay}" HorizontalAlignment="Left"
                           Margin="15,0,0,0"
-                          Content="{Binding Path=MainResource.Label_MultiAxisSelection, Source={StaticResource LocalizedStrings}}">
+                          Content="{Binding ConverterParameter=Label_MultiAxisSelection, Converter={StaticResource MyResourceToStringConverter}}">
                 </CheckBox>
             </StackPanel>
 

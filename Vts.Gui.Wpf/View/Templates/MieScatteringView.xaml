@@ -4,11 +4,11 @@
              Width="200" Height="190">
     <Grid Background="White">
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="{Binding Path=MainResource.Label_MieScatteringLaw, Source={StaticResource LocalizedStrings}}" />
-            <TextBlock Text="{Binding Path=MainResource.Label_MieNRel, Source={StaticResource LocalizedStrings}}" />
+            <TextBlock Text="{Binding ConverterParameter=Label_MieScatteringLaw, Converter={StaticResource MyResourceToStringConverter}}" />
+            <TextBlock Text="{Binding ConverterParameter=Label_MieNRel, Converter={StaticResource MyResourceToStringConverter}}" />
             <TextBlock Text=" = " />
             <TextBox Text="{Binding n, Mode=TwoWay}" Width="50" KeyDown="TextBox_KeyDown" />
-            <TextBlock Text="{Binding Path=MainResource.Label_ScatteringRadius, Source={StaticResource LocalizedStrings}}" />
+            <TextBlock Text="{Binding ConverterParameter=Label_ScatteringRadius, Converter={StaticResource MyResourceToStringConverter}}" />
             <TextBlock Text=" = " />
             <TextBox Text="{Binding radius, Mode=TwoWay}" Width="50" KeyDown="TextBox_KeyDown" />
             <TextBlock Text="λ = " />

@@ -9,20 +9,20 @@
         <viewModel:MonteCarloSolverViewModel />
     </UserControl.DataContext>
     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-        <TextBlock Text="{Binding Path=MainResource.Label_SpecifyInputsFromFile, Source={StaticResource LocalizedStrings}}" FontWeight="Bold" />
+        <TextBlock Text="{Binding ConverterParameter=Label_SpecifyInputsFromFile, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
-            <TextBlock Text="{Binding Path=MainResource.Label_JSONTool, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" />
-            <TextBlock Text="{Binding Path=MainResource.Label_JSONUrl, Source={StaticResource LocalizedStrings}}" /> <!-- In Silverlight this was a hyperlink, find a replacement for WPF app -->
+            <TextBlock Text="{Binding ConverterParameter=Label_JSONTool, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding ConverterParameter=Label_JSONUrl, Converter={StaticResource MyResourceToStringConverter}}" /> <!-- In Silverlight this was a hyperlink, find a replacement for WPF app -->
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
             <Button VerticalAlignment="Bottom" Command="{Binding LoadSimulationInputCommand}"
                     IsEnabled="{Binding CanLoadInputFile, Mode=TwoWay}"
-                    Content="{Binding Path=MainResource.Button_LoadInputFile, Source={StaticResource LocalizedStrings}}"
+                    Content="{Binding ConverterParameter=Button_LoadInputFile, Converter={StaticResource MyResourceToStringConverter}}"
                     Width="180" Height="25" Margin="5" />
             <Button VerticalAlignment="Bottom" Command="{Binding DownloadDefaultSimulationInputCommand}"
                     IsEnabled="{Binding CanDownloadInfiles, Mode=TwoWay}"
-                    Content="{Binding Path=MainResource.Button_DownloadPrototypeInputFiles, Source={StaticResource LocalizedStrings}}"
+                    Content="{Binding ConverterParameter=Button_DownloadPrototypeInputFiles, Converter={StaticResource MyResourceToStringConverter}}"
                     Width="180" Height="25" Margin="5" />
         </StackPanel>
         
@@ -30,30 +30,30 @@
 
         <StackPanel DataContext="{Binding SimulationInputVM, Mode=TwoWay}"
                     Margin="0,10,0,0">
-                <TextBlock Text="{Binding Path=MainResource.Label_BasicInfo, Source={StaticResource LocalizedStrings}}" FontWeight="Bold" />
+                <TextBlock Text="{Binding ConverterParameter=Label_BasicInfo, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" />
             <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                    <TextBlock Text="{Binding Path=MainResource.Label_NumberOfPhotons, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding ConverterParameter=Label_NumberOfPhotons, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
                 <TextBox Text="{Binding N, Mode=TwoWay}" Width="100" Margin="4,0,0,0" KeyDown="TextBox_KeyDown" />
             </StackPanel>
 
             <StackPanel Orientation="Vertical" 
                         DataContext="{Binding SimulationOptionsVM}"
                         Margin="0,10,0,0">
-                    <TextBlock Text="{Binding Path=MainResource.Label_SimulationOptions, Source={StaticResource LocalizedStrings}}" FontWeight="Bold" />
+                    <TextBlock Text="{Binding ConverterParameter=Label_SimulationOptions, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,5,0,0">
                     <!--<CheckBox IsChecked="{Binding TallySecondMoment, Mode=TwoWay}" VerticalAlignment="Center" />
                     <TextBlock Text="Tally second moment" VerticalAlignment="Center" Margin="0,0,10,0" />-->
                         <CheckBox IsChecked="{Binding TrackStatistics, Mode=TwoWay}" 
                                   VerticalAlignment="Center" 
                                   Command="{Binding SetStatisticsFolderCommand}" />
-                        <TextBlock Text="{Binding Path=MainResource.Label_TrackStatistics, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" TextAlignment="Left"
+                        <TextBlock Text="{Binding ConverterParameter=Label_TrackStatistics, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" TextAlignment="Left"
                                Margin="4,0,10,0" />
-                        <TextBlock Text="{Binding Path=MainResource.Label_Seed, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding ConverterParameter=Label_Seed, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
                     <TextBox Text="{Binding Seed, Mode=TwoWay}" Width="60" VerticalAlignment="Center" Margin="4,0,0,0"
                              KeyDown="TextBox_KeyDown" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
-                        <TextBlock Text="{Binding Path=MainResource.Label_AWT, Source={StaticResource LocalizedStrings}}" 
+                        <TextBlock Text="{Binding ConverterParameter=Label_AWT, Converter={StaticResource MyResourceToStringConverter}}" 
                                VerticalAlignment="Center"
                                FontWeight="DemiBold" 
                                Margin="0,0,4,0" />
@@ -67,7 +67,7 @@
                     <view:RadioButtonOptionView DataContext="{Binding RandomNumberGeneratorTypeVM, Mode=TwoWay}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
-                        <TextBlock Text="{Binding Path=MainResource.Label_PhaseFunctionType, Source={StaticResource LocalizedStrings}}" 
+                        <TextBlock Text="{Binding ConverterParameter=Label_PhaseFunctionType, Converter={StaticResource MyResourceToStringConverter}}" 
                                VerticalAlignment="Center" 
                                HorizontalAlignment="Left"
                                FontWeight="DemiBold"
@@ -84,7 +84,7 @@
             <Button VerticalAlignment="Bottom" 
                     Command="{Binding ExecuteMonteCarloSolverCommand}"
                     IsEnabled="{Binding CanRunSimulation, Mode=TwoWay}"
-                    Content="{Binding Path=MainResource.Button_RunSimulation, Source={StaticResource LocalizedStrings}}"
+                    Content="{Binding ConverterParameter=Button_RunSimulation, Converter={StaticResource MyResourceToStringConverter}}"
                     Width="120" 
                     Height="25" 
                     Margin="5" />
@@ -98,7 +98,7 @@
             <Button VerticalAlignment="Bottom" 
                     Command="{Binding SaveSimulationResultsCommand}"
                     IsEnabled="{Binding CanSaveResults, Mode=TwoWay}"
-                    Content="{Binding Path=MainResource.Button_SaveSimulationResults, Source={StaticResource LocalizedStrings}}"
+                    Content="{Binding ConverterParameter=Button_SaveSimulationResults, Converter={StaticResource MyResourceToStringConverter}}"
                     Width="160" 
                     Height="25" 
                     Margin="5" />

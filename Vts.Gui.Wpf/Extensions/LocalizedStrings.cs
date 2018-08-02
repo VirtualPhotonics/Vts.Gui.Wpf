@@ -3,7 +3,11 @@
 namespace Vts.Gui.Wpf.Extensions
 {
     /// <summary>
-    ///     Class for looking up strings from XAML
+    /// Class for looking up strings from XAML
+    /// This class will only pull the default resources
+    /// and will not get the Localized string (despite the name)
+    /// In XAML:
+    /// {Binding Path=MainResource.LookupName, Source={StaticResource LocalizedStrings}}
     /// </summary>
     public class LocalizedStrings
     {
