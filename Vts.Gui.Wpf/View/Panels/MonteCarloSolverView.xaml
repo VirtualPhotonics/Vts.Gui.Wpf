@@ -9,21 +9,20 @@
         <viewModel:MonteCarloSolverViewModel />
     </UserControl.DataContext>
     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
-        <TextBlock Text="Specify Inputs From File (recommended)" FontWeight="Bold" />
+        <TextBlock Text="{Binding Path=MainResource.Label_SpecifyInputsFromFile, Source={StaticResource LocalizedStrings}}" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
-            <TextBlock Text="(Check out this useful " VerticalAlignment="Center" />
-            <TextBlock Text="http://www.jsoneditoronline.org/" /> <!-- In Silverlight this was a hyperlink, find a replacement for WPF app -->
-            <TextBlock Text=" manipulation tool)" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Path=MainResource.Label_JSONTool, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Path=MainResource.Label_JSONUrl, Source={StaticResource LocalizedStrings}}" /> <!-- In Silverlight this was a hyperlink, find a replacement for WPF app -->
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
             <Button VerticalAlignment="Bottom" Command="{Binding LoadSimulationInputCommand}"
                     IsEnabled="{Binding CanLoadInputFile, Mode=TwoWay}"
-                    Content="Load Input File"
+                    Content="{Binding Path=MainResource.Button_LoadInputFile, Source={StaticResource LocalizedStrings}}"
                     Width="180" Height="25" Margin="5" />
             <Button VerticalAlignment="Bottom" Command="{Binding DownloadDefaultSimulationInputCommand}"
                     IsEnabled="{Binding CanDownloadInfiles, Mode=TwoWay}"
-                    Content="Download Prototype Input Files"
+                    Content="{Binding Path=MainResource.Button_DownloadPrototypeInputFiles, Source={StaticResource LocalizedStrings}}"
                     Width="180" Height="25" Margin="5" />
         </StackPanel>
         
@@ -31,30 +30,30 @@
 
         <StackPanel DataContext="{Binding SimulationInputVM, Mode=TwoWay}"
                     Margin="0,10,0,0">
-            <TextBlock Text="Basic Info" FontWeight="Bold" />
+                <TextBlock Text="{Binding Path=MainResource.Label_BasicInfo, Source={StaticResource LocalizedStrings}}" FontWeight="Bold" />
             <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                <TextBlock Text="Number of Photons:" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding Path=MainResource.Label_NumberOfPhotons, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" />
                 <TextBox Text="{Binding N, Mode=TwoWay}" Width="100" Margin="4,0,0,0" KeyDown="TextBox_KeyDown" />
             </StackPanel>
 
             <StackPanel Orientation="Vertical" 
                         DataContext="{Binding SimulationOptionsVM}"
                         Margin="0,10,0,0">
-                <TextBlock Text="Simulation Options" FontWeight="Bold" />
+                    <TextBlock Text="{Binding Path=MainResource.Label_SimulationOptions, Source={StaticResource LocalizedStrings}}" FontWeight="Bold" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,5,0,0">
                     <!--<CheckBox IsChecked="{Binding TallySecondMoment, Mode=TwoWay}" VerticalAlignment="Center" />
                     <TextBlock Text="Tally second moment" VerticalAlignment="Center" Margin="0,0,10,0" />-->
                         <CheckBox IsChecked="{Binding TrackStatistics, Mode=TwoWay}" 
                                   VerticalAlignment="Center" 
                                   Command="{Binding SetStatisticsFolderCommand}" />
-                    <TextBlock Text="Track statistics" VerticalAlignment="Center" TextAlignment="Left"
+                        <TextBlock Text="{Binding Path=MainResource.Label_TrackStatistics, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" TextAlignment="Left"
                                Margin="4,0,10,0" />
-                    <TextBlock Text="Seed:" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding Path=MainResource.Label_Seed, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" />
                     <TextBox Text="{Binding Seed, Mode=TwoWay}" Width="60" VerticalAlignment="Center" Margin="4,0,0,0"
                              KeyDown="TextBox_KeyDown" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,10,0,0">
-                    <TextBlock Text="Absorption Weighting Type:" 
+                        <TextBlock Text="{Binding Path=MainResource.Label_AWT, Source={StaticResource LocalizedStrings}}" 
                                VerticalAlignment="Center"
                                FontWeight="DemiBold" 
                                Margin="0,0,4,0" />
@@ -68,7 +67,7 @@
                     <view:RadioButtonOptionView DataContext="{Binding RandomNumberGeneratorTypeVM, Mode=TwoWay}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10,5,0,0">
-                    <TextBlock Text="Phase Function Type:" 
+                        <TextBlock Text="{Binding Path=MainResource.Label_PhaseFunctionType, Source={StaticResource LocalizedStrings}}" 
                                VerticalAlignment="Center" 
                                HorizontalAlignment="Left"
                                FontWeight="DemiBold"
@@ -85,7 +84,7 @@
             <Button VerticalAlignment="Bottom" 
                     Command="{Binding ExecuteMonteCarloSolverCommand}"
                     IsEnabled="{Binding CanRunSimulation, Mode=TwoWay}"
-                    Content="Run Simulation"
+                    Content="{Binding Path=MainResource.Button_RunSimulation, Source={StaticResource LocalizedStrings}}"
                     Width="120" 
                     Height="25" 
                     Margin="5" />
@@ -99,7 +98,7 @@
             <Button VerticalAlignment="Bottom" 
                     Command="{Binding SaveSimulationResultsCommand}"
                     IsEnabled="{Binding CanSaveResults, Mode=TwoWay}"
-                    Content="Save Simulation Results"
+                    Content="{Binding Path=MainResource.Button_SaveSimulationResults, Source={StaticResource LocalizedStrings}}"
                     Width="160" 
                     Height="25" 
                     Margin="5" />

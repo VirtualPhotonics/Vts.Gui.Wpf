@@ -1,4 +1,5 @@
-﻿using Vts.MonteCarlo.Extensions;
+﻿using Vts.Gui.Wpf.Extensions;
+using Vts.MonteCarlo.Extensions;
 using Vts.MonteCarlo.Tissues;
 
 namespace Vts.Gui.Wpf.ViewModel
@@ -14,7 +15,7 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             _region = region;
             _name = name ?? "";
-            _opticalPropertyVM = new OpticalPropertyViewModel(_region.RegionOP, "mm-1", "", true, true, true, false);
+            _opticalPropertyVM = new OpticalPropertyViewModel(_region.RegionOP, StringLookup.GetLocalizedString("Measurement_Inv_mm"), "", true, true, true, false);
         }
 
         public EllipsoidRegionViewModel() : this(new EllipsoidTissueRegion(), "")
@@ -23,7 +24,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public string Name
         {
-            get { return _name + (_region.IsAir() ? " (Air)" : " (Tissue)"); }
+            get { return _name + (_region.IsAir() ? StringLookup.GetLocalizedString("Label_Air") : StringLookup.GetLocalizedString("Label_Tissue")); }
             set
             {
                 _name = value;
@@ -103,7 +104,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public string Units
         {
-            get { return "mm"; }
+            get { return StringLookup.GetLocalizedString("Measurement_mm"); }
         }
 
         public bool IsLayer

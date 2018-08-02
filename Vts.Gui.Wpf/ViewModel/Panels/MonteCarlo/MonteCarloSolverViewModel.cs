@@ -16,6 +16,7 @@ using Vts.MonteCarlo.Detectors;
 using Vts.MonteCarlo.IO;
 using System.Runtime.Caching;
 using System.Windows.Forms;
+using Vts.Gui.Wpf.Extensions;
 using Vts.MonteCarlo.Tissues;
 
 namespace Vts.Gui.Wpf.ViewModel
@@ -78,7 +79,7 @@ namespace Vts.Gui.Wpf.ViewModel
             _canCancelSimulation = false;
             _canSaveResults = false;
             _newResultsAvailable = false;
-            _cancelButtonText = "Cancel";
+            _cancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
         }
 
         public RelayCommand ExecuteMonteCarloSolverCommand { get; private set; }
@@ -163,7 +164,7 @@ namespace Vts.Gui.Wpf.ViewModel
             CanRunSimulation = false;
             CanLoadInputFile = false;
             CanCancelSimulation = true;
-            CancelButtonText = "Cancel Simulation";
+            CancelButtonText = StringLookup.GetLocalizedString("Button_CancelSimulation");
             CanSaveResults = false;
             var mapView = false;
             var plotView = false;
@@ -287,7 +288,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 await Task.Run(() => MC_CacheSimulationResults(input), _currentCancellationTokenSource.Token);
                 CanRunSimulation = true;
                 CanLoadInputFile = true;
-                CancelButtonText = "Cancel";
+                CancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
                 CanCancelSimulation = false;
                 CanSaveResults = true;
             }
@@ -334,7 +335,7 @@ namespace Vts.Gui.Wpf.ViewModel
         private void MC_CacheSimulationResults(SimulationInput input)
         {
             // cache the simulation results
-            logger.Info(() => "Caching simulation results");
+            logger.Info(() => "Caching simulation results...");
 
             CacheItemPolicy policy = new CacheItemPolicy
             {
@@ -375,18 +376,18 @@ namespace Vts.Gui.Wpf.ViewModel
                                 return;
                             }
                         }
-                        logger.Info(() => "Saving simulation results...");
+                        logger.Info(() => StringLookup.GetLocalizedString("Message_SaveSimulationResults"));
                         CanSaveResults = false;
                         CanRunSimulation = false;
                         CanLoadInputFile = false;
                         CanCancelSimulation = true;
-                        CancelButtonText = "Cancel Save";
+                        CancelButtonText = StringLookup.GetLocalizedString("Button_CancelSave");
                         await Task.Run(() => MC_SaveSimulationResultsToFolder(input, output, folder),
                             _currentCancellationTokenSource.Token);
                         CanSaveResults = true;
                         CanRunSimulation = true;
                         CanLoadInputFile = true;
-                        CancelButtonText = "Cancel";
+                        CancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
                         CanCancelSimulation = false;
 
                         logger.Info(() => "done.\r");

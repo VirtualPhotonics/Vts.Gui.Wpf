@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Vts.Extensions;
+using Vts.Gui.Wpf.Extensions;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
 
@@ -25,7 +26,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     _regionsVM = new ObservableCollection<object>(
                         multiLayerTissueInput.Regions.Select((r, i) => (object) new LayerRegionViewModel(
                             (LayerTissueRegion) r,
-                            "Layer " + i)));
+                            StringLookup.GetLocalizedString("Label_Layer") + i)));
                     break;
                 case "SingleEllipsoid":
                     var singleEllipsoidTissueInput = (SingleEllipsoidTissueInput) _input;
@@ -33,11 +34,11 @@ namespace Vts.Gui.Wpf.ViewModel
                         singleEllipsoidTissueInput.LayerRegions
                             .Select((r, i) => (object) new LayerRegionViewModel(
                                 (LayerTissueRegion) r,
-                                "Layer " + i))
+                                StringLookup.GetLocalizedString("Label_Layer") + i))
                             .Concat(
                                 new EllipsoidRegionViewModel(
                                     (EllipsoidTissueRegion) singleEllipsoidTissueInput.EllipsoidRegion,
-                                    "Ellipsoid Region")));
+                                    StringLookup.GetLocalizedString("Label_EllipsoidRegion"))));
                     break;
                 case "SingleVoxel":
                     var singleVoxelTissueInput = (SingleVoxelTissueInput)_input;
@@ -45,11 +46,11 @@ namespace Vts.Gui.Wpf.ViewModel
                         singleVoxelTissueInput.LayerRegions
                             .Select((r, i) => (object)new LayerRegionViewModel(
                                 (LayerTissueRegion)r,
-                                "Layer " + i))
+                                StringLookup.GetLocalizedString("Label_Layer") + i))
                             .Concat(
                                 new VoxelRegionViewModel(
                                     (VoxelTissueRegion)singleVoxelTissueInput.VoxelRegion,
-                                    "Voxel Region")));
+                                    StringLookup.GetLocalizedString("Label_VoxelRegion"))));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

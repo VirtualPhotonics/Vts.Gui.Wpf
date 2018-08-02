@@ -4,6 +4,8 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Vts.Gui.Wpf.Extensions;
+
 #if WHITELIST
 using Vts.Gui.Wpf.ViewModel.Application;
 #endif
@@ -54,7 +56,7 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 using (var dialog = new FolderBrowserDialog())
                 {
-                    dialog.Description = "Please select a location to save the simulation statistics, if you cancel, the \"Track Statistics\" option will be un-checked.";
+                    dialog.Description = StringLookup.GetLocalizedString("Message_TrackStatisticsFolder");
                     var dialogResult = dialog.ShowDialog();
                     if (dialogResult == DialogResult.OK)
                     {

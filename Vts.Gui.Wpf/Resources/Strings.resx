@@ -253,22 +253,22 @@
     <value>phd(ρ,z,t)</value>
   </data>
   <data name="Label_ROfFx" xml:space="preserve">
-    <value />
+    <value>R(fx)</value>
   </data>
   <data name="Label_ROfFxAndFt" xml:space="preserve">
-    <value />
+    <value>R(fx,ft)</value>
   </data>
   <data name="Label_ROfFxAndTime" xml:space="preserve">
-    <value />
+    <value>R(fx,t)</value>
   </data>
   <data name="Label_ROfRho" xml:space="preserve">
-    <value />
+    <value>R(ρ)</value>
   </data>
   <data name="Label_ROfRhoAndFt" xml:space="preserve">
-    <value />
+    <value>R(ρ,ft)</value>
   </data>
   <data name="Label_ROfRhoAndTime" xml:space="preserve">
-    <value />
+    <value>R(ρ,t)</value>
   </data>
   <data name="Label_StO2" xml:space="preserve">
     <value>StO2 [frac.]:</value>
@@ -383,5 +383,191 @@
   </data>
   <data name="Measurement_GHz" xml:space="preserve">
     <value>GHz</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Button_DownloadPrototypeInputFiles" xml:space="preserve">
+    <value>Download Prototype Input Files</value>
+  </data>
+  <data name="Button_LoadInputFile" xml:space="preserve">
+    <value>Load Input File</value>
+  </data>
+  <data name="Button_RunSimulation" xml:space="preserve">
+    <value>Run Simulation</value>
+  </data>
+  <data name="Button_SaveSimulationResults" xml:space="preserve">
+    <value>Save Simulation Results</value>
+  </data>
+  <data name="Label_BasicInfo" xml:space="preserve">
+    <value>Basic Info</value>
+  </data>
+  <data name="Label_ForwardSimulation" xml:space="preserve">
+    <value>Forward Simulation</value>
+  </data>
+  <data name="Label_InitialGuess" xml:space="preserve">
+    <value>Initial Guess</value>
+  </data>
+  <data name="Label_NumberOfPhotons" xml:space="preserve">
+    <value>Number of Photons:</value>
+  </data>
+  <data name="Label_OpticalProperties" xml:space="preserve">
+    <value>Optical Properties:</value>
+  </data>
+  <data name="Label_OptimizationParameters" xml:space="preserve">
+    <value>Optimization Parameters</value>
+  </data>
+  <data name="Label_OptimizerType" xml:space="preserve">
+    <value>Optimizer Type</value>
+  </data>
+  <data name="Label_Analog" xml:space="preserve">
+    <value>Analog</value>
+  </data>
+  <data name="Label_AWT" xml:space="preserve">
+    <value>Absorption Weighting Type:</value>
+  </data>
+  <data name="Label_Continuous" xml:space="preserve">
+    <value>Continuous</value>
+  </data>
+  <data name="Label_Discrete" xml:space="preserve">
+    <value>Discrete</value>
+  </data>
+  <data name="Label_FrequencyDomain" xml:space="preserve">
+    <value>Frequency-Domain</value>
+  </data>
+  <data name="Label_JSONTool" xml:space="preserve">
+    <value>Check out this useful manipulation tool </value>
+  </data>
+  <data name="Label_JSONUrl" xml:space="preserve">
+    <value>http://www.jsoneditoronline.org</value>
+  </data>
+  <data name="Label_MultiAxisSelection" xml:space="preserve">
+    <value>allow multi-axis selection</value>
+  </data>
+  <data name="Label_PhaseFunctionType" xml:space="preserve">
+    <value>Phase Function Type:</value>
+  </data>
+  <data name="Label_RandomNumberGeneratorType" xml:space="preserve">
+    <value>Random Number Generator Type:</value>
+  </data>
+  <data name="Label_Seed" xml:space="preserve">
+    <value>Seed:</value>
+  </data>
+  <data name="Label_SelectedRegion" xml:space="preserve">
+    <value>Currently selected region:</value>
+  </data>
+  <data name="Label_SpecifyInputsFromFile" xml:space="preserve">
+    <value>Specify Inputs From File (recommended)</value>
+  </data>
+  <data name="Label_SteadyState" xml:space="preserve">
+    <value>Steady-State</value>
+  </data>
+  <data name="Label_TimeDomain" xml:space="preserve">
+    <value>Time-Domain</value>
+  </data>
+  <data name="Label_TissueInput" xml:space="preserve">
+    <value>Tissue Input</value>
+  </data>
+  <data name="Label_TrackStatistics" xml:space="preserve">
+    <value>Track Statistics</value>
+  </data>
+  <data name="Label_UseSpectralPanel" xml:space="preserve">
+    <value>use spectral panel inputs</value>
+  </data>
+  <data name="Button_ResetValues" xml:space="preserve">
+    <value>Reset Values</value>
+  </data>
+  <data name="Button_Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Label_Air" xml:space="preserve">
+    <value> (Air)</value>
+  </data>
+  <data name="Label_Atnm" xml:space="preserve">
+    <value>At λ [nm] =</value>
+  </data>
+  <data name="Label_Calculator" xml:space="preserve">
+    <value>Single-λ Calculator</value>
+  </data>
+  <data name="Label_EllipsoidRegion" xml:space="preserve">
+    <value>Ellipsoid Region</value>
+  </data>
+  <data name="Label_Layer" xml:space="preserve">
+    <value>Layer </value>
+  </data>
+  <data name="Label_LayerHeight" xml:space="preserve">
+    <value>Layer Height</value>
+  </data>
+  <data name="Label_MieNRel" xml:space="preserve">
+    <value>n_rel</value>
+  </data>
+  <data name="Label_MieScatteringLaw" xml:space="preserve">
+    <value>Mie scattering law:</value>
+  </data>
+  <data name="Label_OP" xml:space="preserve">
+    <value>Opt. Prop.</value>
+  </data>
+  <data name="Label_PowerLaw" xml:space="preserve">
+    <value>Power law: </value>
+  </data>
+  <data name="Label_ScatteringRadius" xml:space="preserve">
+    <value>scatter radius</value>
+  </data>
+  <data name="Label_SimulationOptions" xml:space="preserve">
+    <value>SimulationOptions</value>
+  </data>
+  <data name="Label_StartStop" xml:space="preserve">
+    <value>Start/Stop:</value>
+  </data>
+  <data name="Label_Tissue" xml:space="preserve">
+    <value> (Tissue)</value>
+  </data>
+  <data name="Label_VoxelRegion" xml:space="preserve">
+    <value>Voxel Region</value>
+  </data>
+  <data name="Measurement_Inv_mm" xml:space="preserve">
+    <value>mm-1</value>
+  </data>
+  <data name="Range_Begin" xml:space="preserve">
+    <value>Begin</value>
+  </data>
+  <data name="Range_End" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="Range_Number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="Tab_Fluence" xml:space="preserve">
+    <value>Fluence/Interrogation Solver Panel</value>
+  </data>
+  <data name="Tab_ForwardSolver" xml:space="preserve">
+    <value>Forward Solver/Analysis Panel</value>
+  </data>
+  <data name="Tab_InverseSolver" xml:space="preserve">
+    <value>Inverse Solver Panel</value>
+  </data>
+  <data name="Tab_MapView" xml:space="preserve">
+    <value>Map View</value>
+  </data>
+  <data name="Tab_MonteCarlo" xml:space="preserve">
+    <value>Monte Carlo Solver Panel</value>
+  </data>
+  <data name="Tab_PlotView" xml:space="preserve">
+    <value>Plot View</value>
+  </data>
+  <data name="Tab_Spectral" xml:space="preserve">
+    <value>Spectral Panel</value>
+  </data>
+  <data name="Button_CancelSave" xml:space="preserve">
+    <value>Cancel Save</value>
+  </data>
+  <data name="Button_CancelSimulation" xml:space="preserve">
+    <value>Cancel Simulation</value>
+  </data>
+  <data name="Message_SaveSimulationResults" xml:space="preserve">
+    <value>Saving simulation results...</value>
+  </data>
+  <data name="Message_TrackStatisticsFolder" xml:space="preserve">
+    <value>Please select a location to save the simulation statistics, if you cancel, the "Track Statistics" option will be un-checked.</value>
   </data>
 </root>

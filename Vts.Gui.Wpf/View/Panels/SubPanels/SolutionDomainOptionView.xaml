@@ -13,8 +13,8 @@
                                FontWeight="Bold" />
                     <CheckBox IsChecked="{Binding UseSpectralInputs, Mode=TwoWay}"
                               Visibility="{Binding EnableSpectralPanelInputs, Converter={StaticResource MyBooleanToVisibilityConverter}}"
-                              HorizontalAlignment="Left" Margin="22,0,0,0">
-                        use spectral panel inputs
+                              HorizontalAlignment="Left" Margin="22,0,0,0"
+                              Content="{Binding Path=MainResource.Label_UseSpectralPanel, Source={StaticResource LocalizedStrings}}">
                     </CheckBox>
                 </StackPanel>
             </HeaderedContentControl.Header>
@@ -33,7 +33,8 @@
                     <!-- STEADY-STATE -->
                     <TextBlock
                         Grid.Row="0" Grid.Column="0"
-                        Text="Steady-State" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        Text="{Binding Path=MainResource.Label_SteadyState, Source={StaticResource LocalizedStrings}}" 
+                        Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="0" Grid.Column="1"
                         DataContext="{Binding ROfRhoOption}"
@@ -49,7 +50,8 @@
                     <!-- TIME-DOMAIN -->
                     <TextBlock
                         Grid.Row="1" Grid.Column="0"
-                        Text="Time-Domain" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        Text="{Binding Path=MainResource.Label_TimeDomain, Source={StaticResource LocalizedStrings}}" 
+                        Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="1" Grid.Column="1"
                         DataContext="{Binding ROfRhoAndTimeOption}"
@@ -65,7 +67,8 @@
                     <!-- FREQUENCY-DOMAIN -->
                     <TextBlock
                         Grid.Row="2" Grid.Column="0"
-                        Text="Frequency-Domain" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        Text="{Binding Path=MainResource.Label_FrequencyDomain, Source={StaticResource LocalizedStrings}}" 
+                        Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="2" Grid.Column="1"
                         DataContext="{Binding ROfRhoAndFtOption}"
@@ -93,8 +96,8 @@
                            FontWeight="Bold" />
                 <CheckBox IsChecked="{Binding AllowMultiAxis, Mode=TwoWay}"
                           IsEnabled="{Binding EnableMultiAxis, Mode=OneWay}" HorizontalAlignment="Left"
-                          Margin="15,0,0,0">
-                    allow multi-axis selection
+                          Margin="15,0,0,0"
+                          Content="{Binding Path=MainResource.Label_MultiAxisSelection, Source={StaticResource LocalizedStrings}}">
                 </CheckBox>
             </StackPanel>
 

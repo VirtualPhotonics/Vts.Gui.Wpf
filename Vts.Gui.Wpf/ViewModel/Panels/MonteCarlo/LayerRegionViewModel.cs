@@ -1,4 +1,5 @@
-﻿using Vts.MonteCarlo.Extensions;
+﻿using Vts.Gui.Wpf.Extensions;
+using Vts.MonteCarlo.Extensions;
 using Vts.MonteCarlo.Tissues;
 
 namespace Vts.Gui.Wpf.ViewModel
@@ -14,8 +15,8 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             _region = region;
             _name = name ?? "";
-            _zRangeVM = new RangeViewModel(_region.ZRange, "mm", IndependentVariableAxis.Z, "", false);
-            _opticalPropertyVM = new OpticalPropertyViewModel(_region.RegionOP, "mm-1", "", true, true, true, true);
+            _zRangeVM = new RangeViewModel(_region.ZRange, StringLookup.GetLocalizedString("Measurement_mm"), IndependentVariableAxis.Z, "", false);
+            _opticalPropertyVM = new OpticalPropertyViewModel(_region.RegionOP, StringLookup.GetLocalizedString("Measurement_Inv_mm"), "", true, true, true, true);
             _opticalPropertyVM.PropertyChanged += (s, a) => OnPropertyChanged("Name");
         }
 
@@ -40,7 +41,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public string Name
         {
-            get { return _name + (_region.IsAir() ? " (Air)" : " (Tissue)"); }
+            get { return _name + (_region.IsAir() ? StringLookup.GetLocalizedString("Label_Air") : StringLookup.GetLocalizedString("Label_Tissue")); }
             set
             {
                 _name = value;

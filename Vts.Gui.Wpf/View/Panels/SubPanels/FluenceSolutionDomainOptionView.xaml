@@ -27,7 +27,7 @@
                     <!--STEADY-STATE-->
                     <TextBlock
                         Grid.Row="0" Grid.Column="0"
-                        Text="Steady-State" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        Text="{Binding Path=MainResource.Label_SteadyState, Source={StaticResource LocalizedStrings}}" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="0" Grid.Column="1"
                         DataContext="{Binding FluenceOfRhoAndZOption}"
@@ -43,7 +43,7 @@
                     <!--TIME-DOMAIN-->
                     <TextBlock
                         Grid.Row="1" Grid.Column="0"
-                        Text="Time-Domain" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        Text="{Binding Path=MainResource.Label_TimeDomain, Source={StaticResource LocalizedStrings}}" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="1" Grid.Column="1"
                         DataContext="{Binding FluenceOfRhoAndZAndTimeOption}"
@@ -60,7 +60,7 @@
                     <!--FREQUENCY-DOMAIN-->
                     <TextBlock
                         Grid.Row="2" Grid.Column="0"
-                        Text="Frequency-Domain" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        Text="{Binding Path=MainResource.Label_FrequencyDomain, Source={StaticResource LocalizedStrings}}" Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="2" Grid.Column="1"
                         DataContext="{Binding FluenceOfRhoAndZAndFtOption}"

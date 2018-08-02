@@ -66,7 +66,7 @@
                         Margin="20,0,20,7" Height="25" 
                         VerticalAlignment="Bottom"
                         Grid.Column="2" Grid.Row="1"
-                        Content="Reset Values" />
+                        Content="{Binding Path=MainResource.Button_ResetValues, Source={StaticResource LocalizedStrings}}" />
             </Grid>
             <StackPanel Orientation="Vertical"
                         Margin="0,10,0,0">
@@ -132,13 +132,13 @@
                 <!-- Wavelength Range -->
                 <StackPanel Orientation="Vertical" Margin="0,10,0,0" VerticalAlignment="Top">
                     <!-- Single-λ Calculator -->
-                    <TextBlock Text="Single-λ Calculator" FontWeight="Bold" VerticalAlignment="Center"
+                    <TextBlock Text="{Binding Path=MainResource.Label_Calculator, Source={StaticResource LocalizedStrings}}" FontWeight="Bold" VerticalAlignment="Center"
                                HorizontalAlignment="Left" Margin="0,3,0,0" />
                     <!-- Multi-λ Calculator -->
                     <StackPanel Orientation="Horizontal" Margin="3,0,0,0" VerticalAlignment="Bottom">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,0"
                                     VerticalAlignment="Center">
-                            <TextBlock Text="At λ [nm] = " VerticalAlignment="Center" HorizontalAlignment="Left" />
+                            <TextBlock Text="{Binding Path=MainResource.Label_Atnm, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" HorizontalAlignment="Left" />
                             <TextBox Text="{Binding Wavelength, Mode=TwoWay, NotifyOnValidationError=True}"
                                      VerticalContentAlignment="Bottom" Width="40" KeyDown="TextBox_KeyDown" />
                         </StackPanel>
@@ -146,7 +146,7 @@
                                 CommandParameter="{Binding Wavelength}"
                                 Margin="5,0,0,0" Height="25" VerticalAlignment="Center"
                                 Padding="5,0"
-                                Content="Update" />
+                                Content="{Binding Path=MainResource.Button_Update, Source={StaticResource LocalizedStrings}}" />
                         <Grid Margin="5,0,0,0" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="0.5*" />

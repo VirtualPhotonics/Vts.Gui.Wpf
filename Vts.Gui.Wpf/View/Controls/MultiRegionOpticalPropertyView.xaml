@@ -9,9 +9,9 @@
              d:DesignHeight="300" d:DesignWidth="400">
 
     <StackPanel Orientation="Vertical">
-        <TextBlock Text="Tissue Input" FontWeight="Bold" />
+        <TextBlock Text="{Binding Path=MainResource.Label_TissueInput, Source={StaticResource LocalizedStrings}}" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="Currently selected region:" 
+            <TextBlock Text="{Binding Path=MainResource.Label_SelectedRegion, Source={StaticResource LocalizedStrings}}" 
                        VerticalAlignment="Center"
                        Margin="0,0,4,0" />              
             <toolkit:DecimalUpDown Name="nudRegionIndex" Value="{Binding CurrentRegionIndex, Mode=TwoWay}" 
@@ -28,22 +28,24 @@
                     <Border BorderBrush="Gray" BorderThickness="1.5">
                         <StackPanel Orientation="Vertical">
 
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Name}" />
+                            <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
+                                <TextBlock Text="{Binding Name}" FontWeight="DemiBold" />
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal"
+                                        Margin="5,0,0,0"
                                         Visibility="{Binding IsLayer, Converter={StaticResource MyBooleanToVisibilityConverter}}">
                                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <TextBlock Text="Layer Height" />
-                                    <TextBlock Text="Start/Stop:" />
+                                    <TextBlock Text="{Binding Path=MainResource.Label_LayerHeight, Source={StaticResource LocalizedStrings}}" />
+                                    <TextBlock Text="{Binding Path=MainResource.Label_StartStop, Source={StaticResource LocalizedStrings}}" />
                                 </StackPanel>
                                 <StackPanel>
-                                    <view:RangeView DataContext="{Binding ZRangeVM}" Margin="1" />
+                                    <view:RangeView DataContext="{Binding ZRangeVM}" Margin="20,0" />
                                 </StackPanel>
                             </StackPanel>
 
                             <StackPanel
+                                Margin="5,0,0,0"
                                 Visibility="{Binding IsEllipsoid, Converter={StaticResource MyBooleanToVisibilityConverter}}">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                                     <StackPanel Orientation="Vertical" Margin="5,0,5,0">
@@ -108,13 +110,14 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <TextBlock Text="Layer " />
-                                    <TextBlock Text="Opt. Prop." />
+                            <StackPanel Orientation="Horizontal" Margin="5,0,0,5">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
+                                    <TextBlock Text="{Binding Path=MainResource.Label_Layer, Source={StaticResource LocalizedStrings}}" />
+                                    <TextBlock Text="{Binding Path=MainResource.Label_OpticalProperties, Source={StaticResource LocalizedStrings}}" />
                                 </StackPanel>
-                                <view:OpticalPropertyView DataContext="{Binding OpticalPropertyVM}" Margin="1"
-                                                          VerticalAlignment="Top" />
+                                <StackPanel VerticalAlignment="Top">
+                                    <view:OpticalPropertyView DataContext="{Binding OpticalPropertyVM}" />
+                                </StackPanel>
                             </StackPanel>
                         </StackPanel>
 
