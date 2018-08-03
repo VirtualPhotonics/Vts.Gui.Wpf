@@ -19,9 +19,9 @@ namespace Vts.Gui.Wpf.Test.Converters
         {
             var rtsConverter = new ResourceToStringConverter();
             Assert.That(rtsConverter.Convert(
-                "Label_ForwardSolver",  // resource to convert
+                null,  
                 typeof(String),
-                null, // no parameters
+                "Label_ForwardSolver", // resource is passed as a prameter
                 System.Globalization.CultureInfo.CurrentCulture).Equals("Fwd Solver:"));
         }
         /// <summary>

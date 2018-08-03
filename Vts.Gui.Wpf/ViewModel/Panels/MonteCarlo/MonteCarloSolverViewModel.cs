@@ -75,7 +75,6 @@ namespace Vts.Gui.Wpf.ViewModel
             _canDownloadInfiles = true;
             _canLoadInputFile = true;
             _canRunSimulation = true;
-            _canRunSimulation = true;
             _canCancelSimulation = false;
             _canSaveResults = false;
             _newResultsAvailable = false;
@@ -183,10 +182,10 @@ namespace Vts.Gui.Wpf.ViewModel
                 var validationResult = SimulationInputValidation.ValidateInput(input);
                 if (!validationResult.IsValid)
                 {
-                    logger.Info(() => "Simulation input not valid.  Cancel simulation and try again" +
-                                      "\rRule: " + validationResult.ValidationRule +
+                    logger.Info(() => StringLookup.GetLocalizedString("Message_InvalidSimulationInput") +
+                                      "\r" + StringLookup.GetLocalizedString("Message_Rule") + validationResult.ValidationRule +
                                       (!string.IsNullOrEmpty(validationResult.Remarks)
-                                          ? "\rDetails: " + validationResult.Remarks
+                                          ? "\r" + StringLookup.GetLocalizedString("Message_Details") + validationResult.Remarks
                                           : "") + ".\r");
                     return;
                 }
@@ -208,7 +207,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
                     if (rOfRhoDetectorInputs.Any())
                     {
-                        logger.Info(() => "Creating R(rho) plot...");
+                        logger.Info(() => StringLookup.GetLocalizedString("Message_CreateROfRhoPlot"));
 
                         var detectorInput = (ROfRhoDetectorInput) rOfRhoDetectorInputs.First();
 
@@ -225,7 +224,7 @@ namespace Vts.Gui.Wpf.ViewModel
                         var plotLabel = GetPlotLabel();
                         WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
                         plotView = true;
-                        logger.Info(() => "done.\r");
+                        logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                     }
 
                     var fluenceDetectorInputs =
@@ -233,7 +232,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
                     if (fluenceDetectorInputs.Any())
                     {
-                        logger.Info(() => "Creating Fluence(rho,z) map...");
+                        logger.Info(() => StringLookup.GetLocalizedString("Message_CreatingFluenceRhoZMap"));
                         var detectorInput = (FluenceOfRhoAndZDetectorInput) fluenceDetectorInputs.First();
                         var rhosMC = detectorInput.Rho.AsEnumerable().ToArray();
                         var zsMC = detectorInput.Z.AsEnumerable().ToArray();
@@ -275,7 +274,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
                         WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
                         mapView = true;
-                        logger.Info(() => "done.\r");
+                        logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                     }
                     // put map view on top if no plot and plot view on top if no map otherwise stay on current view
                     if (!(plotView && mapView))
@@ -317,16 +316,16 @@ namespace Vts.Gui.Wpf.ViewModel
             var infileIsValid = true;
             if ((!(input.TissueInput is MultiLayerTissueInput)) && (!(input.TissueInput is SingleEllipsoidTissueInput)))
             {
-                logger.Info(() => "Warning: No plots will be displayed for tissue specified in infile.\r");
+                logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsDisplayedForTissue") + ".\r");
             }
             if ((!input.DetectorInputs.Any(d => d.TallyType == TallyType.ROfRho)) &&
                 (!input.DetectorInputs.Any(d => d.TallyType == TallyType.FluenceOfRhoAndZ)))  
             {
-                logger.Info(() => "Warning: No plots will be displayed for detector(s) specified in infile.\r");
+                logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsDisplayedForDetector") + ".\r");
             }
             if (input.Options.Databases.Count != 0)
             {
-                logger.Info(() => "Error: Database output specified in infile.  Please specify another infile or run infile with MCCL.\r");
+                logger.Info(() => StringLookup.GetLocalizedString("Error_DatabaseOutputNotSupported") + ".\r");
                 infileIsValid = false;
             }
             return infileIsValid;
@@ -335,7 +334,7 @@ namespace Vts.Gui.Wpf.ViewModel
         private void MC_CacheSimulationResults(SimulationInput input)
         {
             // cache the simulation results
-            logger.Info(() => "Caching simulation results...");
+            logger.Info(() => StringLookup.GetLocalizedString("Message_CachingSimulationResults"));
 
             CacheItemPolicy policy = new CacheItemPolicy
             {
@@ -344,7 +343,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
             _cache.Set("SimulationInput", input, policy);
             _cache.Set("SimulationOutput", _output, policy);
-            logger.Info(() => "done.\r");
+            logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
         }
 
         private async void MC_SaveSimulationResultsFromCache()
@@ -369,8 +368,8 @@ namespace Vts.Gui.Wpf.ViewModel
                             // there are files in this directory, ok to delete them?
                             var messageBoxResult =
                                 System.Windows.MessageBox.Show(
-                                    "The sub folder \"results\" already exists and contains files, these files will be deleted, are you sure you want to continue?",
-                                    "Delete Confirmation", MessageBoxButton.YesNo);
+                                    StringLookup.GetLocalizedString("MessageBox_DeleteConfirmResults"),
+                                    StringLookup.GetLocalizedString("MessageBoxTitle_DeleteConfirm"), MessageBoxButton.YesNo);
                             if (messageBoxResult == MessageBoxResult.No)
                             {
                                 return;
@@ -390,11 +389,11 @@ namespace Vts.Gui.Wpf.ViewModel
                         CancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
                         CanCancelSimulation = false;
 
-                        logger.Info(() => "done.\r");
+                        logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                     }
                     catch (Exception)
                     {
-                        logger.Info(() => "Unable to save files.");
+                        logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
                     }
                 }
             }
@@ -416,34 +415,6 @@ namespace Vts.Gui.Wpf.ViewModel
             FileIO.CopyFolderFromEmbeddedResources("Matlab", folder, currentAssembly.FullName, false);
         }
 
-        private void MC_SaveTemporaryResults(SimulationInput input)
-        {
-            // save results to bin folder
-            logger.Info(() => "Saving simulation results to temporary directory...");
-
-            // create the root directory
-            // create the detector directory, removing stale files first if they exist
-            try
-            {
-                FileIO.CreateEmptyDirectory(TEMP_RESULTS_FOLDER);
-
-                // write detector to file
-                input.ToFile(Path.Combine(TEMP_RESULTS_FOLDER, "infile_" + _outputName + ".txt"));
-                foreach (var result in _output.ResultsDictionary.Values)
-                {
-                    //check the cancellation token
-                    _currentCancellationTokenSource.Token.ThrowIfCancellationRequested();
-                    // save all detector data to the specified folder
-                    DetectorIO.WriteDetectorToFile(result, TEMP_RESULTS_FOLDER);
-                }
-                logger.Info(() => "done.\r");
-            }
-            catch (Exception)
-            {
-                logger.Info(() => "Unable to save temporary files.");
-            }
-        }
-
         private async void MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             CanCancelSimulation = false;
@@ -454,7 +425,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 await Task.Run(() => _simulation.Cancel());
             }
             _currentCancellationTokenSource.Cancel();
-            logger.Info(() => "Cancelled.\n");
+            logger.Info(() => StringLookup.GetLocalizedString("Message_Cancelled") + ".\n");
         }
 
         private async void MC_LoadSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -466,6 +437,8 @@ namespace Vts.Gui.Wpf.ViewModel
                 Filter = "TXT Files (*.txt)|*.txt"
             };
 
+            CanRunSimulation = false;
+            CanLoadInputFile = false;
             // Display OpenFileDialog by calling ShowDialog method 
             var result = dialog.ShowDialog();
 
@@ -478,8 +451,6 @@ namespace Vts.Gui.Wpf.ViewModel
             }
             if (filename != "")
             {
-                CanRunSimulation = false;
-                CanLoadInputFile = false;
                 var simulationInput = await Task.Run(() => MC_ReadSimulationInputFromFile(filename));
                 if (simulationInput != null)
                 {
@@ -495,7 +466,7 @@ namespace Vts.Gui.Wpf.ViewModel
             }
             else
             {
-                logger.Info(() => "JSON File not loaded.\r");
+                logger.Info(() => StringLookup.GetLocalizedString("Error_FileLoad") + ".\r");
             }
             CanRunSimulation = true;
             CanLoadInputFile = true;
@@ -512,11 +483,11 @@ namespace Vts.Gui.Wpf.ViewModel
                 {
                     if (MC_InfileIsValidForGUI(simulationInput))
                     {
-                        logger.Info(() => "Simulation input loaded.\r");
+                        logger.Info(() => StringLookup.GetLocalizedString("Message_SimulationInputLoaded") + "\r");
                         return simulationInput;
                     }
                 }
-                logger.Info(() => "Simulation input not loaded.\r"); 
+                logger.Info(() => StringLookup.GetLocalizedString("Error_SimulationInputNotLoaded") + "\r"); 
                 return null;
             }
         }
@@ -537,22 +508,22 @@ namespace Vts.Gui.Wpf.ViewModel
                             // there are files in this directory, ok to delete them?
                             var messageBoxResult =
                                 System.Windows.MessageBox.Show(
-                                    "The sub folder \"infiles\" already exists and contains files, these files will be deleted, are you sure you want to continue?",
-                                    "Delete Confirmation", MessageBoxButton.YesNo);
+                                    StringLookup.GetLocalizedString("MessageBox_DeleteConfirmInfiles"),
+                                    StringLookup.GetLocalizedString("MessageBoxTitle_DeleteConfirm"), MessageBoxButton.YesNo);
                             if (messageBoxResult == MessageBoxResult.No)
                             {
                                 return;
                             }
                         }
-                        logger.Info(() => "Downloading infiles...");
+                        logger.Info(() => StringLookup.GetLocalizedString("Message_DownloadingInfiles"));
                         CanDownloadInfiles = false;
                         await Task.Run(() => MC_DownloadDefaultSimulationInputToFolder(folder));
                         CanDownloadInfiles = true;
-                        logger.Info(() => "done.\r");
+                        logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                     }
                     catch (Exception)
                     {
-                        logger.Info(() => "Unable to save files.");
+                        logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
                     }
                 }
             }
@@ -574,109 +545,11 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-    //private void MC_DownloadDefaultSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
-        //{
-        //    // Create SaveFileDialog 
-        //    var dialog = new Microsoft.Win32.SaveFileDialog
-        //    {
-        //        DefaultExt = ".zip",
-        //        Filter = "ZIP Files (*.zip)|*.zip"
-        //    };
-
-        //    // Display OpenFileDialog by calling ShowDialog method 
-        //    var result = dialog.ShowDialog();
-
-        //    // if the file dialog returns true - file was selected 
-        //    var filename = "";
-        //    if (result == true)
-        //    {
-        //        // Get the filename from the dialog 
-        //        filename = dialog.FileName;
-        //    }
-        //    if (filename != "")
-        //    {
-        //        using (var stream = new FileStream(filename, FileMode.Create))
-        //        {
-        //            var files = SimulationInputProvider.GenerateAllSimulationInputs().Select(input =>
-        //                new
-        //                {
-        //                    Name = "infile_" + input.OutputName + ".txt",
-        //                    Input = input
-        //                });
- 
-        //            foreach (var file in files)
-        //            {
-        //                file.Input.ToFile(file.Name);
-        //            }
-        //            FileIO.ZipFiles(files.Select(file => file.Name), "", stream);
-        //            logger.Info(() => "Template simulation input files exported to a zip file.\r");
-        //        }
-        //    }
-        //}
-
         private void MC_SaveSimulationResults_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (_output != null && _newResultsAvailable)
             {
                 MC_SaveSimulationResultsFromCache();
-
-                //// Create SaveFileDialog 
-                //var dialog = new Microsoft.Win32.SaveFileDialog
-                //{
-                //    DefaultExt = ".zip",
-                //    Filter = "Zip Files (*.zip)|*.zip"
-                //};
-
-                //// Display OpenFileDialog by calling ShowDialog method 
-                //var result = dialog.ShowDialog();
-
-                //// if the file dialog returns true - file was selected 
-                //var filename = "";
-                //if (result == true)
-                //{
-                //    // Get the filename from the dialog 
-                //    filename = dialog.FileName;
-                //}
-                //if (filename == "") return;
-                //var input = _simulationInputVM.SimulationInput;
-                //if (Directory.Exists(TEMP_RESULTS_FOLDER))
-                //{
-                //    var currentAssembly = Assembly.GetExecutingAssembly();
-                //    // copy the MATLAB files to isolated storage and get their names so they can be included in the zip file
-                //    var matlabFiles = FileIO.CopyFolderFromEmbeddedResources("Matlab", TEMP_RESULTS_FOLDER, currentAssembly.FullName, false);
-                //    var adjustedMatlabFilenames = new List<string>();
-                //    foreach (var fileName in matlabFiles)
-                //    {
-                //        adjustedMatlabFilenames.Add(Path.Combine(TEMP_RESULTS_FOLDER, fileName));
-                //    }
-                //    // get all the files we want to zip up
-                //    var fileNames = Directory.GetFiles(TEMP_RESULTS_FOLDER);
-                //    // then, zip all the files together and store *that* .zip to default bin folder
-                //    var allFiles = adjustedMatlabFilenames.Concat(fileNames).Distinct();
-                //    try
-                //    {
-                //        FileIO.ZipFiles(allFiles, "", input.OutputName + ".zip");
-                //    }
-                //    catch (SecurityException)
-                //    {
-                //        logger.Error(() => "\rProblem saving results to file.\r");
-                //    }
-                //} 
-                //try
-                //{
-                //    using (var stream = new FileStream(filename, FileMode.Create))
-                //    {
-                //        using (var zipStream = StreamFinder.GetFileStream(input.OutputName + ".zip", FileMode.Open))
-                //        {
-                //            FileIO.CopyStream(zipStream, stream);
-                //        }
-                //    }
-                //    logger.Info(() => "Finished copying results to user file.\r");
-                //}
-                //catch (SecurityException)
-                //{
-                //    logger.Error(() => "Problem exporting results to user file...sorry user :(\r");
-                //}
             }
         }
 
@@ -712,22 +585,22 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private string GetPlotLabel()
         {
-            var nString = "N: " + _simulationInputVM.SimulationInput.N;
-            var awtString = "AWT: ";
+            var nString = StringLookup.GetLocalizedString("PlotLabel_N") + _simulationInputVM.SimulationInput.N;
+            var awtString = StringLookup.GetLocalizedString("PlotLabel_AWT");
             switch (_simulationInputVM.SimulationInput.Options.AbsorptionWeightingType)
             {
                 case AbsorptionWeightingType.Analog:
-                    awtString += "analog";
+                    awtString += StringLookup.GetLocalizedString("Label_Analog");
                     break;
                 case AbsorptionWeightingType.Discrete:
-                    awtString += "discrete";
+                    awtString += StringLookup.GetLocalizedString("Label_Discrete");
                     break;
                 case AbsorptionWeightingType.Continuous:
-                    awtString += "continuous";
+                    awtString += StringLookup.GetLocalizedString("Label_Continuous");
                     break;
             }
 
-            return "Model - MC\r" + nString + "\r" + awtString + "";
+            return StringLookup.GetLocalizedString("Label_ModelMC") + "\r" + nString + "\r" + awtString + "";
         }
     }
 }

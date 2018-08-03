@@ -570,4 +570,70 @@
   <data name="Message_TrackStatisticsFolder" xml:space="preserve">
     <value>Please select a location to save the simulation statistics, if you cancel, the "Track Statistics" option will be un-checked.</value>
   </data>
+  <data name="Error_DatabaseOutputNotSupported" xml:space="preserve">
+    <value>Error: Database output specified in infile.  Please specify another infile or run infile with MCCL</value>
+  </data>
+  <data name="Error_FileLoad" xml:space="preserve">
+    <value>JSON File not loaded</value>
+  </data>
+  <data name="Error_FileSave" xml:space="preserve">
+    <value>Unable to save files.</value>
+  </data>
+  <data name="Error_SimulationInputNotLoaded" xml:space="preserve">
+    <value>Simulation input not loaded.</value>
+  </data>
+  <data name="Label_ModelMC" xml:space="preserve">
+    <value>Model - MC</value>
+  </data>
+  <data name="MessageBoxTitle_DeleteConfirm" xml:space="preserve">
+    <value>Delete Confirmation</value>
+  </data>
+  <data name="MessageBox_DeleteConfirmInfiles" xml:space="preserve">
+    <value>The sub folder "infiles" already exists and contains files, these files will be deleted, are you sure you want to continue?</value>
+  </data>
+  <data name="MessageBox_DeleteConfirmResults" xml:space="preserve">
+    <value>The sub folder "results" already exists and contains files, these files will be deleted, are you sure you want to continue?</value>
+  </data>
+  <data name="Message_CachingSimulationResults" xml:space="preserve">
+    <value>Caching simulation results...</value>
+  </data>
+  <data name="Message_Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Message_CreateROfRhoPlot" xml:space="preserve">
+    <value>Creating R(rho) plot...</value>
+  </data>
+  <data name="Message_CreatingFluenceRhoZMap" xml:space="preserve">
+    <value>Creating Fluence(rho,z) map...</value>
+  </data>
+  <data name="Message_Details" xml:space="preserve">
+    <value>Details: </value>
+  </data>
+  <data name="Message_Done" xml:space="preserve">
+    <value>done</value>
+  </data>
+  <data name="Message_DownloadingInfiles" xml:space="preserve">
+    <value>Downloading infiles...</value>
+  </data>
+  <data name="Message_InvalidSimulationInput" xml:space="preserve">
+    <value>Simulation input not valid.  Cancel simulation and try again</value>
+  </data>
+  <data name="Message_Rule" xml:space="preserve">
+    <value>Rule: </value>
+  </data>
+  <data name="Message_SimulationInputLoaded" xml:space="preserve">
+    <value>Simulation input loaded.</value>
+  </data>
+  <data name="PlotLabel_AWT" xml:space="preserve">
+    <value>AWT: </value>
+  </data>
+  <data name="PlotLabel_N" xml:space="preserve">
+    <value>N: </value>
+  </data>
+  <data name="Warning_NoPlotsDisplayedForDetector" xml:space="preserve">
+    <value>Warning: No plots will be displayed for detector(s) specified in infile</value>
+  </data>
+  <data name="Warning_NoPlotsDisplayedForTissue" xml:space="preserve">
+    <value>Warning: No plots will be displayed for tissue specified in infile</value>
+  </data>
 </root>

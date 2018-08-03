@@ -241,6 +241,42 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Database output specified in infile.  Please specify another infile or run infile with MCCL.
+        /// </summary>
+        public static string Error_DatabaseOutputNotSupported {
+            get {
+                return ResourceManager.GetString("Error_DatabaseOutputNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JSON File not loaded.
+        /// </summary>
+        public static string Error_FileLoad {
+            get {
+                return ResourceManager.GetString("Error_FileLoad", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to save files..
+        /// </summary>
+        public static string Error_FileSave {
+            get {
+                return ResourceManager.GetString("Error_FileSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulation input not loaded..
+        /// </summary>
+        public static string Error_SimulationInputNotLoaded {
+            get {
+                return ResourceManager.GetString("Error_SimulationInputNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Temporal Frequencies.
         /// </summary>
         public static string IndependentVariableAxis_Ft {
@@ -741,6 +777,15 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Label_MinY {
             get {
                 return ResourceManager.GetString("Label_MinY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model - MC.
+        /// </summary>
+        public static string Label_ModelMC {
+            get {
+                return ResourceManager.GetString("Label_ModelMC", resourceCulture);
             }
         }
         
@@ -1258,6 +1303,87 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Caching simulation results....
+        /// </summary>
+        public static string Message_CachingSimulationResults {
+            get {
+                return ResourceManager.GetString("Message_CachingSimulationResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancelled.
+        /// </summary>
+        public static string Message_Cancelled {
+            get {
+                return ResourceManager.GetString("Message_Cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating R(rho) plot....
+        /// </summary>
+        public static string Message_CreateROfRhoPlot {
+            get {
+                return ResourceManager.GetString("Message_CreateROfRhoPlot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creating Fluence(rho,z) map....
+        /// </summary>
+        public static string Message_CreatingFluenceRhoZMap {
+            get {
+                return ResourceManager.GetString("Message_CreatingFluenceRhoZMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Details: .
+        /// </summary>
+        public static string Message_Details {
+            get {
+                return ResourceManager.GetString("Message_Details", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to done.
+        /// </summary>
+        public static string Message_Done {
+            get {
+                return ResourceManager.GetString("Message_Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading infiles....
+        /// </summary>
+        public static string Message_DownloadingInfiles {
+            get {
+                return ResourceManager.GetString("Message_DownloadingInfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulation input not valid.  Cancel simulation and try again.
+        /// </summary>
+        public static string Message_InvalidSimulationInput {
+            get {
+                return ResourceManager.GetString("Message_InvalidSimulationInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rule: .
+        /// </summary>
+        public static string Message_Rule {
+            get {
+                return ResourceManager.GetString("Message_Rule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Saving simulation results....
         /// </summary>
         public static string Message_SaveSimulationResults {
@@ -1267,11 +1393,65 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulation input loaded..
+        /// </summary>
+        public static string Message_SimulationInputLoaded {
+            get {
+                return ResourceManager.GetString("Message_SimulationInputLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a location to save the simulation statistics, if you cancel, the &quot;Track Statistics&quot; option will be un-checked..
         /// </summary>
         public static string Message_TrackStatisticsFolder {
             get {
                 return ResourceManager.GetString("Message_TrackStatisticsFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The sub folder &quot;infiles&quot; already exists and contains files, these files will be deleted, are you sure you want to continue?.
+        /// </summary>
+        public static string MessageBox_DeleteConfirmInfiles {
+            get {
+                return ResourceManager.GetString("MessageBox_DeleteConfirmInfiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The sub folder &quot;results&quot; already exists and contains files, these files will be deleted, are you sure you want to continue?.
+        /// </summary>
+        public static string MessageBox_DeleteConfirmResults {
+            get {
+                return ResourceManager.GetString("MessageBox_DeleteConfirmResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Confirmation.
+        /// </summary>
+        public static string MessageBoxTitle_DeleteConfirm {
+            get {
+                return ResourceManager.GetString("MessageBoxTitle_DeleteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AWT: .
+        /// </summary>
+        public static string PlotLabel_AWT {
+            get {
+                return ResourceManager.GetString("PlotLabel_AWT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N: .
+        /// </summary>
+        public static string PlotLabel_N {
+            get {
+                return ResourceManager.GetString("PlotLabel_N", resourceCulture);
             }
         }
         
@@ -1416,6 +1596,24 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Value_VolumeFraction {
             get {
                 return ResourceManager.GetString("Value_VolumeFraction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning: No plots will be displayed for detector(s) specified in infile.
+        /// </summary>
+        public static string Warning_NoPlotsDisplayedForDetector {
+            get {
+                return ResourceManager.GetString("Warning_NoPlotsDisplayedForDetector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning: No plots will be displayed for tissue specified in infile.
+        /// </summary>
+        public static string Warning_NoPlotsDisplayedForTissue {
+            get {
+                return ResourceManager.GetString("Warning_NoPlotsDisplayedForTissue", resourceCulture);
             }
         }
     }
