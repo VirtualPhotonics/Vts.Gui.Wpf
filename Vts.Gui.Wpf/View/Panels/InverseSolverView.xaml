@@ -100,7 +100,7 @@
                         Grid.Row="1" 
                         Grid.Column="0">
                 <TextBlock HorizontalAlignment="Left"
-                           Text="{Binding ConverterParameter=Label_InitialGuess, Converter={StaticResource MyResourceToStringConverter}}"
+                           Text="{Binding ConverterParameter=Heading_InitialGuess, Converter={StaticResource MyResourceToStringConverter}}"
                            FontWeight="DemiBold" />
                 <TextBlock HorizontalAlignment="Left"
                            Text="{Binding ConverterParameter=Label_OpticalProperties, Converter={StaticResource MyResourceToStringConverter}}"

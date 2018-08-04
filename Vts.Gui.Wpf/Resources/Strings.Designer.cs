@@ -268,11 +268,110 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No solution domain of the specified type exists..
+        /// </summary>
+        public static string Error_NoSolutionDomainExists {
+            get {
+                return ResourceManager.GetString("Error_NoSolutionDomainExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulation input not loaded..
         /// </summary>
         public static string Error_SimulationInputNotLoaded {
             get {
                 return ResourceManager.GetString("Error_SimulationInputNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Absorbed Energy SolutionDomain.
+        /// </summary>
+        public static string Heading_AbsorbedEnergySolutionDomain {
+            get {
+                return ResourceManager.GetString("Heading_AbsorbedEnergySolutionDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fluence Solution Domain.
+        /// </summary>
+        public static string Heading_FluenceSolutionDomain {
+            get {
+                return ResourceManager.GetString("Heading_FluenceSolutionDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initial Guess.
+        /// </summary>
+        public static string Heading_InitialGuess {
+            get {
+                return ResourceManager.GetString("Heading_InitialGuess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model/Analysis Output.
+        /// </summary>
+        public static string Heading_ModelAnalysisOutput {
+            get {
+                return ResourceManager.GetString("Heading_ModelAnalysisOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optical Properties.
+        /// </summary>
+        public static string Heading_OpticalProperties {
+            get {
+                return ResourceManager.GetString("Heading_OpticalProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optimization Parameters.
+        /// </summary>
+        public static string Heading_OptimizationParameters {
+            get {
+                return ResourceManager.GetString("Heading_OptimizationParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Optimizer Type.
+        /// </summary>
+        public static string Heading_OptimizerType {
+            get {
+                return ResourceManager.GetString("Heading_OptimizerType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PHD Solution Domain.
+        /// </summary>
+        public static string Heading_PHDSolutionDomain {
+            get {
+                return ResourceManager.GetString("Heading_PHDSolutionDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scatterer Type.
+        /// </summary>
+        public static string Heading_ScattererType {
+            get {
+                return ResourceManager.GetString("Heading_ScattererType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wavelength Range.
+        /// </summary>
+        public static string Heading_WavelengthRange {
+            get {
+                return ResourceManager.GetString("Heading_WavelengthRange", resourceCulture);
             }
         }
         
@@ -336,6 +435,15 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Label_Air {
             get {
                 return ResourceManager.GetString("Label_Air", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  (amp).
+        /// </summary>
+        public static string Label_Amplitude {
+            get {
+                return ResourceManager.GetString("Label_Amplitude", resourceCulture);
             }
         }
         
@@ -484,6 +592,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculated:.
+        /// </summary>
+        public static string Label_Calculated {
+            get {
+                return ResourceManager.GetString("Label_Calculated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Single-λ Calculator.
         /// </summary>
         public static string Label_Calculator {
@@ -511,6 +628,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to At Converged Values.
+        /// </summary>
+        public static string Label_ConvergedValues {
+            get {
+                return ResourceManager.GetString("Label_ConvergedValues", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Discrete.
         /// </summary>
         public static string Label_Discrete {
@@ -525,6 +651,15 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Label_EllipsoidRegion {
             get {
                 return ResourceManager.GetString("Label_EllipsoidRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exact.
+        /// </summary>
+        public static string Label_Exact {
+            get {
+                return ResourceManager.GetString("Label_Exact", resourceCulture);
             }
         }
         
@@ -583,6 +718,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fluence Solver: .
+        /// </summary>
+        public static string Label_FluenceSolver {
+            get {
+                return ResourceManager.GetString("Label_FluenceSolver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forward Simulation.
         /// </summary>
         public static string Label_ForwardSimulation {
@@ -592,7 +736,7 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fwd Solver:.
+        ///   Looks up a localized string similar to Forward Solver: .
         /// </summary>
         public static string Label_ForwardSolver {
             get {
@@ -610,11 +754,29 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fwd Solver:.
+        /// </summary>
+        public static string Label_FwdSolver {
+            get {
+                return ResourceManager.GetString("Label_FwdSolver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gaussian Beam Diameter:.
         /// </summary>
         public static string Label_GaussianBeam {
             get {
                 return ResourceManager.GetString("Label_GaussianBeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Guess:.
+        /// </summary>
+        public static string Label_Guess {
+            get {
+                return ResourceManager.GetString("Label_Guess", resourceCulture);
             }
         }
         
@@ -637,6 +799,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  (imag).
+        /// </summary>
+        public static string Label_Imaginary {
+            get {
+                return ResourceManager.GetString("Label_Imaginary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Independent Axis.
         /// </summary>
         public static string Label_IndependentAxis {
@@ -646,7 +817,7 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initial Guess.
+        ///   Looks up a localized string similar to Initial Guess: .
         /// </summary>
         public static string Label_InitialGuess {
             get {
@@ -655,7 +826,16 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inv Solver:.
+        ///   Looks up a localized string similar to Inverse Solution Results: .
+        /// </summary>
+        public static string Label_InverseSolutionResults {
+            get {
+                return ResourceManager.GetString("Label_InverseSolutionResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inv Solver: .
         /// </summary>
         public static string Label_InverseSolver {
             get {
@@ -781,11 +961,47 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Model - 2 layer SDA.
+        /// </summary>
+        public static string Label_Model2LayerSDA {
+            get {
+                return ResourceManager.GetString("Label_Model2LayerSDA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Model - MC.
         /// </summary>
         public static string Label_ModelMC {
             get {
                 return ResourceManager.GetString("Label_ModelMC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model - nurbs.
+        /// </summary>
+        public static string Label_ModelNurbs {
+            get {
+                return ResourceManager.GetString("Label_ModelNurbs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model - scaled MC.
+        /// </summary>
+        public static string Label_ModelScaledMC {
+            get {
+                return ResourceManager.GetString("Label_ModelScaledMC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model - SDA.
+        /// </summary>
+        public static string Label_ModelSDA {
+            get {
+                return ResourceManager.GetString("Label_ModelSDA", resourceCulture);
             }
         }
         
@@ -799,11 +1015,83 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to μa.
+        /// </summary>
+        public static string Label_MuA {
+            get {
+                return ResourceManager.GetString("Label_MuA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to μa1.
+        /// </summary>
+        public static string Label_MuA1 {
+            get {
+                return ResourceManager.GetString("Label_MuA1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to μa2.
+        /// </summary>
+        public static string Label_MuA2 {
+            get {
+                return ResourceManager.GetString("Label_MuA2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to μa spectra.
+        /// </summary>
+        public static string Label_MuASpectra {
+            get {
+                return ResourceManager.GetString("Label_MuASpectra", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to allow multi-axis selection.
         /// </summary>
         public static string Label_MultiAxisSelection {
             get {
                 return ResourceManager.GetString("Label_MultiAxisSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to μs&apos;.
+        /// </summary>
+        public static string Label_MuSPrime {
+            get {
+                return ResourceManager.GetString("Label_MuSPrime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to μs&apos;1.
+        /// </summary>
+        public static string Label_MuSPrime1 {
+            get {
+                return ResourceManager.GetString("Label_MuSPrime1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to μs&apos;2.
+        /// </summary>
+        public static string Label_MuSPrime2 {
+            get {
+                return ResourceManager.GetString("Label_MuSPrime2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to μs&apos; spectra.
+        /// </summary>
+        public static string Label_MuSPrimeSpectra {
+            get {
+                return ResourceManager.GetString("Label_MuSPrimeSpectra", resourceCulture);
             }
         }
         
@@ -853,20 +1141,20 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Optimization Parameters.
+        ///   Looks up a localized string similar to Optimization parameter(s): .
         /// </summary>
-        public static string Label_OptimizationParameters {
+        public static string Label_OptimizationParameter {
             get {
-                return ResourceManager.GetString("Label_OptimizationParameters", resourceCulture);
+                return ResourceManager.GetString("Label_OptimizationParameter", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Optimizer Type.
+        ///   Looks up a localized string similar to Percent Error: .
         /// </summary>
-        public static string Label_OptimizerType {
+        public static string Label_PercentError {
             get {
-                return ResourceManager.GetString("Label_OptimizerType", resourceCulture);
+                return ResourceManager.GetString("Label_PercentError", resourceCulture);
             }
         }
         
@@ -876,6 +1164,15 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Label_PercentNoise {
             get {
                 return ResourceManager.GetString("Label_PercentNoise", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  (phase).
+        /// </summary>
+        public static string Label_Phase {
+            get {
+                return ResourceManager.GetString("Label_Phase", resourceCulture);
             }
         }
         
@@ -1006,6 +1303,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  (real).
+        /// </summary>
+        public static string Label_Real {
+            get {
+                return ResourceManager.GetString("Label_Real", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ρ (Rho) Range:.
         /// </summary>
         public static string Label_RhoRange {
@@ -1105,6 +1411,24 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simulated:.
+        /// </summary>
+        public static string Label_Simulated {
+            get {
+                return ResourceManager.GetString("Label_Simulated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simulated Measured Data: .
+        /// </summary>
+        public static string Label_SimulatedMeasuredData {
+            get {
+                return ResourceManager.GetString("Label_SimulatedMeasuredData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulation Options.
         /// </summary>
         public static string Label_SimulationOptions {
@@ -1128,6 +1452,15 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Label_SpecifyInputsFromFile {
             get {
                 return ResourceManager.GetString("Label_SpecifyInputsFromFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (spectral μa,μs&apos;).
+        /// </summary>
+        public static string Label_SpectralMuAMuSPrime {
+            get {
+                return ResourceManager.GetString("Label_SpectralMuAMuSPrime", resourceCulture);
             }
         }
         
@@ -1213,6 +1546,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Units.
+        /// </summary>
+        public static string Label_Units {
+            get {
+                return ResourceManager.GetString("Label_Units", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to use spectral panel inputs.
         /// </summary>
         public static string Label_UseSpectralPanel {
@@ -1222,11 +1564,29 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to versus.
+        /// </summary>
+        public static string Label_Versus {
+            get {
+                return ResourceManager.GetString("Label_Versus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Voxel Region.
         /// </summary>
         public static string Label_VoxelRegion {
             get {
                 return ResourceManager.GetString("Label_VoxelRegion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wavelength.
+        /// </summary>
+        public static string Label_Wavelength {
+            get {
+                return ResourceManager.GetString("Label_Wavelength", resourceCulture);
             }
         }
         
@@ -1303,6 +1663,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to nm.
+        /// </summary>
+        public static string Measurement_nm {
+            get {
+                return ResourceManager.GetString("Measurement_nm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Caching simulation results....
         /// </summary>
         public static string Message_CachingSimulationResults {
@@ -1371,6 +1740,33 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Message_InvalidSimulationInput {
             get {
                 return ResourceManager.GetString("Message_InvalidSimulationInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plotted μa spectrum; wavelength range [nm]: .
+        /// </summary>
+        public static string Message_PlotMuASpectrum {
+            get {
+                return ResourceManager.GetString("Message_PlotMuASpectrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plotted μs&apos; spectrum; wavelength range [nm]: .
+        /// </summary>
+        public static string Message_PlotMuSPrimeSpectrum {
+            get {
+                return ResourceManager.GetString("Message_PlotMuSPrimeSpectrum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plot View: plot cleared due to independent axis variable change.
+        /// </summary>
+        public static string Message_PlotViewCleared {
+            get {
+                return ResourceManager.GetString("Message_PlotViewCleared", resourceCulture);
             }
         }
         

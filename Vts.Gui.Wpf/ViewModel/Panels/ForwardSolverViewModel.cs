@@ -57,7 +57,7 @@ namespace Vts.Gui.Wpf.ViewModel
 #endif
             SolutionDomainTypeOptionVM = new SolutionDomainOptionViewModel("Solution Domain", SolutionDomainType.ROfRho);
 
-            ForwardAnalysisTypeOptionVM = new OptionViewModel<ForwardAnalysisType>("Model/Analysis Output", true);
+            ForwardAnalysisTypeOptionVM = new OptionViewModel<ForwardAnalysisType>(StringLookup.GetLocalizedString("Heading_ModelAnalysisOutput"), true);
 
             ForwardSolverTypeOptionVM.PropertyChanged += (sender, args) =>
             {
@@ -262,7 +262,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public string SolutionDomainLabel
         {
-            get { return StringLookup.GetLocalizedString("Label_ForwardSolver"); }
+            get { return StringLookup.GetLocalizedString("Label_FwdSolver"); }
         }
 
         public string GaussianBeamLabel
@@ -363,8 +363,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
             var plotData = points.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
             WindowViewModel.Current.PlotVM.PlotValues.Execute(plotData);
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("Forward Solver: " + TissueInputVM +
-                                                                                "\r");
+            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_ForwardSolver") + TissueInputVM + "\r");
                 // todo: override ToString() for MultiRegionTissueViewModel
         }
 
@@ -438,16 +437,16 @@ namespace Vts.Gui.Wpf.ViewModel
                 case ForwardSolverType.DistributedGaussianSourceSDA:
                 case ForwardSolverType.DistributedPointSourceSDA:
                 case ForwardSolverType.PointSourceSDA:
-                    modelString = "\rModel - SDA";
+                    modelString = "\r" + StringLookup.GetLocalizedString("Label_ModelSDA");
                     break;
                 case ForwardSolverType.MonteCarlo:
-                    modelString = "\rModel - scaled MC";
+                    modelString = "\r" + StringLookup.GetLocalizedString("Label_ModelScaledMC");
                     break;
                 case ForwardSolverType.Nurbs:
-                    modelString = "\rModel - nurbs";
+                    modelString = "\r" + StringLookup.GetLocalizedString("Label_ModelNurbs");
                     break;
                 case ForwardSolverType.TwoLayerSDA:
-                    modelString = "\rModel - 2 layer SDA";
+                    modelString = "\r" + StringLookup.GetLocalizedString("Label_Model2LayerSDA");
                     break;
             }
 
@@ -455,15 +454,15 @@ namespace Vts.Gui.Wpf.ViewModel
             if (IsMultiRegion && MultiRegionTissueVM != null)
             {
                 var regions = MultiRegionTissueVM.GetTissueInput().Regions;
-                opString = "\rμa1=" + regions[0].RegionOP.Mua.ToString("F4") + "\rμs'1=" +
+                opString = "\r" + StringLookup.GetLocalizedString("Label_MuA1") + "=" + regions[0].RegionOP.Mua.ToString("F4") + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime1") + "=" +
                            regions[0].RegionOP.Musp.ToString("F4") +
-                           "\rμa2=" + regions[1].RegionOP.Mua.ToString("F4") + "\rμs'2=" +
+                           "\r" + StringLookup.GetLocalizedString("Label_MuA2") + "=" + regions[1].RegionOP.Mua.ToString("F4") + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime2") + "=" +
                            regions[1].RegionOP.Musp.ToString("F4");
             }
             else
             {
                 var opticalProperties = OpticalPropertyVM.GetOpticalProperties();
-                opString = "\rμa=" + opticalProperties.Mua.ToString("F4") + " \rμs'=" +
+                opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + "=" + opticalProperties.Mua.ToString("F4") + " \r" + StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
                            opticalProperties.Musp.ToString("F4");
             }
 
@@ -483,7 +482,7 @@ namespace Vts.Gui.Wpf.ViewModel
                         .ToArray();
                 return
                     secondaryAxesStrings.Select(
-                        sas => modelString + sas + (isWavelengthPlot ? "\r(spectral μa,μs')" : opString)).ToArray();
+                        sas => modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString)).ToArray();
             }
 
             return new[] {modelString + opString};

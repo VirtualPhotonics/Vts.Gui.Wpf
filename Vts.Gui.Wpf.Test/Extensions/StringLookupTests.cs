@@ -15,7 +15,7 @@ namespace Vts.Gui.Wpf.Test.Extensions
         [Test]
         public void verify_method_GetLocalizedString_works_correctly_for_existing_string()
         {
-            var stringLookup = StringLookup.GetLocalizedString("Label_ForwardSolver");
+            var stringLookup = StringLookup.GetLocalizedString("Label_FwdSolver");
             Assert.AreEqual(stringLookup, "Fwd Solver:");
         }
         [Test]

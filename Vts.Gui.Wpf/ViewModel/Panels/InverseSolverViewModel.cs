@@ -108,22 +108,22 @@ namespace Vts.Gui.Wpf.ViewModel
                 "Forward Model Engine",false, WhiteList.InverseForwardSolverTypes);
 #else
             MeasuredForwardSolverTypeOptionVM = new OptionViewModel<ForwardSolverType>(
-                "Forward Model Engine", false);
+                "Forward Model Engine", false); //These titles are not diplayed so we can hard-code strings
 #endif
 
 #if WHITELIST 
             InverseForwardSolverTypeOptionVM = new OptionViewModel<ForwardSolverType>("Inverse Model Engine",false, WhiteList.InverseForwardSolverTypes);
 #else
-            InverseForwardSolverTypeOptionVM = new OptionViewModel<ForwardSolverType>("Inverse Model Engine", false);
+            InverseForwardSolverTypeOptionVM = new OptionViewModel<ForwardSolverType>("Inverse Model Engine", false); //These titles are not diplayed so we can hard-code strings
 #endif
             InverseForwardSolverTypeOptionVM.PropertyChanged += (sender, args) =>
                 OnPropertyChanged("InverseForwardSolver");
 
-            OptimizerTypeOptionVM = new OptionViewModel<OptimizerType>("Optimizer Type", true);
+            OptimizerTypeOptionVM = new OptionViewModel<OptimizerType>(StringLookup.GetLocalizedString("Heading_OptimizerType"), true);
             OptimizerTypeOptionVM.PropertyChanged += (sender, args) =>
                 OnPropertyChanged("Optimizer");
 
-            InverseFitTypeOptionVM = new OptionViewModel<InverseFitType>("Optimization Parameters", true);
+            InverseFitTypeOptionVM = new OptionViewModel<InverseFitType>(StringLookup.GetLocalizedString("Heading_OptimizationParameters"), true);
 
             MeasuredOpticalPropertyVM = new OpticalPropertyViewModel {Title = ""};
             InitialGuessOpticalPropertyVM = new OpticalPropertyViewModel {Title = ""};
@@ -178,7 +178,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public string SolutionDomainLabel
         {
-            get { return StringLookup.GetLocalizedString("Label_ForwardSolver"); }
+            get { return StringLookup.GetLocalizedString("Label_FwdSolver"); }
         }
 
         public string InverseSolverLabel
@@ -352,8 +352,7 @@ namespace Vts.Gui.Wpf.ViewModel
             var plotLabels = GetLegendLabels(PlotDataType.Simulated);
             var plotData = measuredDataPoints.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
             WindowViewModel.Current.PlotVM.PlotValues.Execute(plotData);
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("Simulated Measured Data: " +
-                                                                                MeasuredOpticalPropertyVM + "\r");
+            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_SimulatedMeasuredData") + MeasuredOpticalPropertyVM + "\r");
         }
 
         private string[] GetLegendLabels(PlotDataType datatype)
@@ -366,24 +365,24 @@ namespace Vts.Gui.Wpf.ViewModel
             switch (datatype)
             {
                 case PlotDataType.Simulated:
-                    solverString = "\nSimulated:";
+                    solverString = "\n" + StringLookup.GetLocalizedString("Label_Simulated");
                     opticalProperties = MeasuredOpticalPropertyVM.GetOpticalProperties();
                     forwardSolver = MeasuredForwardSolverTypeOptionVM.SelectedValue;
                     break;
                 case PlotDataType.Calculated:
-                    solverString = "\nCalculated:";
+                    solverString = "\n" + StringLookup.GetLocalizedString("Label_Calculated");
                     opticalProperties = ResultOpticalPropertyVM.GetOpticalProperties();
                     forwardSolver = MeasuredForwardSolverTypeOptionVM.SelectedValue;
                     break;
                 case PlotDataType.Guess:
-                    solverString = "\nGuess:";
+                    solverString = "\n" + StringLookup.GetLocalizedString("Label_Guess");
                     opticalProperties = InitialGuessOpticalPropertyVM.GetOpticalProperties();
                     forwardSolver = InverseForwardSolverTypeOptionVM.SelectedValue;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("datatype");
             }
-            var opString = "\rμa=" + opticalProperties.Mua.ToString("F4") + " \rμs'=" +
+            var opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + "=" + opticalProperties.Mua.ToString("F4") + " \r" + StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
                            opticalProperties.Musp.ToString("F4");
 
             switch (forwardSolver)
@@ -391,16 +390,16 @@ namespace Vts.Gui.Wpf.ViewModel
                 case ForwardSolverType.DistributedGaussianSourceSDA:
                 case ForwardSolverType.DistributedPointSourceSDA:
                 case ForwardSolverType.PointSourceSDA:
-                    modelString = "\rModel - SDA";
+                    modelString = "\r" + StringLookup.GetLocalizedString("Label_ModelSDA");
                     break;
                 case ForwardSolverType.MonteCarlo:
-                    modelString = "\rModel - scaled MC";
+                    modelString = "\r" + StringLookup.GetLocalizedString("Label_ModelScaledMC");
                     break;
                 case ForwardSolverType.Nurbs:
-                    modelString = "\rModel - nurbs";
+                    modelString = "\r" + StringLookup.GetLocalizedString("Label_ModelNurbs");
                     break;
                 case ForwardSolverType.TwoLayerSDA:
-                    modelString = "\rModel - 2 layer SDA";
+                    modelString = "\r" + StringLookup.GetLocalizedString("Label_Model2LayerSDA");
                     break;
             }
 
@@ -420,7 +419,7 @@ namespace Vts.Gui.Wpf.ViewModel
                         .ToArray();
                 return
                     secondaryAxesStrings.Select(
-                        sas => solverString + modelString + sas + (isWavelengthPlot ? "\r(spectral μa,μs')" : opString))
+                        sas => solverString + modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString))
                         .ToArray();
             }
 
@@ -448,18 +447,18 @@ namespace Vts.Gui.Wpf.ViewModel
             var plotLabels = GetLegendLabels(PlotDataType.Guess);
             var plotData = initialGuessDataPoints.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
             WindowViewModel.Current.PlotVM.PlotValues.Execute(plotData);
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("Initial Guess: " +
+            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_InitialGuess") +
                                                                                 InitialGuessOpticalPropertyVM + " \r");
         }
 
         private void SolveInverseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             // Report inverse solver setup and results
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("Inverse Solution Results: \r");
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   Optimization parameter(s): " +
+            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_InverseSolutionResults") + "\r");
+            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_OptimizationParameter") +
                                                                                 InverseFitTypeOptionVM.SelectedValue +
                                                                                 " \r");
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   Initial Guess: " +
+            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_InitialGuess") +
                                                                                 InitialGuessOpticalPropertyVM + " \r");
 
             var inverseResult = SolveInverse();
@@ -479,8 +478,9 @@ namespace Vts.Gui.Wpf.ViewModel
                 var wvUnitString = IndependentVariableAxisUnits.NM.GetInternationalizedString();
                 var opUnitString = IndependentVariableAxisUnits.InverseMM.GetInternationalizedString();
                 var sb =
-                    new StringBuilder("\t[Wavelength (" + wvUnitString +
-                                      ")]\t\t\t\t\t\t[Exact]\t\t\t\t\t\t[At Converged Values]\t\t\t\t\t\t[Units]\r");
+                    new StringBuilder("\t[" + StringLookup.GetLocalizedString("Label_Wavelength") + " (" + wvUnitString +
+                                      ")]\t\t\t\t\t\t[" + StringLookup.GetLocalizedString("Label_Exact") + "]\t\t\t\t\t\t[" + 
+                                      StringLookup.GetLocalizedString("Label_ConvergedValues") + "]\t\t\t\t\t\t[" + StringLookup.GetLocalizedString("Label_Units") + "]\r");
                 for (var i = 0; i < fitOPs.Length; i++)
                 {
                     sb.Append("\t" + wavelengths[i] + "\t\t\t\t\t\t" + measuredOPs[i] + "\t\t\t" + fitOPs[i] + "\t\t\t" +
@@ -490,9 +490,9 @@ namespace Vts.Gui.Wpf.ViewModel
             }
             else
             {
-                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   Exact: " +
+                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_Exact") + ": " +
                                                                                     MeasuredOpticalPropertyVM + " \r");
-                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   At Converged Values: " +
+                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_ConvergedValues") + ": " +
                                                                                     ResultOpticalPropertyVM + " \r");
                                 //Display Percent Error
                 double muaError = 0.0;
@@ -507,8 +507,9 @@ namespace Vts.Gui.Wpf.ViewModel
                     int tempMuspError = (int)(10000.0 * Math.Abs(ResultOpticalPropertyVM.Musp - MeasuredOpticalPropertyVM.Musp) / MeasuredOpticalPropertyVM.Musp);
                     muspError = tempMuspError / 100.0;
                 }
-                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   Percent Error: " + "μa = " + muaError +
-                                                                                    "%  μs' = " + muspError + "% \r");
+                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_PercentError") + 
+                                                                                    StringLookup.GetLocalizedString("Label_MuA") + " = " + muaError +
+                                                                                    "%  " + StringLookup.GetLocalizedString("Label_MuSPrime") + " = " + muspError + "% \r");
             }
 
             var axesLabels = GetPlotLabels();

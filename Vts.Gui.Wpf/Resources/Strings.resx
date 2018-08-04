@@ -157,13 +157,13 @@
     <value>Absorber Concentrations</value>
   </data>
   <data name="Label_ForwardSolver" xml:space="preserve">
-    <value>Fwd Solver:</value>
+    <value>Forward Solver: </value>
   </data>
   <data name="Label_GaussianBeam" xml:space="preserve">
     <value>Gaussian Beam Diameter:</value>
   </data>
   <data name="Label_InverseSolver" xml:space="preserve">
-    <value>Inv Solver:</value>
+    <value>Inv Solver: </value>
   </data>
   <data name="Label_PercentNoise" xml:space="preserve">
     <value>% noise</value>
@@ -406,7 +406,7 @@
     <value>Forward Simulation</value>
   </data>
   <data name="Label_InitialGuess" xml:space="preserve">
-    <value>Initial Guess</value>
+    <value>Initial Guess: </value>
   </data>
   <data name="Label_NumberOfPhotons" xml:space="preserve">
     <value>Number of Photons:</value>
@@ -414,10 +414,10 @@
   <data name="Label_OpticalProperties" xml:space="preserve">
     <value>Optical Properties:</value>
   </data>
-  <data name="Label_OptimizationParameters" xml:space="preserve">
+  <data name="Heading_OptimizationParameters" xml:space="preserve">
     <value>Optimization Parameters</value>
   </data>
-  <data name="Label_OptimizerType" xml:space="preserve">
+  <data name="Heading_OptimizerType" xml:space="preserve">
     <value>Optimizer Type</value>
   </data>
   <data name="Label_Analog" xml:space="preserve">
@@ -579,11 +579,134 @@
   <data name="Error_FileSave" xml:space="preserve">
     <value>Unable to save files.</value>
   </data>
+  <data name="Error_NoSolutionDomainExists" xml:space="preserve">
+    <value>No solution domain of the specified type exists.</value>
+  </data>
   <data name="Error_SimulationInputNotLoaded" xml:space="preserve">
     <value>Simulation input not loaded.</value>
   </data>
+  <data name="Heading_AbsorbedEnergySolutionDomain" xml:space="preserve">
+    <value>Absorbed Energy SolutionDomain</value>
+  </data>
+  <data name="Heading_FluenceSolutionDomain" xml:space="preserve">
+    <value>Fluence Solution Domain</value>
+  </data>
+  <data name="Heading_InitialGuess" xml:space="preserve">
+    <value>Initial Guess</value>
+  </data>
+  <data name="Heading_ModelAnalysisOutput" xml:space="preserve">
+    <value>Model/Analysis Output</value>
+  </data>
+  <data name="Heading_OpticalProperties" xml:space="preserve">
+    <value>Optical Properties</value>
+  </data>
+  <data name="Heading_PHDSolutionDomain" xml:space="preserve">
+    <value>PHD Solution Domain</value>
+  </data>
+  <data name="Heading_ScattererType" xml:space="preserve">
+    <value>Scatterer Type</value>
+  </data>
+  <data name="Heading_WavelengthRange" xml:space="preserve">
+    <value>Wavelength Range</value>
+  </data>
+  <data name="Label_Amplitude" xml:space="preserve">
+    <value> (amp)</value>
+  </data>
+  <data name="Label_Calculated" xml:space="preserve">
+    <value>Calculated:</value>
+  </data>
+  <data name="Label_ConvergedValues" xml:space="preserve">
+    <value>At Converged Values</value>
+  </data>
+  <data name="Label_Exact" xml:space="preserve">
+    <value>Exact</value>
+  </data>
+  <data name="Label_FluenceSolver" xml:space="preserve">
+    <value>Fluence Solver: </value>
+  </data>
+  <data name="Label_FwdSolver" xml:space="preserve">
+    <value>Fwd Solver:</value>
+  </data>
+  <data name="Label_Guess" xml:space="preserve">
+    <value>Guess:</value>
+  </data>
+  <data name="Label_Imaginary" xml:space="preserve">
+    <value> (imag)</value>
+  </data>
+  <data name="Label_InverseSolutionResults" xml:space="preserve">
+    <value>Inverse Solution Results: </value>
+  </data>
+  <data name="Label_Model2LayerSDA" xml:space="preserve">
+    <value>Model - 2 layer SDA</value>
+  </data>
   <data name="Label_ModelMC" xml:space="preserve">
     <value>Model - MC</value>
+  </data>
+  <data name="Label_ModelNurbs" xml:space="preserve">
+    <value>Model - nurbs</value>
+  </data>
+  <data name="Label_ModelScaledMC" xml:space="preserve">
+    <value>Model - scaled MC</value>
+  </data>
+  <data name="Label_ModelSDA" xml:space="preserve">
+    <value>Model - SDA</value>
+  </data>
+  <data name="Label_MuA" xml:space="preserve">
+    <value>μa</value>
+  </data>
+  <data name="Label_MuA1" xml:space="preserve">
+    <value>μa1</value>
+  </data>
+  <data name="Label_MuA2" xml:space="preserve">
+    <value>μa2</value>
+  </data>
+  <data name="Label_MuASpectra" xml:space="preserve">
+    <value>μa spectra</value>
+  </data>
+  <data name="Label_MuSPrime" xml:space="preserve">
+    <value>μs'</value>
+  </data>
+  <data name="Label_MuSPrime1" xml:space="preserve">
+    <value>μs'1</value>
+  </data>
+  <data name="Label_MuSPrime2" xml:space="preserve">
+    <value>μs'2</value>
+  </data>
+  <data name="Label_MuSPrimeSpectra" xml:space="preserve">
+    <value>μs' spectra</value>
+  </data>
+  <data name="Label_OptimizationParameter" xml:space="preserve">
+    <value>Optimization parameter(s): </value>
+  </data>
+  <data name="Label_PercentError" xml:space="preserve">
+    <value>Percent Error: </value>
+  </data>
+  <data name="Label_Phase" xml:space="preserve">
+    <value> (phase)</value>
+  </data>
+  <data name="Label_Real" xml:space="preserve">
+    <value> (real)</value>
+  </data>
+  <data name="Label_Simulated" xml:space="preserve">
+    <value>Simulated:</value>
+  </data>
+  <data name="Label_SimulatedMeasuredData" xml:space="preserve">
+    <value>Simulated Measured Data: </value>
+  </data>
+  <data name="Label_SpectralMuAMuSPrime" xml:space="preserve">
+    <value>(spectral μa,μs')</value>
+  </data>
+  <data name="Label_Units" xml:space="preserve">
+    <value>Units</value>
+  </data>
+  <data name="Label_Versus" xml:space="preserve">
+    <value>versus</value>
+  </data>
+  <data name="Label_Wavelength" xml:space="preserve">
+    <value>Wavelength</value>
+  </data>
+  <data name="Measurement_nm" xml:space="preserve">
+    <value>nm</value>
   </data>
   <data name="MessageBoxTitle_DeleteConfirm" xml:space="preserve">
     <value>Delete Confirmation</value>
@@ -617,6 +740,15 @@
   </data>
   <data name="Message_InvalidSimulationInput" xml:space="preserve">
     <value>Simulation input not valid.  Cancel simulation and try again</value>
+  </data>
+  <data name="Message_PlotMuASpectrum" xml:space="preserve">
+    <value>Plotted μa spectrum; wavelength range [nm]: </value>
+  </data>
+  <data name="Message_PlotMuSPrimeSpectrum" xml:space="preserve">
+    <value>Plotted μs' spectrum; wavelength range [nm]: </value>
+  </data>
+  <data name="Message_PlotViewCleared" xml:space="preserve">
+    <value>Plot View: plot cleared due to independent axis variable change</value>
   </data>
   <data name="Message_Rule" xml:space="preserve">
     <value>Rule: </value>

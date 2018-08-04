@@ -21,7 +21,7 @@ namespace Vts.Gui.Wpf.Test.Converters
             Assert.That(rtsConverter.Convert(
                 null,  
                 typeof(String),
-                "Label_ForwardSolver", // resource is passed as a prameter
+                "Label_FwdSolver", // resource is passed as a prameter
                 System.Globalization.CultureInfo.CurrentCulture).Equals("Fwd Solver:"));
         }
         /// <summary>

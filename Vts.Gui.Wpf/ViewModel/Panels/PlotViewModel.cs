@@ -399,7 +399,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 {
                     ClearPlot();
                     WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
-                        "Plot View: plot cleared due to independent axis variable change\r");
+                        StringLookup.GetLocalizedString("Message_PlotViewCleared") + "\r");
                 }
                 _CurrentIndependentVariableAxis = value;
                 OnPropertyChanged("CurrentIndependentVariableAxis");
@@ -623,7 +623,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 XAxis = labels.IndependentAxis.AxisLabel + " [" + labels.IndependentAxis.AxisUnits + "]";
                 YAxis = labels.DependentAxisName + " [" + labels.DependentAxisUnits + "]";
 
-                Title = labels.DependentAxisName + " [" + labels.DependentAxisUnits + "] versus " +
+                Title = labels.DependentAxisName + " [" + labels.DependentAxisUnits + "] " + StringLookup.GetLocalizedString("Label_Versus") + " " +
                         labels.IndependentAxis.AxisLabel + " [" + labels.IndependentAxis.AxisUnits + "]";
 
                 if (labels.ConstantAxes.Length > 0)
@@ -947,17 +947,17 @@ namespace Vts.Gui.Wpf.ViewModel
                 switch (PlotToggleTypeOptionVM.SelectedValue)
                 {
                     case PlotToggleType.Complex:
-                        lineSeriesA.Title = dataPointCollection.Title + " (imag)";
-                        lineSeriesB.Title = dataPointCollection.Title + " (real)";
+                        lineSeriesA.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_Imaginary");
+                        lineSeriesB.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_Real");
                         lineSeriesB.MarkerType = MarkerType.Circle;
                         PlotModel.Series.Add(lineSeriesB);
                         PlotSeriesCollection.Add(tempPointArrayB.ToArray());
                         break;
                     case PlotToggleType.Phase:
-                        lineSeriesA.Title = dataPointCollection.Title + " (phase)";
+                        lineSeriesA.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_Phase");
                         break;
                     case PlotToggleType.Amp:
-                        lineSeriesA.Title = dataPointCollection.Title + " (amp)";
+                        lineSeriesA.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_Amplitude");
                         break;
                 }
                 lineSeriesA.MarkerType = MarkerType.Circle;

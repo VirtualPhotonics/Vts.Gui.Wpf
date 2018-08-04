@@ -62,18 +62,18 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public FluenceSolverViewModel()
         {
-            RhoRangeVM = new RangeViewModel(new DoubleRange(0.1, 19.9, 300), "mm", IndependentVariableAxis.Rho, "");
-            ZRangeVM = new RangeViewModel(new DoubleRange(0.1, 19.9, 300), "mm", IndependentVariableAxis.Z, "");
+            RhoRangeVM = new RangeViewModel(new DoubleRange(0.1, 19.9, 300), StringLookup.GetLocalizedString("Measurement_mm"), IndependentVariableAxis.Rho, "");
+            ZRangeVM = new RangeViewModel(new DoubleRange(0.1, 19.9, 300), StringLookup.GetLocalizedString("Measurement_mm"), IndependentVariableAxis.Z, "");
             SourceDetectorSeparation = 10.0;
             TimeModulationFrequency = 0.1;
             _tissueInputVM = new OpticalPropertyViewModel(new OpticalProperties(),
                 IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
-                "Optical Properties");
+                StringLookup.GetLocalizedString("Heading_OpticalProperties"));
 
             // right now, we're doing manual databinding to the selected item. need to enable databinding 
             // confused, though - do we need to use strings? or, how to make generics work with dependency properties?
             ForwardSolverTypeOptionVM = new OptionViewModel<ForwardSolverType>(
-                "Forward Model:",
+                "Forward Model",
                 false,
                 new[]
                 {
@@ -83,17 +83,17 @@ namespace Vts.Gui.Wpf.ViewModel
                     ForwardSolverType.TwoLayerSDA
                 }); // explicitly enabling these for the workshop;
 
-            FluenceSolutionDomainTypeOptionVM = new FluenceSolutionDomainOptionViewModel("Fluence Solution Domain",
+            FluenceSolutionDomainTypeOptionVM = new FluenceSolutionDomainOptionViewModel(StringLookup.GetLocalizedString("Heading_FluenceSolutionDomain"),
                 FluenceSolutionDomainType.FluenceOfRhoAndZ);
             FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
             FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
             AbsorbedEnergySolutionDomainTypeOptionVM =
-                new FluenceSolutionDomainOptionViewModel("Absorbed Energy Solution Domain",
+                new FluenceSolutionDomainOptionViewModel(StringLookup.GetLocalizedString("Heading_AbsorbedEnergySolutionDomain"),
                     FluenceSolutionDomainType.FluenceOfRhoAndZ);
             AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
             AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
             PhotonHittingDensitySolutionDomainTypeOptionVM =
-                new FluenceSolutionDomainOptionViewModel("PHD Solution Domain",
+                new FluenceSolutionDomainOptionViewModel(StringLookup.GetLocalizedString("Heading_PHDSolutionDomain"),
                     FluenceSolutionDomainType.FluenceOfRhoAndZ);
             PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
             PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
@@ -304,7 +304,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public string SolutionDomainLabel
         {
-            get { return StringLookup.GetLocalizedString("Label_ForwardSolver"); }
+            get { return StringLookup.GetLocalizedString("Label_FwdSolver"); }
         }
 
         public string GaussianBeamLabel
@@ -368,8 +368,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
             WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
 
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("Fluence Solver: " + OpticalPropertyVM +
-                                                                                "\r");
+            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_FluenceSolver") + OpticalPropertyVM + "\r");
         }
 
         private PlotAxesLabels GetPlotLabels()
@@ -475,8 +474,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     return new OpticalPropertyViewModel(
                         _currentSemiInfiniteTissueInput.Regions.First().RegionOP,
                         IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
-                        "Optical Properties");
-                    break;
+                        StringLookup.GetLocalizedString("Heading_OpticalProperties"));
                 case "MultiLayer":
                     if (_currentMultiLayerTissueInput == null)
                     {
@@ -767,7 +765,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 case MapType.PhotonHittingDensity:
                     return PhotonHittingDensitySolutionDomainTypeOptionVM;
                 default:
-                    throw new ArgumentException("No solution domain of the specified type exists.",
+                    throw new ArgumentException(StringLookup.GetLocalizedString("Error_NoSolutionDomainExists"),
                         "MapTypeOptionVM.SelectedValue");
             }
         }
