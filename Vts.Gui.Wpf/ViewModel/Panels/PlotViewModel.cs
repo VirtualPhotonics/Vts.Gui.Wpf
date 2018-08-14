@@ -831,15 +831,40 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 // normalization calculations
                 var max = 1.0;
+                var maxRe = 1.0;
+                var maxIm = 1.0;
                 if (normToMax)
                 {
                     var points = dataPointCollection.DataPoints.Cast<ComplexDataPoint>().ToArray();
-                    max = points.Select(p => p.Y.Real).Max();
+                    switch (PlotToggleTypeOptionVM.SelectedValue)
+                    {
+                        case PlotToggleType.Phase:
+                            max = points.Select(p => p.Y.Phase * (-180/Math.PI)).Max();
+                            break;
+                        case PlotToggleType.Amp:
+                            max = points.Select(p => p.Y.Magnitude).Max();
+                            break;
+                        case PlotToggleType.Complex:
+                            maxRe = points.Select(p => p.Y.Real).Max();
+                            maxIm = points.Select(p => p.Y.Imaginary).Max();
+                            break;
+                    }
                 }
-                double[] tempY = null;
+                
+                double[] tempAmp = null;
+                double[] tempPh = null;
+                double[] tempRe = null;
+                double[] tempIm = null;
                 if (normToCurve)
                 {
-                    tempY = (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints select dp.Y.Real).ToArray();
+                    tempAmp = (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
+                        select dp.Y.Magnitude).ToArray();
+                    tempPh = (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
+                        select dp.Y.Phase*(-180/Math.PI)).ToArray();
+                    tempRe = (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
+                        select dp.Y.Real).ToArray();
+                    tempIm = (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
+                        select dp.Y.Imaginary).ToArray();
                 }
 
                 var curveIndex = 0;
@@ -850,19 +875,40 @@ namespace Vts.Gui.Wpf.ViewModel
                     {
                         case PlotToggleType.Phase:
                             y = -(dp.Y.Phase*(180/Math.PI));
+                            switch (PlotNormalizationTypeOptionVM.SelectedValue)
+                            {
+                                case PlotNormalizationType.RelativeToCurve:
+                                    var curveY = normToCurve && tempPh != null ? tempPh[curveIndex] : 1.0;
+                                    y = y / curveY;
+                                    break;
+                                case PlotNormalizationType.RelativeToMax:
+                                    y = y / max;
+                                    break;
+                            }
                             break;
                         case PlotToggleType.Amp:
                             y = dp.Y.Magnitude;
+                            switch (PlotNormalizationTypeOptionVM.SelectedValue)
+                            {
+                                case PlotNormalizationType.RelativeToCurve:
+                                    var curveY = normToCurve && tempAmp != null ? tempAmp[curveIndex] : 1.0;
+                                    y = y / curveY;
+                                    break;
+                                case PlotNormalizationType.RelativeToMax:
+                                    y = y / max;
+                                    break;
+                            }
                             break;
                         default: // case PlotToggleType.Complex:
                             y = dp.Y.Real;
                             switch (PlotNormalizationTypeOptionVM.SelectedValue)
                             {
                                 case PlotNormalizationType.RelativeToCurve:
-                                    var curveY = normToCurve && tempY != null ? tempY[curveIndex] : 1.0;
+                                    var curveY = normToCurve && tempRe != null ? tempRe[curveIndex] : 1.0;                                   
                                     y = y/curveY;
                                     break;
                                 case PlotNormalizationType.RelativeToMax:
+                                    max = maxRe;
                                     y = y/max;
                                     break;
                             }
@@ -875,18 +921,31 @@ namespace Vts.Gui.Wpf.ViewModel
                                 tempPointArrayB.Add(new Point(x, y));
                             }
                             y = dp.Y.Imaginary;
+                            //break; // handle imag within switch
+                            switch (PlotNormalizationTypeOptionVM.SelectedValue)
+                            {
+                                case PlotNormalizationType.RelativeToCurve:
+                                    var curveY = normToCurve && tempIm != null ? tempIm[curveIndex] : 1.0;
+                                    y = y / curveY;
+                                    break;
+                                case PlotNormalizationType.RelativeToMax:
+                                    max = maxIm;
+                                    y = y / max;
+                                    break;
+                            }
                             break;
                     }
-                    switch (PlotNormalizationTypeOptionVM.SelectedValue)
-                    {
-                        case PlotNormalizationType.RelativeToCurve:
-                            var curveY = normToCurve && tempY != null ? tempY[curveIndex] : 1.0;
-                            y = y/curveY;
-                            break;
-                        case PlotNormalizationType.RelativeToMax:
-                            y = y/max;
-                            break;
-                    }
+                    // ckh 8/13/18 code does not need to repeat here since inside switch above now for all cases
+                    //switch (PlotNormalizationTypeOptionVM.SelectedValue)
+                    //{
+                    //    case PlotNormalizationType.RelativeToCurve:
+                    //        var curveY = normToCurve && tempAmp != null ? tempAmp[curveIndex] : 1.0;
+                    //        y = y/curveY;
+                    //        break;
+                    //    case PlotNormalizationType.RelativeToMax:
+                    //        y = y/max;
+                    //        break;
+                    //}
                     y = YAxisSpacingOptionVM.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
                     var point = new DataPoint(x, y);
                     if (isValidDataPoint(point) && isWithinAxes(point))
