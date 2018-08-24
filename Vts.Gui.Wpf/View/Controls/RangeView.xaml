@@ -17,7 +17,7 @@
                     <TextBlock Text="{Binding Units}" />
                     <TextBlock Text="]" />
                 </StackPanel>
-                <TextBox Width="40" Text="{Binding Start, Mode=TwoWay}" HorizontalAlignment="Center"
+                <TextBox Width="40" Text="{Binding Start, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" HorizontalAlignment="Center"
                          KeyDown="TextBox_KeyDown" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="5,0,0,0">
@@ -27,13 +27,13 @@
                     <TextBlock Text="{Binding Units}" />
                     <TextBlock Text="]" />
                 </StackPanel>
-                <TextBox Width="40" Text="{Binding Stop, Mode=TwoWay}" HorizontalAlignment="Center"
+                <TextBox Width="40" Text="{Binding Stop, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" HorizontalAlignment="Center"
                          KeyDown="TextBox_KeyDown" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="12,0,0,0" HorizontalAlignment="Center"
                         Visibility="{Binding EnableNumber, Converter={StaticResource MyBooleanToVisibilityConverter}}">
                 <TextBlock Text="{Binding ConverterParameter=Range_Number, Converter={StaticResource MyResourceToStringConverter}}" TextAlignment="Center" />
-                <TextBox Width="40" Text="{Binding Number, Mode=TwoWay}" HorizontalAlignment="Center"
+                <TextBox Width="40" Text="{Binding Number, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" HorizontalAlignment="Center"
                          KeyDown="TextBox_KeyDown" />
             </StackPanel>
         </StackPanel>

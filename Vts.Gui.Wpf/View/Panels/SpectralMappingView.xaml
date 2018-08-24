@@ -85,7 +85,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding VolumeFractionLabel}" VerticalAlignment="Center" />
                                     <TextBlock Text=" = " VerticalAlignment="Center" />
-                                    <TextBox Text="{Binding Scatterer.VolumeFraction, Mode=TwoWay}" Width="40"
+                                    <TextBox Text="{Binding Scatterer.VolumeFraction, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="40"
                                              KeyDown="TextBox_KeyDown" />
                                 </StackPanel>
                             </DataTemplate>
@@ -96,15 +96,15 @@
                                 <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
                                     <TextBlock Text="{Binding ParticleRadiusLabel}" VerticalAlignment="Center" />
                                     <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
-                                    <TextBox Text="{Binding Scatterer.ParticleRadius, Mode=TwoWay}" Width="40"
+                                    <TextBox Text="{Binding Scatterer.ParticleRadius, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="40"
                                              Margin="0,0,5,0" KeyDown="TextBox_KeyDown" />
                                     <TextBlock Text="{Binding ParticleNLabel}" VerticalAlignment="Center" />
                                     <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
-                                    <TextBox Text="{Binding Scatterer.ParticleRefractiveIndexMismatch, Mode=TwoWay}"
+                                    <TextBox Text="{Binding Scatterer.ParticleRefractiveIndexMismatch, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}"
                                              Width="40" Margin="0,0,5,0" KeyDown="TextBox_KeyDown" />
                                     <TextBlock Text="{Binding MediumNLabel}" VerticalAlignment="Center" />
                                     <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
-                                    <TextBox Text="{Binding Scatterer.MediumRefractiveIndexMismatch, Mode=TwoWay}"
+                                    <TextBox Text="{Binding Scatterer.MediumRefractiveIndexMismatch, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}"
                                              Width="40" KeyDown="TextBox_KeyDown" />
                                 </StackPanel>
                             </DataTemplate>
@@ -116,11 +116,11 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding ValueALabel}" VerticalAlignment="Center" />
                                         <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
-                                        <TextBox Text="{Binding Scatterer.A, Mode=TwoWay}" Width="Auto"
+                                        <TextBox Text="{Binding Scatterer.A, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="Auto"
                                                  Margin="0,0,5,0" KeyDown="TextBox_KeyDown" />
                                         <TextBlock Text="{Binding ValueBLabel}" VerticalAlignment="Center" />
                                         <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
-                                        <TextBox Text="{Binding Scatterer.B, Mode=TwoWay}" Width="Auto"
+                                        <TextBox Text="{Binding Scatterer.B, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="Auto"
                                                  Margin="0,0,5,0" KeyDown="TextBox_KeyDown" />
                                         <TextBlock Text="{Binding PowerLawDefinitionALabel}" VerticalAlignment="Center" />
                                     </StackPanel>

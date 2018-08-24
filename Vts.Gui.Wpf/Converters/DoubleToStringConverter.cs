@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace Vts.Gui.Wpf.Converters
 {
@@ -30,14 +31,20 @@ namespace Vts.Gui.Wpf.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is double))
-                throw new ArgumentException("Value must be a double");
+            double d1;
+            if (!(value is double || value is int))
+                throw new ArgumentException("Value must be a double or int");
+
+            if (value is int)
+                d1 = (int)value;
+            else
+                d1 = (double)value;
 
             if (parameter != null)
             {
-                return ((double) value).ToString((string) parameter);
+                return d1.ToString((string) parameter, CultureInfo.CurrentCulture);
             }
-            return ((double) value).ToString();
+            return d1.ToString(CultureInfo.CurrentCulture);
 
             //string numberUnformatted = value.ToString();
             //int ind = numberUnformatted.IndexOf(".");
@@ -67,7 +74,7 @@ namespace Vts.Gui.Wpf.Converters
             if (!(value is string))
                 throw new ArgumentException("Value must be a string");
             double d;            
-            if (double.TryParse((string) value, out d))            
+            if (double.TryParse((string) value, NumberStyles.AllowDecimalPoint, CultureInfo.CurrentCulture, out d))            
                 return d;
             else
                 return 0;

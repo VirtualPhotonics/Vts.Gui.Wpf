@@ -19,7 +19,7 @@
                     <TextBlock Text="{Binding Units}" />
                     <TextBlock Text="]" />
                 </StackPanel>
-                <TextBox Width="40" Text="{Binding Mua, Mode=TwoWay}" HorizontalAlignment="Center"
+                <TextBox Width="40" Text="{Binding Mua, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" HorizontalAlignment="Center"
                          IsEnabled="{Binding EnableMua}" KeyDown="TextBox_KeyDown" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Width="70">
@@ -28,17 +28,17 @@
                     <TextBlock Text="{Binding Units}" />
                     <TextBlock Text="]" />
                 </StackPanel>
-                <TextBox Width="40" Text="{Binding Musp, Mode=TwoWay}" HorizontalAlignment="Center"
+                <TextBox Width="40" Text="{Binding Musp, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" HorizontalAlignment="Center"
                          IsEnabled="{Binding EnableMusp}" KeyDown="TextBox_KeyDown" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Width="60">
                 <TextBlock Text="g" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
-                <TextBox Width="40" Text="{Binding G, Mode=TwoWay}" HorizontalAlignment="Center"
+                <TextBox Width="40" Text="{Binding G, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" HorizontalAlignment="Center"
                          IsEnabled="{Binding EnableG}" KeyDown="TextBox_KeyDown" />
             </StackPanel>
             <StackPanel Orientation="Vertical" Width="60">
                 <TextBlock Text="n" VerticalAlignment="Bottom" HorizontalAlignment="Center" />
-                <TextBox Width="40" Text="{Binding N, Mode=TwoWay}" HorizontalAlignment="Center"
+                <TextBox Width="40" Text="{Binding N, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" HorizontalAlignment="Center"
                          IsEnabled="{Binding EnableN}" KeyDown="TextBox_KeyDown" />
             </StackPanel>
         </StackPanel>
