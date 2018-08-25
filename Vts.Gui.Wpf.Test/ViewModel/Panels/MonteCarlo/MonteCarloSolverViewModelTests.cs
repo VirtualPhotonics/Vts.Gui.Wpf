@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.ViewModel;
 using Vts.MonteCarlo;
 
@@ -72,7 +73,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             Assert.IsTrue(viewModel.CanRunSimulation);
             Assert.IsFalse(viewModel.CanCancelSimulation);
             Assert.IsFalse(viewModel.CanSaveResults);
-            Assert.AreEqual(viewModel.CancelButtonText,"Cancel");
+            Assert.AreEqual(viewModel.CancelButtonText, StringLookup.GetLocalizedString("Button_Cancel"));
         }
 
         // The following tests verify the Relay Commands
@@ -97,7 +98,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             Assert.IsFalse(viewModel.CanLoadInputFile);
             Assert.IsTrue(viewModel.CanCancelSimulation);
             Assert.IsFalse(viewModel.CanSaveResults);
-            Assert.IsTrue(viewModel.CancelButtonText == "Cancel Simulation");
+            Assert.IsTrue(viewModel.CancelButtonText == StringLookup.GetLocalizedString("Button_CancelSimulation"));
         }
         ///// <summary>
         ///// Execute Monte Carlo Solver command that runs and verify properties are set correctly

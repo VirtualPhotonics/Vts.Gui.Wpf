@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Globalization;
+using NUnit.Framework;
+using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.ViewModel;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
@@ -38,10 +40,31 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             viewModel.ExecuteForwardSolverCommand.Execute(null);
             // ExecuteForwardSolver default settings
             PlotViewModel plotViewModel = windowViewModel.PlotVM;
-            Assert.AreEqual(plotViewModel.Labels[0], "\rModel - SDA\rμa=0.0100 \rμs'=1.0000");
-            Assert.AreEqual(plotViewModel.Title, "R(ρ) [mm-2] versus ρ [mm]");
+            double d1 = 0.01;
+            int i1 = 1;
+            double g = 0.8;
+            double n = 1.4;
+            double d2 = 0.0100;
+            double d3 = 1.0000;
+            var s1 = StringLookup.GetLocalizedString("Label_ForwardSolver") +
+                     StringLookup.GetLocalizedString("Label_MuA") + "=" +
+                     d1.ToString(CultureInfo.CurrentCulture) + " " +
+                     StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
+                     i1.ToString(CultureInfo.CurrentCulture) + " g=" +
+                     g.ToString(CultureInfo.CurrentCulture) + " n=" +
+                     n.ToString(CultureInfo.CurrentCulture) + "; " +
+                     StringLookup.GetLocalizedString("Label_Units") + " = 1/mm\r";
+            var s2 = StringLookup.GetLocalizedString("Label_ROfRho") + " [mm-2] " +
+                     StringLookup.GetLocalizedString("Label_Versus") + " ρ [mm]";
+            var s3 = "\r" + StringLookup.GetLocalizedString("Label_ModelSDA") + "\r" +
+                     StringLookup.GetLocalizedString("Label_MuA") + "=" +
+                     d2.ToString("N4", CultureInfo.CurrentCulture) + " \r" +
+                     StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
+                     d3.ToString("N4", CultureInfo.CurrentCulture);
+            Assert.AreEqual(plotViewModel.Labels[0], s3);
+            Assert.AreEqual(plotViewModel.Title, s2);
             TextOutputViewModel textOutputViewModel = windowViewModel.TextOutputVM;
-            Assert.AreEqual(textOutputViewModel.Text, "Forward Solver: μa=0.01 μs'=1 g=0.8 n=1.4; Units = 1/mm\r");
+            Assert.AreEqual(textOutputViewModel.Text, s1);
         }
     }
 }

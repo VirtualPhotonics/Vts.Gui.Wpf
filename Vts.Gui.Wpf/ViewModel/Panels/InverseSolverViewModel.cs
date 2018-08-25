@@ -352,7 +352,7 @@ namespace Vts.Gui.Wpf.ViewModel
             var plotLabels = GetLegendLabels(PlotDataType.Simulated);
             var plotData = measuredDataPoints.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
             WindowViewModel.Current.PlotVM.PlotValues.Execute(plotData);
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_SimulatedMeasuredData") + MeasuredOpticalPropertyVM + "\r");
+            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_SimulatedMeasuredData") + MeasuredOpticalPropertyVM + " \r");
         }
 
         private string[] GetLegendLabels(PlotDataType datatype)

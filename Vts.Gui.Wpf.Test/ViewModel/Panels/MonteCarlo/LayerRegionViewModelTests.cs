@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.ViewModel;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
@@ -16,7 +17,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         public void verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new LayerRegionViewModel();
-            Assert.AreEqual(viewModel.Name, " (Tissue)");
+            Assert.AreEqual(viewModel.Name, StringLookup.GetLocalizedString("Label_Tissue"));
             Assert.IsFalse(viewModel.IsEllipsoid);
             Assert.IsTrue(viewModel.IsLayer);
             Assert.IsTrue(viewModel.OpticalPropertyVM != null);

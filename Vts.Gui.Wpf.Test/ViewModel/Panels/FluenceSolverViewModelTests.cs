@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Globalization;
+using NUnit.Framework;
+using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.ViewModel;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
@@ -54,7 +56,19 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.AreEqual(plotViewModel.Labels.Count, 0);
             Assert.AreEqual(plotViewModel.Title, null);
             TextOutputViewModel textOutputViewModel = windowViewModel.TextOutputVM;
-            Assert.AreEqual(textOutputViewModel.Text, "Fluence Solver: μa=0.01 μs'=1 g=0.8 n=1.4; Units = 1/mm\r");
+            double d1 = 0.01;
+            int i1 = 1;
+            double g = 0.8;
+            double n = 1.4;
+            var s1 = StringLookup.GetLocalizedString("Label_FluenceSolver") +
+                     StringLookup.GetLocalizedString("Label_MuA") + "=" +
+                     d1.ToString(CultureInfo.CurrentCulture) + " " +
+                     StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
+                     i1.ToString(CultureInfo.CurrentCulture) + " g=" +
+                     g.ToString(CultureInfo.CurrentCulture) + " n=" +
+                     n.ToString(CultureInfo.CurrentCulture) + "; " +
+                     StringLookup.GetLocalizedString("Label_Units") + " = 1/mm\r";
+            Assert.AreEqual(textOutputViewModel.Text, s1);
         }
     }
 }

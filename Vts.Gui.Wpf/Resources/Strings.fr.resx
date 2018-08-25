@@ -157,7 +157,7 @@
     <value>Concentrations d'Absorbeur</value>
   </data>
   <data name="Label_ForwardSolver" xml:space="preserve">
-    <value>Fwd Solver:</value>
+    <value>Fwd Solver: </value>
   </data>
   <data name="Label_GaussianBeam" xml:space="preserve">
     <value>Gaussian Beam Diameter:</value>
@@ -406,7 +406,7 @@
     <value>Forward Simulation</value>
   </data>
   <data name="Label_InitialGuess" xml:space="preserve">
-    <value>Initial Guess:</value>
+    <value>Initial Guess: </value>
   </data>
   <data name="Label_NumberOfPhotons" xml:space="preserve">
     <value>Nombre de Photons:</value>
