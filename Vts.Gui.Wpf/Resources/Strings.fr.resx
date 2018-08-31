@@ -768,4 +768,22 @@
   <data name="Warning_NoPlotsDisplayedForTissue" xml:space="preserve">
     <value>Warning: No plots will be displayed for tissue specified in infile</value>
   </data>
+  <data name="Exception_CustomNotImplemented" xml:space="preserve">
+    <value> n'est pas implémenté pour cette fonctionnalité logicielle.</value>
+  </data>
+  <data name="Exception_DoubleOrInt" xml:space="preserve">
+    <value>La valeur doit être double ou int</value>
+  </data>
+  <data name="Exception_EnumOrString" xml:space="preserve">
+    <value> n'est pas une énumération ou string.</value>
+  </data>
+  <data name="Exception_IndependentAxis" xml:space="preserve">
+    <value>Axe indépendant </value>
+  </data>
+  <data name="Exception_MismatchedArrays" xml:space="preserve">
+    <value>Les longueurs des Arrays sont différentes.</value>
+  </data>
+  <data name="Exception_String" xml:space="preserve">
+    <value>La Valeur doit être string.</value>
+  </data>
 </root>

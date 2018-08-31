@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Vts.Gui.Wpf.Extensions;
 
 namespace Vts.Gui.Wpf.Model
 {
@@ -175,7 +176,7 @@ namespace Vts.Gui.Wpf.Model
             var isStringEnum = enumType.Equals(typeof(string));
             if (!enumType.IsEnum && !isStringEnum)
             {
-                throw new ArgumentException("Type '" + enumType.Name + "' is not an enum or a string.");
+                throw new ArgumentException(enumType.Name + StringLookup.GetLocalizedString("Exception_EnumOrString"));
             }
 
             var list = new List<OptionModel<TValue>>();

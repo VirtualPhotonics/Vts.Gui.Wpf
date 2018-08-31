@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Vts.Common.Math;
 using Vts.Extensions;
+using Vts.Gui.Wpf.Extensions;
 
 namespace Vts.Gui.Wpf.Model
 {
@@ -59,7 +60,7 @@ namespace Vts.Gui.Wpf.Model
         public static MapData Create(double[,] rawData, double[] x, double[] y, double[] dx, double[] dy)
         {
             if (rawData.GetLength(0) != x.Length || rawData.GetLength(1) != y.Length)
-                throw new ArgumentException("Array lengths do not match.");
+                throw new ArgumentException(StringLookup.GetLocalizedString("Exception_MismatchedArrays"));
 
             return new MapData(rawData.ToEnumerable<double>().ToArray(), x, y, dx, dy);
         }
@@ -67,7 +68,7 @@ namespace Vts.Gui.Wpf.Model
         public static MapData Create(double[] rawData, double[] x, double[] y, double[] dx, double[] dy)
         {
             if (rawData.Length != x.Length*y.Length)
-                throw new ArgumentException("Array lengths do not match.");
+                throw new ArgumentException(StringLookup.GetLocalizedString("Exception_MismatchedArrays"));
 
             return new MapData(rawData.ToArray(), x, y, dx, dy);
         }

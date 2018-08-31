@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
+using Vts.Gui.Wpf.Extensions;
 
 namespace Vts.Gui.Wpf.Converters
 {
@@ -33,7 +34,7 @@ namespace Vts.Gui.Wpf.Converters
         {
             double d1;
             if (!(value is double || value is int))
-                throw new ArgumentException("Value must be a double or int");
+                throw new ArgumentException(StringLookup.GetLocalizedString("Exception_DoubleOrInt"));
 
             if (value is int)
                 d1 = (int)value;
@@ -72,7 +73,7 @@ namespace Vts.Gui.Wpf.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (!(value is string))
-                throw new ArgumentException("Value must be a string");
+                throw new ArgumentException(StringLookup.GetLocalizedString("Exception_String"));
             double d;            
             if (double.TryParse((string) value, NumberStyles.AllowDecimalPoint, CultureInfo.CurrentCulture, out d))            
                 return d;

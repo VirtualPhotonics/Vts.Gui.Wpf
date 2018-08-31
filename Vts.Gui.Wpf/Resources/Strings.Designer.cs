@@ -286,6 +286,60 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  is not implemented for this software feature..
+        /// </summary>
+        public static string Exception_CustomNotImplemented {
+            get {
+                return ResourceManager.GetString("Exception_CustomNotImplemented", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value must be a double or int.
+        /// </summary>
+        public static string Exception_DoubleOrInt {
+            get {
+                return ResourceManager.GetString("Exception_DoubleOrInt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  is not an enum or a string..
+        /// </summary>
+        public static string Exception_EnumOrString {
+            get {
+                return ResourceManager.GetString("Exception_EnumOrString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Independent axis .
+        /// </summary>
+        public static string Exception_IndependentAxis {
+            get {
+                return ResourceManager.GetString("Exception_IndependentAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Array lengths do not match..
+        /// </summary>
+        public static string Exception_MismatchedArrays {
+            get {
+                return ResourceManager.GetString("Exception_MismatchedArrays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Value must be a string.
+        /// </summary>
+        public static string Exception_String {
+            get {
+                return ResourceManager.GetString("Exception_String", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Absorbed Energy SolutionDomain.
         /// </summary>
         public static string Heading_AbsorbedEnergySolutionDomain {

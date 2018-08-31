@@ -53,8 +53,8 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Wavelength:
                     return 2;
                 default:
-                    throw new NotImplementedException("Independent axis " + axis +
-                                                      " is not implemented for this software feature.");
+                    throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
+                                                      StringLookup.GetLocalizedString("Exception_CustomNotImplemented"));
             }
         }
 
@@ -71,8 +71,8 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Wavelength:
                     return false;
                 default:
-                    throw new NotImplementedException("Independent axis " + axis +
-                                                      " is not implemented for this software feature.");
+                    throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
+                                                      StringLookup.GetLocalizedString("Exception_CustomNotImplemented"));
             }
         }
 
@@ -89,8 +89,8 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Wavelength:
                     return false;
                 default:
-                    throw new NotImplementedException("Independent axis " + axis +
-                                                      " is not implemented for this software feature.");
+                    throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
+                                                      StringLookup.GetLocalizedString("Exception_CustomNotImplemented"));
             }
         }
 
@@ -107,8 +107,8 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Wavelength:
                     return false;
                 default:
-                    throw new NotImplementedException("Independent axis " + axis +
-                                                      " is not implemented for this software feature.");
+                    throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
+                                                      StringLookup.GetLocalizedString("Exception_CustomNotImplemented"));
             }
         }
 
@@ -125,8 +125,8 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Z:
                     return false;
                 default:
-                    throw new NotImplementedException("Independent axis " + axis +
-                                                      " is not implemented for this software feature.");
+                    throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
+                                                      StringLookup.GetLocalizedString("Exception_CustomNotImplemented"));
             }
         }
 

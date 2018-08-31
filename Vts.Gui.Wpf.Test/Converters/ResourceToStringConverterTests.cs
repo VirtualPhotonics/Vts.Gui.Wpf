@@ -21,8 +21,8 @@ namespace Vts.Gui.Wpf.Test.Converters
             Assert.That(rtsConverter.Convert(
                 null,  
                 typeof(String),
-                "Label_FwdSolver", // resource is passed as a parameter
-                System.Globalization.CultureInfo.CurrentCulture).Equals("Fwd Solver:"));
+                "Button_PlotMeasured", // resource is passed as a parameter
+                System.Globalization.CultureInfo.CurrentCulture).Equals(StringLookup.GetLocalizedString("Button_PlotMeasured")));
         }
         /// <summary>
         /// Verifies method ConvertBack returns correct value
@@ -36,7 +36,6 @@ namespace Vts.Gui.Wpf.Test.Converters
                 typeof(String),
                 null, // no parameters
                 System.Globalization.CultureInfo.CurrentCulture));
-            //Assert.That(exception.Message, Is.EqualTo("Specified method is not supported."));
             Assert.That(exception.Message, Is.EqualTo(new NotSupportedException().Message));
         }
 
