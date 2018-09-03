@@ -3,6 +3,7 @@ using System.Windows.Media.Animation;
 using NLog.LayoutRenderers.Wrappers;
 using NUnit.Framework;
 using Vts.Gui.Wpf.Converters;
+using Vts.Gui.Wpf.Extensions;
 
 namespace Vts.Gui.Wpf.Test.Converters
 {
@@ -41,7 +42,7 @@ namespace Vts.Gui.Wpf.Test.Converters
                 typeof(String),
                 null, // no parameters
                 System.Globalization.CultureInfo.CurrentCulture));
-            Assert.That(exception.Message, Is.EqualTo("Value must be a double or int"));
+            Assert.That(exception.Message, Is.EqualTo(StringLookup.GetLocalizedString("Exception_DoubleOrInt")));
         }
         /// <summary>
         /// Verifies method ConvertBack returns correct value
@@ -70,7 +71,7 @@ namespace Vts.Gui.Wpf.Test.Converters
                 typeof(String),
                 null, // no parameters
                 System.Globalization.CultureInfo.CurrentCulture));
-            Assert.That(exception.Message, Is.EqualTo("Value must be a string"));
+            Assert.That(exception.Message, Is.EqualTo(StringLookup.GetLocalizedString("Exception_String")));
         }
 
     }
