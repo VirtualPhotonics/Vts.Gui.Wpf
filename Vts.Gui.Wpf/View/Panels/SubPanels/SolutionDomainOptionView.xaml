@@ -50,17 +50,19 @@
                     <!-- TIME-DOMAIN -->
                     <TextBlock
                         Grid.Row="1" Grid.Column="0"
-                        Text="{Binding ConverterParameter=Label_TimeDomain, Converter={StaticResource MyResourceToStringConverter}}" 
+                        Text="{Binding ConverterParameter=Label_TimeDomain, Converter={StaticResource MyResourceToStringConverter}}"
                         Margin="3,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="1" Grid.Column="1"
                         DataContext="{Binding ROfRhoAndTimeOption}"
+                        IsEnabled="{Binding IsEnabled, Mode=OneWay}"
                         Tag="{Binding ID}" Content="{Binding DisplayName}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="OptionGroup" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="1" Grid.Column="2"
                         DataContext="{Binding ROfFxAndTimeOption}"
+                        IsEnabled="{Binding IsEnabled, Mode=OneWay}"
                         Tag="{Binding ID}" Content="{Binding DisplayName}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="OptionGroup" VerticalAlignment="Center" HorizontalAlignment="Left" />
@@ -72,12 +74,14 @@
                     <RadioButton
                         Grid.Row="2" Grid.Column="1"
                         DataContext="{Binding ROfRhoAndFtOption}"
+                        IsEnabled="{Binding IsEnabled, Mode=OneWay}"
                         Tag="{Binding ID}" Content="{Binding DisplayName}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="OptionGroup" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="2" Grid.Column="2"
                         DataContext="{Binding ROfFxAndFtOption}"
+                        IsEnabled="{Binding IsEnabled, Mode=OneWay}"
                         Tag="{Binding ID}" Content="{Binding DisplayName}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="OptionGroup" VerticalAlignment="Center" HorizontalAlignment="Left" />

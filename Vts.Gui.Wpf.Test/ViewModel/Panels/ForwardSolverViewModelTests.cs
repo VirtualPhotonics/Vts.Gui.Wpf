@@ -66,5 +66,39 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             TextOutputViewModel textOutputViewModel = windowViewModel.TextOutputVM;
             Assert.AreEqual(textOutputViewModel.Text, s1);
         }
+        /// <summary>
+        /// Verifies that ForwardSolverViewModel disallows spectral panel inputs for TwoLayerSDA selection
+        /// </summary>
+        [Test]
+        public void verify_TwoLayerSDA_selection_does_not_display_usespectralpanelinputs_checkbox()
+        {
+            // WindowViewModel needs to be instantiated for default constructor
+            var windowViewModel = new WindowViewModel();
+            var viewModel = windowViewModel.ForwardSolverVM;
+            // set forward solver to TwoLayerSDA
+            viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.TwoLayerSDA;
+            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.AllowMultiAxis == false);
+            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.UseSpectralInputs == false);
+            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.EnableMultiAxis == false);
+            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.EnableSpectralPanelInputs == false);
+        }
+        /// <summary>
+        /// Verifies that ForwardSolverViewModel disallows time-dependent solution domain options
+        /// for DistributedGaussianSourceSDA selection
+        /// </summary>
+        [Test]
+        public void verify_DistributedGaussianSourceSDA_selection_does_not_display_time_dependent_solution_domain_options()
+        {
+            // WindowViewModel needs to be instantiated for default constructor
+            var windowViewModel = new WindowViewModel();
+            var viewModel = windowViewModel.ForwardSolverVM;
+            // set forward solver to DistributedGaussianSourceSDA
+            viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.DistributedGaussianSourceSDA;
+
+            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndTimeEnabled == false);
+            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndFtEnabled == false);
+            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndTimeEnabled == false);
+            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndFtEnabled == false);
+        }
     }
 }

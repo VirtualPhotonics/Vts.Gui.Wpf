@@ -9,8 +9,13 @@ namespace Vts.Gui.Wpf.ViewModel
     /// </summary>
     public class SolutionDomainOptionViewModel : AbstractSolutionDomainOptionViewModel<SolutionDomainType>
     {
-        private bool _enableMultiAxis;
-        private bool _enableSpectralPanelInputs;
+        private bool _enableMultiAxis;      // local property saving inherited AllowMultiAxis state
+        private bool _enableSpectralPanelInputs; // local property saving inherited UseSpectralInputs state
+        private bool _isROfRhoAndTimeEnabled;
+        private bool _isROfRhoAndFtEnabled;
+        private bool _isROfFxAndTimeEnabled;
+        private bool _isROfFxAndFtEnabled;
+
 
         public SolutionDomainOptionViewModel(string groupName, SolutionDomainType defaultType)
             : base(groupName, defaultType)
@@ -78,7 +83,46 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("EnableSpectralPanelInputs");
             }
         }
-
+        public bool IsROfRhoAndTimeEnabled
+        {
+            get { return _isROfRhoAndTimeEnabled; }
+            set
+            {
+                _isROfRhoAndTimeEnabled = value;
+                ROfRhoAndTimeOption.IsEnabled = value;
+                OnPropertyChanged("ROfRhoAndTimeOption");
+            }
+        }
+        public bool IsROfRhoAndFtEnabled
+        {
+            get { return _isROfRhoAndFtEnabled; }
+            set
+            {
+                _isROfRhoAndFtEnabled = value;
+                ROfRhoAndFtOption.IsEnabled = value;
+                OnPropertyChanged("ROfRhoAndFtOption");
+            }
+        }
+        public bool IsROfFxAndTimeEnabled
+        {
+            get { return _isROfFxAndTimeEnabled; }
+            set
+            {
+                _isROfFxAndTimeEnabled = value;
+                ROfFxAndTimeOption.IsEnabled = value;
+                OnPropertyChanged("ROfFxAndTimeOption");
+            }
+        }
+        public bool IsROfFxAndFtEnabled
+        {
+            get { return _isROfFxAndFtEnabled; }
+            set
+            {
+                _isROfFxAndFtEnabled = value;
+                ROfFxAndFtOption.IsEnabled = value;
+                OnPropertyChanged("ROfFxAndFtOption");
+            }
+        }
         private void UpdateOptions()
         {
             switch (SelectedValue)

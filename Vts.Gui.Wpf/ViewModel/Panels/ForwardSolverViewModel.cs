@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Windows.Input;
@@ -39,7 +40,7 @@ namespace Vts.Gui.Wpf.ViewModel
         private SolutionDomainOptionViewModel _SolutionDomainTypeOptionVM;
 
         private object _tissueInputVM;
-            // either an OpticalPropertyViewModel or a MultiRegionTissueViewModel is stored here, and dynamically displayed
+        // either an OpticalPropertyViewModel or a MultiRegionTissueViewModel is stored here, and dynamically displayed
 
         private bool _useSpectralPanelData;
 
@@ -47,6 +48,7 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             _showOpticalProperties = true;
             _useSpectralPanelData = false;
+
 
             _allRangeVMs = new[] {new RangeViewModel {Title = StringLookup.GetLocalizedString("IndependentVariableAxis_Rho")}};
 
@@ -66,33 +68,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("IsMultiRegion");
                 OnPropertyChanged("IsSemiInfinite");
                 TissueInputVM = GetTissueInputVM(IsMultiRegion ? "MultiLayer" : "SemiInfinite");
-                if (SolutionDomainTypeOptionVM != null)
-                {
-                    if (ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.TwoLayerSDA)
-                    {
-                        SolutionDomainTypeOptionVM.AllowMultiAxis = false;
-                        SolutionDomainTypeOptionVM.UseSpectralInputs = false;
-                    }
-                    SolutionDomainTypeOptionVM.EnableMultiAxis = ForwardSolverTypeOptionVM.SelectedValue !=
-                                                                 ForwardSolverType.TwoLayerSDA;
-                    SolutionDomainTypeOptionVM.EnableSpectralPanelInputs = ForwardSolverTypeOptionVM.SelectedValue !=
-                                                                           ForwardSolverType.TwoLayerSDA;
-                }
-                if (ForwardAnalysisTypeOptionVM != null)
-                {
-                    if (ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.TwoLayerSDA)
-                    {
-                        ForwardAnalysisTypeOptionVM.Options[ForwardAnalysisType.R].IsSelected = true;
-                    }
-                    ForwardAnalysisTypeOptionVM.Options[ForwardAnalysisType.dRdMua].IsEnabled =
-                        ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
-                    ForwardAnalysisTypeOptionVM.Options[ForwardAnalysisType.dRdMusp].IsEnabled =
-                        ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
-                    ForwardAnalysisTypeOptionVM.Options[ForwardAnalysisType.dRdG].IsEnabled =
-                        ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
-                    ForwardAnalysisTypeOptionVM.Options[ForwardAnalysisType.dRdN].IsEnabled =
-                        ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
-                }
+                UpdateAvailableOptions();
             };
             ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.PointSourceSDA; // force the model choice here?
 
@@ -377,6 +353,70 @@ namespace Vts.Gui.Wpf.ViewModel
             return axesLabels;
         }
 
+        private void UpdateAvailableOptions()
+        {
+            if (SolutionDomainTypeOptionVM != null)
+            {
+                if (ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.TwoLayerSDA)
+                {
+                    // properties of AbstractSolutionDomainOptionViewModel: describe if shown
+                    SolutionDomainTypeOptionVM.AllowMultiAxis = false;
+                    SolutionDomainTypeOptionVM.UseSpectralInputs = false;
+                    // properties of this class: local state saved of properties above
+                    SolutionDomainTypeOptionVM.EnableMultiAxis = false;
+                    SolutionDomainTypeOptionVM.EnableSpectralPanelInputs = false;
+                }
+                else
+                {
+                    // if not TwoLayerSDA enable both
+                    SolutionDomainTypeOptionVM.EnableMultiAxis = true;
+                    SolutionDomainTypeOptionVM.EnableSpectralPanelInputs = true;
+                }
+                // grey out time dependent solution domain options for DistributedGaussianSource since code not implemented
+                if (ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.DistributedGaussianSourceSDA)
+                {
+                    SolutionDomainTypeOptionVM.IsROfRhoAndTimeEnabled = false;
+                    SolutionDomainTypeOptionVM.IsROfRhoAndFtEnabled = false;
+                    SolutionDomainTypeOptionVM.IsROfFxAndTimeEnabled = false;
+                    SolutionDomainTypeOptionVM.IsROfFxAndFtEnabled = false;
+                    if (SolutionDomainTypeOptionVM.SelectedValue == SolutionDomainType.ROfRhoAndTime ||
+                        SolutionDomainTypeOptionVM.SelectedValue == SolutionDomainType.ROfRhoAndFt ||
+                        SolutionDomainTypeOptionVM.SelectedValue == SolutionDomainType.ROfFxAndTime ||
+                        SolutionDomainTypeOptionVM.SelectedValue == SolutionDomainType.ROfFxAndFt )
+                    {
+                        SolutionDomainTypeOptionVM.SelectedValue = SolutionDomainType.ROfRho;
+                        OnPropertyChanged("SolutionDomainTypeOptionVM");
+                    }
+                }
+                else
+                {
+                    SolutionDomainTypeOptionVM.IsROfRhoAndTimeEnabled = true;
+                    SolutionDomainTypeOptionVM.IsROfRhoAndFtEnabled = true;
+                    SolutionDomainTypeOptionVM.IsROfFxAndTimeEnabled = true;
+                    SolutionDomainTypeOptionVM.IsROfFxAndFtEnabled = true;
+                }
+                //SolutionDomainTypeOptionVM.EnableMultiAxis =
+                //    ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
+                //SolutionDomainTypeOptionVM.EnableSpectralPanelInputs = 
+                //    ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
+            }
+
+            if (ForwardAnalysisTypeOptionVM != null)
+            {
+                if (ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.TwoLayerSDA)
+                {
+                    ForwardAnalysisTypeOptionVM.Options[ForwardAnalysisType.R].IsSelected = true;
+                }
+                ForwardAnalysisTypeOptionVM.Options[ForwardAnalysisType.dRdMua].IsEnabled =
+                    ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
+                ForwardAnalysisTypeOptionVM.Options[ForwardAnalysisType.dRdMusp].IsEnabled =
+                    ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
+                ForwardAnalysisTypeOptionVM.Options[ForwardAnalysisType.dRdG].IsEnabled =
+                    ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
+                ForwardAnalysisTypeOptionVM.Options[ForwardAnalysisType.dRdN].IsEnabled =
+                    ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
+            } 
+        }
         private object GetTissueInputVM(string tissueType)
         {
             // ops to use as the basis for instantiating multi-region tissues based on homogeneous values (for differential comparison)
