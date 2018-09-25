@@ -268,12 +268,6 @@
     <Compile Include="View\Panels\PlotView.xaml.cs">
       <DependentUpon>PlotView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Templates\MieScatteringView.xaml.cs">
-      <DependentUpon>MieScatteringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Templates\PowerLawScatteringView.xaml.cs">
-      <DependentUpon>PowerLawScatteringView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Templates\ScatteringTemplateSelector.cs" />
     <Compile Include="View\Controls\ComboBoxOptionView.xaml.cs">
       <DependentUpon>ComboBoxOptionView.xaml</DependentUpon>
@@ -355,14 +349,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Panels\PlotView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\Templates\MieScatteringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\Templates\PowerLawScatteringView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
