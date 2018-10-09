@@ -7,12 +7,12 @@
         <StackPanel Orientation="Vertical">
             <!-- Blood Concentration Labels -->
             <TextBlock
-                Text="{Binding BloodConcentrationLabel}"
+                Text="{Binding ConverterParameter=Label_BloodConcentration, Converter={StaticResource MyResourceToStringConverter}}"
                 FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" />
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding TotalHbLabel}" Margin="3,0,3,0" />
-                <TextBlock Text="{Binding BloodVolumeLabel}" Margin="3,0,3,0" />
-                <TextBlock Text="{Binding StO2Label}" Margin="3,0,3,0" />
+                <TextBlock Text="{Binding ConverterParameter=Label_TotalHb, Converter={StaticResource MyResourceToStringConverter}}" Margin="3,0,3,0" />
+                <TextBlock Text="{Binding ConverterParameter=Label_BloodVolume, Converter={StaticResource MyResourceToStringConverter}}" Margin="3,0,3,0" />
+                <TextBlock Text="{Binding ConverterParameter=Label_StO2, Converter={StaticResource MyResourceToStringConverter}}" Margin="3,0,3,0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <!-- Blood Concentration values -->

@@ -162,7 +162,7 @@
   <data name="Label_GaussianBeam" xml:space="preserve">
     <value>Gaussian Beam Diameter:</value>
   </data>
-  <data name="Label_InverseSolver" xml:space="preserve">
+  <data name="Label_InvSolver" xml:space="preserve">
     <value>Inv Solver: </value>
   </data>
   <data name="Label_PercentNoise" xml:space="preserve">
@@ -180,7 +180,7 @@
   <data name="Label_TissueTypes" xml:space="preserve">
     <value>Tissue Types</value>
   </data>
-  <data name="Label_zRange" xml:space="preserve">
+  <data name="Label_ZRange" xml:space="preserve">
     <value>z Range:</value>
   </data>
   <data name="Measurement_mm" xml:space="preserve">

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Windows.Input;
@@ -10,7 +9,6 @@ using Vts.Extensions;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
-using Vts.Gui.Wpf.Resources;
 using Vts.IO;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
@@ -235,27 +233,6 @@ namespace Vts.Gui.Wpf.ViewModel
                 OnPropertyChanged("SolutionDomainTypeOptionVM");
             }
         }
-
-        public string SolutionDomainLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_FwdSolver"); }
-        }
-
-        public string GaussianBeamLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_GaussianBeam"); }
-        }
-
-        public string GaussianBeamUnitsLabel
-        {
-            get { return StringLookup.GetLocalizedString("Measurement_mm"); }
-        }
-
-        public string SimulationButtonLabel
-        {
-            get { return StringLookup.GetLocalizedString("Button_PlotReflectance"); }
-        }
-
         public OptionViewModel<ForwardSolverType> ForwardSolverTypeOptionVM
         {
             get { return _ForwardSolverTypeOptionVM; }

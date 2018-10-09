@@ -68,66 +68,6 @@ namespace Vts.Gui.Wpf.ViewModel
         public WriteableBitmap ColorBar { get; private set; }
         public double YExpectationValue { get; private set; }
 
-        public string NegRhoMaxLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_NegRhoMax"); }
-        }
-
-        public string PosRhoMaxLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_PosRhoMax"); }
-        }
-
-        public string Z0Label
-        {
-            get { return StringLookup.GetLocalizedString("Label_Z0"); }
-        }
-
-        public string ZMaxLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_ZMax"); }
-        }
-
-        public string MeanDepthLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_MeanDepth"); }
-        }
-
-        public string MeasurementLabel
-        {
-            get { return StringLookup.GetLocalizedString("Measurement_mm"); }
-        }
-
-        public string PlotTypeLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_PlotType"); }
-        }
-
-        public string AutoScaleLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_AutoScale"); }
-        }
-
-        public string MinLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_Min"); }
-        }
-
-        public string MaxLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_Max"); }
-        }
-
-        public string ExportImageButtonLabel
-        {
-            get { return StringLookup.GetLocalizedString("Button_ExportImage"); }
-        }
-
-        public string ExportDataButtonLabel
-        {
-            get { return StringLookup.GetLocalizedString("Button_ExportData"); }
-        }
-
         // todo: ready for updating to automatic properties and IAutoNotifyProperty changed
         public double MinValue
         {

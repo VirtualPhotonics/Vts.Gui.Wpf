@@ -16,7 +16,7 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0" 
                        Grid.Row="0"
-                       Text="{Binding SolutionDomainLabel}"
+                       Text="{Binding ConverterParameter=Label_FwdSolver, Converter={StaticResource MyResourceToStringConverter}}"
                        FontWeight="Bold" 
                        Width="75" 
                        VerticalAlignment="Center" 
@@ -29,7 +29,7 @@
                                      Margin="3,3,0,0" />
             <TextBlock Grid.Column="0" 
                        Grid.Row="1"
-                       Text="{Binding InverseSolverLabel}"
+                       Text="{Binding ConverterParameter=Label_InvSolver, Converter={StaticResource MyResourceToStringConverter}}"
                        FontWeight="Bold" 
                        Width="75" 
                        VerticalAlignment="Center" 
@@ -113,25 +113,25 @@
                     VerticalAlignment="Center"
                     Margin="0,10,0,0">
             <StackPanel VerticalAlignment="Bottom">
-                <TextBlock Text="{Binding PercentNoiseLabel}" />
+                <TextBlock Text="{Binding ConverterParameter=Label_PercentNoise, Converter={StaticResource MyResourceToStringConverter}}" />
                 <TextBox Width="40" Text="{Binding  PercentNoise, Mode=TwoWay}" />
             </StackPanel>
             <!-- Buttons -->
             <Button
                 Command="{Binding SimulateMeasuredDataCommand}"
                 VerticalAlignment="Bottom"
-                Content="{Binding PlotMeasuredButtonLabel}"
+                Content="{Binding ConverterParameter=Button_PlotMeasured, Converter={StaticResource MyResourceToStringConverter}}"
                 Width="120" Height="25" Margin="2,0,2,0" />
             <Button
                 Command="{Binding CalculateInitialGuessCommand}"
                 VerticalAlignment="Bottom"
-                Content="{Binding PlotInitialGuessButtonLabel}"
+                Content="{Binding ConverterParameter=Button_PlotInitialGuess, Converter={StaticResource MyResourceToStringConverter}}"
                 Width="120" Height="25" Margin="2,0,2,0" />
             <Button
                 Command="{Binding SolveInverseCommand}"
                 VerticalAlignment="Bottom"
                 Width="120" Height="25" Margin="2,0,2,0"
-                Content="{Binding InverseSolverButtonLabel}" />
+                Content="{Binding ConverterParameter=Button_InverseSolver, Converter={StaticResource MyResourceToStringConverter}}" />
         </StackPanel>
     </StackPanel>
 </UserControl>

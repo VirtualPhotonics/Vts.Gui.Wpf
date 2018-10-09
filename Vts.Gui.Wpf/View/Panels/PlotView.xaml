@@ -20,7 +20,7 @@
         <CheckBox Grid.Row="1"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Center"
-                  Content="{Binding HideKeyLabel}"
+                  Content="{Binding ConverterParameter=Label_HideKey, Converter={StaticResource MyResourceToStringConverter}}"
                   IsChecked="{Binding HideKey, Mode=TwoWay}" Margin="0,0,20,0" />
         <!-- Options below the plot -->
         <Image Grid.Row="2" Source="/Vts.Gui.Wpf;Component/Resources/Images/logo-small.png" Height="50" Stretch="None" />
@@ -29,37 +29,37 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Top" Margin="2,0,10,0">
                     <!-- Hold on checkbox -->
-                    <CheckBox Content="{Binding HoldOnLabel}"
+                    <CheckBox Content="{Binding ConverterParameter=Label_HoldOn, Converter={StaticResource MyResourceToStringConverter}}"
                               IsChecked="{Binding HoldOn, Mode=TwoWay}"
                               Visibility="{Binding ShowInPlotView, Converter={StaticResource MyBooleanToVisibilityConverter}}"
                               Margin="0,5,0,0" />
                     <!-- Buttons to clear the plots -->
                     <Button Command="{Binding ClearPlotCommand}"
-                            Content="{Binding ClearAllButtonLabel}"
+                            Content="{Binding ConverterParameter=Button_ClearAll, Converter={StaticResource MyResourceToStringConverter}}"
                             Visibility="{Binding ShowInPlotView, Converter={StaticResource MyBooleanToVisibilityConverter}}"
                             Width="80" Height="20" Margin="0,5,0,0" />
                     <Button Command="{Binding ClearPlotSingleCommand}"
-                            Content="{Binding ClearNewestButtonLabel}"
+                            Content="{Binding ConverterParameter=Button_ClearNewest, Converter={StaticResource MyResourceToStringConverter}}"
                             Visibility="{Binding ShowInPlotView, Converter={StaticResource MyBooleanToVisibilityConverter}}"
                             Width="80" Height="20" Margin="0,5,0,0" />
                 </StackPanel>
                 <!--  -->
                 <StackPanel Orientation="Vertical" Margin="5,0,10,0">
                     <StackPanel Orientation="Horizontal" Margin="0">
-                        <TextBlock Text="{Binding XAxisSpacingLabel}" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding ConverterParameter=Label_XAxisSpacing, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
                         <view:RadioButtonOptionView DataContext="{Binding XAxisSpacingOptionVM}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0">
-                        <TextBlock Text="{Binding YAxisSpacingLabel}" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding ConverterParameter=Label_YAxisSpacing, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
                         <view:RadioButtonOptionView DataContext="{Binding YAxisSpacingOptionVM}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0"
                                 Visibility="{Binding ShowComplexPlotToggle, Converter={StaticResource MyBooleanToVisibilityConverter}}">
-                        <TextBlock Text="{Binding PlotToggleLabel}" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding ConverterParameter=Label_PlotToggle, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
                         <view:RadioButtonOptionView DataContext="{Binding PlotToggleTypeOptionVM}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0">
-                        <TextBlock Text="{Binding NormalizationLabel}" VerticalAlignment="Center" Margin="0,2" />
+                        <TextBlock Text="{Binding ConverterParameter=Label_Normalization, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,2" />
                         <view:RadioButtonOptionView DataContext="{Binding PlotNormalizationTypeOptionVM}" />
                     </StackPanel>
                 </StackPanel>
@@ -68,44 +68,48 @@
                     <!-- Plot Label -->
                     <StackPanel Orientation="Horizontal"
                                 Visibility="{Binding ShowInPlotView, Converter={StaticResource MyBooleanToVisibilityConverter}}">
-                        <TextBlock Text="{Binding PlotLabel}" VerticalAlignment="Center" Margin="0,0,4,0" />
+                        <TextBlock Text="{Binding ConverterParameter=Label_PlotLabel, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,4,0" />
                         <TextBox Width="100" Text="{Binding CustomPlotLabel, Mode=TwoWay}" KeyDown="TextBox_KeyDown" />
                     </StackPanel>
                     <!-- Buttons for exporting results -->
-                    <Button Content="{Binding ExportImageButtonLabel}"
+                    <Button Content="{Binding ConverterParameter=Button_ExportImage, Converter={StaticResource MyResourceToStringConverter}}"
                             Click="ExportImage_Click"
                             Margin="0,5,0,0" />
                     <Button
                         Command="{Binding ExportDataToTextCommand}"
-                        Content="{Binding ExportDataButtonLabel}"
+                        Content="{Binding ConverterParameter=Button_ExportData, Converter={StaticResource MyResourceToStringConverter}}"
                         Margin="0,5,0,0" />
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <CheckBox Content="{Binding AutoScaleXLabel}" IsChecked="{Binding AutoScaleX, Mode=TwoWay}" Margin="4"
+                <CheckBox Content="{Binding ConverterParameter=Label_AutoScaleX, Converter={StaticResource MyResourceToStringConverter}}" 
+                          IsChecked="{Binding AutoScaleX, Mode=TwoWay}" Margin="4"
                           VerticalAlignment="Center" />
                 <ContentControl IsEnabled="{Binding ManualScaleX}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding MinXLabel}" Margin="3" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding ConverterParameter=Label_MinX, Converter={StaticResource MyResourceToStringConverter}}" Margin="3" VerticalAlignment="Center" />
                         <TextBox
                             Text="{Binding MinXValue, Mode=TwoWay, StringFormat={StaticResource ScientificFormat}}"
                             VerticalAlignment="Center" Width="52" Margin="0,4" KeyDown="TextBox_KeyDown" />
-                        <TextBlock Text="{Binding MaxXLabel}" Margin="3" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding ConverterParameter=Local_MaxX, Converter={StaticResource MyResourceToStringConverter}}" Margin="3" VerticalAlignment="Center" />
                         <TextBox
                             Text="{Binding MaxXValue, Mode=TwoWay, StringFormat={StaticResource ScientificFormat}}"
                             VerticalAlignment="Center" Width="52" Margin="0,4" KeyDown="TextBox_KeyDown" />
                     </StackPanel>
                 </ContentControl>
 
-                <CheckBox Content="{Binding AutoScaleYLabel}" IsChecked="{Binding AutoScaleY, Mode=TwoWay}" Margin="4"
+                <CheckBox Content="{Binding ConverterParameter=Label_AutoScaleY, Converter={StaticResource MyResourceToStringConverter}}" 
+                          IsChecked="{Binding AutoScaleY, Mode=TwoWay}" Margin="4"
                           VerticalAlignment="Center" />
                 <ContentControl IsEnabled="{Binding ManualScaleY}" HorizontalContentAlignment="Right">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding MinYLabel}" Margin="3" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding ConverterParameter=Label_MinY, Converter={StaticResource MyResourceToStringConverter}}" 
+                                   Margin="3" VerticalAlignment="Center" />
                         <TextBox
                             Text="{Binding MinYValue, Mode=TwoWay, StringFormat={StaticResource ScientificFormat}}"
                             VerticalAlignment="Center" Width="52" Margin="0,4" KeyDown="TextBox_KeyDown" />
-                        <TextBlock Text="{Binding MaxYLabel}" Margin="3" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding ConverterParameter=Label_MaxY, Converter={StaticResource MyResourceToStringConverter}}" 
+                                   Margin="3" VerticalAlignment="Center" />
                         <TextBox
                             Text="{Binding MaxYValue, Mode=TwoWay, StringFormat={StaticResource ScientificFormat}}"
                             VerticalAlignment="Center" Width="52" Margin="0,4" KeyDown="TextBox_KeyDown" />

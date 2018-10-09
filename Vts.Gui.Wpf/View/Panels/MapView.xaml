@@ -24,12 +24,12 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding NegRhoMaxLabel}" HorizontalAlignment="Left" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding ConverterParameter=Label_NegRhoMax, Converter={StaticResource MyResourceToStringConverter}}" HorizontalAlignment="Left" />
             <TextBlock Grid.Row="0" Grid.Column="1" Text="0" HorizontalAlignment="Center" Margin="0,0,10,0" />
-            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding PosRhoMaxLabel}" HorizontalAlignment="Right" />
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding ConverterParameter=Label_PosRhoMax, Converter={StaticResource MyResourceToStringConverter}}" HorizontalAlignment="Right" />
         </Grid>
         <!-- Places the z values on the map view -->
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Z0Label}" VerticalAlignment="Top"
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ConverterParameter=Label_Z0, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Top"
                    HorizontalAlignment="Right" />
         <TextBlock x:Name="ZMax" Grid.Row="1" Grid.Column="0" Margin="0, 20,0,0" Text="{Binding ZMaxLabel}"
                    VerticalAlignment="Top" HorizontalAlignment="Right" />
@@ -38,17 +38,17 @@
                VerticalAlignment="Top" SizeChanged="MapImage_OnSizeChanged" Margin="0,0,10,0" />
         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-                <TextBlock Text="{Binding MeanDepthLabel}" Margin="0,0,5,0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding ConverterParameter=Label_MeanDepth, Converter={StaticResource MyResourceToStringConverter}}" Margin="0,0,5,0" VerticalAlignment="Center" />
                 <TextBox
                     Text="{Binding YExpectationValue, Mode=OneWay, Converter={StaticResource MyDoubleToStringConverter}, ConverterParameter=g3}"
                     VerticalAlignment="Center" MinWidth="30" KeyDown="TextBox_KeyDown" />
-                <TextBlock Text="{Binding MeasurementLabel}" Margin="5,0,0,0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding ConverterParameter=Label_Measurement, Converter={StaticResource MyResourceToStringConverter}}" Margin="5,0,0,0" VerticalAlignment="Center" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
-                <TextBlock Text="{Binding PlotTypeLabel}" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <TextBlock Text="{Binding ConverterParameter=Label_PlotType, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,4,0" />
                 <view:RadioButtonOptionView DataContext="{Binding ScalingTypeOptionVM}" />
             </StackPanel>
-            <CheckBox Content="{Binding AutoScaleLabel}" IsChecked="{Binding AutoScale, Mode=TwoWay}" Margin="5,0,0,0"
+            <CheckBox Content="{Binding ConverterParameter=Label_AutoScale, Converter={StaticResource MyResourceToStringConverter}}" IsChecked="{Binding AutoScale, Mode=TwoWay}" Margin="5,0,0,0"
                       VerticalAlignment="Center" />
         </StackPanel>
         <!--  -->
@@ -65,12 +65,12 @@
             </Grid.RowDefinitions>
             <!-- Min and max values for the color map -->
             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,5" HorizontalAlignment="Left">
-                <TextBlock Text="{Binding MinLabel}" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <TextBlock Text="{Binding ConverterParameter=Label_Min, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,4,0" />
                 <TextBox Text="{Binding MinValue, Mode=TwoWay, StringFormat={StaticResource ScientificFormat}}"
                          VerticalAlignment="Center" IsEnabled="{Binding ManualScale}" KeyDown="TextBox_KeyDown" />
             </StackPanel>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,5" HorizontalAlignment="Right">
-                <TextBlock Text="{Binding MaxLabel}" VerticalAlignment="Center" Margin="0,0,4,0" />
+                <TextBlock Text="{Binding ConverterParameter=Label_Max, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,4,0" />
                 <TextBox Text="{Binding MaxValue, Mode=TwoWay, StringFormat={StaticResource ScientificFormat}}"
                          VerticalAlignment="Center" IsEnabled="{Binding ManualScale}" KeyDown="TextBox_KeyDown" />
             </StackPanel>
@@ -83,10 +83,10 @@
                 <!-- Color map dropdown -->
                 <view:ComboBoxOptionView DataContext="{Binding ColormapTypeOptionVM}" Margin="3,0,0,0" />
                 <!-- Export buttons -->
-                <Button Content="{Binding ExportImageButtonLabel}" Click="Button_Click" Margin="5,0,5,0" />
+                <Button Content="{Binding ConverterParameter=Button_ExportImage, Converter={StaticResource MyResourceToStringConverter}}" Click="Button_Click" Margin="5,0,5,0" />
 
                 <Button Command="{Binding ExportDataToTextCommand}"
-                        Content="{Binding ExportDataButtonLabel}" Margin="5,0,5,0" />
+                        Content="{Binding ConverterParameter=Button_ExportData, Converter={StaticResource MyResourceToStringConverter}}" Margin="5,0,5,0" />
             </StackPanel>
         </Grid>
     </Grid>

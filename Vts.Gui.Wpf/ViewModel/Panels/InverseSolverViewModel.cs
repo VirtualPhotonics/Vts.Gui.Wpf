@@ -176,36 +176,6 @@ namespace Vts.Gui.Wpf.ViewModel
         public RelayCommand CalculateInitialGuessCommand { get; set; }
         public RelayCommand SolveInverseCommand { get; set; }
 
-        public string SolutionDomainLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_FwdSolver"); }
-        }
-
-        public string InverseSolverLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_InverseSolver"); }
-        }
-
-        public string PercentNoiseLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_PercentNoise"); }
-        }
-
-        public string PlotMeasuredButtonLabel
-        {
-            get { return StringLookup.GetLocalizedString("Button_PlotMeasured"); }
-        }
-
-        public string PlotInitialGuessButtonLabel
-        {
-            get { return StringLookup.GetLocalizedString("Button_PlotInitialGuess"); }
-        }
-
-        public string InverseSolverButtonLabel
-        {
-            get { return StringLookup.GetLocalizedString("Button_InverseSolver"); }
-        }
-
         public SolutionDomainOptionViewModel SolutionDomainTypeOptionVM
         {
             get { return _SolutionDomainTypeOptionVM; }

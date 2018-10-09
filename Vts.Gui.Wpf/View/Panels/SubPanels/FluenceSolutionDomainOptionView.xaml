@@ -84,13 +84,13 @@
             Visibility="{Binding ShowIndependentAxisChoice, Converter={StaticResource MyBooleanToVisibilityConverter}}"
             Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"
             LayoutUpdated="StackPanel_LayoutUpdated" Margin="3,1,0,0">
-            <TextBlock Text="{Binding IndependentAxisLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" />
+            <TextBlock Text="{Binding ConverterParameter=Label_IndependentAxis}" VerticalAlignment="Center" HorizontalAlignment="Left" />
             <!-- Radio button options -->
             <view:RadioButtonOptionView DataContext="{Binding IndependentVariableAxisOptionVM}"
                                         VerticalContentAlignment="Center"
                                         VerticalAlignment="Center" HorizontalAlignment="Left" />
-            <TextBlock Text="{Binding AtLabel}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3,0,0,0" />
-            <TextBlock Text="{Binding ConstantAxisLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"
+            <TextBlock Text="{Binding ConverterParameter=Label_At, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3,0,0,0" />
+            <TextBlock Text="{Binding ConverterParameter=Label_ConstantAxis, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" HorizontalAlignment="Left"
                        Margin="3,0,0,0" />
             <TextBlock Text="=" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="1,0,1,0" />
             <TextBox Width="40" Text="{Binding ConstantAxisValue, Mode=TwoWay}" VerticalAlignment="Center"

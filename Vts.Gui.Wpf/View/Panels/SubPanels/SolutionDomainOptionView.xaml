@@ -95,7 +95,7 @@
             Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left"
             LayoutUpdated="StackPanel_LayoutUpdated" Margin="0,1,0,0">
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                <TextBlock Text="{Binding IndependentAxisLabel}"
+                <TextBlock Text="{Binding ConverterParameter=Label_IndependentAxis, Converter={StaticResource MyResourceToStringConverter}}"
                            VerticalAlignment="Center" HorizontalAlignment="Left"
                            FontWeight="Bold" />
                 <CheckBox IsChecked="{Binding AllowMultiAxis, Mode=TwoWay}"
@@ -120,9 +120,9 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding AtLabel}" VerticalAlignment="Center"
+                                <TextBlock Text="{Binding ConverterParameter=Label_At, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center"
                                            HorizontalAlignment="Left" Margin="3,0,0,0" />
-                                <TextBlock Text="{Binding AxisLabel}" VerticalAlignment="Center"
+                                <TextBlock Text="{Binding ConverterParameter=Label_Axis, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center"
                                            HorizontalAlignment="Left" Margin="5,0,0,0" />
                                 <TextBlock Text="=" VerticalAlignment="Center" HorizontalAlignment="Left"
                                            Margin="1,0,1,0" />

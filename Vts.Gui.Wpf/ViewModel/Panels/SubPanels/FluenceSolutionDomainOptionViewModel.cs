@@ -46,16 +46,6 @@ namespace Vts.Gui.Wpf.ViewModel
         public OptionModel<FluenceSolutionDomainType> FluenceOfRhoAndZAndFtOption { get; private set; }
         public OptionModel<FluenceSolutionDomainType> FluenceOfFxAndZAndFtOption { get; private set; }
 
-        public string IndependentAxisLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_IndependentAxis"); }
-        }
-
-        public string AtLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_At"); }
-        }
-
         public bool IsFluenceOfRhoAndZAndTimeEnabled
         {
             get { return _isFluenceOfRhoAndZAndTimeEnabled; }

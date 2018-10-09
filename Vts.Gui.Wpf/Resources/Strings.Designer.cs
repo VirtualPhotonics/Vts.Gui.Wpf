@@ -891,9 +891,9 @@ namespace Vts.Gui.Wpf.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Inv Solver: .
         /// </summary>
-        public static string Label_InverseSolver {
+        public static string Label_InvSolver {
             get {
-                return ResourceManager.GetString("Label_InverseSolver", resourceCulture);
+                return ResourceManager.GetString("Label_InvSolver", resourceCulture);
             }
         }
         
@@ -1683,9 +1683,9 @@ namespace Vts.Gui.Wpf.Resources {
         /// <summary>
         ///   Looks up a localized string similar to z Range:.
         /// </summary>
-        public static string Label_zRange {
+        public static string Label_ZRange {
             get {
-                return ResourceManager.GetString("Label_zRange", resourceCulture);
+                return ResourceManager.GetString("Label_ZRange", resourceCulture);
             }
         }
         

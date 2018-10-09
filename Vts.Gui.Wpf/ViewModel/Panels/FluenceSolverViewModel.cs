@@ -302,56 +302,6 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public string SolutionDomainLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_FwdSolver"); }
-        }
-
-        public string GaussianBeamLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_GaussianBeam"); }
-        }
-
-        public string GaussianBeamUnitsLabel
-        {
-            get { return StringLookup.GetLocalizedString("Measurement_mm"); }
-        }
-
-        public string SourceDetectorLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_SourceDetector"); }
-        }
-
-        public string SourceDetectorUnitsLabel
-        {
-            get { return StringLookup.GetLocalizedString("Measurement_mm"); }
-        }
-
-        public string ModulationFrequencyLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_ModulationFrequency"); }
-        }
-
-        public string ModulationFrequencyUnitsLabel
-        {
-            get { return StringLookup.GetLocalizedString("Measurement_GHz"); }
-        }
-
-        public string RhoRangeLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_RhoRange"); }
-        }
-
-        public string ZRangeLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_zRange"); }
-        }
-
-        public string GenerateFluenceButtonLabel
-        {
-            get { return StringLookup.GetLocalizedString("Button_GenerateFluence"); }
-        }
-
         private OpticalPropertyViewModel OpticalPropertyVM
         {
             get { return _tissueInputVM as OpticalPropertyViewModel; }

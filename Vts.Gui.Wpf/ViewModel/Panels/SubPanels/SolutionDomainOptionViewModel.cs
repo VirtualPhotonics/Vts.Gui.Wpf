@@ -52,16 +52,6 @@ namespace Vts.Gui.Wpf.ViewModel
         public OptionModel<SolutionDomainType> ROfRhoAndFtOption { get; private set; }
         public OptionModel<SolutionDomainType> ROfFxAndFtOption { get; private set; }
 
-        public string IndependentAxisLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_IndependentAxis"); }
-        }
-
-        public string AtLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_At"); }
-        }
-
         public bool EnableMultiAxis
         {
             get { return _enableMultiAxis; }

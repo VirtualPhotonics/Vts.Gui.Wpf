@@ -7,7 +7,7 @@
     <StackPanel Orientation="Vertical" VerticalAlignment="Top" Width="480">
         <!-- Solver Engine -->
         <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding SolutionDomainLabel}" FontWeight="Bold" Width="75" />
+            <TextBlock Text="{Binding ConverterParameter=Label_FwdSolver, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" Width="75" />
             <view:ComboBoxOptionView DataContext="{Binding ForwardSolverTypeOptionVM}" HorizontalAlignment="Left"
                                      VerticalAlignment="Top" />
         </StackPanel>
@@ -15,7 +15,7 @@
         <StackPanel Orientation="Horizontal" 
                     Visibility="{Binding IsGaussianForwardModel, Converter={StaticResource MyBooleanToVisibilityConverter}}"
                     Margin="0,10,0,0">
-            <TextBlock Text="{Binding GaussianBeamLabel}" 
+            <TextBlock Text="{Binding ConverterParameter=Label_GaussianBeam, Converter={StaticResource MyResourceToStringConverter}}" 
                        Margin="10,0,4,0" 
                        FontWeight="DemiBold"
                        VerticalAlignment="Center" />
@@ -23,7 +23,7 @@
                      Text="{Binding ForwardSolver.BeamDiameter, Mode=TwoWay}"
                      VerticalAlignment="Center" 
                      KeyDown="TextBox_KeyDown" />
-            <TextBlock Text="{Binding GaussianBeamUnitsLabel}" 
+            <TextBlock Text="{Binding ConverterParameter=Label_GaussianBeamUnits, Converter={StaticResource MyResourceToStringConverter}}" 
                        Margin="2,0,0,0" 
                        VerticalAlignment="Center" />
         </StackPanel>
@@ -63,7 +63,7 @@
         <StackPanel Orientation="Horizontal"
                     Visibility="{Binding IsPhotonHittingDensity, Converter={StaticResource MyBooleanToVisibilityConverter}}"
                     Margin="0,10,0,0">
-            <TextBlock Text="{Binding SourceDetectorLabel}" 
+            <TextBlock Text="{Binding ConverterParameter=Label_SourceDetector, Converter={StaticResource MyResourceToStringConverter}}" 
                        Margin="3" 
                        FontWeight="DemiBold"
                        VerticalAlignment="Center" />
@@ -72,7 +72,7 @@
                      Text="{Binding SourceDetectorSeparation, Mode=TwoWay}"
                      VerticalAlignment="Center" 
                      KeyDown="TextBox_KeyDown" />
-            <TextBlock Text="{Binding SourceDetectorUnitsLabel}" 
+            <TextBlock Text="{Binding ConverterParameter=Label_SourceDetectorUnits, Converter={StaticResource MyResourceToStringConverter}}" 
                        Margin="3" 
                        VerticalAlignment="Center" />
         </StackPanel>
@@ -80,7 +80,7 @@
         <StackPanel Orientation="Horizontal"
                     Visibility="{Binding IsTimeFrequencyDomain, Converter={StaticResource MyBooleanToVisibilityConverter}}"
                     Margin="0,10,0,0">
-            <TextBlock Text="{Binding ModulationFrequencyLabel}" 
+            <TextBlock Text="{Binding ConverterParameter=Label_ModulationFrequency, Converter={StaticResource MyResourceToStringConverter}}" 
                        Margin="3" 
                        FontWeight="DemiBold"
                        VerticalAlignment="Center" />
@@ -89,14 +89,14 @@
                      Text="{Binding TimeModulationFrequency, Mode=TwoWay}"
                      VerticalAlignment="Center" 
                      KeyDown="TextBox_KeyDown" />
-            <TextBlock Text="{Binding ModulationFrequencyUnitsLabel}" 
+            <TextBlock Text="{Binding ConverterParameter=Label_ModulationFrequencyUnits, Converter={StaticResource MyResourceToStringConverter}}" 
                        Margin="3" 
                        VerticalAlignment="Center" />
         </StackPanel>
         <!-- Rho Range -->
         <StackPanel Orientation="Horizontal" 
                     Margin="0,15,0,0">
-            <TextBlock Text="{Binding RhoRangeLabel}" 
+            <TextBlock Text="{Binding ConverterParameter=Label_RhoRange, Converter={StaticResource MyResourceToStringConverter}}" 
                        Margin="3,7,0,0" 
                        FontWeight="DemiBold"
                        VerticalAlignment="Center" />
@@ -107,7 +107,7 @@
         <!-- z Range -->
         <StackPanel Orientation="Horizontal" 
                     Margin="0,15,0,0">
-            <TextBlock Text="{Binding ZRangeLabel}" 
+            <TextBlock Text="{Binding ConverterParameter=Label_ZRange, Converter={StaticResource MyResourceToStringConverter}}" 
                        Margin="3,7,0,0" 
                        FontWeight="DemiBold"
                        VerticalAlignment="Center" />
@@ -140,7 +140,7 @@
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Right"
                 Command="{Binding ExecuteFluenceSolverCommand}"
-                Content="{Binding GenerateFluenceButtonLabel}"
+                Content="{Binding ConverterParameter=Button_GenerateFluence, Converter={StaticResource MyResourceToStringConverter}}"
                 Height="25" Padding="5,0,5,0" Margin="5" />
         </StackPanel>
     </StackPanel>

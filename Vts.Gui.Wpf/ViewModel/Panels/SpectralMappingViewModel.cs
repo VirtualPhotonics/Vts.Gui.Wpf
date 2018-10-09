@@ -109,61 +109,6 @@ namespace Vts.Gui.Wpf.ViewModel
         public RelayCommand PlotMuaSpectrumCommand { get; set; }
         public RelayCommand PlotMuspSpectrumCommand { get; set; }
 
-        public string TissueTypesLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_TissueTypes"); }
-        }
-
-        public string AbsorberConcentrationsLabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_AbsorberConcentrations"); }
-        }
-
-        public string VolumeFractionLabel
-        {
-            get { return StringLookup.GetLocalizedString("Value_VolumeFraction"); }
-        }
-
-        public string ParticleRadiusLabel
-        {
-            get { return StringLookup.GetLocalizedString("Value_ParticleRadius"); }
-        }
-
-        public string ParticleNLabel
-        {
-            get { return StringLookup.GetLocalizedString("Value_ParticleN"); }
-        }
-
-        public string MediumNLabel
-        {
-            get { return StringLookup.GetLocalizedString("Value_MediumN"); }
-        }
-
-        public string ValueALabel
-        {
-            get { return StringLookup.GetLocalizedString("Value_A"); }
-        }
-
-        public string ValueBLabel
-        {
-            get { return StringLookup.GetLocalizedString("Value_b"); }
-        }
-
-        public string PowerLawDefinitionALabel
-        {
-            get { return StringLookup.GetLocalizedString("Label_PowerLawDefinitionA"); }
-        }
-
-        public string PlotMuaButtonLabel
-        {
-            get { return StringLookup.GetLocalizedString("Button_PlotMua"); }
-        }
-
-        public string PlotMusPrimeButtonLabel
-        {
-            get { return StringLookup.GetLocalizedString("Button_PlotMusPrime"); }
-        }
-
         /// <summary>
         ///     Simple pass-through for SelectedTissue.Scatterer
         ///     to allow simpler data binding in Views
