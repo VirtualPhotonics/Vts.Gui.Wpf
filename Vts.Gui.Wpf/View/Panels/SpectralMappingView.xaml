@@ -95,17 +95,21 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
                                     <TextBlock Text="{Binding ConverterParameter=Value_ParticleRadius, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
-                                    <TextBox Text="{Binding Scatterer.ParticleRadius, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="40"
-                                             Margin="0,0,5,0" KeyDown="TextBox_KeyDown" />
+                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="1,0,1,0" />
+                                    <TextBox Text="{Binding Scatterer.ParticleRadius, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" 
+                                             Width="30" Margin="0,0,3,0" KeyDown="TextBox_KeyDown" />
                                     <TextBlock Text="{Binding ConverterParameter=Value_ParticleN, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
+                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="1,0,1,0" />
                                     <TextBox Text="{Binding Scatterer.ParticleRefractiveIndexMismatch, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}"
-                                             Width="40" Margin="0,0,5,0" KeyDown="TextBox_KeyDown" />
+                                             Width="30" Margin="0,0,3,0" KeyDown="TextBox_KeyDown" />
                                     <TextBlock Text="{Binding ConverterParameter=Value_MediumN, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
+                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="1,0,1,0" />
                                     <TextBox Text="{Binding Scatterer.MediumRefractiveIndexMismatch, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}"
-                                             Width="40" KeyDown="TextBox_KeyDown" />
+                                             Width="30" Margin="0,0,3,0" KeyDown="TextBox_KeyDown" />
+                                    <TextBlock Text="{Binding ConverterParameter=Value_VolumeFraction, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
+                                    <TextBlock Text= "=" VerticalAlignment="Center" Margin="1,0,1,0" />
+                                    <TextBox Text="{Binding Scatterer.VolumeFraction, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" 
+                                             Width="30" KeyDown="TextBox_KeyDown" />
                                 </StackPanel>
                             </DataTemplate>
                         </view:ScatteringTemplateSelector.MieScatteringTemplate>
