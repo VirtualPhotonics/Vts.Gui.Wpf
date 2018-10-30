@@ -42,7 +42,8 @@ namespace Vts.Gui.Wpf.ViewModel.Application
                 return new[]
                 {
                     ScatteringType.PowerLaw,
-                    ScatteringType.Intralipid
+                    ScatteringType.Intralipid,
+                    ScatteringType.Mie
                 };
             }
         }
