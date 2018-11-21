@@ -2,7 +2,11 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using GalaSoft.MvvmLight.Command;
 using Vts.Common;
 using Vts.Factories;
@@ -59,11 +63,15 @@ namespace Vts.Gui.Wpf.ViewModel
             // either an OpticalPropertyViewModel or a MultiRegionTissueViewModel is stored here, and dynamically displayed
 
         private RangeViewModel _ZRangeVM;
+        private CancellationTokenSource _currentCancellationTokenSource;
+        private bool _canRunSolver;
+        private bool _canCancelSolver;
+        private MapData mapData;
 
         public FluenceSolverViewModel()
         {
-            RhoRangeVM = new RangeViewModel(new DoubleRange(0.1, 19.9, 300), StringLookup.GetLocalizedString("Measurement_mm"), IndependentVariableAxis.Rho, "");
-            ZRangeVM = new RangeViewModel(new DoubleRange(0.1, 19.9, 300), StringLookup.GetLocalizedString("Measurement_mm"), IndependentVariableAxis.Z, "");
+            RhoRangeVM = new RangeViewModel(new DoubleRange(0.1, 19.9, 100), StringLookup.GetLocalizedString("Measurement_mm"), IndependentVariableAxis.Rho, "");
+            ZRangeVM = new RangeViewModel(new DoubleRange(0.1, 19.9, 100), StringLookup.GetLocalizedString("Measurement_mm"), IndependentVariableAxis.Z, "");
             SourceDetectorSeparation = 10.0;
             TimeModulationFrequency = 0.1;
             _tissueInputVM = new OpticalPropertyViewModel(new OpticalProperties(),
@@ -143,10 +151,33 @@ namespace Vts.Gui.Wpf.ViewModel
             };
 
             ExecuteFluenceSolverCommand = new RelayCommand(() => ExecuteFluenceSolver_Executed(null, null));
+            CancelFluenceSolverCommand = new RelayCommand(() => CancelFluenceSolver_Executed(null, null));
+            _canRunSolver = true;
+            _canCancelSolver = false;
         }
 
         public RelayCommand ExecuteFluenceSolverCommand { get; set; }
+        public RelayCommand CancelFluenceSolverCommand { get; set; }
 
+        public bool CanRunSolver
+        {
+            get { return _canRunSolver; }
+            set
+            {
+                _canRunSolver = value;
+                OnPropertyChanged("CanRunSolver");
+            }
+        }
+
+        public bool CanCancelSolver
+        {
+            get { return _canCancelSolver; }
+            set
+            {
+                _canCancelSolver = value;
+                OnPropertyChanged("CanCancelSolver");
+            }
+        }
         public IForwardSolver ForwardSolver
         {
             get
@@ -312,13 +343,57 @@ namespace Vts.Gui.Wpf.ViewModel
             get { return _tissueInputVM as MultiRegionTissueViewModel; }
         }
 
-        private void ExecuteFluenceSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void ExecuteFluenceSolver_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var mapData = ExecuteForwardSolver();
+            //clear the map in case there is no new mapview
+            WindowViewModel.Current.MapVM.ClearMap.Execute(null);
 
-            WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
+            _currentCancellationTokenSource = new CancellationTokenSource();
+            CanRunSolver = false;
+            CanCancelSolver = true;
+            try
+            {
+                MainWindow.Current.Wait.Visibility = Visibility.Visible;
+                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Begin();
 
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_FluenceSolver") + OpticalPropertyVM + "\r");
+                mapData = await Task.Run(() => ExecuteForwardSolver(_currentCancellationTokenSource.Token));
+                //var mapData = ExecuteForwardSolver();
+                if (mapData != null)
+                {
+                    WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
+
+                    WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
+                        StringLookup.GetLocalizedString("Label_FluenceSolver") + OpticalPropertyVM + "\r");
+                }
+
+            }
+
+            catch (OperationCanceledException)
+            {
+                ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+            }
+            finally
+            {
+                ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+            }
+
+            CanRunSolver = true;
+            CanCancelSolver = false;
+        }
+
+        private async void CancelFluenceSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            CanCancelSolver = false;
+            CanRunSolver = true;
+            if (_currentCancellationTokenSource != null)
+            {
+                _currentCancellationTokenSource.Cancel();
+            }
+            mapData = null;
+            ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+            MainWindow.Current.Wait.Visibility = Visibility.Hidden;
         }
 
         private PlotAxesLabels GetPlotLabels()
@@ -337,12 +412,10 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             if (IsFluence)
             {
-                if (ForwardSolverTypeOptionVM.SelectedValue ==
-                    ForwardSolverType.DistributedGaussianSourceSDA || ForwardSolverTypeOptionVM.SelectedValue ==
-                    ForwardSolverType.TwoLayerSDA)
+                if (ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.DistributedGaussianSourceSDA)
                 {
                     FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
-                    FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = false;
+                    FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
                     if (FluenceSolutionDomainTypeOptionVM.SelectedValue ==
                         FluenceSolutionDomainType.FluenceOfRhoAndZAndTime ||
                         FluenceSolutionDomainTypeOptionVM.SelectedValue ==
@@ -484,9 +557,11 @@ namespace Vts.Gui.Wpf.ViewModel
             return modelString + opString;
         }
 
-        public MapData ExecuteForwardSolver()
+        private MapData ExecuteForwardSolver(CancellationToken cancellationToken)
             // todo: simplify method calls to ComputationFactory, as with Forward/InverseSolver(s)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var opticalProperties = GetOpticalProperties();
                 // could be OpticalProperties[] or IOpticalPropertyRegion[][]
 

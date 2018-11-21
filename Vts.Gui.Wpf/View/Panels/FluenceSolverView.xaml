@@ -138,10 +138,15 @@
             <!-- Button -->
             <Button
                 VerticalAlignment="Bottom"
-                HorizontalAlignment="Right"
                 Command="{Binding ExecuteFluenceSolverCommand}"
+                IsEnabled="{Binding CanRunSolver, Mode=TwoWay}"
                 Content="{Binding ConverterParameter=Button_GenerateFluence, Converter={StaticResource MyResourceToStringConverter}}"
                 Height="25" Padding="5,0,5,0" Margin="5" />
+            <Button VerticalAlignment="Bottom" 
+                    Command="{Binding CancelFluenceSolverCommand}"
+                    IsEnabled="{Binding CanCancelSolver, Mode=TwoWay}"
+                    Content="{Binding ConverterParameter=Button_Cancel, Converter={StaticResource MyResourceToStringConverter}}"
+                    Width="120" Height="25"  Margin="5" />
         </StackPanel>
     </StackPanel>
 </UserControl>
