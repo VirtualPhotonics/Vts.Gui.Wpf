@@ -372,21 +372,22 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("Operation Cancelled\r");
             }
             finally
             {
                 ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                CanRunSolver = true;
             }
 
             CanRunSolver = true;
             CanCancelSolver = false;
         }
 
-        private async void CancelFluenceSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CancelFluenceSolver_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             CanCancelSolver = false;
-            CanRunSolver = true;
             if (_currentCancellationTokenSource != null)
             {
                 _currentCancellationTokenSource.Cancel();
@@ -394,6 +395,8 @@ namespace Vts.Gui.Wpf.ViewModel
             mapData = null;
             ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
             MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("Canceling... \r");
+
         }
 
         private PlotAxesLabels GetPlotLabels()
@@ -747,7 +750,7 @@ namespace Vts.Gui.Wpf.ViewModel
                         throw new ArgumentOutOfRangeException("MapTypeOptionVM.SelectedValue");
                 }
             }
-
+            cancellationToken.ThrowIfCancellationRequested();
             // flip the array (since it goes over zs and then rhos, while map wants rhos and then zs
             var destinationArray = new double[results.Length];
             long index = 0;
