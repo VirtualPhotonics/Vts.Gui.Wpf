@@ -361,9 +361,18 @@ namespace Vts.Gui.Wpf.ViewModel
                 if (mapData != null)
                 {
                     WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
-
+                    var opString = OpticalPropertyVM + "\r";
+                    if (IsMultiRegion)
+                    {
+                        if (ForwardSolver is TwoLayerSDAForwardSolver)
+                        {
+                            ITissueRegion[] regions = ((MultiRegionTissueViewModel)TissueInputVM).GetTissueInput().Regions;
+                            opString = "\rLayer 0: μa=" + regions[0].RegionOP.Mua + " μs'=" + regions[0].RegionOP.Musp + " n=" + regions[0].RegionOP.N + "\r" +
+                                       "Layer 1: μa=" + regions[1].RegionOP.Mua + " μs'=" + regions[1].RegionOP.Musp + " n=" + regions[0].RegionOP.N + "\r";
+                        }
+                    }
                     WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
-                        StringLookup.GetLocalizedString("Label_FluenceSolver") + OpticalPropertyVM + "\r");
+                        StringLookup.GetLocalizedString("Label_FluenceSolver") + opString);
                 }
 
             }
