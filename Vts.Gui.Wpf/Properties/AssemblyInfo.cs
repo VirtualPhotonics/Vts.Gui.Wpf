@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -20,6 +21,9 @@ using System.Windows;
 // COM, set the ComVisible attribute to true on that type.
 
 [assembly: ComVisible(false)]
+
+// Setting to make internal methods visible to the test application
+[assembly: InternalsVisibleTo("Vts.Gui.Wpf.Test")]
 
 //In order to begin building localizable applications, set 
 //<UICulture>CultureYouAreCodingWith</UICulture> in your .csproj file

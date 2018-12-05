@@ -50,7 +50,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var viewModel = windowViewModel.FluenceSolverVM;
             viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.PointSourceSDA;
             viewModel.FluenceSolutionDomainTypeOptionVM.SelectedValue = FluenceSolutionDomainType.FluenceOfRhoAndZ;
-            viewModel.ExecuteFluenceSolverCommand.Execute(null);
+            var result = viewModel.GetMapData();
+            result.Wait();
             // ExecuteForwardSolver default settings
             PlotViewModel plotViewModel = windowViewModel.PlotVM;
             Assert.AreEqual(plotViewModel.Labels.Count, 0);
