@@ -432,7 +432,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 if (ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.DistributedGaussianSourceSDA)
                 {
                     FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
-                    FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
+                    FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = false;
                     if (FluenceSolutionDomainTypeOptionVM.SelectedValue ==
                         FluenceSolutionDomainType.FluenceOfRhoAndZAndTime ||
                         FluenceSolutionDomainTypeOptionVM.SelectedValue ==
