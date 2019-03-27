@@ -354,7 +354,16 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 MainWindow.Current.Wait.Visibility = Visibility.Visible;
                 ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Begin();
-                await GetMapData();
+                try
+                {
+                    await GetMapData();
+                }
+                catch (System.ArgumentException ex)
+                {
+                    WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
+                        StringLookup.GetLocalizedString("Label_FluenceSolver\r"));
+                    WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("ERROR IN INPUT:" + ex.Message + "\r");
+                }
             }
 
             catch (OperationCanceledException)

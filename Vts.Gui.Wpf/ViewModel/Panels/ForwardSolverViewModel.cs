@@ -308,16 +308,29 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void ExecuteForwardSolver_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var points = ExecuteForwardSolver();
-            var axesLabels = GetPlotLabels();
-            WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+            try
+            {
+                var points = ExecuteForwardSolver();
+                var axesLabels = GetPlotLabels();
+                WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
 
-            var plotLabels = GetLegendLabels();
+                var plotLabels = GetLegendLabels();
 
-            var plotData = points.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
-            WindowViewModel.Current.PlotVM.PlotValues.Execute(plotData);
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_ForwardSolver") + TissueInputVM + "\r");
+                //if (points[0] != null)
+                //{
+                var plotData = points.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
+                WindowViewModel.Current.PlotVM.PlotValues.Execute(plotData);
+                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
+                    StringLookup.GetLocalizedString("Label_ForwardSolver") + TissueInputVM + "\r");
                 // todo: override ToString() for MultiRegionTissueViewModel
+                //}
+            }
+            catch (System.ArgumentException ex)
+            {
+                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
+                    StringLookup.GetLocalizedString("Label_ForwardSolver\r"));
+                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("ERROR IN INPUT:" + ex.Message + "\r");
+            }
         }
 
         private PlotAxesLabels GetPlotLabels()
