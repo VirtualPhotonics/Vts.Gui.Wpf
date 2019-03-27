@@ -401,18 +401,22 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void MC_SaveSimulationResultsToFolder(SimulationInput input, SimulationOutput output, string folder)
         {
-            FileIO.CreateEmptyDirectory(folder);
+            // the saving of files to a "results" folder is organized so that the user would just have to edit load_results_script
+            // with their particular OutputName and run it
+            FileIO.CreateEmptyDirectory(folder);  // create "results" folder for all saved files
+            var resultsSubfolder = Path.Combine(folder, _outputName); // create "results" subfolder that will hold detector results
+            FileIO.CreateEmptyDirectory(resultsSubfolder); 
 
-            // write detector to file
-            input.ToFile(Path.Combine(folder, "infile_" + _outputName + ".txt"));
+            // write detector results and infile to file
+            input.ToFile(Path.Combine(resultsSubfolder, _outputName + ".txt"));  // write infile with infile.OutputName
             foreach (var result in output.ResultsDictionary.Values)
             {
                 // save all detector data to the specified folder
-                DetectorIO.WriteDetectorToFile(result, folder);
+                DetectorIO.WriteDetectorToFile(result, resultsSubfolder);
             }
-            // copy the MATLAB files to the folder also
+            // copy the MATLAB files to the "results" folder also
             var currentAssembly = Assembly.GetExecutingAssembly();
-            FileIO.CopyFolderFromEmbeddedResources("Matlab", folder, currentAssembly.FullName, false);
+            FileIO.CopyFolderFromEmbeddedResources("Matlab", folder, currentAssembly.FullName, false); // put Matlab scripts in "results"
         }
 
         private async void MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
