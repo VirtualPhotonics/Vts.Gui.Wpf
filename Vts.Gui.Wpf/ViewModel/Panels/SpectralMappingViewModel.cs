@@ -21,10 +21,6 @@ namespace Vts.Gui.Wpf.ViewModel
     public class SpectralMappingViewModel : BindableObject
     {
         private BloodConcentrationViewModel _bloodConcentrationVM;
-        private double _g;
-        private double _mua;
-        private double _musp;
-        private IScatterer _scatterer;
         private string _scatteringTypeName;
         private OptionViewModel<ScatteringType> _scatteringTypeVM;
         private Tissue _selectedTissue;

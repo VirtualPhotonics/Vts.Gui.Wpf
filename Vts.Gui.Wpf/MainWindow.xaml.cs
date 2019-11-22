@@ -16,7 +16,7 @@ namespace Vts.Gui.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static MainWindow Current;
+        private static MainWindow _current;
         private int _numViews;
         private static Vts.Common.Logging.ILogger logger;
 
@@ -32,9 +32,14 @@ namespace Vts.Gui.Wpf
             }
             InitializeComponent();
             _numViews = 0;
-            Current = this;
+            _current = this;
         }
 
+        public static MainWindow Current
+        {
+            get { return _current; }
+            set { _current = value; }
+        }
         private void InputTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var inputTab = sender as TabControl;

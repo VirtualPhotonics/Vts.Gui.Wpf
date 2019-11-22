@@ -670,8 +670,7 @@ namespace Vts.Gui.Wpf.ViewModel
                                     independentValues[0],
                                     independentValues[1]).ToArray();
                                 break;
-                            case FluenceSolutionDomainType.FluenceOfFxAndZAndFt:
-                                break;
+                            //default handles: FluenceSolutionDomainType.FluenceOfFxAndZAndFt:
                             default:
                                 throw new ArgumentOutOfRangeException("FluenceSolutionDomainType");
                         }
@@ -758,12 +757,9 @@ namespace Vts.Gui.Wpf.ViewModel
                                         independentValues[1]).ToArray();
                                 }
                                 break;
-                            case FluenceSolutionDomainType.FluenceOfFxAndZ:
-                                break;
-                            case FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
-                                break;
-                            case FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
-                                break;
+                            //default handles: FluenceSolutionDomainType.FluenceOfFxAndZ:
+                            //   FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
+                            //   FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
                             default:
                                 throw new ArgumentOutOfRangeException(
                                     "PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue");

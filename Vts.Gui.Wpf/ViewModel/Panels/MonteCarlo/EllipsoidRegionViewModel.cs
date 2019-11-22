@@ -9,7 +9,6 @@ namespace Vts.Gui.Wpf.ViewModel
         private string _name;
         private OpticalPropertyViewModel _opticalPropertyVM;
         private readonly EllipsoidTissueRegion _region;
-        private string _units;
 
         public EllipsoidRegionViewModel(EllipsoidTissueRegion region, string name)
         {

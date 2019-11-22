@@ -10,7 +10,6 @@ namespace Vts.Gui.Wpf.ViewModel
         private string _name;
         private OpticalPropertyViewModel _opticalPropertyVM;
         private readonly VoxelTissueRegion _region;
-        private string _units;
 
         public VoxelRegionViewModel(VoxelTissueRegion region, string name)
         {

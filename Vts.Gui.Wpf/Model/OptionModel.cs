@@ -33,7 +33,7 @@ namespace Vts.Gui.Wpf.Model
         /// </summary>
         public string DisplayName
         {
-            set { DisplayName = value; }
+            set { _displayName = value; }
             get { return _displayName; }
         }
 
@@ -42,7 +42,7 @@ namespace Vts.Gui.Wpf.Model
         /// </summary>
         public string GroupName
         {
-            set { GroupName = value; }
+            set { _groupName = value; }
             get { return _groupName; }
         }
 
@@ -85,7 +85,7 @@ namespace Vts.Gui.Wpf.Model
         /// </summary>
         public int SortValue
         {
-            set { SortValue = value; }
+            set { _sortValue = value; }
             get { return _sortValue; }
         }
 
@@ -94,7 +94,7 @@ namespace Vts.Gui.Wpf.Model
         /// </summary>
         public int ID
         {
-            set { ID = value; }
+            set { _ID = value; }
             get { return _ID; }
         }
 
@@ -103,7 +103,7 @@ namespace Vts.Gui.Wpf.Model
         /// </summary>
         public bool MultiSelectEnabled
         {
-            set { MultiSelectEnabled = value; }
+            set { _multiSelectEnabled = value; }
             get { return _multiSelectEnabled; }
         }
     }

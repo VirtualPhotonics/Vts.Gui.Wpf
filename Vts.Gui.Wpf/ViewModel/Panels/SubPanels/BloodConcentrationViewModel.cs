@@ -1,3 +1,4 @@
+using System;
 using Vts.Gui.Wpf.Extensions;
 using Vts.SpectralMapping;
 
@@ -47,7 +48,9 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 if (_HbO2 != null) // unsubscribe any existing property changed event
                 {
-                    _HbO2.PropertyChanged -= (s, a) => UpdateStO2AndTotalHb();
+                    // first define delegate, then unsubscribe
+                    void Func(object s, EventArgs a) => UpdateStO2AndTotalHb();
+                    _HbO2.PropertyChanged -=  Func;
                 }
 
                 if (value != null)
@@ -71,7 +74,11 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 if (_Hb != null) // unsubscribe any existing property changed event
-                    _Hb.PropertyChanged -= (s, a) => UpdateStO2AndTotalHb();
+                {
+                    // first define delegate, then unsubscribe
+                    void Func(object s, EventArgs a) => UpdateStO2AndTotalHb();
+                    _Hb.PropertyChanged -= Func;
+                }
 
                 if (value != null)
                 {

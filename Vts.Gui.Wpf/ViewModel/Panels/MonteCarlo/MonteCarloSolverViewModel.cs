@@ -346,7 +346,7 @@ namespace Vts.Gui.Wpf.ViewModel
             logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
         }
 
-        private async void MC_SaveSimulationResultsFromCache()
+        private async Task MC_SaveSimulationResultsFromCache()
         {
             var input = _cache["SimulationInput"] as SimulationInput;
             var output = _cache["SimulationOutput"] as SimulationOutput;
