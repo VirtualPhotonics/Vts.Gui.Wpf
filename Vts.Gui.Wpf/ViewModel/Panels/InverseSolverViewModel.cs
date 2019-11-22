@@ -24,18 +24,15 @@ namespace Vts.Gui.Wpf.ViewModel
     public class InverseSolverViewModel : BindableObject
     {
         private RangeViewModel[] _allRangeVMs;
-        private double[] _InitialGuessDataValues;
         private OpticalPropertyViewModel _InitialGuessOpticalPropertyVM;
         private OptionViewModel<InverseFitType> _InverseFitTypeVM;
         private OptionViewModel<ForwardSolverType> _InverseForwardSolverTypeVM;
-        private double[] _MeasuredDataValues;
         private OptionViewModel<ForwardSolverType> _MeasuredForwardSolverTypeVM;
 
         private OpticalPropertyViewModel _MeasuredOpticalPropertyVM;
         private OptionViewModel<OptimizerType> _OptimizerTypeVM;
 
         private double _PercentNoise;
-        private double[] _ResultDataValues;
         private OpticalPropertyViewModel _ResultOpticalPropertyVM;
 
         private bool _showOpticalProperties;
@@ -159,14 +156,13 @@ namespace Vts.Gui.Wpf.ViewModel
                             UseSpectralPanelData = SolutionDomainTypeOptionVM.UseSpectralInputs;
                         }
                         if (UseSpectralPanelData && WindowViewModel.Current != null &&
-                            WindowViewModel.Current.SpectralMappingVM != null)
-                        {
-                            if (MeasuredOpticalPropertyVM != null)
+                            WindowViewModel.Current.SpectralMappingVM != null &&
+                            MeasuredOpticalPropertyVM != null)
                             {
                                 MeasuredOpticalPropertyVM.SetOpticalProperties(
                                     WindowViewModel.Current.SpectralMappingVM.OpticalProperties);
                             }
-                        }
+                        
                     }
                 };
             }
@@ -377,10 +373,10 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 var isWavelengthPlot = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
                 var secondaryRangeVM = isWavelengthPlot
-                    ? _allRangeVMs.Where(vm => vm.AxisType != IndependentVariableAxis.Wavelength).First()
-                    : _allRangeVMs.Where(
-                        vm => vm.AxisType != IndependentVariableAxis.Time && vm.AxisType != IndependentVariableAxis.Ft)
-                        .First();
+                    ? _allRangeVMs.First(vm => vm.AxisType != IndependentVariableAxis.Wavelength)
+                    : _allRangeVMs.First(
+                        vm => vm.AxisType != IndependentVariableAxis.Time && 
+                              vm.AxisType != IndependentVariableAxis.Ft);
 
                 var secondaryAxesStrings =
                     secondaryRangeVM.Values.Select(

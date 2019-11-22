@@ -15,12 +15,9 @@ namespace Vts.Gui.Wpf.Helpers
             var window = Application.Current.MainWindow;
             var option = item as OptionModel<IndependentVariableAxis>;
                 //this works for independent axis but it needs to be more general
-            if (option != null)
+            if ((option != null) && (option.MultiSelectEnabled))
             {
-                if (option.MultiSelectEnabled)
-                {
-                    return window.FindResource("CheckboxTemplate") as DataTemplate;
-                }
+                return window.FindResource("CheckboxTemplate") as DataTemplate;
             }
 
             return window.FindResource("RadioButtonTemplate") as DataTemplate;

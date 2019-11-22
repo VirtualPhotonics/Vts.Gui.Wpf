@@ -316,14 +316,10 @@ namespace Vts.Gui.Wpf.ViewModel
 
                 var plotLabels = GetLegendLabels();
 
-                //if (points[0] != null)
-                //{
                 var plotData = points.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
                 WindowViewModel.Current.PlotVM.PlotValues.Execute(plotData);
                 WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
                     StringLookup.GetLocalizedString("Label_ForwardSolver") + TissueInputVM + "\r");
-                // todo: override ToString() for MultiRegionTissueViewModel
-                //}
             }
             catch (System.ArgumentException ex)
             {
@@ -428,7 +424,6 @@ namespace Vts.Gui.Wpf.ViewModel
                         _currentSemiInfiniteTissueInput.Regions.First().RegionOP,
                         IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
                         "Optical Properties");
-                    break;
                 case "MultiLayer":
                     if (_currentMultiLayerTissueInput == null)
                     {
@@ -454,7 +449,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     }
                     return new MultiRegionTissueViewModel(_currentSingleEllipsoidTissueInput);
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(tissueType));
             }
         }
 

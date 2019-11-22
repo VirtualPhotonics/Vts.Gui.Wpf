@@ -100,7 +100,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool ShowTitle
         {
-            get { return !(Title == ""); }
+            get { return Title != ""; }
         }
 
         public bool EnableMua

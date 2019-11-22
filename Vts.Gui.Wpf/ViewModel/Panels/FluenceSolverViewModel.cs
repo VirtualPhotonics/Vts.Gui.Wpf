@@ -393,15 +393,13 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
                 var opString = OpticalPropertyVM + "\r";
-                if (IsMultiRegion)
+                if (IsMultiRegion && ForwardSolver is TwoLayerSDAForwardSolver)
                 {
-                    if (ForwardSolver is TwoLayerSDAForwardSolver)
-                    {
-                        ITissueRegion[] regions = ((MultiRegionTissueViewModel)TissueInputVM).GetTissueInput().Regions;
+                    ITissueRegion[] regions = ((MultiRegionTissueViewModel)TissueInputVM).GetTissueInput().Regions;
                         opString = "\rLayer 0: μa=" + regions[0].RegionOP.Mua + " μs'=" + regions[0].RegionOP.Musp + " n=" + regions[0].RegionOP.N + "\r" +
                                    "Layer 1: μa=" + regions[1].RegionOP.Mua + " μs'=" + regions[1].RegionOP.Musp + " n=" + regions[0].RegionOP.N + "\r";
-                    }
                 }
+                
                 WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
                     StringLookup.GetLocalizedString("Label_FluenceSolver") + opString);
             }
@@ -438,67 +436,68 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             if (IsFluence)
             {
-                if (ForwardSolverTypeOptionVM.SelectedValue == ForwardSolverType.DistributedGaussianSourceSDA)
+                switch (ForwardSolverTypeOptionVM.SelectedValue)
                 {
-                    FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
-                    FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = false;
-                    if (FluenceSolutionDomainTypeOptionVM.SelectedValue ==
-                        FluenceSolutionDomainType.FluenceOfRhoAndZAndTime ||
-                        FluenceSolutionDomainTypeOptionVM.SelectedValue ==
-                        FluenceSolutionDomainType.FluenceOfRhoAndZAndFt)
-                    {
-                        FluenceSolutionDomainTypeOptionVM.SelectedValue = FluenceSolutionDomainType.FluenceOfRhoAndZ;
-                        OnPropertyChanged("FluenceSolutionDomainTypeOptionVM");
-                    }
-                }
-                else
-                {
-                    FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
-                    FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
+                    case ForwardSolverType.DistributedGaussianSourceSDA:
+                        FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
+                        FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = false;
+                        if (FluenceSolutionDomainTypeOptionVM.SelectedValue ==
+                            FluenceSolutionDomainType.FluenceOfRhoAndZAndTime ||
+                            FluenceSolutionDomainTypeOptionVM.SelectedValue ==
+                            FluenceSolutionDomainType.FluenceOfRhoAndZAndFt)
+                        {
+                            FluenceSolutionDomainTypeOptionVM.SelectedValue = FluenceSolutionDomainType.FluenceOfRhoAndZ;
+                            OnPropertyChanged("FluenceSolutionDomainTypeOptionVM");
+                        }
+                        break;
+                    default: // default handles all other ForwardSolverTypes
+                        FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
+                        FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
+                        break;
                 }
             }
             if (IsAbsorbedEnergy)
             {
-                if (ForwardSolverTypeOptionVM.SelectedValue ==
-                    ForwardSolverType.DistributedGaussianSourceSDA || ForwardSolverTypeOptionVM.SelectedValue ==
-                    ForwardSolverType.TwoLayerSDA)
+                switch (ForwardSolverTypeOptionVM.SelectedValue)
                 {
-                    AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
-                    AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = false;
-                    if (AbsorbedEnergySolutionDomainTypeOptionVM.SelectedValue ==
-                        FluenceSolutionDomainType.FluenceOfRhoAndZAndFt)
-                    {
-                        AbsorbedEnergySolutionDomainTypeOptionVM.SelectedValue =
-                            FluenceSolutionDomainType.FluenceOfRhoAndZ;
-                        OnPropertyChanged("AbsorbedEnergySolutionDomainTypeOptionVM");
-                    }
-                }
-                else
-                {
-                    AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
-                    AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
+                    case ForwardSolverType.DistributedGaussianSourceSDA:
+                    case ForwardSolverType.TwoLayerSDA:
+                        AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
+                        AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = false;
+                        if (AbsorbedEnergySolutionDomainTypeOptionVM.SelectedValue ==
+                            FluenceSolutionDomainType.FluenceOfRhoAndZAndFt)
+                        {
+                            AbsorbedEnergySolutionDomainTypeOptionVM.SelectedValue =
+                                FluenceSolutionDomainType.FluenceOfRhoAndZ;
+                            OnPropertyChanged("AbsorbedEnergySolutionDomainTypeOptionVM");
+                        }
+                        break;
+                    default: // default handles all other ForwardSolverTypes
+                        AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
+                        AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
+                        break;
                 }
             }
             if (IsPhotonHittingDensity)
             {
-                if (ForwardSolverTypeOptionVM.SelectedValue ==
-                    ForwardSolverType.DistributedGaussianSourceSDA || ForwardSolverTypeOptionVM.SelectedValue ==
-                    ForwardSolverType.TwoLayerSDA)
+                switch (ForwardSolverTypeOptionVM.SelectedValue)
                 {
-                    PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
-                    PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = false;
-                    if (PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue ==
-                        FluenceSolutionDomainType.FluenceOfRhoAndZAndFt)
-                    {
-                        PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue =
-                            FluenceSolutionDomainType.FluenceOfRhoAndZ;
-                        OnPropertyChanged("PhotonHittingDensitySolutionDomainTypeOptionVM");
-                    }
-                }
-                else
-                {
-                    PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
-                    PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
+                    case ForwardSolverType.DistributedGaussianSourceSDA:
+                    case ForwardSolverType.TwoLayerSDA:
+                        PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
+                        PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = false;
+                        if (PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue ==
+                            FluenceSolutionDomainType.FluenceOfRhoAndZAndFt)
+                        {
+                            PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue =
+                                FluenceSolutionDomainType.FluenceOfRhoAndZ;
+                            OnPropertyChanged("PhotonHittingDensitySolutionDomainTypeOptionVM");
+                        }
+                        break;
+                    default: // default handles all other ForwardSolverTypes
+                        PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled = false;
+                        PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled = true;
+                        break;
                 }
             }
         }
@@ -549,7 +548,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     }
                     return new MultiRegionTissueViewModel(_currentSingleEllipsoidTissueInput);
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(tissueType) );
             }
         }
 
@@ -655,8 +654,7 @@ namespace Vts.Gui.Wpf.ViewModel
                         results =
                             ComputationFactory.GetAbsorbedEnergy(fluence,
                                 ((OpticalProperties[]) opticalProperties)[0].Mua).Select(a => a.Magnitude).ToArray();
-                            // todo: is this correct?? DC 12/08/12
-                        break;
+                         break;
                     case MapType.PhotonHittingDensity:
                         switch (PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue)
                         {
@@ -672,11 +670,12 @@ namespace Vts.Gui.Wpf.ViewModel
                                 break;
                             //default handles: FluenceSolutionDomainType.FluenceOfFxAndZAndFt:
                             default:
-                                throw new ArgumentOutOfRangeException("FluenceSolutionDomainType");
+                                throw new ArgumentOutOfRangeException(
+                                    nameof(PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue));
                         }
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("MapType");
+                        throw new ArgumentOutOfRangeException(nameof(MapTypeOptionVM.SelectedValue));
                 }
             }
             else
@@ -725,7 +724,8 @@ namespace Vts.Gui.Wpf.ViewModel
                         }
                         else
                         {
-                            // Note: the line below was originally overwriting the multi-region results. I think this was a bug (DJC 7/11/14)
+                            // Note: the line below was originally overwriting the multi-region results.
+                            // I think this was a bug (DJC 7/11/14)
                             results =
                                 ComputationFactory.GetAbsorbedEnergy(fluence,
                                     ((OpticalProperties[]) opticalProperties)[0].Mua).ToArray();
@@ -762,11 +762,11 @@ namespace Vts.Gui.Wpf.ViewModel
                             //   FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
                             default:
                                 throw new ArgumentOutOfRangeException(
-                                    "PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue");
+                                    nameof(PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue));
                         }
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException("MapTypeOptionVM.SelectedValue");
+                        throw new ArgumentOutOfRangeException(nameof(MapTypeOptionVM.SelectedValue));
                 }
             }
             cancellationToken.ThrowIfCancellationRequested();
@@ -812,8 +812,9 @@ namespace Vts.Gui.Wpf.ViewModel
                 case MapType.PhotonHittingDensity:
                     return PhotonHittingDensitySolutionDomainTypeOptionVM;
                 default:
-                    throw new ArgumentException(StringLookup.GetLocalizedString("Error_NoSolutionDomainExists"),
-                        "MapTypeOptionVM.SelectedValue");
+                    throw new ArgumentException(
+                        StringLookup.GetLocalizedString("Error_NoSolutionDomainExists"),
+                        nameof(MapTypeOptionVM.SelectedValue));
             }
         }
 
