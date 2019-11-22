@@ -33,18 +33,5 @@ namespace Vts.Gui.Wpf.View
             }
         }
 
-        //    {
-        //    if (this.DataContext != null)
-        //{
-
-
-        //public void AppendText(string s)
-        //        TextOutputViewModel vm = (TextOutputViewModel)this.DataContext;
-        //        if (vm != null)
-        //        {
-        //            vm.Text += s;
-        //        }
-        //    }
-        //}
     }
 }

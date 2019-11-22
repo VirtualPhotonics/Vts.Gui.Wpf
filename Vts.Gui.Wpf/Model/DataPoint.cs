@@ -13,14 +13,6 @@ namespace Vts.Gui.Wpf.Model
             _myDataPoints = new IDataPoint[2][];
         }
 
-        private void TestMethod()
-        {
-            var dp = new ComplexDataPoint(0, 0);
-            var complex_number = dp.Y;
-
-            _myDataPoints[0] = Enumerable.Range(0, 10).Select(i => new ComplexDataPoint(0, 0)).ToArray();
-            _myDataPoints[1] = Enumerable.Range(0, 10).Select(i => new DoubleDataPoint(0, 0)).ToArray();
-        }
     }
 
     public interface IDataPoint
@@ -103,9 +95,9 @@ namespace Vts.Gui.Wpf.Model
         //     true if obj is a ComplexDataPoint and contains the same ComplexDataPoint.X
         //     and ComplexDataPoint.Y values as this ComplexDataPoint; otherwise,
         //     false.
-        public override bool Equals(object o)
+        public override bool Equals(object obj)
         {
-            return Equals((ComplexDataPoint) o);
+            return Equals((ComplexDataPoint) obj);
         }
 
         //
@@ -235,9 +227,9 @@ namespace Vts.Gui.Wpf.Model
         //     true if obj is a DoubleDataPoint and contains the same DoubleDataPoint.X
         //     and DoubleDataPoint.Y values as this DoubleDataPoint; otherwise,
         //     false.
-        public override bool Equals(object o)
+        public override bool Equals(object obj)
         {
-            return Equals((DoubleDataPoint) o);
+            return Equals((DoubleDataPoint) obj);
         }
 
         //

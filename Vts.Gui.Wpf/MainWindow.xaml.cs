@@ -18,11 +18,11 @@ namespace Vts.Gui.Wpf
     {
         private static MainWindow _current;
         private int _numViews;
-        private static Vts.Common.Logging.ILogger logger;
+        private static Vts.Common.Logging.ILogger _logger;
 
         public MainWindow()
         {
-            logger = LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MainWindow));
+            _logger = LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MainWindow));
             var observableTarget =
                 NLog.LogManager.Configuration.AllTargets.FirstOrDefault(target => target is ObservableTarget);
             if (observableTarget != null)
@@ -51,9 +51,9 @@ namespace Vts.Gui.Wpf
                 {
                     switch (tabItem.Name)
                     {
-                        case "TabForward":
-                        case "TabInverse":
-                        case "TabSpectral":
+                        // default handles: "TabForward":
+                        // "TabInverse":
+                        // "TabSpectral":
                         default:
                             OutputTabControl.SelectedItem = OutputTabControl.Items[0];
                             ((TabItem) OutputTabControl.Items[0]).Visibility = Visibility.Visible;

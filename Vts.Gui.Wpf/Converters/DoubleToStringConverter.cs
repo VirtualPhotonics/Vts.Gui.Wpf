@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using System.Windows.Data;
-using System.Windows.Markup;
 using Vts.Gui.Wpf.Extensions;
 
 namespace Vts.Gui.Wpf.Converters
@@ -47,27 +46,6 @@ namespace Vts.Gui.Wpf.Converters
             }
             return d1.ToString(CultureInfo.CurrentCulture);
 
-            //string numberUnformatted = value.ToString();
-            //int ind = numberUnformatted.IndexOf(".");
-            //int numberOfDecimals = 2;
-
-            //string integerPart;
-            //string decimalPart;
-
-            //if (ind <= 0)
-            //{
-            //    integerPart = numberUnformatted;
-            //    decimalPart = "0";
-            //}
-            //else
-            //{
-            //    integerPart = numberUnformatted.Substring(0, ind);
-            //    decimalPart = numberUnformatted.Substring(ind + 1);
-            //}
-            //if (decimalPart.Length > 3)
-            //    decimalPart = decimalPart.Substring(0, numberOfDecimals);
-
-            //return integerPart + "." + decimalPart; ;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -18,7 +18,7 @@ namespace Vts.Gui.Wpf.Model
         protected bool _multiSelectEnabled;
         protected int _sortValue;
 
-        public OptionModel(string displayName, int id, string groupName, bool enableMultiSelect, int sortValue)
+        protected OptionModel(string displayName, int id, string groupName, bool enableMultiSelect, int sortValue)
         {
             _displayName = displayName;
             _groupName = groupName;
@@ -197,8 +197,7 @@ namespace Vts.Gui.Wpf.Model
             }
 
             //removed call to sort, which was re-arranging the enum choices
-            //convention is to let the first enum choice be the default selection
-            //list.Sort();
+            //convention is to let the first enum choice be the default selection list.Sort();
 
             if (list.Count > 0)
             {
@@ -207,10 +206,8 @@ namespace Vts.Gui.Wpf.Model
                         optionModel => EqualityComparer<TValue>.Default.Equals(optionModel.Value, initialValue));
                 option.IsSelected = true;
                 option.IsEnabled = !enableMultiSelect;
-                //list[0].IsSelected = true;
             }
             return list.ToDictionary(item => item.Value);
-            //return new ReadOnlyCollection<OptionViewModel<TValue>>(list);
         }
     }
 }

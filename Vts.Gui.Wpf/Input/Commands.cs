@@ -19,6 +19,7 @@ namespace Vts.Gui.Wpf.Input
 
         private static void UpdateWavelength_Executed(double wavelength)
         {
+            // not implemented
         }
     }
 }

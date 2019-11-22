@@ -15,7 +15,7 @@ namespace Vts.Gui.Wpf.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (Visibility) value == Visibility.Collapsed ? false : true;
+            return (Visibility) value != Visibility.Collapsed;
         }
     }
 }

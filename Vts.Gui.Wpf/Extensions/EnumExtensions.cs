@@ -130,24 +130,6 @@ namespace Vts.Gui.Wpf.Extensions
             }
         }
 
-        public static string GetUnits(this IndependentVariableAxis axis)
-        {
-            switch (axis)
-            {
-                case IndependentVariableAxis.Rho:
-                default:
-                    return IndependentVariableAxisUnits.MM.GetInternationalizedString();
-                case IndependentVariableAxis.Time:
-                    return IndependentVariableAxisUnits.NS.GetInternationalizedString();
-                case IndependentVariableAxis.Fx:
-                    return IndependentVariableAxisUnits.InverseMM.GetInternationalizedString();
-                case IndependentVariableAxis.Ft:
-                    return IndependentVariableAxisUnits.GHz.GetInternationalizedString();
-                case IndependentVariableAxis.Wavelength:
-                    return IndependentVariableAxisUnits.NM.GetInternationalizedString();
-            }
-        }
-
         public static string GetTitle(this IndependentVariableAxis axis)
         {
             switch (axis)
@@ -163,6 +145,24 @@ namespace Vts.Gui.Wpf.Extensions
                     return IndependentVariableAxis.Ft.GetLocalizedString();
                 case IndependentVariableAxis.Wavelength:
                     return IndependentVariableAxis.Wavelength.GetLocalizedString();
+            }
+        }
+
+        public static string GetUnits(this IndependentVariableAxis axis)
+        {
+            switch (axis)
+            {
+                case IndependentVariableAxis.Rho:
+                default:
+                    return IndependentVariableAxisUnits.MM.GetInternationalizedString();
+                case IndependentVariableAxis.Time:
+                    return IndependentVariableAxisUnits.NS.GetInternationalizedString();
+                case IndependentVariableAxis.Fx:
+                    return IndependentVariableAxisUnits.InverseMM.GetInternationalizedString();
+                case IndependentVariableAxis.Ft:
+                    return IndependentVariableAxisUnits.GHz.GetInternationalizedString();
+                case IndependentVariableAxis.Wavelength:
+                    return IndependentVariableAxisUnits.NM.GetInternationalizedString();
             }
         }
 
@@ -220,7 +220,7 @@ namespace Vts.Gui.Wpf.Extensions
                 case IndependentVariableAxis.Ft:
                     return new DoubleRange(0D, 0.5D, 51); // units=GHz
                 case IndependentVariableAxis.Wavelength:
-                    return new DoubleRange(650D, 1000D, 36); //TODO: right units?
+                    return new DoubleRange(650D, 1000D, 36); // units=nm
             }
         }
 
@@ -242,10 +242,5 @@ namespace Vts.Gui.Wpf.Extensions
             }
         }
 
-        //}
-        //    return new RangeViewModel(independentAxisType.GetDefaultRange(), independentAxisType.GetUnits(), independentAxisType, independentAxisType.GetTitle());
-        //{
-
-        //public static RangeViewModel GetDefaultIndependentAxisRange(this IndependentVariableAxis independentAxisType)
-    }
+      }
 }

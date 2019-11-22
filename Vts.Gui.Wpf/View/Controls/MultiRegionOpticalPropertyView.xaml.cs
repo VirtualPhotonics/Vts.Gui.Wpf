@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using Vts.Gui.Wpf.ViewModel;
-using Xceed.Wpf.Toolkit;
+﻿using System.Windows.Controls;
 
 namespace Vts.Gui.Wpf.View
 {

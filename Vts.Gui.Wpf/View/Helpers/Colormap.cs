@@ -15,7 +15,6 @@ namespace Vts.Gui.Wpf.View
 
         public Colormap(ColormapType colormapType)
         {
-            //bool UseInterpolation = false;
             var colormapSize = 256;
 
             _RedByte = new byte[colormapSize];
@@ -42,7 +41,7 @@ namespace Vts.Gui.Wpf.View
                 case ColormapType.Bone:
                     lut = new BoneColormapLUT();
                     break;
-                case ColormapType.Gray:
+                // default = ColormapType.Gray:
                 default:
                     lut = new GrayColormapLUT();
                     break;
@@ -85,7 +84,7 @@ namespace Vts.Gui.Wpf.View
         {
             #region Constructor
 
-            public ColormapLUT(double[] R, double[] G, double[] B)
+            protected ColormapLUT(double[] R, double[] G, double[] B)
             {
                 _Red = R;
                 _Green = G;
