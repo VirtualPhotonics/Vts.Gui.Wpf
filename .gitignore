@@ -86,3 +86,9 @@ CVS
 Vts.WpfApplication/ViewModelOld/
 Vts.WpfApplication/ViewOld/
 Vts.WpfApplication/Helpers/fjcore/
+
+# SonarQube #
+#############
+.sonarqube/
+.scannerwork/
+[Ss]onar[Cc]loud*
