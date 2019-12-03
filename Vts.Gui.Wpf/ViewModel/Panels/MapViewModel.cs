@@ -16,7 +16,6 @@ namespace Vts.Gui.Wpf.ViewModel
 {
     public class MapViewModel : BindableObject
     {
-        private byte _a, _r, _g, _b;
         private bool _autoScale;
         private Colormap _colormap;
 
@@ -377,12 +376,12 @@ namespace Vts.Gui.Wpf.ViewModel
 
             var value = (int) Math.Floor(factor*255);
 
-            _a = 255;
-            _r = _colormap.RedByte[value];
-            _g = _colormap.GreenByte[value];
-            _b = _colormap.BlueByte[value];
+            var a = 255;
+            var r = _colormap.RedByte[value];
+            var g = _colormap.GreenByte[value];
+            var b = _colormap.BlueByte[value];
 
-            return _a << 24 | _r << 16 | _g << 8 | _b;
+            return a << 24 | r << 16 | g << 8 | b;
         }
 
         /// <summary>

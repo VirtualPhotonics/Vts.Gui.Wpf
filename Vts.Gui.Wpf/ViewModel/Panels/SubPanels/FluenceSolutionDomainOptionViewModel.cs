@@ -1,5 +1,4 @@
 using System;
-using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
 
 namespace Vts.Gui.Wpf.ViewModel
@@ -16,7 +15,7 @@ namespace Vts.Gui.Wpf.ViewModel
         public FluenceSolutionDomainOptionViewModel(string groupName, FluenceSolutionDomainType defaultType)
             : base(groupName, defaultType)
         {
-            //InitializeControls();
+            //InitializeControls
             FluenceOfRhoAndZOption = Options[FluenceSolutionDomainType.FluenceOfRhoAndZ];
             FluenceOfFxAndZOption = Options[FluenceSolutionDomainType.FluenceOfFxAndZ];
             FluenceOfRhoAndZAndTimeOption = Options[FluenceSolutionDomainType.FluenceOfRhoAndZAndTime];
@@ -48,7 +47,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool IsFluenceOfRhoAndZAndTimeEnabled
         {
-            get { return _isFluenceOfRhoAndZAndTimeEnabled; }
+            get => _isFluenceOfRhoAndZAndTimeEnabled;
             set
             {
                 _isFluenceOfRhoAndZAndTimeEnabled = value;
@@ -59,7 +58,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool IsFluenceOfRhoAndZAndFtEnabled
         {
-            get { return _isFluenceOfRhoAndZAndFtEnabled; }
+            get => _isFluenceOfRhoAndZAndFtEnabled;
             set
             {
                 _isFluenceOfRhoAndZAndFtEnabled = value;
@@ -68,10 +67,7 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public override int NativeAxesCount
-        {
-            get { return 1; }
-        }
+        public override int NativeAxesCount => 1;
 
         private void UpdateOptions()
         {

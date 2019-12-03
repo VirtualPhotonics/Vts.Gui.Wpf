@@ -9,7 +9,6 @@ namespace Vts.Gui.Wpf.ViewModel
         public TextOutputViewModel()
         {
             TextOutput_PostMessage = new RelayCommand<object>(PostMessage_Executed);
-            //Commands.TextOutput_PostMessage.Executed += PostMessage_Executed;
         }
 
         public RelayCommand<object> TextOutput_PostMessage { get; set; }

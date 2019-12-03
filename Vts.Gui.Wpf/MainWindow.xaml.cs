@@ -12,7 +12,7 @@ using Vts.Common.Logging;
 namespace Vts.Gui.Wpf
 {
     /// <summary>
-    ///     Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -34,33 +34,29 @@ namespace Vts.Gui.Wpf
         public static MainWindow Current { get; set; }
         private void InputTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var inputTab = sender as TabControl;
-            if (inputTab != null && inputTab.Items != null &&
-                OutputTabControl != null && OutputTabControl.Items != null && OutputTabControl.Items.Count > 1)
+            if (sender is TabControl inputTab &&
+                OutputTabControl != null && OutputTabControl.Items.Count > 1)
             {
-                var tabItem = inputTab.SelectedItem as TabItem;
-                if (tabItem != null)
+                if (!(inputTab.SelectedItem is TabItem tabItem)) return;
+                switch (tabItem.Name)
                 {
-                    switch (tabItem.Name)
-                    {
-                        // default handles: "TabForward":
-                        // "TabInverse":
-                        // "TabSpectral":
-                        default:
+                    // default handles: "TabForward":
+                    // "TabInverse":
+                    // "TabSpectral":
+                    default:
                         OutputTabControl.SelectedItem = OutputTabControl.Items[0];
                         ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Visible;
                         ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Collapsed;
                         break;
-                        case "TabFluence":
+                    case "TabFluence":
                         OutputTabControl.SelectedItem = OutputTabControl.Items[1];
                         ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Visible;
                         ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Collapsed;
                         break;
-                        case "TabMonteCarlo":
+                    case "TabMonteCarlo":
                         ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Visible;
                         ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Visible;
                         break;
-                    }
                 }
             }
         }

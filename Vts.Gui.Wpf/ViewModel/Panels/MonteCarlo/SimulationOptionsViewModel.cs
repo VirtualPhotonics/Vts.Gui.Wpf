@@ -1,10 +1,9 @@
-﻿using GalaSoft.MvvmLight.Command;
-using Vts.MonteCarlo;
-using System;
-using System.IO;
+﻿using System;
 using System.Windows.Forms;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
 using Vts.Gui.Wpf.Extensions;
+using Vts.MonteCarlo;
 
 #if WHITELIST
 using Vts.Gui.Wpf.ViewModel.Application;
@@ -49,6 +48,9 @@ namespace Vts.Gui.Wpf.ViewModel
             _phaseFunctionTypeVM.PropertyChanged += (sender, args) =>
                 _simulationOptions.PhaseFunctionType = _phaseFunctionTypeVM.SelectedValue;
         }
+        public SimulationOptionsViewModel() : this(new SimulationOptions())
+        {
+        }
 
         private void MC_SetStatisticsFolder_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -76,10 +78,6 @@ namespace Vts.Gui.Wpf.ViewModel
                     }
                 }
             }
-        }
-
-        public SimulationOptionsViewModel() : this(new SimulationOptions())
-        {
         }
 
         public SimulationOptions SimulationOptions

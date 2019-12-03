@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace Vts.Gui.Wpf.Model
 {
-    public class ComplexDataPoint : IDataPoint, IEqualityComparer<ComplexDataPoint>
+    public sealed class ComplexDataPoint : IDataPoint, IEquatable<ComplexDataPoint>, IEqualityComparer<ComplexDataPoint>
     {
         /// <summary>
         /// Constructor for the ComplexDataPoint

@@ -152,8 +152,8 @@ namespace Vts.Gui.Wpf.ViewModel
 
                 // update the BloodConcentrationViewModel to point to the IChromophoreAbsorber instances 
                 // specified in the updated SelectedTissue
-                var hb = _selectedTissue.Absorbers.Where(abs => abs.Name == "Hb").FirstOrDefault();
-                var hbO2 = _selectedTissue.Absorbers.Where(abs => abs.Name == "HbO2").FirstOrDefault();
+                var hb = _selectedTissue.Absorbers.FirstOrDefault(abs => abs.Name == "Hb");
+                var hbO2 = _selectedTissue.Absorbers.FirstOrDefault(abs => abs.Name == "HbO2");
 
                 // only assign the values if both queries return valid (non-null) instances of IChromophoreAbsorber
                 if (hb != null && hbO2 != null)
@@ -261,7 +261,6 @@ namespace Vts.Gui.Wpf.ViewModel
             OnPropertyChanged("N");
             OnPropertyChanged("OpticalProperties");
             WindowViewModel.Current.ForwardSolverVM.UpdateOpticalProperties_Executed();
-            //Commands.Spec_UpdateOpticalProperties.Execute(OpticalProperties, null);
         }
 
         private void ResetConcentrations_Executed(object obj)
@@ -287,7 +286,6 @@ namespace Vts.Gui.Wpf.ViewModel
                 });
 
             WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
-            //Commands.Plot_SetAxesLabels.Execute(axesLabels, null);
 
             var tissue = SelectedTissue;
             var wavelengths = WavelengthRangeVM.Values.ToArray();

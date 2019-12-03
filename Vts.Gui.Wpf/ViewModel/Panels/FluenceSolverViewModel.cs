@@ -89,7 +89,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     ForwardSolverType.PointSourceSDA,
                     ForwardSolverType.DistributedGaussianSourceSDA,
                     ForwardSolverType.TwoLayerSDA
-                }); // explicitly enabling these for the workshop;
+                }); // explicitly enabling these for the workshop
 
             FluenceSolutionDomainTypeOptionVM = new FluenceSolutionDomainOptionViewModel(StringLookup.GetLocalizedString("Heading_FluenceSolutionDomain"),
                 FluenceSolutionDomainType.FluenceOfRhoAndZ);
@@ -388,7 +388,6 @@ namespace Vts.Gui.Wpf.ViewModel
             _currentCancellationTokenSource = new CancellationTokenSource();
 
             mapData = await Task.Run(() => ExecuteForwardSolver(_currentCancellationTokenSource.Token));
-            //var mapData = ExecuteForwardSolver();
             if (mapData != null)
             {
                 WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);

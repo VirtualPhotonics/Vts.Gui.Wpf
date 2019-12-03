@@ -1,5 +1,4 @@
 using System;
-using Vts.Gui.Wpf.Extensions;
 using Vts.SpectralMapping;
 
 namespace Vts.Gui.Wpf.ViewModel

@@ -62,7 +62,6 @@ namespace Vts.Gui.Wpf.ViewModel
             ForwardSolverTypeOptionVM.PropertyChanged += (sender, args) =>
             {
                 OnPropertyChanged("IsGaussianForwardModel");
-                //OnPropertyChanged("ForwardSolver");
                 OnPropertyChanged("IsMultiRegion");
                 OnPropertyChanged("IsSemiInfinite");
                 TissueInputVM = GetTissueInputVM(IsMultiRegion ? "MultiLayer" : "SemiInfinite");
@@ -109,7 +108,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
                     // if the independent axis is wavelength, then hide optical properties (because they come from spectral panel)
                     ShowOpticalProperties =
-                        !_allRangeVMs.Any(value => value.AxisType == IndependentVariableAxis.Wavelength);
+                        _allRangeVMs.All(value => value.AxisType != IndependentVariableAxis.Wavelength);
 
                     // update solution domain wavelength constant if applicable
                     if (useSpectralPanelDataAndNotNull &&
@@ -334,7 +333,7 @@ namespace Vts.Gui.Wpf.ViewModel
             var sd = SolutionDomainTypeOptionVM;
             var axesLabels = new PlotAxesLabels(
                 sd.SelectedDisplayName, sd.SelectedValue.GetUnits(),
-                sd.IndependentAxesVMs.Where(vm => vm.AxisType == AllRangeVMs.First().AxisType).First(),
+                sd.IndependentAxesVMs.First(vm => vm.AxisType == AllRangeVMs.First().AxisType),
                 sd.ConstantAxesVMs);
             return axesLabels;
         }
@@ -495,15 +494,14 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 var isWavelengthPlot = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
                 var secondaryRangeVM = isWavelengthPlot
-                    ? _allRangeVMs.Where(vm => vm.AxisType != IndependentVariableAxis.Wavelength).First()
-                    : _allRangeVMs.Where(
-                        vm => vm.AxisType != IndependentVariableAxis.Time && vm.AxisType != IndependentVariableAxis.Ft)
-                        .First();
+                    ? _allRangeVMs.First(vm => vm.AxisType != IndependentVariableAxis.Wavelength)
+                    : _allRangeVMs
+                        .First(vm => vm.AxisType != IndependentVariableAxis.Time && vm.AxisType != IndependentVariableAxis.Ft);
 
                 var secondaryAxesStrings =
                     secondaryRangeVM.Values.Select(
                         value =>
-                            "\r" + secondaryRangeVM.AxisType.GetInternationalizedString() + " = " + value.ToString())
+                            "\r" + secondaryRangeVM.AxisType.GetInternationalizedString() + " = " + value)
                         .ToArray();
                 return
                     secondaryAxesStrings.Select(

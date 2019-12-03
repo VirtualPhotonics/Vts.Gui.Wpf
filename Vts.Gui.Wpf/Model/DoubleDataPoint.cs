@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Vts.Gui.Wpf.Model
 {
-    public class DoubleDataPoint : IDataPoint, IEqualityComparer<DoubleDataPoint>
+    public sealed class DoubleDataPoint : IDataPoint, IEquatable<DoubleDataPoint>, IEqualityComparer<DoubleDataPoint>
     {
         /// <summary>
         /// The constructor for the DoubleDataPoint that initializes a DoubleDataPoint object
