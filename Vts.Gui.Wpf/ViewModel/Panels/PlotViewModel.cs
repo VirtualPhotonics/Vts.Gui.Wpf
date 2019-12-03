@@ -63,44 +63,44 @@ namespace Vts.Gui.Wpf.ViewModel
     /// </summary>
     public class PlotViewModel : BindableObject
     {
-        private bool _AutoScaleX;
-        private bool _AutoScaleY;
-        private IndependentVariableAxis _CurrentIndependentVariableAxis;
-        private string _CustomPlotLabel;
+        private bool _autoScaleX;
+        private bool _autoScaleY;
+        private IndependentVariableAxis _currentIndependentVariableAxis;
+        private string _customPlotLabel;
 
-        private bool _HideKey;
-        private bool _HoldOn;
-        private bool _IsComplexPlot;
-        private IList<string> _Labels;
-        private double _MaxXValue;
-        private double _MaxYValue;
-        private double _MinXValue;
-        private double _MinYValue;
+        private bool _hideKey;
+        private bool _holdOn;
+        private bool _isComplexPlot;
+        private IList<string> _labels;
+        private double _maxXValue;
+        private double _maxYValue;
+        private double _minXValue;
+        private double _minYValue;
         private PlotModel _plotModel;
-        private OptionViewModel<PlotNormalizationType> _PlotNormalizationTypeOptionVM;
-        private PlotPointCollection _PlotSeriesCollection;
-        private IList<string> _PlotTitles;
-        private OptionViewModel<PlotToggleType> _PlotToggleTypeOptionVM;
-        private ReflectancePlotType _PlotType;
+        private OptionViewModel<PlotNormalizationType> _plotNormalizationTypeOptionVm;
+        private PlotPointCollection _plotSeriesCollection;
+        private IList<string> _plotTitles;
+        private OptionViewModel<PlotToggleType> _plotToggleTypeOptionVm;
+        private ReflectancePlotType _plotType;
         // change from Point to our own custom class so we can bind to color, style, etc, too
 
         private int _plotViewId;
-        private bool _ShowAxes;
+        private bool _showAxes;
         private bool _showComplexPlotToggle;
-        private bool _ShowInPlotView;
-        private string _Title;
-        private OptionViewModel<ScalingType> _XAxisSpacingOptionVM;
-        private OptionViewModel<ScalingType> _YAxisSpacingOptionVM;
+        private bool _showInPlotView;
+        private string _title;
+        private OptionViewModel<ScalingType> _xAxisSpacingOptionVm;
+        private OptionViewModel<ScalingType> _yAxisSpacingOptionVm;
 
         public PlotViewModel(int plotViewId = 0)
         {
             _plotViewId = plotViewId;
-            _MinYValue = 1E-9;
-            _MaxYValue = 1.0;
-            _MinXValue = 1E-9;
-            _MaxXValue = 1.0;
-            _AutoScaleX = true;
-            _AutoScaleY = true;
+            _minYValue = 1E-9;
+            _maxYValue = 1.0;
+            _minXValue = 1E-9;
+            _maxXValue = 1.0;
+            _autoScaleX = true;
+            _autoScaleY = true;
 
             RealLabels = new List<string>();
             ImagLabels = new List<string>();
@@ -111,7 +111,6 @@ namespace Vts.Gui.Wpf.ViewModel
             PlotTitles = new List<string>();
             DataSeriesCollection = new List<DataPointCollection>();
             PlotSeriesCollection = new PlotPointCollection();
-            //IsComplexPlot = false;
 
             PlotModel = new PlotModel
             {
@@ -134,29 +133,26 @@ namespace Vts.Gui.Wpf.ViewModel
                 }
             };
             PlotType = ReflectancePlotType.ForwardSolver;
-            _HoldOn = true;
-            _HideKey = false;
-            _ShowInPlotView = true;
-            _ShowAxes = false;
+            _holdOn = true;
+            _hideKey = false;
+            _showInPlotView = true;
+            _showAxes = false;
             _showComplexPlotToggle = false;
 
-            XAxisSpacingOptionVM = new OptionViewModel<ScalingType>("XAxisSpacing_" + _plotViewId, false);
-            XAxisSpacingOptionVM.PropertyChanged += (sender, args) => UpdatePlotSeries();
+            XAxisSpacingOptionVm = new OptionViewModel<ScalingType>("XAxisSpacing_" + _plotViewId, false);
+            XAxisSpacingOptionVm.PropertyChanged += (sender, args) => UpdatePlotSeries();
 
-            YAxisSpacingOptionVM = new OptionViewModel<ScalingType>("YAxisSpacing_" + _plotViewId, false);
-            YAxisSpacingOptionVM.PropertyChanged += (sender, args) => UpdatePlotSeries();
+            YAxisSpacingOptionVm = new OptionViewModel<ScalingType>("YAxisSpacing_" + _plotViewId, false);
+            YAxisSpacingOptionVm.PropertyChanged += (sender, args) => UpdatePlotSeries();
 
-            PlotToggleTypeOptionVM = new OptionViewModel<PlotToggleType>("ToggleType_" + _plotViewId, false);
-            PlotToggleTypeOptionVM.PropertyChanged += (sender, args) => UpdatePlotSeries();
+            PlotToggleTypeOptionVm = new OptionViewModel<PlotToggleType>("ToggleType_" + _plotViewId, false);
+            PlotToggleTypeOptionVm.PropertyChanged += (sender, args) => UpdatePlotSeries();
 
-            PlotNormalizationTypeOptionVM =
+            PlotNormalizationTypeOptionVm =
                 new OptionViewModel<PlotNormalizationType>("NormalizationType_" + _plotViewId, false);
-            PlotNormalizationTypeOptionVM.PropertyChanged += (sender, args) => UpdatePlotSeries();
+            PlotNormalizationTypeOptionVm.PropertyChanged += (sender, args) => UpdatePlotSeries();
 
             CustomPlotLabel = "";
-
-            //Commands.Plot_PlotValues.Executed += Plot_Executed;
-            //Commands.Plot_SetAxesLabels.Executed += Plot_SetAxesLabels_Executed;
 
             PlotValues = new RelayCommand<Array>(Plot_Executed);
             SetAxesLabels = new RelayCommand<object>(Plot_SetAxesLabels_Executed);
@@ -178,7 +174,6 @@ namespace Vts.Gui.Wpf.ViewModel
         private string YAxis { get; set; }
 
         private List<DataPointCollection> DataSeriesCollection { get; set; }
-        //private IList<IList<IDataPoint>> DataSeriesCollectionToggle { get; set; }
         private IList<string> RealLabels { get; set; }
         private IList<string> ImagLabels { get; set; }
         private IList<string> PhaseLabels { get; set; }
@@ -186,7 +181,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public PlotModel PlotModel
         {
-            get { return _plotModel; }
+            get => _plotModel;
             set
             {
                 _plotModel = value;
@@ -196,50 +191,50 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public PlotPointCollection PlotSeriesCollection
         {
-            get { return _PlotSeriesCollection; }
+            get => _plotSeriesCollection;
             set
             {
-                _PlotSeriesCollection = value;
+                _plotSeriesCollection = value;
                 OnPropertyChanged("PlotSeriesCollection");
             }
         }
 
         public string Title
         {
-            get { return _Title; }
+            get => _title;
             set
             {
-                _Title = value;
+                _title = value;
                 OnPropertyChanged("Title");
             }
         }
 
         public ReflectancePlotType PlotType
         {
-            get { return _PlotType; }
+            get => _plotType;
             set
             {
-                _PlotType = value;
+                _plotType = value;
                 OnPropertyChanged("PlotType");
             }
         }
 
         public bool HoldOn
         {
-            get { return _HoldOn; }
+            get => _holdOn;
             set
             {
-                _HoldOn = value;
+                _holdOn = value;
                 OnPropertyChanged("HoldOn");
             }
         }
 
         public bool HideKey
         {
-            get { return _HideKey; }
+            get => _hideKey;
             set
             {
-                _HideKey = value;
+                _hideKey = value;
                 OnPropertyChanged("HideKey");
                 UpdatePlotSeries();
             }
@@ -247,27 +242,27 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool ShowInPlotView
         {
-            get { return _ShowInPlotView; }
+            get => _showInPlotView;
             set
             {
-                _ShowInPlotView = value;
+                _showInPlotView = value;
                 OnPropertyChanged("ShowInPlotView");
             }
         }
 
         public bool ShowAxes
         {
-            get { return _ShowAxes; }
+            get => _showAxes;
             set
             {
-                _ShowAxes = value;
+                _showAxes = value;
                 OnPropertyChanged("ShowAxes");
             }
         }
 
         public bool ShowComplexPlotToggle
         {
-            get { return _showComplexPlotToggle; }
+            get => _showComplexPlotToggle;
             set
             {
                 _showComplexPlotToggle = value;
@@ -275,99 +270,99 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public OptionViewModel<ScalingType> XAxisSpacingOptionVM
+        public OptionViewModel<ScalingType> XAxisSpacingOptionVm
         {
-            get { return _XAxisSpacingOptionVM; }
+            get => _xAxisSpacingOptionVm;
             set
             {
-                _XAxisSpacingOptionVM = value;
-                OnPropertyChanged("XAxisSpacingOptionVM");
+                _xAxisSpacingOptionVm = value;
+                OnPropertyChanged("XAxisSpacingOptionVm");
             }
         }
 
-        public OptionViewModel<ScalingType> YAxisSpacingOptionVM
+        public OptionViewModel<ScalingType> YAxisSpacingOptionVm
         {
-            get { return _YAxisSpacingOptionVM; }
+            get => _yAxisSpacingOptionVm;
             set
             {
-                _YAxisSpacingOptionVM = value;
-                OnPropertyChanged("YAxisSpacingOptionVM");
+                _yAxisSpacingOptionVm = value;
+                OnPropertyChanged("YAxisSpacingOptionVm");
             }
         }
 
-        public OptionViewModel<PlotToggleType> PlotToggleTypeOptionVM
+        public OptionViewModel<PlotToggleType> PlotToggleTypeOptionVm
         {
-            get { return _PlotToggleTypeOptionVM; }
+            get => _plotToggleTypeOptionVm;
             set
             {
-                _PlotToggleTypeOptionVM = value;
-                OnPropertyChanged("PlotToggleTypeOptionVM");
+                _plotToggleTypeOptionVm = value;
+                OnPropertyChanged("PlotToggleTypeOptionVm");
             }
         }
 
         public IndependentVariableAxis CurrentIndependentVariableAxis
         {
-            get { return _CurrentIndependentVariableAxis; }
+            get => _currentIndependentVariableAxis;
             set
             {
                 // if user switches independent variable, clear plot
-                if (_CurrentIndependentVariableAxis != value && ShowInPlotView)
+                if (_currentIndependentVariableAxis != value && ShowInPlotView)
                 {
                     ClearPlot();
                     WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
                         StringLookup.GetLocalizedString("Message_PlotViewCleared") + "\r");
                 }
-                _CurrentIndependentVariableAxis = value;
+                _currentIndependentVariableAxis = value;
                 OnPropertyChanged("CurrentIndependentVariableAxis");
             }
         }
 
-        public OptionViewModel<PlotNormalizationType> PlotNormalizationTypeOptionVM
+        public OptionViewModel<PlotNormalizationType> PlotNormalizationTypeOptionVm
         {
-            get { return _PlotNormalizationTypeOptionVM; }
+            get => _plotNormalizationTypeOptionVm;
             set
             {
-                _PlotNormalizationTypeOptionVM = value;
-                OnPropertyChanged("PlotNormalizationTypeOptionVM");
+                _plotNormalizationTypeOptionVm = value;
+                OnPropertyChanged("PlotNormalizationTypeOptionVm");
             }
         }
 
         public string CustomPlotLabel
         {
-            get { return _CustomPlotLabel; }
+            get => _customPlotLabel;
             set
             {
-                _CustomPlotLabel = value;
+                _customPlotLabel = value;
                 OnPropertyChanged("CustomPlotLabel");
             }
         }
 
         public IList<string> Labels
         {
-            get { return _Labels; }
+            get => _labels;
             set
             {
-                _Labels = value;
+                _labels = value;
                 OnPropertyChanged("Labels");
             }
         }
 
         public IList<string> PlotTitles
         {
-            get { return _PlotTitles; }
+            get => _plotTitles;
             set
             {
-                _PlotTitles = value;
+                _plotTitles = value;
                 OnPropertyChanged("PlotTitles");
             }
         }
 
         public bool AutoScaleX
         {
-            get { return _AutoScaleX; }
+            get => _autoScaleX;
             set
             {
-                _AutoScaleX = value;
+                _autoScaleX = value;
                 OnPropertyChanged("AutoScaleX");
                 OnPropertyChanged("ManualScaleX");
             }
@@ -375,10 +370,10 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool AutoScaleY
         {
-            get { return _AutoScaleY; }
+            get => _autoScaleY;
             set
             {
-                _AutoScaleY = value;
+                _autoScaleY = value;
                 OnPropertyChanged("AutoScaleY");
                 OnPropertyChanged("ManualScaleY");
             }
@@ -386,10 +381,10 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool ManualScaleX
         {
-            get { return !_AutoScaleX; }
+            get => !_autoScaleX;
             set
             {
-                _AutoScaleX = !value;
+                _autoScaleX = !value;
                 OnPropertyChanged("ManualScaleX");
                 OnPropertyChanged("AutoScaleX");
             }
@@ -397,10 +392,10 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool ManualScaleY
         {
-            get { return !_AutoScaleY; }
+            get => !_autoScaleY;
             set
             {
-                _AutoScaleY = !value;
+                _autoScaleY = !value;
                 OnPropertyChanged("ManualScaleY");
                 OnPropertyChanged("AutoScaleY");
             }
@@ -408,40 +403,40 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public double MinXValue
         {
-            get { return _MinXValue; }
+            get => _minXValue;
             set
             {
-                _MinXValue = value;
+                _minXValue = value;
                 OnPropertyChanged("MinXValue");
             }
         }
 
         public double MaxXValue
         {
-            get { return _MaxXValue; }
+            get => _maxXValue;
             set
             {
-                _MaxXValue = value;
+                _maxXValue = value;
                 OnPropertyChanged("MaxXValue");
             }
         }
 
         public double MinYValue
         {
-            get { return _MinYValue; }
+            get => _minYValue;
             set
             {
-                _MinYValue = value;
+                _minYValue = value;
                 OnPropertyChanged("MinYValue");
             }
         }
 
         public double MaxYValue
         {
-            get { return _MaxYValue; }
+            get => _maxYValue;
             set
             {
-                _MaxYValue = value;
+                _maxYValue = value;
                 OnPropertyChanged("MaxYValue");
             }
         }
@@ -451,7 +446,6 @@ namespace Vts.Gui.Wpf.ViewModel
             var vm = Clone();
             vm.UpdatePlotSeries();
             MainWindow.Current.Main_DuplicatePlotView_Executed(vm);
-            //Commands.Main_DuplicatePlotView.Execute(vm, vm);
         }
 
         public PlotViewModel Clone()
@@ -464,42 +458,40 @@ namespace Vts.Gui.Wpf.ViewModel
             var output = new PlotViewModel(plotToClone._plotViewId + 1);
             plotToClone._plotViewId += 1;
 
-            //Commands.Plot_PlotValues.Executed -= output.Plot_Executed;
-
-            output._Title = plotToClone._Title;
-            output._PlotTitles = plotToClone._PlotTitles.ToList();
-            output._PlotType = plotToClone._PlotType;
-            output._HoldOn = plotToClone._HoldOn;
-            output._PlotSeriesCollection = new PlotPointCollection();
-            output._Labels = plotToClone._Labels.ToList();
-            output._CustomPlotLabel = plotToClone._CustomPlotLabel;
+            output._title = plotToClone._title;
+            output._plotTitles = plotToClone._plotTitles.ToList();
+            output._plotType = plotToClone._plotType;
+            output._holdOn = plotToClone._holdOn;
+            output._plotSeriesCollection = new PlotPointCollection();
+            output._labels = plotToClone._labels.ToList();
+            output._customPlotLabel = plotToClone._customPlotLabel;
             output.ShowInPlotView = false;
-            output._HideKey = plotToClone.HideKey;
-            output._ShowAxes = plotToClone._ShowAxes;
-            output._MinYValue = plotToClone._MinYValue;
-            output._MaxYValue = plotToClone._MaxYValue;
-            output._MinXValue = plotToClone._MinXValue;
-            output._MaxXValue = plotToClone._MaxXValue;
-            output._AutoScaleX = plotToClone._AutoScaleX;
-            output._AutoScaleY = plotToClone._AutoScaleY;
-            output._IsComplexPlot = plotToClone._IsComplexPlot;
-            output._CurrentIndependentVariableAxis = plotToClone._CurrentIndependentVariableAxis;
+            output._hideKey = plotToClone.HideKey;
+            output._showAxes = plotToClone._showAxes;
+            output._minYValue = plotToClone._minYValue;
+            output._maxYValue = plotToClone._maxYValue;
+            output._minXValue = plotToClone._minXValue;
+            output._maxXValue = plotToClone._maxXValue;
+            output._autoScaleX = plotToClone._autoScaleX;
+            output._autoScaleY = plotToClone._autoScaleY;
+            output._isComplexPlot = plotToClone._isComplexPlot;
+            output._currentIndependentVariableAxis = plotToClone._currentIndependentVariableAxis;
 
             output.RealLabels = plotToClone.RealLabels;
             output.ImagLabels = plotToClone.ImagLabels;
             output.PhaseLabels = plotToClone.PhaseLabels;
             output.AmplitudeLabels = plotToClone.AmplitudeLabels;
 
-            output._YAxisSpacingOptionVM.Options[output._YAxisSpacingOptionVM.SelectedValue].IsSelected = false;
-            output._PlotNormalizationTypeOptionVM.Options[output._PlotNormalizationTypeOptionVM.SelectedValue]
+            output._yAxisSpacingOptionVm.Options[output._yAxisSpacingOptionVm.SelectedValue].IsSelected = false;
+            output._plotNormalizationTypeOptionVm.Options[output._plotNormalizationTypeOptionVm.SelectedValue]
                 .IsSelected = false;
-            output._PlotToggleTypeOptionVM.Options[output._PlotToggleTypeOptionVM.SelectedValue].IsSelected = false;
-            output._XAxisSpacingOptionVM.Options[output._XAxisSpacingOptionVM.SelectedValue].IsSelected = false;
-            output._YAxisSpacingOptionVM.Options[plotToClone._YAxisSpacingOptionVM.SelectedValue].IsSelected = true;
-            output._PlotNormalizationTypeOptionVM.Options[plotToClone._PlotNormalizationTypeOptionVM.SelectedValue]
+            output._plotToggleTypeOptionVm.Options[output._plotToggleTypeOptionVm.SelectedValue].IsSelected = false;
+            output._xAxisSpacingOptionVm.Options[output._xAxisSpacingOptionVm.SelectedValue].IsSelected = false;
+            output._yAxisSpacingOptionVm.Options[plotToClone._yAxisSpacingOptionVm.SelectedValue].IsSelected = true;
+            output._plotNormalizationTypeOptionVm.Options[plotToClone._plotNormalizationTypeOptionVm.SelectedValue]
                 .IsSelected = true;
-            output._PlotToggleTypeOptionVM.Options[plotToClone._PlotToggleTypeOptionVM.SelectedValue].IsSelected = true;
-            output._XAxisSpacingOptionVM.Options[plotToClone._XAxisSpacingOptionVM.SelectedValue].IsSelected = true;
+            output._plotToggleTypeOptionVm.Options[plotToClone._plotToggleTypeOptionVm.SelectedValue].IsSelected = true;
+            output._xAxisSpacingOptionVm.Options[plotToClone._xAxisSpacingOptionVm.SelectedValue].IsSelected = true;
 
             output.DataSeriesCollection =
                 plotToClone.DataSeriesCollection.Select(
@@ -510,9 +502,6 @@ namespace Vts.Gui.Wpf.ViewModel
                             ColorTag = ds.ColorTag,
                             Title = ds.Title
                         }).ToList();
-            //output.DataSeriesCollectionToggle =
-            //    plotToClone.DataSeriesCollectionToggle.Select(ds => (IList<IDataPoint>)ds.Select(val => val).ToList()).ToList();
-
             return output;
         }
 
@@ -529,9 +518,8 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void Plot_SetAxesLabels_Executed(object sender)
         {
-            if (sender is PlotAxesLabels)
+            if (sender is PlotAxesLabels labels)
             {
-                var labels = (PlotAxesLabels) sender;
                 // set CurrentIndependtVariableAxis prior to setting Title because property
                 // might ClearPlot including Title
                 CurrentIndependentVariableAxis = labels.IndependentAxis.AxisType;
@@ -562,7 +550,7 @@ namespace Vts.Gui.Wpf.ViewModel
         /// <param name="e"></param>
         private void Plot_ExportDataToText_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_Labels != null && _Labels.Count > 0 && _PlotSeriesCollection != null && _PlotSeriesCollection.Count > 0)
+            if (_labels != null && _labels.Count > 0 && _plotSeriesCollection != null && _plotSeriesCollection.Count > 0)
             {
                 // Create SaveFileDialog 
                 var dialog = new SaveFileDialog
@@ -582,20 +570,18 @@ namespace Vts.Gui.Wpf.ViewModel
                     filename = dialog.FileName;
                 }
                 if (filename == "") return;
-                using (var stream = new FileStream(filename, FileMode.Create))
+                var stream = new FileStream(filename, FileMode.Create);
+                using (var sw = new StreamWriter(stream))
                 {
-                    using (var sw = new StreamWriter(stream))
+                    sw.Write("%");
+                    _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Y)" + "\t"));
+                    sw.WriteLine();
+                    for (var i = 0; i < _plotSeriesCollection[0].Length; i++)
                     {
-                        sw.Write("%");
-                        _Labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Y)" + "\t"));
                         sw.WriteLine();
-                        for (var i = 0; i < _PlotSeriesCollection[0].Length; i++)
+                        foreach (var t in _plotSeriesCollection)
                         {
-                            sw.WriteLine();
-                            foreach (var t in _PlotSeriesCollection)
-                            {
-                                sw.Write(t[i].X + "\t" + t[i].Y + "\t");
-                            }
+                            sw.Write(t[i].X + "\t" + t[i].Y + "\t");
                         }
                     }
                 }
@@ -616,17 +602,15 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void Plot_Executed(Array arr)
         {
-            var data = arr as PlotData[];
-            if (data != null)
+            if (arr is PlotData[] data)
             {
                 AddValuesToPlotData(data);
             }
         }
 
-        //static int labelCounter = 0;
         private void AddValuesToPlotData(PlotData[] plotData)
         {
-            if (!_HoldOn)
+            if (!_holdOn)
             {
                 ClearPlot();
             }
@@ -731,9 +715,9 @@ namespace Vts.Gui.Wpf.ViewModel
                     !double.IsNaN(p.Y);
 
             //check if any normalization is selected 
-            var normToCurve = PlotNormalizationTypeOptionVM.SelectedValue == PlotNormalizationType.RelativeToCurve &&
+            var normToCurve = PlotNormalizationTypeOptionVm.SelectedValue == PlotNormalizationType.RelativeToCurve &&
                               DataSeriesCollection.Count > 1;
-            var normToMax = PlotNormalizationTypeOptionVM.SelectedValue == PlotNormalizationType.RelativeToMax &&
+            var normToMax = PlotNormalizationTypeOptionVm.SelectedValue == PlotNormalizationType.RelativeToMax &&
                             DataSeriesCollection.Count > 0;
 
             var tempPointArrayA = new List<Point>();
@@ -752,7 +736,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 if (normToMax)
                 {
                     var points = dataPointCollection.DataPoints.Cast<ComplexDataPoint>().ToArray();
-                    switch (PlotToggleTypeOptionVM.SelectedValue)
+                    switch (PlotToggleTypeOptionVm.SelectedValue)
                     {
                         case PlotToggleType.Phase:
                             max = points.Select(p => p.Y.Phase * (-180/Math.PI)).Max();
@@ -786,8 +770,8 @@ namespace Vts.Gui.Wpf.ViewModel
                 var curveIndex = 0;
                 foreach (var dp in dataPointCollection.DataPoints.Cast<ComplexDataPoint>())
                 {
-                    x = XAxisSpacingOptionVM.SelectedValue == ScalingType.Log ? Math.Log10(dp.X) : dp.X;
-                    switch (PlotToggleTypeOptionVM.SelectedValue)
+                    x = XAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(dp.X) : dp.X;
+                    switch (PlotToggleTypeOptionVm.SelectedValue)
                     {
                         case PlotToggleType.Phase:
                             y = -(dp.Y.Phase*(180/Math.PI));
@@ -796,7 +780,7 @@ namespace Vts.Gui.Wpf.ViewModel
                             {
                                 y += 360;
                             }
-                            switch (PlotNormalizationTypeOptionVM.SelectedValue)
+                            switch (PlotNormalizationTypeOptionVm.SelectedValue)
                             {
                                 case PlotNormalizationType.RelativeToCurve:
                                     var curveY = normToCurve && tempPh != null ? tempPh[curveIndex] : 1.0;
@@ -809,7 +793,7 @@ namespace Vts.Gui.Wpf.ViewModel
                             break;
                         case PlotToggleType.Amp:
                             y = dp.Y.Magnitude;
-                            switch (PlotNormalizationTypeOptionVM.SelectedValue)
+                            switch (PlotNormalizationTypeOptionVm.SelectedValue)
                             {
                                 case PlotNormalizationType.RelativeToCurve:
                                     var curveY = normToCurve && tempAmp != null ? tempAmp[curveIndex] : 1.0;
@@ -822,7 +806,7 @@ namespace Vts.Gui.Wpf.ViewModel
                             break;
                         default: // case PlotToggleType.Complex:
                             y = dp.Y.Real;
-                            switch (PlotNormalizationTypeOptionVM.SelectedValue)
+                            switch (PlotNormalizationTypeOptionVm.SelectedValue)
                             {
                                 case PlotNormalizationType.RelativeToCurve:
                                     var curveY = normToCurve && tempRe != null ? tempRe[curveIndex] : 1.0;                                   
@@ -833,7 +817,7 @@ namespace Vts.Gui.Wpf.ViewModel
                                     y = y/max;
                                     break;
                             }
-                            y = YAxisSpacingOptionVM.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
+                            y = YAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
                             var p = new DataPoint(x, y);
                             if (isValidDataPoint(p) && isWithinAxes(p))
                             {
@@ -843,7 +827,7 @@ namespace Vts.Gui.Wpf.ViewModel
                             }
                             y = dp.Y.Imaginary;
                             //break; // handle imag within switch
-                            switch (PlotNormalizationTypeOptionVM.SelectedValue)
+                            switch (PlotNormalizationTypeOptionVm.SelectedValue)
                             {
                                 case PlotNormalizationType.RelativeToCurve:
                                     var curveY = normToCurve && tempIm != null ? tempIm[curveIndex] : 1.0;
@@ -867,7 +851,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     //        y = y/max;
                     //        break;
                     //}
-                    y = YAxisSpacingOptionVM.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
+                    y = YAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
                     var point = new DataPoint(x, y);
                     if (isValidDataPoint(point) && isWithinAxes(point))
                     {
@@ -897,8 +881,8 @@ namespace Vts.Gui.Wpf.ViewModel
                 var curveIndex = 0;
                 foreach (var dp in dataPointCollection.DataPoints.Cast<DoubleDataPoint>())
                 {
-                    x = XAxisSpacingOptionVM.SelectedValue == ScalingType.Log ? Math.Log10(dp.X) : dp.X;
-                    switch (PlotNormalizationTypeOptionVM.SelectedValue)
+                    x = XAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(dp.X) : dp.X;
+                    switch (PlotNormalizationTypeOptionVm.SelectedValue)
                     {
                         case PlotNormalizationType.RelativeToCurve:
                             var curveY = normToCurve && tempY != null ? tempY[curveIndex] : 1.0;
@@ -911,7 +895,7 @@ namespace Vts.Gui.Wpf.ViewModel
                             y = dp.Y;
                             break;
                     }
-                    y = YAxisSpacingOptionVM.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
+                    y = YAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
                     var point = new DataPoint(x, y);
                     if (isValidDataPoint(point) && isWithinAxes(point))
                     {
@@ -924,7 +908,7 @@ namespace Vts.Gui.Wpf.ViewModel
             }
             if (ShowComplexPlotToggle)
             {
-                switch (PlotToggleTypeOptionVM.SelectedValue)
+                switch (PlotToggleTypeOptionVm.SelectedValue)
                 {
                     case PlotToggleType.Complex:
                         lineSeriesA.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_Imaginary");
@@ -972,7 +956,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 ConstuctPlot(series);
             }
             CalculateMinMax();
-            PlotModel.IsLegendVisible = !_HideKey;
+            PlotModel.IsLegendVisible = !_hideKey;
             PlotModel.InvalidatePlot(true);
         }
     }

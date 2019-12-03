@@ -46,10 +46,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         public void verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new PlotViewModel();
-            Assert.IsTrue(viewModel.XAxisSpacingOptionVM != null);
-            Assert.IsTrue(viewModel.YAxisSpacingOptionVM != null);
-            Assert.IsTrue(viewModel.PlotToggleTypeOptionVM != null);
-            Assert.IsTrue(viewModel.PlotNormalizationTypeOptionVM != null);
+            Assert.IsTrue(viewModel.XAxisSpacingOptionVm != null);
+            Assert.IsTrue(viewModel.YAxisSpacingOptionVm != null);
+            Assert.IsTrue(viewModel.PlotToggleTypeOptionVm != null);
+            Assert.IsTrue(viewModel.PlotNormalizationTypeOptionVm != null);
             Assert.AreEqual(viewModel.CustomPlotLabel,"");
             Assert.AreEqual(viewModel.PlotType, ReflectancePlotType.ForwardSolver);
             Assert.AreEqual(viewModel.PlotModel.Title, "");

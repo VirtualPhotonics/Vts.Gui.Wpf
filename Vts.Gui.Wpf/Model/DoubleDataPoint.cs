@@ -1,136 +1,107 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
 namespace Vts.Gui.Wpf.Model
 {
-    public class DoubleDataPoint : IDataPoint
+    public class DoubleDataPoint : IDataPoint, IEqualityComparer<DoubleDataPoint>
     {
-        //
-        // Summary:
-        //     Initializes a DoubleDataPoint structure that contains the specified
-        //     values.
-        //
-        // Parameters:
-        //   x:
-        //     The x-coordinate value of the DoubleDataPoint structure.
-        //
-        //   y:
-        //     The y-coordinate value of the DoubleDataPoint structure.
+        /// <summary>
+        /// The constructor for the DoubleDataPoint that initializes a DoubleDataPoint object
+        /// with the specified x and y values.
+        /// </summary>
+        /// <param name="x">The x-coordinate value of the DoubleDataPoint</param>
+        /// <param name="y">The y-coordinate value of the DoubleDataPoint</param>
         public DoubleDataPoint(double x, double y)
         {
             X = x;
             Y = y;
         }
 
-        //
-        // Summary:
-        //     Gets or sets the X-coordinate value
-        //
-        // Returns:
-        //     The X-coordinate value of this
-        //     structure. The default value is 0.
+        /// <summary>
+        /// The X-coordinate value of this DoubleDataPoint
+        /// </summary>
         public double X { get; set; }
 
-        //
-        // Summary:
-        //     Gets or sets the Y-coordinate value 
-        //
-        // Returns:
-        //     The SY-coordinate value of this
-        //     structure. The default value is 0.
+        /// <summary>
+        /// The Y-coordinate value of this DoubleDataPoint
+        /// </summary>
         public double Y { get; set; }
 
-        // Summary:
-        //     Compares two DoubleDataPoint structures for inequality
-        //
-        // Parameters:
-        //   point1:
-        //     The first point to compare.
-        //
-        //   point2:
-        //     The second point to compare.
-        //
-        // Returns:
-        //     true if point1 and point2 have different DoubleDataPoint.X or DoubleDataPoint.Y
-        //     values; false if point1 and point2 have the same DoubleDataPoint.X and
-        //     DoubleDataPoint.Y values.
-        public static bool operator !=(DoubleDataPoint point1, DoubleDataPoint point2)
-        {
-            return point1.X != point2.X || point1.Y != point2.Y;
-        }
-
-        //
-        // Summary:
-        //     Compares two DoubleDataPoint structures for equality.
-        //
-        // Parameters:
-        //   point1:
-        //     The first System.Windows.Point structure to compare.
-        //
-        //   point2:
-        //     The second System.Windows.Point structure to compare.
-        //
-        // Returns:
-        //     true if both the DoubleDataPoint.X and DoubleDataPoint.Y values
-        //     of point1 and point2 are equal; otherwise, false.
-        public static bool operator ==(DoubleDataPoint point1, DoubleDataPoint point2)
-        {
-            return point1.X == point2.X && point1.Y == point2.Y;
-        }
-
-        // Summary:
-        //     Determines whether the specified object is a DoubleDataPoint and whether
-        //     it contains the same values as this DoubleDataPoint.
-        //
-        // Parameters:
-        //   o:
-        //     The object to compare.
-        //
-        // Returns:
-        //     true if obj is a DoubleDataPoint and contains the same DoubleDataPoint.X
-        //     and DoubleDataPoint.Y values as this DoubleDataPoint; otherwise,
-        //     false.
+        /// <summary>
+        /// Determines whether the specified object is a DoubleDataPoint and whether
+        /// it contains the same values as this DoubleDataPoint.
+        /// </summary>
+        /// <param name="obj">The object to compare for equality</param>
+        /// <returns>
+        /// Returns true if obj is a DoubleDataPoint and contains the same DoubleDataPoint.X
+        /// and DoubleDataPoint.Y values as this DoubleDataPoint; otherwise, false.
+        /// </returns>
         public override bool Equals(object obj)
         {
             return Equals((DoubleDataPoint) obj);
         }
 
-        //
-        // Summary:
-        //     Compares two DoubleDataPoint structures for equality.
-        //
-        // Parameters:
-        //   value:
-        //     The point to compare to this instance.
-        //
-        // Returns:
-        //     true if both DoubleDataPoint structures contain the same DoubleDataPoint.X
-        //     and DoubleDataPoint.Y values; otherwise, false.
+        /// <summary>
+        /// Compares two DoubleDataPoint structures for equality.
+        /// </summary>
+        /// <param name="value">The DoubleDataPoint to compare to this instance.</param>
+        /// <returns>
+        /// Returns true if both DoubleDataPoint structures contain the same DoubleDataPoint.X
+        /// and DoubleDataPoint.Y values; otherwise, false.
+        /// </returns>
         public bool Equals(DoubleDataPoint value)
         {
             return X == value.X && Y == value.Y;
         }
 
-        //
-        // Summary:
-        //     Returns the hash code for this DoubleDataPoint.
-        //
-        // Returns:
-        //     The hash code for this DoubleDataPoint structure.
-        public override int GetHashCode()
+        /// <summary>
+        /// Compares two DoubleDataPoint structures for equality.
+        /// </summary>
+        /// <param name="x">The first DoubleDataPoint to compare equality.</param>
+        /// <param name="y">The second DoubleDataPoint to compare equality.</param>
+        /// <returns>
+        /// Returns true if both DoubleDataPoint structures contain the same DoubleDataPoint.X
+        /// and DoubleDataPoint.Y values; otherwise, false.
+        /// </returns>
+        public bool Equals(DoubleDataPoint x, DoubleDataPoint y)
         {
-            throw new NotImplementedException();
+            return x.X == y.X && x.Y == y.Y;
         }
 
-        //
-        // Summary:
-        //     Creates a System.String representation of this DoubleDataPoint.
-        //
-        // Returns:
-        //     A System.String containing the DoubleDataPoint and DoubleDataPoint.Y
-        //     values of this DoubleDataPoint structure.
+        /// <summary>
+        /// Creates a string representation of this DoubleDataPoint
+        /// </summary>
+        /// <returns>
+        /// Returns a string containing the DoubleDataPoint.X and DoubleDataPoint.Y
+        /// values of this DoubleDataPoint object.
+        /// </returns>
         public override string ToString()
         {
             return X + ", " + Y;
+        }
+
+        /// <summary>
+        /// Returns the hash code for this DoubleDataPoint
+        /// </summary>
+        /// <returns>Returns the hash code for this DoubleDataPoint</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = 76543890;
+            hashCode = hashCode * -5678 + X.GetHashCode();
+            hashCode = hashCode * -5678 + Y.GetHashCode();
+            return hashCode;
+        }
+
+        /// <summary>
+        /// Returns the hash code for this DoubleDataPoint
+        /// </summary>
+        /// <param name="obj">The DoubleDataPoint</param>
+        /// <returns>Returns the hash code for this DoubleDataPoint</returns>
+        public int GetHashCode(DoubleDataPoint obj)
+        {
+            var hashCode = 76543890;
+            hashCode = hashCode * -5678 + obj.X.GetHashCode();
+            hashCode = hashCode * -5678 + obj.Y.GetHashCode();
+            return hashCode;
         }
     }
 }

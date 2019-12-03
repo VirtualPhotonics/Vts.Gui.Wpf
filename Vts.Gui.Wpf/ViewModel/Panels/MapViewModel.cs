@@ -16,18 +16,18 @@ namespace Vts.Gui.Wpf.ViewModel
 {
     public class MapViewModel : BindableObject
     {
-        private static byte a, r, g, b;
-        private bool _AutoScale;
+        private byte _a, _r, _g, _b;
+        private bool _autoScale;
         private Colormap _colormap;
 
-        private OptionViewModel<ColormapType> _ColormapTypeOptionVM;
+        private OptionViewModel<ColormapType> _colormapTypeOptionVm;
 
         private MapData _mapData;
         private int _mapViewId;
-        private double _MaxValue;
-        private double _MinValue;
-        private OptionViewModel<ScalingType> _ScalingTypeOptionVM;
-        private Thickness _ZMax;
+        private double _maxValue;
+        private double _minValue;
+        private OptionViewModel<ScalingType> _scalingTypeOptionVm;
+        private Thickness _zMax;
 
         public MapViewModel(int MapViewId = 0)
         {
@@ -36,22 +36,21 @@ namespace Vts.Gui.Wpf.ViewModel
             MaxValue = 1.0;
             AutoScale = false;
 
-            ScalingTypeOptionVM =
+            ScalingTypeOptionVm =
                 new OptionViewModel<ScalingType>(StringLookup.GetLocalizedString("Label_ScalingType") + _mapViewId,
                     false);
-            ScalingTypeOptionVM.PropertyChanged += (sender, args) => UpdateImages();
+            ScalingTypeOptionVm.PropertyChanged += (sender, args) => UpdateImages();
 
-            ColormapTypeOptionVM =
+            ColormapTypeOptionVm =
                 new OptionViewModel<ColormapType>(StringLookup.GetLocalizedString("Label_ColormapType"));
-            ColormapTypeOptionVM.PropertyChanged += (sender, args) =>
+            ColormapTypeOptionVm.PropertyChanged += (sender, args) =>
             {
-                _colormap = new Colormap(ColormapTypeOptionVM.SelectedValue);
+                _colormap = new Colormap(ColormapTypeOptionVm.SelectedValue);
                 UpdateImages();
             };
 
-            _colormap = new Colormap(ColormapTypeOptionVM.SelectedValue);
+            _colormap = new Colormap(ColormapTypeOptionVm.SelectedValue);
 
-            //Commands.Maps_PlotMap.Executed += Maps_PlotMap_Executed;
             PlotMap = new RelayCommand<object>(PlotMap_Executed);
             ClearMap = new RelayCommand<object>(ClearMap_Executed);
 
@@ -71,30 +70,30 @@ namespace Vts.Gui.Wpf.ViewModel
         // todo: ready for updating to automatic properties and IAutoNotifyProperty changed
         public double MinValue
         {
-            get { return _MinValue; }
+            get => _minValue;
             set
             {
-                _MinValue = value;
+                _minValue = value;
                 OnPropertyChanged("MinValue");
             }
         }
 
         public double MaxValue
         {
-            get { return _MaxValue; }
+            get => _maxValue;
             set
             {
-                _MaxValue = value;
+                _maxValue = value;
                 OnPropertyChanged("MaxValue");
             }
         }
 
         public bool ManualScale
         {
-            get { return !_AutoScale; }
+            get => !_autoScale;
             set
             {
-                _AutoScale = !value;
+                _autoScale = !value;
                 OnPropertyChanged("ManualScale");
                 OnPropertyChanged("AutoScale");
             }
@@ -102,10 +101,10 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool AutoScale
         {
-            get { return _AutoScale; }
+            get => _autoScale;
             set
             {
-                _AutoScale = value;
+                _autoScale = value;
                 if (!AutoScale)
                 {
                     MinValue = 1E-9;
@@ -120,31 +119,31 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public Thickness ZMax
         {
-            get { return _ZMax; }
+            get => _zMax;
             set
             {
-                _ZMax = value;
+                _zMax = value;
                 OnPropertyChanged("ZMax");
             }
         }
 
-        public OptionViewModel<ScalingType> ScalingTypeOptionVM
+        public OptionViewModel<ScalingType> ScalingTypeOptionVm
         {
-            get { return _ScalingTypeOptionVM; }
+            get => _scalingTypeOptionVm;
             set
             {
-                _ScalingTypeOptionVM = value;
-                OnPropertyChanged("ScalingTypeOptionVM");
+                _scalingTypeOptionVm = value;
+                OnPropertyChanged("ScalingTypeOptionVm");
             }
         }
 
-        public OptionViewModel<ColormapType> ColormapTypeOptionVM
+        public OptionViewModel<ColormapType> ColormapTypeOptionVm
         {
-            get { return _ColormapTypeOptionVM; }
+            get => _colormapTypeOptionVm;
             set
             {
-                _ColormapTypeOptionVM = value;
-                OnPropertyChanged("ColormapTypeOptionVM");
+                _colormapTypeOptionVm = value;
+                OnPropertyChanged("ColormapTypeOptionVm");
             }
         }
 
@@ -158,11 +157,9 @@ namespace Vts.Gui.Wpf.ViewModel
             var output = new MapViewModel(mapToClone._mapViewId + 1);
             mapToClone._mapViewId += 1;
 
-            //Commands.Maps_PlotMap.Executed -= output.Maps_PlotMap_Executed;
-
-            output._MinValue = mapToClone._MinValue;
-            output._MaxValue = mapToClone._MaxValue;
-            output._AutoScale = mapToClone._AutoScale;
+            output._minValue = mapToClone._minValue;
+            output._maxValue = mapToClone._maxValue;
+            output._autoScale = mapToClone._autoScale;
 
             output._mapData = mapToClone._mapData; // need to clone
             output._colormap = mapToClone._colormap; // need to clone
@@ -172,8 +169,8 @@ namespace Vts.Gui.Wpf.ViewModel
 
             output.YExpectationValue = mapToClone.YExpectationValue;
 
-            output._ColormapTypeOptionVM.Options[mapToClone._ColormapTypeOptionVM.SelectedValue].IsSelected = true;
-            output._ScalingTypeOptionVM.Options[mapToClone._ScalingTypeOptionVM.SelectedValue].IsSelected = true;
+            output._colormapTypeOptionVm.Options[mapToClone._colormapTypeOptionVm.SelectedValue].IsSelected = true;
+            output._scalingTypeOptionVm.Options[mapToClone._scalingTypeOptionVm.SelectedValue].IsSelected = true;
 
             return output;
         }
@@ -200,8 +197,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void PlotMap_Executed(object sender)
         {
-            var mapData = sender as MapData;
-            if (mapData != null)
+            if (sender is MapData mapData)
             {
                 SetBitmapData(mapData);
                 UpdateImages(); // why is this called separately?
@@ -212,7 +208,6 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             var vm = Clone();
             MainWindow.Current.Main_DuplicateMapView_Executed(vm);
-            //Commands.Main_DuplicateMapView.Execute(vm, vm);
         }
 
         private void Maps_ExportDataToText_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -237,20 +232,18 @@ namespace Vts.Gui.Wpf.ViewModel
                     filename = dialog.FileName;
                 }
                 if (filename == "") return;
-                using (var stream = new FileStream(filename, FileMode.Create))
+                var stream = new FileStream(filename, FileMode.Create);
+                using (var sw = new StreamWriter(stream))
                 {
-                    using (var sw = new StreamWriter(stream))
-                    {
-                        sw.Write("% X Values:\t");
-                        _mapData.XValues.ForEach(x => sw.Write(x + "\t"));
-                        sw.WriteLine();
-                        sw.Write("% Y Values:\t");
-                        _mapData.YValues.ForEach(y => sw.Write(y + "\t"));
-                        sw.WriteLine();
-                        sw.Write("% Map Values:\t");
-                        _mapData.RawData.ForEach(val => sw.Write(val + "\t"));
-                        sw.WriteLine();
-                    }
+                    sw.Write("% X Values:\t");
+                    _mapData.XValues.ForEach(x => sw.Write(x + "\t"));
+                    sw.WriteLine();
+                    sw.Write("% Y Values:\t");
+                    _mapData.YValues.ForEach(y => sw.Write(y + "\t"));
+                    sw.WriteLine();
+                    sw.Write("% Map Values:\t");
+                    _mapData.RawData.ForEach(val => sw.Write(val + "\t"));
+                    sw.WriteLine();
                 }
                 //using (var stream = StreamFinder.GetLocalFilestreamFromSaveFileDialog("txt"))
                 //{
@@ -300,12 +293,12 @@ namespace Vts.Gui.Wpf.ViewModel
             var bytesPerPixel = 4;
             var stride = width*bytesPerPixel;
             var imageData = new byte[width*height*bytesPerPixel];
-            switch (ScalingTypeOptionVM.SelectedValue)
+            switch (ScalingTypeOptionVm.SelectedValue)
             {
                 case ScalingType.Linear:
                     for (var i = 0; i < _mapData.RawData.Length; i++)
                     {
-                        var pixel = GetGrayscaleColor(_mapData.RawData[i], _MinValue, _MaxValue);
+                        var pixel = GetGrayscaleColor(_mapData.RawData[i], _minValue, _maxValue);
                         var buffer = BitConverter.GetBytes(pixel);
                         imageData[i*4 + 0] = buffer[0];
                         imageData[i*4 + 1] = buffer[1];
@@ -313,16 +306,15 @@ namespace Vts.Gui.Wpf.ViewModel
                         imageData[i*4 + 3] = buffer[3];
                     }
                     break;
-                case ScalingType.Log:
                 default:
-                    if (_MinValue <= 0.0) _MinValue = 10E-9;
-                    if (_MaxValue <= 0.0) _MaxValue = 10E2;
+                    if (_minValue <= 0.0) _minValue = 10E-9;
+                    if (_maxValue <= 0.0) _maxValue = 10E2;
                     for (var i = 0; i < _mapData.RawData.Length; i++)
                     {
                         if (_mapData.RawData[i] >= 0)
                         {
-                            var pixel = GetGrayscaleColor(Math.Log10(_mapData.RawData[i]), Math.Log10(_MinValue),
-                                Math.Log10(_MaxValue));
+                            var pixel = GetGrayscaleColor(Math.Log10(_mapData.RawData[i]), Math.Log10(_minValue),
+                                Math.Log10(_maxValue));
                             var buffer = BitConverter.GetBytes(pixel);
                             imageData[i*4 + 0] = buffer[0];
                             imageData[i*4 + 1] = buffer[1];
@@ -331,8 +323,8 @@ namespace Vts.Gui.Wpf.ViewModel
                         }
                         else // clamp to Log10(min) if the value goes negative
                         {
-                            var pixel = GetGrayscaleColor(Math.Log10(_MinValue), Math.Log10(_MinValue),
-                                Math.Log10(_MaxValue));
+                            var pixel = GetGrayscaleColor(Math.Log10(_minValue), Math.Log10(_minValue),
+                                Math.Log10(_maxValue));
                             var buffer = BitConverter.GetBytes(pixel);
                             imageData[i*4 + 0] = buffer[0];
                             imageData[i*4 + 1] = buffer[1];
@@ -385,16 +377,12 @@ namespace Vts.Gui.Wpf.ViewModel
 
             var value = (int) Math.Floor(factor*255);
 
-            a = 255;
-            r = _colormap.RedByte[value];
-            g = _colormap.GreenByte[value];
-            b = _colormap.BlueByte[value];
+            _a = 255;
+            _r = _colormap.RedByte[value];
+            _g = _colormap.GreenByte[value];
+            _b = _colormap.BlueByte[value];
 
-            //r = (byte)value;
-            //g = (byte)value;
-            //b = (byte)value;
-
-            return a << 24 | r << 16 | g << 8 | b;
+            return _a << 24 | _r << 16 | _g << 8 | _b;
         }
 
         /// <summary>

@@ -1,126 +1,106 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Numerics;
 
 namespace Vts.Gui.Wpf.Model
 {
-    public class ComplexDataPoint : IDataPoint
+    public class ComplexDataPoint : IDataPoint, IEqualityComparer<ComplexDataPoint>
     {
+        /// <summary>
+        /// Constructor for the ComplexDataPoint
+        /// </summary>
+        /// <param name="x">A double representing the x value</param>
+        /// <param name="y">A Complex number representing the y value</param>
         public ComplexDataPoint(double x, Complex y)
         {
             X = x;
             Y = y;
         }
 
-        //
-        // Summary:
-        //     Gets or sets the X-coordinate value
-        //
-        // Returns:
-        //     The X-coordinate value of this ComplexDataPoint
-        //     structure. The default value is 0.
+        /// <summary>
+        /// The X-coordinate value of this ComplexDataPoint structure.
+        /// </summary>
         public double X { get; set; }
 
-        //
-        // Summary:
-        //     Gets or sets the Y-coordinate value 
-        //
-        // Returns:
-        //     The SY-coordinate value of this ComplexDataPoint
-        //     structure. The default value is 0.
+        /// <summary>
+        /// The SY-coordinate value of this ComplexDataPoint structure.
+        /// </summary>
         public Complex Y { get; set; }
 
-        // Summary:
-        //     Compares two ComplexDataPoint structures for inequality
-        //
-        // Parameters:
-        //   point1:
-        //     The first point to compare.
-        //
-        //   point2:
-        //     The second point to compare.
-        //
-        // Returns:
-        //     true if point1 and point2 have different ComplexDataPoint.X or ComplexDataPoint.Y
-        //     values; false if point1 and point2 have the same ComplexDataPoint.X and
-        //     ComplexDataPoint.Y values.
-        public static bool operator !=(ComplexDataPoint point1, ComplexDataPoint point2)
-        {
-            return point1.X != point2.X || point1.Y != point2.Y;
-        }
-
-        //
-        // Summary:
-        //     Compares two ComplexDataPoint structures for equality.
-        //
-        // Parameters:
-        //   point1:
-        //     The first ComplexDataPoint structure to compare.
-        //
-        //   point2:
-        //     The second ComplexDataPoint structure to compare.
-        //
-        // Returns:
-        //     true if both the ComplexDataPoint.X and ComplexDataPoint.Y values
-        //     of point1 and point2 are equal; otherwise, false.
-        public static bool operator ==(ComplexDataPoint point1, ComplexDataPoint point2)
-        {
-            return point1.X == point2.X && point1.Y == point2.Y;
-        }
-
-        // Summary:
-        //     Determines whether the specified object is a ComplexDataPoint and whether
-        //     it contains the same values as this ComplexDataPoint.
-        //
-        // Parameters:
-        //   o:
-        //     The object to compare.
-        //
-        // Returns:
-        //     true if obj is a ComplexDataPoint and contains the same ComplexDataPoint.X
-        //     and ComplexDataPoint.Y values as this ComplexDataPoint; otherwise,
-        //     false.
+        /// <summary>
+        /// Determines whether the specified object is a ComplexDataPoint and whether
+        /// it contains the same values as this ComplexDataPoint.
+        /// </summary>
+        /// <param name="obj">An object to check for equality</param>
+        /// <returns>
+        /// Returns true if obj is a ComplexDataPoint and contains the same ComplexDataPoint.X
+        /// and ComplexDataPoint.Y values as this ComplexDataPoint; otherwise, false.
+        /// </returns>
         public override bool Equals(object obj)
         {
-            return Equals((ComplexDataPoint) obj);
+            return Equals(obj as ComplexDataPoint);
         }
 
-        //
-        // Summary:
-        //     Compares two ComplexDataPoint structures for equality.
-        //
-        // Parameters:
-        //   value:
-        //     The point to compare to this instance.
-        //
-        // Returns:
-        //     true if both ComplexDataPoint structures contain the same ComplexDataPoint.X
-        //     and ComplexDataPoint.Y values; otherwise, false.
+        /// <summary>
+        /// Determines whether the specified ComplexDataPoint contains the same
+        /// values as this ComplexDataPoint.
+        /// </summary>
+        /// <param name="value">An ComplexDataPoint to check for equality</param>
+        /// <returns>
+        /// Returns true if the ComplexDataPoint contains the same ComplexDataPoint.X
+        /// and ComplexDataPoint.Y values as this ComplexDataPoint; otherwise, false.
+        /// </returns>
         public bool Equals(ComplexDataPoint value)
         {
             return X == value.X && Y == value.Y;
         }
 
-        //
-        // Summary:
-        //     Returns the hash code for this ComplexDataPoint.
-        //
-        // Returns:
-        //     The hash code for this ComplexDataPoint structure.
-        public override int GetHashCode()
+        /// <summary>
+        /// Compares two ComplexDataPoint structures for equality.
+        /// </summary>
+        /// <param name="x">The first ComplexDataPoint to compare equality.</param>
+        /// <param name="y">The second ComplexDataPoint to compare equality.</param>
+        /// <returns>
+        /// Returns true if both ComplexDataPoint structures contain the same ComplexDataPoint.X
+        /// and ComplexDataPoint.Y values; otherwise, false.
+        /// </returns>
+        public bool Equals(ComplexDataPoint x, ComplexDataPoint y)
         {
-            throw new NotImplementedException();
+            return x.X == y.X && x.Y == y.Y;
         }
 
-        //
-        // Summary:
-        //     Creates a System.String representation of this ComplexDataPoint.
-        //
-        // Returns:
-        //     A System.String containing the ComplexDataPoint.X and ComplexDataPoint.Y
-        //     values of this ComplexDataPoint structure.
+        /// <summary>
+        /// Creates a string representation of this ComplexDataPoint.
+        /// </summary>
+        /// <returns>
+        /// A string containing the ComplexDataPoint.X and ComplexDataPoint.Y
+        /// values of this ComplexDataPoint structure.
+        /// </returns>
         public override string ToString()
         {
             return X + ", " + Y;
+        }
+
+        /// <summary>
+        /// Returns the hash code for this ComplexDataPoint.
+        /// </summary>
+        /// <returns>Returns the hash code for this ComplexDataPoint</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = 76543890;
+            hashCode = hashCode * -5678 + Y.GetHashCode();
+            return hashCode;
+        }
+
+        /// <summary>
+        /// Returns the hash code for this ComplexDataPoint.
+        /// </summary>
+        /// <param name="obj">The ComplexDataPoint</param>
+        /// <returns>Returns the hash code for the parameter ComplexDataPoint</returns>
+        public int GetHashCode(ComplexDataPoint obj)
+        {
+            var hashCode = 76543890;
+            hashCode = hashCode * -5678 + obj.Y.GetHashCode();
+            return hashCode;
         }
     }
 }

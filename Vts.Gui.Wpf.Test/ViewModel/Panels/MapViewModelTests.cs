@@ -19,8 +19,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var viewModel = new MapViewModel();
             Assert.AreEqual(viewModel.MinValue, 1e-9);
             Assert.AreEqual(viewModel.MaxValue, 1.0);
-            Assert.IsTrue(viewModel.ScalingTypeOptionVM != null);
-            Assert.IsTrue(viewModel.ColormapTypeOptionVM != null);
+            Assert.IsTrue(viewModel.ScalingTypeOptionVm != null);
+            Assert.IsTrue(viewModel.ColormapTypeOptionVm != null);
         }
 
         // The following tests verify the Relay Commands

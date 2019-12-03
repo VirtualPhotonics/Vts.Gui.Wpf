@@ -24,19 +24,17 @@ namespace Vts.Gui.Wpf.Test.Model
         }
 
         /// <summary>
-        /// Verifies ComplexDataPoint symbols !=, == methods Equals work correctly
+        /// Verifies ComplexDataPoint Equals method works correctly
         /// </summary>
         [Test]
-        public void verify_ComplexDataPoint_equals_and_notequal_symbols_and_methods_work_correctly()
+        public void verify_ComplexDataPoint_equals_methods_work_correctly()
         {
             var dataPoint1 = new ComplexDataPoint(0.1, new Complex(0.2, 0.3));
             var dataPoint2 = new ComplexDataPoint(0.1, new Complex(0.2, 0.4));
-            Assert.AreEqual(dataPoint1 != dataPoint2, true);
-            Assert.AreEqual(dataPoint1 == dataPoint2, false);
+            Assert.AreEqual(false, dataPoint1.Equals(dataPoint2));
             Assert.IsFalse(dataPoint1.Equals(dataPoint2));
             var dataPoint3 = new ComplexDataPoint(0.1, new Complex(0.2, 0.3));
-            Assert.AreEqual(dataPoint1 != dataPoint3, false);
-            Assert.AreEqual(dataPoint1 == dataPoint3, true);
+            Assert.AreEqual(true, dataPoint1.Equals(dataPoint3));
             Assert.IsTrue(dataPoint1.Equals(dataPoint3));
         }
 
@@ -52,19 +50,17 @@ namespace Vts.Gui.Wpf.Test.Model
         }
 
         /// <summary>
-        /// Verifies DataPoint symbols !=, == methods Equals work correctly
+        /// Verifies DataPoint Equals method works correctly
         /// </summary>
         [Test]
-        public void verify_DataPoint_equals_and_notequal_symbols_and_methods_work_correctly()
+        public void verify_DataPoint_equal_methods_work_correctly()
         {
             var dataPoint1 = new DoubleDataPoint(0.1, 0.2);
             var dataPoint2 = new DoubleDataPoint(0.1, 0.3);
-            Assert.AreEqual(dataPoint1 != dataPoint2, true);
-            Assert.AreEqual(dataPoint1 == dataPoint2, false);
+            Assert.AreEqual(false, dataPoint1.Equals(dataPoint2));
             Assert.IsFalse(dataPoint1.Equals(dataPoint2));
             var dataPoint3 = new DoubleDataPoint(0.1, 0.2);
-            Assert.AreEqual(dataPoint1 != dataPoint3, false);
-            Assert.AreEqual(dataPoint1 == dataPoint3, true);
+            Assert.AreEqual(true, dataPoint1.Equals(dataPoint3));
             Assert.IsTrue(dataPoint1.Equals(dataPoint3));
         }
 

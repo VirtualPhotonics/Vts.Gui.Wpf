@@ -57,7 +57,7 @@ namespace Vts.Gui.Wpf.Model
             get { return Statistics.MeanSamplingDepth(RawData, XValues, YValues, DxValues, DyValues); }
         }
 
-        public static MapData Create(double[,] rawData, double[] x, double[] y, double[] dx, double[] dy)
+        internal static MapData Create(double[,] rawData, double[] x, double[] y, double[] dx, double[] dy)
         {
             if (rawData.GetLength(0) != x.Length || rawData.GetLength(1) != y.Length)
                 throw new ArgumentException(StringLookup.GetLocalizedString("Exception_MismatchedArrays"));
