@@ -210,6 +210,8 @@
     <Compile Include="Extensions\LocalizedStrings.cs" />
     <Compile Include="Extensions\StringLookup.cs" />
     <Compile Include="Input\Commands.cs" />
+    <Compile Include="Model\ComplexDataPoint.cs" />
+    <Compile Include="Model\DoubleDataPoint.cs" />
     <Compile Include="Resources\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -401,7 +403,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\DataPoint.cs" />
+    <Compile Include="Model\IDataPoint.cs" />
     <Compile Include="Model\MapData.cs" />
     <Compile Include="Model\OptionModel.cs" />
     <Compile Include="Model\PlotData.cs" />
