@@ -24,7 +24,7 @@ namespace Vts.Gui.Wpf
             _logger = LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MainWindow));
             var observableTarget =
                 NLog.LogManager.Configuration.AllTargets.FirstOrDefault(target => target is ObservableTarget);
-            ((IObservable<string>) observableTarget)?.Subscribe(
+            ((IObservable<string>)observableTarget)?.Subscribe(
                 msg => WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(msg));
             InitializeComponent();
             _numViews = 0;
@@ -47,19 +47,19 @@ namespace Vts.Gui.Wpf
                         // "TabInverse":
                         // "TabSpectral":
                         default:
-                            OutputTabControl.SelectedItem = OutputTabControl.Items[0];
-                            ((TabItem) OutputTabControl.Items[0]).Visibility = Visibility.Visible;
-                            ((TabItem) OutputTabControl.Items[1]).Visibility = Visibility.Collapsed;
-                            break;
+                        OutputTabControl.SelectedItem = OutputTabControl.Items[0];
+                        ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Visible;
+                        ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Collapsed;
+                        break;
                         case "TabFluence":
-                            OutputTabControl.SelectedItem = OutputTabControl.Items[1];
-                            ((TabItem) OutputTabControl.Items[1]).Visibility = Visibility.Visible;
-                            ((TabItem) OutputTabControl.Items[0]).Visibility = Visibility.Collapsed;
-                            break;
+                        OutputTabControl.SelectedItem = OutputTabControl.Items[1];
+                        ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Visible;
+                        ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Collapsed;
+                        break;
                         case "TabMonteCarlo":
-                            ((TabItem) OutputTabControl.Items[1]).Visibility = Visibility.Visible;
-                            ((TabItem) OutputTabControl.Items[0]).Visibility = Visibility.Visible;
-                            break;
+                        ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Visible;
+                        ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Visible;
+                        break;
                     }
                 }
             }
@@ -91,8 +91,7 @@ namespace Vts.Gui.Wpf
             object duplicateView;
             if (type == "map")
             {
-                duplicateView = new MapView
-                {
+                duplicateView = new MapView {
                     DataContext = vm,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Stretch,
@@ -108,8 +107,7 @@ namespace Vts.Gui.Wpf
             }
             else
             {
-                duplicateView = new PlotView
-                {
+                duplicateView = new PlotView {
                     DataContext = vm,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Stretch,
@@ -117,16 +115,14 @@ namespace Vts.Gui.Wpf
                     MinHeight = 600
                 };
             }
-            var viewBorder = new Border
-            {
+            var viewBorder = new Border {
                 Background = Brushes.White,
                 CornerRadius = new CornerRadius(0),
                 BorderThickness = new Thickness(2),
                 BorderBrush = Brushes.Gray
             };
             var viewPanel = new StackPanel();
-            var closeButton = new Button
-            {
+            var closeButton = new Button {
                 Content = "X",
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Top,
@@ -139,8 +135,7 @@ namespace Vts.Gui.Wpf
             viewPanel.Children.Add(thumb);
             viewBorder.Child = viewPanel;
             //Popup behavior is to always be on top so we need to find another solution for this control
-            var newViewWindow = new Popup
-            {
+            var newViewWindow = new Popup {
                 Name = "wndView" + _numViews++,
                 Child = viewBorder,
                 VerticalAlignment = VerticalAlignment.Top,
@@ -152,8 +147,7 @@ namespace Vts.Gui.Wpf
 
             closeButton.Click += (sender, e) => { newViewWindow.IsOpen = false; };
 
-            newViewWindow.MouseDown += (sender, e) =>
-            {
+            newViewWindow.MouseDown += (sender, e) => {
                 if (e.ChangedButton != MouseButton.Left) return;
                 var popupWindow = (Popup)sender;
                 Topmost = false;
@@ -161,8 +155,7 @@ namespace Vts.Gui.Wpf
                 thumb.RaiseEvent(e);
             };
 
-            thumb.DragDelta += (sender, e) =>
-            {
+            thumb.DragDelta += (sender, e) => {
                 newViewWindow.HorizontalOffset += e.HorizontalChange;
                 newViewWindow.VerticalOffset += e.VerticalChange;
             };
@@ -174,4 +167,3 @@ namespace Vts.Gui.Wpf
         }
     }
 }
-
