@@ -45,14 +45,14 @@ namespace Vts.Gui.Wpf.Model
         /// Determines whether the specified ComplexDataPoint contains the same
         /// values as this ComplexDataPoint.
         /// </summary>
-        /// <param name="value">An ComplexDataPoint to check for equality</param>
+        /// <param name="other">An ComplexDataPoint to check for equality</param>
         /// <returns>
         /// Returns true if the ComplexDataPoint contains the same ComplexDataPoint.X
         /// and ComplexDataPoint.Y values as this ComplexDataPoint; otherwise, false.
         /// </returns>
-        public bool Equals(ComplexDataPoint value)
+        public bool Equals(ComplexDataPoint other)
         {
-            return X == value.X && Y == value.Y;
+            return X == other.X && Y == other.Y;
         }
 
         /// <summary>

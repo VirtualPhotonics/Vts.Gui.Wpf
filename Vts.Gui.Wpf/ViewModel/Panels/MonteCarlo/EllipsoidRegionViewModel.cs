@@ -7,14 +7,14 @@ namespace Vts.Gui.Wpf.ViewModel
     public class EllipsoidRegionViewModel : BindableObject
     {
         private string _name;
-        private OpticalPropertyViewModel _opticalPropertyVM;
+        private OpticalPropertyViewModel _opticalPropertyVm;
         private readonly EllipsoidTissueRegion _region;
 
         public EllipsoidRegionViewModel(EllipsoidTissueRegion region, string name)
         {
             _region = region;
             _name = name ?? "";
-            _opticalPropertyVM = new OpticalPropertyViewModel(_region.RegionOP, StringLookup.GetLocalizedString("Measurement_Inv_mm"), "", true, true, true, false);
+            _opticalPropertyVm = new OpticalPropertyViewModel(_region.RegionOP, StringLookup.GetLocalizedString("Measurement_Inv_mm"), "", true, true, true, false);
         }
 
         public EllipsoidRegionViewModel() : this(new EllipsoidTissueRegion(), "")
@@ -23,7 +23,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public string Name
         {
-            get { return _name + (_region.IsAir() ? StringLookup.GetLocalizedString("Label_Air") : StringLookup.GetLocalizedString("Label_Tissue")); }
+            get => _name + (_region.IsAir() ? StringLookup.GetLocalizedString("Label_Air") : StringLookup.GetLocalizedString("Label_Tissue"));
             set
             {
                 _name = value;
@@ -33,7 +33,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public double X
         {
-            get { return _region.Center.X; }
+            get => _region.Center.X;
             set
             {
                 _region.Center.X = value;
@@ -43,7 +43,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public double Y
         {
-            get { return _region.Center.Y; }
+            get => _region.Center.Y;
             set
             {
                 _region.Center.Y = value;
@@ -53,7 +53,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public double Z
         {
-            get { return _region.Center.Z; }
+            get => _region.Center.Z;
             set
             {
                 _region.Center.Z = value;
@@ -63,7 +63,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public double Dx
         {
-            get { return _region.Dx; }
+            get => _region.Dx;
             set
             {
                 _region.Dx = value;
@@ -73,7 +73,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public double Dy
         {
-            get { return _region.Dy; }
+            get => _region.Dy;
             set
             {
                 _region.Dy = value;
@@ -83,7 +83,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public double Dz
         {
-            get { return _region.Dz; }
+            get => _region.Dz;
             set
             {
                 _region.Dz = value;
@@ -91,35 +91,20 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public OpticalPropertyViewModel OpticalPropertyVM
+        public OpticalPropertyViewModel OpticalPropertyVm
         {
-            get { return _opticalPropertyVM; }
+            get => _opticalPropertyVm;
             set
             {
-                _opticalPropertyVM = value;
-                OnPropertyChanged("OpticalPropertyVM");
+                _opticalPropertyVm = value;
+                OnPropertyChanged("OpticalPropertyVm");
             }
         }
 
-        public string Units
-        {
-            get { return StringLookup.GetLocalizedString("Measurement_mm"); }
-        }
+        public string Units => StringLookup.GetLocalizedString("Measurement_mm");
 
-        public bool IsLayer
-        {
-            get { return false; }
-        }
+        public bool IsLayer => false;
 
-        public bool IsEllipsoid
-        {
-            get { return true; }
-        }
-
-        //}
-        //    return _region;
-        //{
-
-        //public EllipsoidRegion GetEllipsoidRegion()
+        public bool IsEllipsoid => true;
     }
 }

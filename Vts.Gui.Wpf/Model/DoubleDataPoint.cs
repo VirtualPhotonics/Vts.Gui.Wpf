@@ -44,14 +44,14 @@ namespace Vts.Gui.Wpf.Model
         /// <summary>
         /// Compares two DoubleDataPoint structures for equality.
         /// </summary>
-        /// <param name="value">The DoubleDataPoint to compare to this instance.</param>
+        /// <param name="other">The DoubleDataPoint to compare to this instance.</param>
         /// <returns>
         /// Returns true if both DoubleDataPoint structures contain the same DoubleDataPoint.X
         /// and DoubleDataPoint.Y values; otherwise, false.
         /// </returns>
-        public bool Equals(DoubleDataPoint value)
+        public bool Equals(DoubleDataPoint other)
         {
-            return X == value.X && Y == value.Y;
+            return X == other.X && Y == other.Y;
         }
 
         /// <summary>
