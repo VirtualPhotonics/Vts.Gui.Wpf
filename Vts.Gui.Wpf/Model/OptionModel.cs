@@ -10,41 +10,28 @@ namespace Vts.Gui.Wpf.Model
     {
         protected const int UNSET_SORT_VALUE = int.MinValue;
 
-        protected string _displayName;
-        protected string _groupName;
-        protected int _ID;
-        protected bool _isEnabled;
-        protected bool _isSelected;
-        protected bool _multiSelectEnabled;
-        protected int _sortValue;
+        private bool _isSelected;
+        private bool _isEnabled;
 
         protected OptionModel(string displayName, int id, string groupName, bool enableMultiSelect, int sortValue)
         {
-            _displayName = displayName;
-            _groupName = groupName;
-            _ID = id;
-            _sortValue = sortValue;
-            _multiSelectEnabled = enableMultiSelect;
-            _isEnabled = true;
+            DisplayName = displayName;
+            GroupName = groupName;
+            Id = id;
+            SortValue = sortValue;
+            MultiSelectEnabled = enableMultiSelect;
+            IsEnabled = true;
         }
 
         /// <summary>
         ///     Returns the user-friendly name of this option.
         /// </summary>
-        public string DisplayName
-        {
-            set { _displayName = value; }
-            get { return _displayName; }
-        }
+        public string DisplayName { set; get; }
 
         /// <summary>
         ///     Returns the user-friendly name of this option.
         /// </summary>
-        public string GroupName
-        {
-            set { _groupName = value; }
-            get { return _groupName; }
-        }
+        public string GroupName { get; set; }
 
         /// <summary>
         ///     Gets/sets whether this option is in the selected state.
@@ -53,7 +40,7 @@ namespace Vts.Gui.Wpf.Model
         /// </summary>
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set
             {
                 if (value == _isSelected)
@@ -71,7 +58,7 @@ namespace Vts.Gui.Wpf.Model
         /// </summary>
         public bool IsEnabled
         {
-            get { return _isEnabled; }
+            get => _isEnabled;
             set
             {
                 _isEnabled = value;
@@ -83,29 +70,17 @@ namespace Vts.Gui.Wpf.Model
         ///     Returns the value used to sort this option.
         ///     The default sort value is Int32.MinValue.
         /// </summary>
-        public int SortValue
-        {
-            set { _sortValue = value; }
-            get { return _sortValue; }
-        }
+        public int SortValue { get; set; }
 
         /// <summary>
         ///     Returns the value used to identify this option.
         /// </summary>
-        public int ID
-        {
-            set { _ID = value; }
-            get { return _ID; }
-        }
+        public int Id { get; set; }
 
         /// <summary>
         ///     multi-select
         /// </summary>
-        public bool MultiSelectEnabled
-        {
-            set { _multiSelectEnabled = value; }
-            get { return _multiSelectEnabled; }
-        }
+        public bool MultiSelectEnabled { get; set; }
     }
 
     /// <summary>
@@ -118,8 +93,6 @@ namespace Vts.Gui.Wpf.Model
         OptionModel,
         IComparable<OptionModel<TValue>> // where TValue : struct 
     {
-        protected readonly TValue _value;
-
         public OptionModel(string displayName, TValue value, int id, string groupName, bool enableMultiSelect)
             : this(displayName, value, id, groupName, enableMultiSelect, UNSET_SORT_VALUE)
         {
@@ -129,16 +102,13 @@ namespace Vts.Gui.Wpf.Model
             int sortValue)
             : base(displayName, id, groupName, enableMultiSelect, sortValue)
         {
-            _value = value;
+            Value = value;
         }
 
         /// <summary>
         ///     Returns the user-friendly name of this option.
         /// </summary>
-        public TValue Value
-        {
-            get { return _value; }
-        }
+        public TValue Value { get; }
 
         public int CompareTo(OptionModel<TValue> other)
         {
@@ -160,20 +130,23 @@ namespace Vts.Gui.Wpf.Model
             return +1;
         }
 
-        //public static ReadOnlyCollection<OptionViewModel<TValue>> CreateAvailableOptions(PropertyChangedEventHandler handler)
         /// <summary>
-        ///     Creates a Dictionary of options. If no options (params TValue[] values) are specified, it will use all of the
-        ///     available choices
+        /// Creates a Dictionary of options.
+        /// If no options (params TValue[] values) are specified, it will use all of the
+        /// available choices
         /// </summary>
-        /// <param name="handler"></param>
-        /// <param name="allValues"></param>
-        /// <returns></returns>
+        /// <param name="handler">Property changed even handler</param>
+        /// <param name="groupName">Name of the option group</param>
+        /// <param name="initialValue">Initial value</param>
+        /// <param name="allValues">All possible options</param>
+        /// <param name="enableMultiSelect">Allows multiple options to be selected</param>
+        /// <returns>A dictionary of options</returns>
         public static Dictionary<TValue, OptionModel<TValue>> CreateAvailableOptions(
             PropertyChangedEventHandler handler, string groupName, TValue initialValue, TValue[] allValues,
             bool enableMultiSelect)
         {
             var enumType = typeof(TValue);
-            var isStringEnum = enumType.Equals(typeof(string));
+            var isStringEnum = enumType == typeof(string);
             if (!enumType.IsEnum && !isStringEnum)
             {
                 throw new ArgumentException(enumType.Name + StringLookup.GetLocalizedString("Exception_EnumOrString"));
@@ -197,7 +170,7 @@ namespace Vts.Gui.Wpf.Model
             }
 
             //removed call to sort, which was re-arranging the enum choices
-            //convention is to let the first enum choice be the default selection list.Sort();
+            //convention is to let the first enum choice be the default selection list.Sort()
 
             if (list.Count > 0)
             {

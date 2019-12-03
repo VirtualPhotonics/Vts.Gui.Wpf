@@ -23,7 +23,7 @@ namespace Vts.Gui.Wpf.Test.Model
             var optionModel = new OptionModel<ColormapType>(
                 "displayName", ColormapType.Binary, id, "groupName", enableMultiSelect, sortValue);
             Assert.AreEqual(optionModel.DisplayName, "displayName");
-            Assert.AreEqual(optionModel.ID, 1);
+            Assert.AreEqual(optionModel.Id, 1);
             Assert.AreEqual(optionModel.MultiSelectEnabled, false);
             Assert.AreEqual(optionModel.SortValue, 2);
         }

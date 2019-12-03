@@ -16,30 +16,22 @@ namespace Vts.Gui.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static MainWindow _current;
         private int _numViews;
-        private static Vts.Common.Logging.ILogger _logger;
+        private ILogger _logger;
 
         public MainWindow()
         {
             _logger = LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MainWindow));
             var observableTarget =
                 NLog.LogManager.Configuration.AllTargets.FirstOrDefault(target => target is ObservableTarget);
-            if (observableTarget != null)
-            {
-                ((IObservable<string>)observableTarget).Subscribe(
-                    msg => WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(msg));
-            }
+            ((IObservable<string>) observableTarget)?.Subscribe(
+                msg => WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(msg));
             InitializeComponent();
             _numViews = 0;
-            _current = this;
+            Current = this;
         }
 
-        public static MainWindow Current
-        {
-            get { return _current; }
-            set { _current = value; }
-        }
+        public static MainWindow Current { get; set; }
         private void InputTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var inputTab = sender as TabControl;

@@ -668,14 +668,18 @@ namespace Vts.Gui.Wpf.ViewModel
                                     independentValues[0],
                                     independentValues[1]).ToArray();
                                 break;
-                            //default handles: FluenceSolutionDomainType.FluenceOfFxAndZAndFt:
+                            case FluenceSolutionDomainType.FluenceOfRhoAndZ:
+                            case FluenceSolutionDomainType.FluenceOfFxAndZ:
+                            case FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
+                            case FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
+                            case FluenceSolutionDomainType.FluenceOfFxAndZAndFt:
+                                throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_SolutionDomainNotSupported"));
                             default:
-                                throw new ArgumentOutOfRangeException(
-                                    nameof(PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue));
+                                throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoSolutionDomainExists"));
                         }
-                        break;
+                    break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(MapTypeOptionVM.SelectedValue));
+                        throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoMapTypeExists"));
                 }
             }
             else
@@ -757,16 +761,18 @@ namespace Vts.Gui.Wpf.ViewModel
                                         independentValues[1]).ToArray();
                                 }
                                 break;
-                            //default handles: FluenceSolutionDomainType.FluenceOfFxAndZ:
-                            //   FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
-                            //   FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
-                            default:
-                                throw new ArgumentOutOfRangeException(
-                                    nameof(PhotonHittingDensitySolutionDomainTypeOptionVM.SelectedValue));
-                        }
-                        break;
+                            case FluenceSolutionDomainType.FluenceOfFxAndZ:
+                            case FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
+                            case FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
+                            case FluenceSolutionDomainType.FluenceOfRhoAndZAndFt:
+                            case FluenceSolutionDomainType.FluenceOfFxAndZAndFt:
+                                throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_SolutionDomainNotSupported"));
+                        default:
+                            throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoSolutionDomainExists"));
+                    }
+                    break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(MapTypeOptionVM.SelectedValue));
+                        throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoMapTypeExists"));
                 }
             }
             cancellationToken.ThrowIfCancellationRequested();
@@ -812,9 +818,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 case MapType.PhotonHittingDensity:
                     return PhotonHittingDensitySolutionDomainTypeOptionVM;
                 default:
-                    throw new ArgumentException(
-                        StringLookup.GetLocalizedString("Error_NoSolutionDomainExists"),
-                        nameof(MapTypeOptionVM.SelectedValue));
+                    throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoMapTypeExists"));
             }
         }
 

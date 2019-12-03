@@ -268,6 +268,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No map type of the specified type exists..
+        /// </summary>
+        public static string Error_NoMapTypeExists {
+            get {
+                return ResourceManager.GetString("Error_NoMapTypeExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No solution domain of the specified type exists..
         /// </summary>
         public static string Error_NoSolutionDomainExists {
@@ -282,6 +291,15 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Error_SimulationInputNotLoaded {
             get {
                 return ResourceManager.GetString("Error_SimulationInputNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This solution domain is not supported..
+        /// </summary>
+        public static string Error_SolutionDomainNotSupported {
+            get {
+                return ResourceManager.GetString("Error_SolutionDomainNotSupported", resourceCulture);
             }
         }
         

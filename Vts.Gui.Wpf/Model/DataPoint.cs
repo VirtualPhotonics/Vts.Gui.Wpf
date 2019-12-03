@@ -1,20 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Numerics;
 
 namespace Vts.Gui.Wpf.Model
 {
-    public class Test
-    {
-        private readonly IDataPoint[][] _myDataPoints;
-
-        public Test()
-        {
-            _myDataPoints = new IDataPoint[2][];
-        }
-
-    }
-
     public interface IDataPoint
     {
     }

@@ -35,7 +35,6 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private double[] _mapArrayBuffer;
 
-        //private bool _firstTimeSaving;
         private string _outputName;
 
         private bool _newResultsAvailable;
@@ -48,22 +47,18 @@ namespace Vts.Gui.Wpf.ViewModel
         private string _cancelButtonText;
 
         private SimulationOutput _output;
-        private ObjectCache _cache = MemoryCache.Default;
+        private readonly ObjectCache _cache = MemoryCache.Default;
 
         private MonteCarloSimulation _simulation;
 
-        private SimulationInputViewModel _simulationInputVM;
+        private SimulationInputViewModel _simulationInputVm;
 
         public MonteCarloSolverViewModel()
         {
             var simulationInput = SimulationInputProvider.PointSourceTwoLayerTissueROfRhoDetector();
 
-            _simulationInputVM = new SimulationInputViewModel(simulationInput);
+            _simulationInputVm = new SimulationInputViewModel(simulationInput);
             _outputName = simulationInput.OutputName;
-
-            var rho =
-            ((ROfRhoDetectorInput)
-                simulationInput.DetectorInputs.Where(d => d.TallyType == TallyType.ROfRho).First()).Rho;
 
             ExecuteMonteCarloSolverCommand = new RelayCommand(() => MC_ExecuteMonteCarloSolver_Executed(null, null));
             CancelMonteCarloSolverCommand = new RelayCommand(() => MC_CancelMonteCarloSolver_Executed(null, null));
@@ -89,7 +84,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public string CancelButtonText
         {
-            get { return _cancelButtonText; }
+            get => _cancelButtonText;
             set
             {
                 _cancelButtonText = value;
@@ -99,7 +94,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool CanDownloadInfiles
         {
-            get { return _canDownloadInfiles; }
+            get => _canDownloadInfiles;
             set
             {
                 _canDownloadInfiles = value;
@@ -109,7 +104,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool CanRunSimulation
         {
-            get { return _canRunSimulation; }
+            get => _canRunSimulation;
             set
             {
                 _canRunSimulation = value;
@@ -119,7 +114,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool CanCancelSimulation
         {
-            get { return _canCancelSimulation; }
+            get => _canCancelSimulation;
             set
             {
                 _canCancelSimulation = value;
@@ -129,7 +124,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool CanSaveResults
         {
-            get { return _canSaveResults; }
+            get => _canSaveResults;
             set
             {
                 _canSaveResults = value;
@@ -139,7 +134,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public bool CanLoadInputFile
         {
-            get { return _canLoadInputFile; }
+            get => _canLoadInputFile;
             set
             {
                 _canLoadInputFile = value;
@@ -149,10 +144,10 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public SimulationInputViewModel SimulationInputVM
         {
-            get { return _simulationInputVM; }
+            get => _simulationInputVm;
             set
             {
-                _simulationInputVM = value;
+                _simulationInputVm = value;
                 OnPropertyChanged("SimulationInputVM");
             }
         }
@@ -173,7 +168,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
             try
             {
-                var input = _simulationInputVM.SimulationInput;
+                var input = _simulationInputVm.SimulationInput;
 
                 MainWindow.Current.Wait.Visibility = Visibility.Visible;
                 ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Begin();
@@ -203,7 +198,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     _newResultsAvailable = _simulation.ResultsAvailable;
 
                     var rOfRhoDetectorInputs =
-                        _simulationInputVM.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho");
+                        _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho");
 
                     if (rOfRhoDetectorInputs.Any())
                     {
@@ -228,7 +223,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     }
 
                     var fluenceDetectorInputs =
-                        _simulationInputVM.SimulationInput.DetectorInputs.Where(di => di.Name == "FluenceOfRhoAndZ");
+                        _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "FluenceOfRhoAndZ");
 
                     if (fluenceDetectorInputs.Any())
                     {
@@ -318,8 +313,8 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsDisplayedForTissue") + ".\r");
             }
-            if ((!input.DetectorInputs.Any(d => d.TallyType == TallyType.ROfRho)) &&
-                (!input.DetectorInputs.Any(d => d.TallyType == TallyType.FluenceOfRhoAndZ)))  
+            if ((input.DetectorInputs.All(d => d.TallyType != TallyType.ROfRho)) &&
+                (input.DetectorInputs.All(d => d.TallyType != TallyType.FluenceOfRhoAndZ)))  
             {
                 logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsDisplayedForDetector") + ".\r");
             }
@@ -346,14 +341,11 @@ namespace Vts.Gui.Wpf.ViewModel
             logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
         }
 
-        private async Task MC_SaveSimulationResultsFromCache()
+        private async void MC_SaveSimulationResultsFromCache()
         {
             var input = _cache["SimulationInput"] as SimulationInput;
             var output = _cache["SimulationOutput"] as SimulationOutput;
-            if (input == null || output == null)
-            {
-                return;
-            }
+            if (input == null || output == null) return;
             using (var dialog = new FolderBrowserDialog())
             {
                 var dialogResult = dialog.ShowDialog();
@@ -464,7 +456,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     CanLoadInputFile = true;
                     if (simulationInput.Options.TrackStatistics)
                     {
-                        _simulationInputVM.SimulationOptionsVM.SetStatisticsFolderCommand.Execute(null);
+                        _simulationInputVm.SimulationOptionsVM.SetStatisticsFolderCommand.Execute(null);
                     }
                 }
             }
@@ -568,7 +560,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
             //var rhoRange = (ROfRhoDetectorInput) _simulationInputVM.SimulationInput.DetectorInputs.FirstOrDefault();
             var rOfRhoDetectorInputs =
-                _simulationInputVM.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho");
+                _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho");
             var detectorInput = (ROfRhoDetectorInput)rOfRhoDetectorInputs.First();
             var rhoRange = detectorInput.Rho;
 
@@ -589,9 +581,9 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private string GetPlotLabel()
         {
-            var nString = StringLookup.GetLocalizedString("PlotLabel_N") + _simulationInputVM.SimulationInput.N;
+            var nString = StringLookup.GetLocalizedString("PlotLabel_N") + _simulationInputVm.SimulationInput.N;
             var awtString = StringLookup.GetLocalizedString("PlotLabel_AWT");
-            switch (_simulationInputVM.SimulationInput.Options.AbsorptionWeightingType)
+            switch (_simulationInputVm.SimulationInput.Options.AbsorptionWeightingType)
             {
                 case AbsorptionWeightingType.Analog:
                     awtString += StringLookup.GetLocalizedString("Label_Analog");

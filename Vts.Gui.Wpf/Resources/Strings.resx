@@ -786,4 +786,10 @@
   <data name="Exception_String" xml:space="preserve">
     <value>Value must be a string</value>
   </data>
+  <data name="Error_NoMapTypeExists" xml:space="preserve">
+    <value>No map type of the specified type exists.</value>
+  </data>
+  <data name="Error_SolutionDomainNotSupported" xml:space="preserve">
+    <value>This solution domain is not supported.</value>
+  </data>
 </root>
