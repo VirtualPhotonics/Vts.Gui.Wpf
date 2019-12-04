@@ -26,8 +26,6 @@ namespace Vts.Gui.Wpf.ViewModel
     /// </summary>
     public class MonteCarloSolverViewModel : BindableObject
     {
-        private const string TEMP_RESULTS_FOLDER = "mc_results_temp";
-
         private static readonly ILogger logger =
             LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MonteCarloSolverViewModel));
 
@@ -341,11 +339,11 @@ namespace Vts.Gui.Wpf.ViewModel
             logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
         }
 
-        private async Task MC_SaveSimulationResultsFromCache()
+        private async Task<bool> MC_SaveSimulationResultsFromCache()
         {
             var input = _cache["SimulationInput"] as SimulationInput;
             var output = _cache["SimulationOutput"] as SimulationOutput;
-            if (input == null || output == null) return;
+            if (input == null || output == null) return false;
             using (var dialog = new FolderBrowserDialog())
             {
                 var dialogResult = dialog.ShowDialog();
@@ -364,7 +362,7 @@ namespace Vts.Gui.Wpf.ViewModel
                                     StringLookup.GetLocalizedString("MessageBoxTitle_DeleteConfirm"), MessageBoxButton.YesNo);
                             if (messageBoxResult == MessageBoxResult.No)
                             {
-                                return;
+                                return false;
                             }
                         }
                         logger.Info(() => StringLookup.GetLocalizedString("Message_SaveSimulationResults"));
@@ -382,13 +380,16 @@ namespace Vts.Gui.Wpf.ViewModel
                         CanCancelSimulation = false;
 
                         logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+                        return true;
                     }
                     catch (Exception)
                     {
                         logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
+                        return false;
                     }
                 }
             }
+            return false;
         }
 
         private void MC_SaveSimulationResultsToFolder(SimulationInput input, SimulationOutput output, string folder)
@@ -475,13 +476,10 @@ namespace Vts.Gui.Wpf.ViewModel
                 var simulationInput = FileIO.ReadFromJsonStream<SimulationInput>(stream);
 
                 var validationResult = SimulationInputValidation.ValidateInput(simulationInput);
-                if (validationResult.IsValid)
+                if (validationResult.IsValid && MC_InfileIsValidForGUI(simulationInput))
                 {
-                    if (MC_InfileIsValidForGUI(simulationInput))
-                    {
-                        logger.Info(() => StringLookup.GetLocalizedString("Message_SimulationInputLoaded") + "\r");
-                        return simulationInput;
-                    }
+                    logger.Info(() => StringLookup.GetLocalizedString("Message_SimulationInputLoaded") + "\r");
+                    return simulationInput;
                 }
                 logger.Info(() => StringLookup.GetLocalizedString("Error_SimulationInputNotLoaded") + "\r"); 
                 return null;
@@ -541,11 +539,16 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        private void MC_SaveSimulationResults_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async void MC_SaveSimulationResults_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (_output != null && _newResultsAvailable)
             {
-                MC_SaveSimulationResultsFromCache();
+                var result = await MC_SaveSimulationResultsFromCache();
+                if (!result)
+                {
+                    logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
+                }
+
             }
         }
 

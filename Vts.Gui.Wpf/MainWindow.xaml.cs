@@ -17,11 +17,12 @@ namespace Vts.Gui.Wpf
     public partial class MainWindow : Window
     {
         private int _numViews;
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public MainWindow()
         {
             _logger = LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MainWindow));
+            _logger.Info("Starting application");
             var observableTarget =
                 NLog.LogManager.Configuration.AllTargets.FirstOrDefault(target => target is ObservableTarget);
             ((IObservable<string>)observableTarget)?.Subscribe(
@@ -44,6 +45,7 @@ namespace Vts.Gui.Wpf
                     // "TabInverse":
                     // "TabSpectral":
                     default:
+                        _logger.Debug($"Current Tab: {tabItem.Header}\n");
                         OutputTabControl.SelectedItem = OutputTabControl.Items[0];
                         ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Visible;
                         ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Collapsed;

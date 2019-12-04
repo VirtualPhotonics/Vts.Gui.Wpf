@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
@@ -53,7 +53,7 @@ namespace Vts.Gui.Wpf.ViewModel
                                     StringLookup.GetLocalizedString("Label_VoxelRegion"))));
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoTissueTypeExists"));
             }
 
             _currentRegionIndex = 0;
@@ -66,7 +66,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public ObservableCollection<object> RegionsVM
         {
-            get { return _regionsVM; }
+            get => _regionsVM;
             set
             {
                 _regionsVM = value;
@@ -77,7 +77,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public int CurrentRegionIndex
         {
-            get { return _currentRegionIndex; }
+            get => _currentRegionIndex;
             set
             {
                 if ((value < _regionsVM.Count) && (value >= 0))
@@ -90,15 +90,9 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public int MinimumRegionIndex
-        {
-            get { return 0; }
-        }
+        public int MinimumRegionIndex => 0;
 
-        public int MaximumRegionIndex
-        {
-            get { return _regionsVM != null ? _regionsVM.Count - 1 : 0; }
-        }
+        public int MaximumRegionIndex => _regionsVM != null ? _regionsVM.Count - 1 : 0;
 
         public ITissueInput GetTissueInput()
         {

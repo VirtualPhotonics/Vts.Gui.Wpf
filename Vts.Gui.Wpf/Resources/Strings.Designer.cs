@@ -286,6 +286,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No tissue of the specified type exists.
+        /// </summary>
+        public static string Error_NoTissueTypeExists {
+            get {
+                return ResourceManager.GetString("Error_NoTissueTypeExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simulation input not loaded..
         /// </summary>
         public static string Error_SimulationInputNotLoaded {

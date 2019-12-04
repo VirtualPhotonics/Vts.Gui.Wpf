@@ -792,4 +792,7 @@
   <data name="Error_SolutionDomainNotSupported" xml:space="preserve">
     <value>This solution domain is not supported.</value>
   </data>
+  <data name="Error_NoTissueTypeExists" xml:space="preserve">
+    <value>No tissue of the specified type exists</value>
+  </data>
 </root>

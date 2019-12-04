@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
+using Vts.Gui.Wpf.Extensions;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
 
@@ -58,7 +60,7 @@ namespace Vts.Gui.Wpf.ViewModel
                         _simulationInput.TissueInput = new SingleVoxelTissueInput();
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoTissueTypeExists"));
                 }
                 UpdateTissueTypeVM(_simulationInput.TissueInput.TissueType);
             };
@@ -73,7 +75,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public SimulationInput SimulationInput
         {
-            get { return _simulationInput; }
+            get => _simulationInput;
             set
             {
                 _simulationInput = value;
@@ -87,7 +89,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public long N
         {
-            get { return _simulationInput.N; }
+            get => _simulationInput.N;
             set
             {
                 _simulationInput.N = value;
@@ -98,7 +100,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public SimulationOptionsViewModel SimulationOptionsVM
         {
-            get { return _simulationOptionsVM; }
+            get => _simulationOptionsVM;
             set
             {
                 _simulationOptionsVM = value;
@@ -108,7 +110,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public OptionViewModel<string> TissueTypeVM
         {
-            get { return _tissueTypeVM; }
+            get => _tissueTypeVM;
             set
             {
                 _tissueTypeVM = value;
@@ -118,7 +120,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public object TissueInputVM
         {
-            get { return _tissueInputVM; }
+            get => _tissueInputVM;
             set
             {
                 _tissueInputVM = value;
@@ -163,7 +165,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     TissueInputVM = new MultiRegionTissueViewModel((SingleVoxelTissueInput)tissueInput);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoTissueTypeExists"));
             }
         }
     }

@@ -46,5 +46,31 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             Assert.IsTrue(ellisoidTissueRegion.IsAir());
             Assert.AreEqual("TestEllipsiodTissue" + StringLookup.GetLocalizedString("Label_Air"), viewModel.Name);
         }
+
+        [Test]
+        public void Verify_setting_properties()
+        {
+            var viewModel = new EllipsoidRegionViewModel(new EllipsoidTissueRegion(), "CurrentName");
+            viewModel.Dx = 0.7;
+            viewModel.Dy = 0.4;
+            viewModel.Dz = 5.0;
+            viewModel.X = 0.1;
+            viewModel.Y = 0.2;
+            viewModel.Z = 0.3;
+            viewModel.OpticalPropertyVm = new OpticalPropertyViewModel(new OpticalProperties() { G = 0.8, Mua = 0.1, Musp = 0.01, N = 1.4 }, "cm", "NewTitle");
+            viewModel.Name = "NewName";
+            Assert.AreEqual("NewName" + StringLookup.GetLocalizedString("Label_Tissue"), viewModel.Name);
+            Assert.AreEqual(0.1,viewModel.OpticalPropertyVm.Mua);
+            Assert.AreEqual(0.8, viewModel.OpticalPropertyVm.G);
+            Assert.AreEqual(0.01, viewModel.OpticalPropertyVm.Musp);
+            Assert.AreEqual(1.4, viewModel.OpticalPropertyVm.N);
+            Assert.AreEqual("cm", viewModel.OpticalPropertyVm.Units);
+            Assert.AreEqual(0.1, viewModel.X);
+            Assert.AreEqual(0.2, viewModel.Y);
+            Assert.AreEqual(0.3, viewModel.Z);
+            Assert.AreEqual(0.7, viewModel.Dx);
+            Assert.AreEqual(0.4, viewModel.Dy);
+            Assert.AreEqual(5.0, viewModel.Dz);
+        }
     }
 }
