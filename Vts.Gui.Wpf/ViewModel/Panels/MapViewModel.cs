@@ -10,7 +10,7 @@ using Microsoft.Win32;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
-using Vts.Gui.Wpf.View;
+using Vts.Gui.Wpf.View.Helpers;
 
 namespace Vts.Gui.Wpf.ViewModel
 {

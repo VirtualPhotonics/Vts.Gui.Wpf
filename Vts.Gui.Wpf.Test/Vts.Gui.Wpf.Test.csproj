@@ -178,6 +178,7 @@
     <Compile Include="ViewModel\Panels\SubPanels\FluenceSolutionDomainOptionViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\BloodConcentrationViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\AbstractSolutionDomainOptionViewModelTests.cs" />
+    <Compile Include="View\Helpers\ColormapTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -201,6 +202,7 @@
     <Content Include="App_Readme\MathNet\MathNet.Numerics.copyright.txt" />
     <Content Include="App_Readme\MathNet\MathNet.Numerics.readme.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

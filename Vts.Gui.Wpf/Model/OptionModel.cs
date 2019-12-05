@@ -90,8 +90,7 @@ namespace Vts.Gui.Wpf.Model
     /// </summary>
     /// <typeparam name="TValue">The type of value represented by the option.</typeparam>
     public class OptionModel<TValue> :
-        OptionModel,
-        IComparable<OptionModel<TValue>> // where TValue : struct 
+        OptionModel
     {
         public OptionModel(string displayName, TValue value, int id, string groupName, bool enableMultiSelect)
             : this(displayName, value, id, groupName, enableMultiSelect, UNSET_SORT_VALUE)

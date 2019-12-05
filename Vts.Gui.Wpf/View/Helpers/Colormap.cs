@@ -1,60 +1,55 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
-namespace Vts.Gui.Wpf.View
+namespace Vts.Gui.Wpf.View.Helpers
 {
     /// <summary>
     ///     A class for mapping grayscale intensity to a color via lookup tables
     /// </summary>
     public class Colormap
     {
-        private readonly byte[] _BlueByte;
-        private readonly byte[] _GreenByte;
-
-        private readonly byte[] _RedByte;
-        private readonly ColormapLUT lut;
-
         public Colormap(ColormapType colormapType)
         {
+            ColormapLookUpTable colormapLookUpTable;
             var colormapSize = 256;
 
-            _RedByte = new byte[colormapSize];
-            _GreenByte = new byte[colormapSize];
-            _BlueByte = new byte[colormapSize];
+            RedByte = new byte[colormapSize];
+            GreenByte = new byte[colormapSize];
+            BlueByte = new byte[colormapSize];
 
             switch (colormapType)
             {
                 case ColormapType.Hot:
-                    lut = new HotColormapLUT();
+                    colormapLookUpTable = new HotColormapLookUpTable();
                     break;
                 case ColormapType.Jet:
-                    lut = new JetColormapLUT();
+                    colormapLookUpTable = new JetColormapLookUpTable();
                     break;
                 case ColormapType.HSV:
-                    lut = new HSVColormapLUT();
+                    colormapLookUpTable = new HsvColormapLookUpTable();
                     break;
                 case ColormapType.Copper:
-                    lut = new CopperColormapLUT();
+                    colormapLookUpTable = new CopperColormapLookUpTable();
                     break;
                 case ColormapType.Binary:
-                    lut = new BinaryColormapLUT();
+                    colormapLookUpTable = new BinaryColormapLookUpTable();
                     break;
                 case ColormapType.Bone:
-                    lut = new BoneColormapLUT();
+                    colormapLookUpTable = new BoneColormapLookUpTable();
                     break;
-                // default = ColormapType.Gray:
                 default:
-                    lut = new GrayColormapLUT();
+                    colormapLookUpTable = new GrayColormapLookUpTable();
                     break;
             }
 
-            var mappingRatio = colormapSize/lut.Length;
+            var mappingRatio = colormapSize/colormapLookUpTable.Length;
             try
             {
                 for (var j = 0; j < colormapSize; j++)
                 {
-                    _RedByte[j] = (byte) (255*lut.Red[j/mappingRatio]);
-                    _GreenByte[j] = (byte) (255*lut.Green[j/mappingRatio]);
-                    _BlueByte[j] = (byte) (255*lut.Blue[j/mappingRatio]);
+                    RedByte[j] = (byte) (255*colormapLookUpTable.Red[j/mappingRatio]);
+                    GreenByte[j] = (byte) (255*colormapLookUpTable.Green[j/mappingRatio]);
+                    BlueByte[j] = (byte) (255*colormapLookUpTable.Blue[j/mappingRatio]);
                 }
             }
             catch (IndexOutOfRangeException e)
@@ -63,28 +58,19 @@ namespace Vts.Gui.Wpf.View
             }
         }
 
-        public byte[] RedByte
-        {
-            get { return _RedByte; }
-        }
+        public byte[] RedByte { get; }
 
-        public byte[] GreenByte
-        {
-            get { return _GreenByte; }
-        }
+        public byte[] GreenByte { get; }
 
-        public byte[] BlueByte
-        {
-            get { return _BlueByte; }
-        }
+        public byte[] BlueByte { get; }
 
-        #region Nested ColormapLUT Classes
+        #region Nested ColormapLookUpTable Classes
 
-        internal abstract class ColormapLUT
+        internal abstract class ColormapLookUpTable
         {
             #region Constructor
 
-            protected ColormapLUT(double[] R, double[] G, double[] B)
+            protected ColormapLookUpTable(double[] R, double[] G, double[] B)
             {
                 _Red = R;
                 _Green = G;
@@ -95,24 +81,15 @@ namespace Vts.Gui.Wpf.View
 
             #region Properties
 
-            public double[] Red
-            {
-                get { return _Red; }
-            }
+            public double[] Red => _Red;
 
             protected readonly double[] _Red;
 
-            public double[] Green
-            {
-                get { return _Green; }
-            }
+            public double[] Green => _Green;
 
             protected readonly double[] _Green;
 
-            public double[] Blue
-            {
-                get { return _Blue; }
-            }
+            public double[] Blue => _Blue;
 
             protected readonly double[] _Blue;
 
@@ -129,9 +106,9 @@ namespace Vts.Gui.Wpf.View
             #endregion
         }
 
-        internal class HotColormapLUT : ColormapLUT
+        internal class HotColormapLookUpTable : ColormapLookUpTable
         {
-            public HotColormapLUT()
+            public HotColormapLookUpTable()
                 : base(R, G, B)
             {
             }
@@ -921,9 +898,9 @@ namespace Vts.Gui.Wpf.View
             #endregion
         }
 
-        internal class JetColormapLUT : ColormapLUT
+        internal class JetColormapLookUpTable : ColormapLookUpTable
         {
-            internal JetColormapLUT()
+            internal JetColormapLookUpTable()
                 : base(R, G, B)
             {
             }
@@ -1713,9 +1690,9 @@ namespace Vts.Gui.Wpf.View
             #endregion
         }
 
-        internal class GrayColormapLUT : ColormapLUT
+        internal class GrayColormapLookUpTable : ColormapLookUpTable
         {
-            internal GrayColormapLUT()
+            internal GrayColormapLookUpTable()
                 : base(R, G, B)
             {
             }
@@ -2505,9 +2482,9 @@ namespace Vts.Gui.Wpf.View
             #endregion
         }
 
-        internal class BoneColormapLUT : ColormapLUT
+        internal class BoneColormapLookUpTable : ColormapLookUpTable
         {
-            internal BoneColormapLUT()
+            internal BoneColormapLookUpTable()
                 : base(R, G, B)
             {
             }
@@ -3297,9 +3274,9 @@ namespace Vts.Gui.Wpf.View
             #endregion
         }
 
-        internal class CopperColormapLUT : ColormapLUT
+        internal class CopperColormapLookUpTable : ColormapLookUpTable
         {
-            internal CopperColormapLUT()
+            internal CopperColormapLookUpTable()
                 : base(R, G, B)
             {
             }
@@ -4089,9 +4066,9 @@ namespace Vts.Gui.Wpf.View
             #endregion
         }
 
-        internal class HSVColormapLUT : ColormapLUT
+        internal class HsvColormapLookUpTable : ColormapLookUpTable
         {
-            internal HSVColormapLUT()
+            internal HsvColormapLookUpTable()
                 : base(R, G, B)
             {
             }
@@ -4881,9 +4858,9 @@ namespace Vts.Gui.Wpf.View
             #endregion
         }
 
-        internal class BinaryColormapLUT : ColormapLUT
+        internal class BinaryColormapLookUpTable : ColormapLookUpTable
         {
-            internal BinaryColormapLUT()
+            internal BinaryColormapLookUpTable()
                 : base(R, G, B)
             {
             }

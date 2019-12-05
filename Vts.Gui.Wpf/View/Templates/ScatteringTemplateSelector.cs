@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using Vts.SpectralMapping;
 
-namespace Vts.Gui.Wpf.View
+namespace Vts.Gui.Wpf.View.Templates
 {
     public class ScatteringTemplateSelector : UserControl
     {

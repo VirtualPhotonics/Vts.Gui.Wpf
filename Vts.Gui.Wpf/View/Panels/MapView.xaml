@@ -46,7 +46,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Text="{Binding ConverterParameter=Label_PlotType, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,4,0" />
-                <view:RadioButtonOptionView DataContext="{Binding ScalingTypeOptionVM}" VerticalAlignment="Center" />
+                <view:RadioButtonOptionView DataContext="{Binding ScalingTypeOptionVm}" VerticalAlignment="Center" />
             </StackPanel>
             <CheckBox Content="{Binding ConverterParameter=Label_AutoScale, Converter={StaticResource MyResourceToStringConverter}}" IsChecked="{Binding AutoScale, Mode=TwoWay}" Margin="5,0,0,0"
                       VerticalAlignment="Center" />
@@ -81,7 +81,7 @@
             <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3">
                 <!-- Color map dropdown -->
-                <view:ComboBoxOptionView DataContext="{Binding ColormapTypeOptionVM}" Margin="3,0,0,0" />
+                <view:ComboBoxOptionView DataContext="{Binding ColormapTypeOptionVm}" Margin="3,0,0,0" />
                 <!-- Export buttons -->
                 <Button Content="{Binding ConverterParameter=Button_ExportImage, Converter={StaticResource MyResourceToStringConverter}}" Click="Button_Click" Margin="5,0,5,0" />
 

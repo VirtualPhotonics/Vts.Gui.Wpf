@@ -47,20 +47,20 @@
                 <StackPanel Orientation="Vertical" Margin="5,0,10,0">
                     <StackPanel Orientation="Horizontal" Margin="0">
                         <TextBlock Text="{Binding ConverterParameter=Label_XAxisSpacing, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,2,0" />
-                        <view:RadioButtonOptionView DataContext="{Binding XAxisSpacingOptionVM}" VerticalAlignment="Center" />
+                        <view:RadioButtonOptionView DataContext="{Binding XAxisSpacingOptionVm}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0">
                         <TextBlock Text="{Binding ConverterParameter=Label_YAxisSpacing, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,2,0" />
-                        <view:RadioButtonOptionView DataContext="{Binding YAxisSpacingOptionVM}" VerticalAlignment="Center" />
+                        <view:RadioButtonOptionView DataContext="{Binding YAxisSpacingOptionVm}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0"
                                 Visibility="{Binding ShowComplexPlotToggle, Converter={StaticResource MyBooleanToVisibilityConverter}}">
                         <TextBlock Text="{Binding ConverterParameter=Label_PlotToggle, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,2,0" />
-                        <view:RadioButtonOptionView DataContext="{Binding PlotToggleTypeOptionVM}" VerticalAlignment="Center" />
+                        <view:RadioButtonOptionView DataContext="{Binding PlotToggleTypeOptionVm}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0">
                         <TextBlock Text="{Binding ConverterParameter=Label_Normalization, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,2,2,0" />
-                        <view:RadioButtonOptionView DataContext="{Binding PlotNormalizationTypeOptionVM}" VerticalAlignment="Center" />
+                        <view:RadioButtonOptionView DataContext="{Binding PlotNormalizationTypeOptionVm}" VerticalAlignment="Center" />
                     </StackPanel>
                 </StackPanel>
                 <!--  -->
