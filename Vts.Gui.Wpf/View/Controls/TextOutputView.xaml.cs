@@ -29,7 +29,7 @@ namespace Vts.Gui.Wpf.View
         {
             if (e.PropertyName == "Text")
             {
-                scrollViewer.ScrollToBottom();
+                //scrollViewer.ScrollToBottom(); //causes an error commented out to fix later
             }
         }
 

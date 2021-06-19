@@ -1,36 +1,18 @@
-﻿<Application x:Class="Vts.Gui.Wpf.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:converters="clr-namespace:Vts.Gui.Wpf.Converters"
-             xmlns:extensions="clr-namespace:Vts.Gui.Wpf.Extensions"
-             xmlns:helpers="clr-namespace:Vts.Gui.Wpf.Helpers"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
-        <ResourceDictionary>
-            <DataTemplate x:Key="RadioButtonTemplate">
-                <RadioButton DataContext="{Binding}" VerticalAlignment="Center"
-                             Tag="{Binding ID, Mode=TwoWay}"
-                             Content="{Binding DisplayName, Mode=TwoWay}"
-                             IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                             GroupName="{Binding GroupName, Mode=TwoWay}"
-                             IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
-                             Margin="1.5,3" />
-            </DataTemplate>
-            <DataTemplate x:Key="CheckboxTemplate">
-                <CheckBox DataContext="{Binding}" VerticalAlignment="Center"
-                          Tag="{Binding ID, Mode=TwoWay}"
-                          Content="{Binding DisplayName, Mode=TwoWay}"
-                          IsChecked="{Binding IsSelected, Mode=TwoWay}"
-                          IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
-                          Margin="1.5,3" />
-            </DataTemplate>
-            <converters:ResourceToStringConverter x:Key="MyResourceToStringConverter" />
-            <converters:BooleanToVisibilityConverter x:Key="MyBooleanToVisibilityConverter" />
-            <converters:DoubleToStringConverter x:Key="MyDoubleToStringConverter" />
-            <extensions:LocalizedStrings x:Key="LocalizedStrings" />
-            <helpers:OptionTemplateSelector x:Key="OptionTemplateSelector" />
-            <system:String x:Key="ScientificFormat">{0:0.##e-0;;0}</system:String>
-        </ResourceDictionary>
-    </Application.Resources>
+<Application x:Class="Vts.Gui.Wpf.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:system="clr-namespace:System;assembly=mscorlib" xmlns:converters="clr-namespace:Vts.Gui.Wpf.Converters" xmlns:extensions="clr-namespace:Vts.Gui.Wpf.Extensions" xmlns:helpers="clr-namespace:Vts.Gui.Wpf.Helpers" StartupUri="MainWindow.xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+  <Application.Resources>
+    <ResourceDictionary>
+      <DataTemplate x:Key="RadioButtonTemplate">
+        <RadioButton DataContext="{Binding}" VerticalAlignment="Center" Tag="{Binding ID, Mode=TwoWay}" Content="{Binding DisplayName, Mode=TwoWay}" IsChecked="{Binding IsSelected, Mode=TwoWay}" GroupName="{Binding GroupName, Mode=TwoWay}" IsEnabled="{Binding IsEnabled, Mode=TwoWay}" Margin="1.5,3" />
+      </DataTemplate>
+      <DataTemplate x:Key="CheckboxTemplate">
+        <CheckBox DataContext="{Binding}" VerticalAlignment="Center" Tag="{Binding ID, Mode=TwoWay}" Content="{Binding DisplayName, Mode=TwoWay}" IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsEnabled, Mode=TwoWay}" Margin="1.5,3" />
+      </DataTemplate>
+      <converters:ResourceToStringConverter x:Key="MyResourceToStringConverter" />
+      <converters:BooleanToVisibilityConverter x:Key="MyBooleanToVisibilityConverter" />
+      <converters:DoubleToStringConverter x:Key="MyDoubleToStringConverter" />
+      <extensions:LocalizedStrings x:Key="LocalizedStrings" />
+      <helpers:OptionTemplateSelector x:Key="OptionTemplateSelector" />
+      <system:String x:Key="ScientificFormat">{0:0.##e-0;;0}</system:String>
+    </ResourceDictionary>
+  </Application.Resources>
 </Application>
