@@ -27,11 +27,13 @@ namespace Vts.Gui.Wpf.View
 
         private void textOutputVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+#if !DEBUG
             if (e.PropertyName == "Text")
             {
-                //scrollViewer.ScrollToBottom(); //causes an error commented out to fix later
+                // this line throws an error in debug mode so added in a check for debugging
+                scrollViewer.ScrollToBottom();
             }
+#endif
         }
-
     }
 }

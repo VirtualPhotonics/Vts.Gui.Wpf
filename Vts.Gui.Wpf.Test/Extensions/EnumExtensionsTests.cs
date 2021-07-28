@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using Vts.Common;
 using Vts.Gui.Wpf.Extensions;
-using Vts.Gui.Wpf.ViewModel;
 
 namespace Vts.Gui.Wpf.Test.Extensions
 {
