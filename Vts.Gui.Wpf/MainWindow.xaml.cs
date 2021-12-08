@@ -5,16 +5,16 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using Vts.Common.Logging;
 using Vts.Gui.Wpf.View;
 using Vts.Gui.Wpf.ViewModel;
-using Vts.Common.Logging;
 
 namespace Vts.Gui.Wpf
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private int _numViews;
         private readonly ILogger _logger;

@@ -1,7 +1,6 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using OxyPlot.Legends;
 using Vts.Gui.Wpf.ViewModel;
-using OxyPlot;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
 {
@@ -11,11 +10,6 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
     [TestFixture]
     public class PlotViewModelTests
     {
-        public PlotViewModelTests()
-        {
-            // constructor logic if needed goes here
-        }
-
         /// <summary>
         /// setup and tear down
         /// </summary>
@@ -53,7 +47,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.AreEqual(viewModel.CustomPlotLabel,"");
             Assert.AreEqual(viewModel.PlotType, ReflectancePlotType.ForwardSolver);
             Assert.AreEqual(viewModel.PlotModel.Title, "");
-            Assert.AreEqual(viewModel.PlotModel.LegendPlacement, LegendPlacement.Outside);
+            Assert.AreEqual(viewModel.PlotModel.Legends[0].LegendPlacement, LegendPlacement.Outside);
         }
 
         // The following tests verify the Relay Commands

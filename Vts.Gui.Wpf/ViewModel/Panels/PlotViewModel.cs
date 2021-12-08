@@ -9,6 +9,7 @@ using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
@@ -115,7 +116,6 @@ namespace Vts.Gui.Wpf.ViewModel
             PlotModel = new PlotModel
             {
                 Title = "",
-                LegendPlacement = LegendPlacement.Outside,
                 DefaultColors = new List<OxyColor>
                 {
                     OxyColor.FromRgb(0x00, 0x80, 0x00),     // Green
@@ -132,6 +132,12 @@ namespace Vts.Gui.Wpf.ViewModel
                     OxyColor.FromRgb(0x99, 0x99, 0x00),     // Olive Green
                 }
             };
+            var legend = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                IsLegendVisible = true
+            };
+            PlotModel.Legends.Add(legend);
             PlotType = ReflectancePlotType.ForwardSolver;
             _holdOn = true;
             _hideKey = false;
