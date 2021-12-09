@@ -54,7 +54,7 @@
                         GroupName="PHDSolutionDomainOptionView" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="1" Grid.Column="2"
-                        DataContext="{Binding FluenceOfFxAndZAndTOption}" IsEnabled="False"
+                        DataContext="{Binding FluenceOfFxAndZAndTimeOption}" IsEnabled="False"
                         Content="{Binding ConverterParameter=Label_PHDOfFxAndZAndTime, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="PHDSolutionDomainOptionView" VerticalAlignment="Center" HorizontalAlignment="Left" />

@@ -55,7 +55,7 @@
                         HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="1" Grid.Column="2" IsEnabled="False"
-                        DataContext="{Binding FluenceOfFxAndZAndTOption}"
+                        DataContext="{Binding FluenceOfFxAndZAndTimeOption}"
                         Content="{Binding ConverterParameter=Label_AOfFxAndZAndTime, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="AbsorbedEnergySolutionDomainOptionView" VerticalAlignment="Center"
