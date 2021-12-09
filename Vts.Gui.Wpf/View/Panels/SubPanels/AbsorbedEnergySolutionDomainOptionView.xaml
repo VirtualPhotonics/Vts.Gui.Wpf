@@ -31,7 +31,6 @@
                     <RadioButton
                         Grid.Row="0" Grid.Column="1"
                         DataContext="{Binding FluenceOfRhoAndZOption}"
-                        Tag="{Binding ID}"
                         Content="{Binding ConverterParameter=Label_AOfRhoAndZ, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="AbsorbedEnergySolutionDomainOptionView" VerticalAlignment="Center"
@@ -39,7 +38,6 @@
                     <RadioButton
                         Grid.Row="0" Grid.Column="2"
                         DataContext="{Binding FluenceOfFxAndZOption}" IsEnabled="False"
-                        Tag="{Binding ID}"
                         Content="{Binding ConverterParameter=Label_AOfFxAndZ, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="AbsorbedEnergySolutionDomainOptionView" VerticalAlignment="Center"
@@ -51,7 +49,6 @@
                     <RadioButton
                         Grid.Row="1" Grid.Column="1" IsEnabled="{Binding IsEnabled, Mode=OneWay}"
                         DataContext="{Binding FluenceOfRhoAndZAndTimeOption}"
-                        Tag="{Binding ID}"
                         Content="{Binding ConverterParameter=Label_AOfRhoAndZAndTime, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="AbsorbedEnergySolutionDomainOptionView" VerticalAlignment="Center"
@@ -59,7 +56,6 @@
                     <RadioButton
                         Grid.Row="1" Grid.Column="2" IsEnabled="False"
                         DataContext="{Binding FluenceOfFxAndZAndTOption}"
-                        Tag="{Binding ID}"
                         Content="{Binding ConverterParameter=Label_AOfFxAndZAndTime, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="AbsorbedEnergySolutionDomainOptionView" VerticalAlignment="Center"
@@ -72,7 +68,6 @@
                         Grid.Row="2" Grid.Column="1"
                         DataContext="{Binding FluenceOfRhoAndZAndFtOption}"
                         IsEnabled="{Binding IsEnabled, Mode=OneWay}"
-                        Tag="{Binding ID}"
                         Content="{Binding ConverterParameter=Label_AOfRhoAndZAndFt, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="AbsorbedEnergySolutionDomainOptionView" VerticalAlignment="Top"
@@ -80,7 +75,6 @@
                     <RadioButton
                         Grid.Row="2" Grid.Column="2"
                         DataContext="{Binding FluenceOfFxAndZAndFtOption}" IsEnabled="False"
-                        Tag="{Binding ID}"
                         Content="{Binding ConverterParameter=Label_AOfFxAndZAndFt, Converter={StaticResource MyResourceToStringConverter}}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="AbsorbedEnergySolutionDomainOptionView" VerticalAlignment="Center"
@@ -88,28 +82,5 @@
                 </Grid>
             </HeaderedContentControl.Content>
         </HeaderedContentControl>
-        <!-- Independent Axis -->
-        <!-- Choice for independent axis label, if necessary (invisible otherwise) -->
-        <StackPanel
-            Visibility="{Binding ShowIndependentAxisChoice, Converter={StaticResource MyBooleanToVisibilityConverter}}"
-            Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"
-            LayoutUpdated="StackPanel_LayoutUpdated" Margin="3,1,0,0">
-            <TextBlock
-                Text="{Binding ConverterParameter=Label_IndependentAxis, Converter={StaticResource MyResourceToStringConverter}}"
-                VerticalAlignment="Center" HorizontalAlignment="Left" />
-            <!-- Radio button options -->
-            <view:RadioButtonOptionView DataContext="{Binding IndependentVariableAxisOptionVM}"
-                                        VerticalContentAlignment="Center"
-                                        VerticalAlignment="Center" HorizontalAlignment="Left" />
-            <TextBlock Text="{Binding ConverterParameter=Label_At, Converter={StaticResource MyResourceToStringConverter}}"
-                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3,0,0,0" />
-            <TextBlock Text="{Binding ConstantAxisLabel}" VerticalAlignment="Center" HorizontalAlignment="Left"
-                       Margin="3,0,0,0" />
-            <TextBlock Text="=" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="1,0,1,0" />
-            <TextBox Width="40" Text="{Binding ConstantAxisValue, Mode=TwoWay}" VerticalAlignment="Center"
-                     HorizontalAlignment="Left" KeyDown="TextBox_KeyDown" />
-            <TextBlock Text="{Binding ConstantAxisUnits}" VerticalAlignment="Center" HorizontalAlignment="Left"
-                       Margin="2,0,0,0" />
-        </StackPanel>
     </StackPanel>
 </UserControl>

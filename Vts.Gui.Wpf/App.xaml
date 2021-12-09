@@ -2,10 +2,10 @@
   <Application.Resources>
     <ResourceDictionary>
       <DataTemplate x:Key="RadioButtonTemplate">
-        <RadioButton DataContext="{Binding}" VerticalAlignment="Center" Tag="{Binding ID, Mode=TwoWay}" Content="{Binding DisplayName, Mode=TwoWay}" IsChecked="{Binding IsSelected, Mode=TwoWay}" GroupName="{Binding GroupName, Mode=TwoWay}" IsEnabled="{Binding IsEnabled, Mode=TwoWay}" Margin="1.5,3" />
+        <RadioButton DataContext="{Binding}" VerticalAlignment="Center" Content="{Binding DisplayName, Mode=TwoWay}" IsChecked="{Binding IsSelected, Mode=TwoWay}" GroupName="{Binding GroupName, Mode=TwoWay}" IsEnabled="{Binding IsEnabled, Mode=TwoWay}" Margin="1.5,3" />
       </DataTemplate>
       <DataTemplate x:Key="CheckboxTemplate">
-        <CheckBox DataContext="{Binding}" VerticalAlignment="Center" Tag="{Binding ID, Mode=TwoWay}" Content="{Binding DisplayName, Mode=TwoWay}" IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsEnabled, Mode=TwoWay}" Margin="1.5,3" />
+        <CheckBox DataContext="{Binding}" VerticalAlignment="Center" Content="{Binding DisplayName, Mode=TwoWay}" IsChecked="{Binding IsSelected, Mode=TwoWay}" IsEnabled="{Binding IsEnabled, Mode=TwoWay}" Margin="1.5,3" />
       </DataTemplate>
       <converters:ResourceToStringConverter x:Key="MyResourceToStringConverter" />
       <converters:BooleanToVisibilityConverter x:Key="MyBooleanToVisibilityConverter" />

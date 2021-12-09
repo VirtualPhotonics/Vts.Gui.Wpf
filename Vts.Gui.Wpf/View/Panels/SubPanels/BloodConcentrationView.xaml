@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="Auto">
     <Grid x:Name="LayoutRoot" Background="White"
-          Visibility="{Binding BloodConcentrationVM.DisplayBloodVM, Converter={StaticResource MyBooleanToVisibilityConverter}}">
+          Visibility="{Binding DisplayBloodVM, Converter={StaticResource MyBooleanToVisibilityConverter}}">
         <StackPanel Orientation="Vertical">
             <!-- Blood Concentration Labels -->
             <TextBlock

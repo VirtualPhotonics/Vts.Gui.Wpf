@@ -31,7 +31,7 @@
         <!-- Places the z values on the map view -->
         <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ConverterParameter=Label_Z0, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Top"
                    HorizontalAlignment="Right" />
-        <TextBlock x:Name="ZMax" Grid.Row="1" Grid.Column="0" Margin="0, 20,0,0" Text="{Binding ZMaxLabel}"
+        <TextBlock x:Name="ZMax" Grid.Row="1" Grid.Column="0" Margin="0, 20,0,0" Text="{Binding MaxValue, Mode=TwoWay, StringFormat={StaticResource ScientificFormat}}"
                    VerticalAlignment="Top" HorizontalAlignment="Right" />
         <!-- Map and the map options -->
         <Image x:Name="MapImage" Grid.Row="1" Grid.Column="1" Source="{Binding Bitmap}" Stretch="Uniform"

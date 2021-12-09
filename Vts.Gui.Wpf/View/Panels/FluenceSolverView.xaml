@@ -131,10 +131,6 @@
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Top">
-            <!-- This Radio button choice does not appear on the panel -->
-            <view:RadioButtonOptionView DataContext="{Binding ForwardAnalysisTypeOptionVM}" 
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top" />
             <!-- Button -->
             <Button
                 VerticalAlignment="Bottom"
