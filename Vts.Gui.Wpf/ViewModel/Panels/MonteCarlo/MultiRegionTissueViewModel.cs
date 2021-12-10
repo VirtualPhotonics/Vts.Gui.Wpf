@@ -17,6 +17,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         public MultiRegionTissueViewModel(ITissueInput input)
         {
+            _currentRegionIndex = 0;
             _input = input;
 
             switch (input.TissueType)
@@ -55,8 +56,6 @@ namespace Vts.Gui.Wpf.ViewModel
                 default:
                     throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoTissueTypeExists"));
             }
-
-            _currentRegionIndex = 0;
         }
 
         public MultiRegionTissueViewModel()
