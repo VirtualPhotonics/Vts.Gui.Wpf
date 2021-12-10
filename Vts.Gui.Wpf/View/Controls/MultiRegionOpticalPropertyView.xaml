@@ -9,10 +9,6 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="400">
 
-    <!-- This is to provide design-time support. It is expected that the ViewModel be created in the constructor -->
-    <UserControl.DataContext>
-        <viewModel:MultiRegionTissueViewModel />
-    </UserControl.DataContext>
     <StackPanel Orientation="Vertical">
         <TextBlock Text="{Binding ConverterParameter=Label_TissueInput, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal">
@@ -123,10 +119,10 @@
                                     <Style TargetType="ContentControl">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsLayer}" Value="True">
-                                                <Setter Property="ContentTemplate" Value="{StaticResource MultiLayer}" />
+                                                <Setter Property="ContentTemplate" Value="{DynamicResource MultiLayer}" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsEllipsoid}" Value="True">
-                                                <Setter Property="ContentTemplate" Value="{StaticResource SingleEllipsoid}" />
+                                                <Setter Property="ContentTemplate" Value="{DynamicResource SingleEllipsoid}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

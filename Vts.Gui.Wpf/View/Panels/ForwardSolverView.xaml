@@ -5,10 +5,6 @@
              xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
              VerticalAlignment="Top">
 
-    <!-- This is to provide design-time support. It is expected that the ViewModel be created in the constructor -->
-    <UserControl.DataContext>
-        <viewModel:ForwardSolverViewModel />
-    </UserControl.DataContext>
     <StackPanel Orientation="Vertical" 
                 VerticalAlignment="Top" 
                 Width="480">
@@ -78,10 +74,10 @@
                     <Style TargetType="ContentControl">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsSemiInfinite}" Value="True">
-                                <Setter Property="ContentTemplate" Value="{StaticResource SemiInfinite}" />
+                                <Setter Property="ContentTemplate" Value="{DynamicResource SemiInfinite}" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsMultiRegion}" Value="True">
-                                <Setter Property="ContentTemplate" Value="{StaticResource MultiRegion}" />
+                                <Setter Property="ContentTemplate" Value="{DynamicResource MultiRegion}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

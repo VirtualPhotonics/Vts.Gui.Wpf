@@ -4,10 +4,6 @@
              xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
              xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel">
 
-    <!-- This is to provide design-time support. It is expected that the ViewModel be created in the constructor -->
-    <UserControl.DataContext>
-        <viewModel:FluenceSolutionDomainOptionViewModel />
-    </UserControl.DataContext>
     <StackPanel VerticalAlignment="Top">
         <HeaderedContentControl
             VerticalAlignment="Top">
