@@ -77,62 +77,73 @@
                     Visibility="{Binding DisplayBloodVM, Converter={StaticResource MyBooleanToVisibilityConverter}}"
                     Margin="0,3,0,0" />
                 <StackPanel Margin="0,10,0,0">
+                    <StackPanel.Resources>
+                        <!-- Intralipid parameters -->
+                        <DataTemplate x:Key="IntralipidScattering">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding ConverterParameter=Value_VolumeFraction, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
+                                <TextBlock Text=" = " VerticalAlignment="Center" />
+                                <TextBox Text="{Binding Scatterer.VolumeFraction, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="40"
+                                         KeyDown="TextBox_KeyDown" />
+                            </StackPanel>
+                        </DataTemplate>
+                        <!-- Mie Scatterer parameters -->
+                        <DataTemplate x:Key="MieScattering">
+                            <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
+                                <TextBlock Text="{Binding ConverterParameter=Value_ParticleRadius, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
+                                <TextBlock Text="=" VerticalAlignment="Center" Margin="1,0,1,0" />
+                                <TextBox Text="{Binding Scatterer.ParticleRadius, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" 
+                                             Width="30" Margin="0,0,3,0" KeyDown="TextBox_KeyDown" />
+                                <TextBlock Text="{Binding ConverterParameter=Value_ParticleN, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
+                                <TextBlock Text="=" VerticalAlignment="Center" Margin="1,0,1,0" />
+                                <TextBox Text="{Binding Scatterer.ParticleRefractiveIndexMismatch, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}"
+                                             Width="30" Margin="0,0,3,0" KeyDown="TextBox_KeyDown" />
+                                <TextBlock Text="{Binding ConverterParameter=Value_MediumN, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
+                                <TextBlock Text="=" VerticalAlignment="Center" Margin="1,0,1,0" />
+                                <TextBox Text="{Binding Scatterer.MediumRefractiveIndexMismatch, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}"
+                                             Width="30" Margin="0,0,3,0" KeyDown="TextBox_KeyDown" />
+                                <TextBlock Text="{Binding ConverterParameter=Value_VolumeFraction, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
+                                <TextBlock Text= "=" VerticalAlignment="Center" Margin="1,0,1,0" />
+                                <TextBox Text="{Binding Scatterer.VolumeFraction, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" 
+                                             Width="30" KeyDown="TextBox_KeyDown" />
+                            </StackPanel>
+                        </DataTemplate>
+                        <!-- Powerlaw parameters -->
+                        <DataTemplate x:Key="PowerLawScattering">
+                            <StackPanel Orientation="Vertical" Margin="3,0,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding ConverterParameter=Value_A, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
+                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
+                                    <TextBox Text="{Binding Scatterer.A, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="Auto"
+                                             Margin="0,0,5,0" KeyDown="TextBox_KeyDown" />
+                                    <TextBlock Text="{Binding ConverterParameter=Value_b, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
+                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
+                                    <TextBox Text="{Binding Scatterer.B, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="Auto"
+                                             Margin="0,0,5,0" KeyDown="TextBox_KeyDown" />
+                                    <TextBlock Text="{Binding ConverterParameter=Label_PowerLawDefinitionA, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </StackPanel.Resources>
                     <!-- Scatterer Type -->
                     <view:RadioButtonOptionView DataContext="{Binding ScatteringTypeVM}" />
-                    <!-- Intralipid parameters -->
-                    <templates:ScatteringTemplateSelector ScatteringType="{Binding ScatteringTypeName, Mode=TwoWay}">
-                        <templates:ScatteringTemplateSelector.IntralipidScatteringTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding ConverterParameter=Value_VolumeFraction, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                    <TextBlock Text=" = " VerticalAlignment="Center" />
-                                    <TextBox Text="{Binding Scatterer.VolumeFraction, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="40"
-                                             KeyDown="TextBox_KeyDown" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </templates:ScatteringTemplateSelector.IntralipidScatteringTemplate>
-                        <!-- Mie Scatterer parameters -->
-                        <templates:ScatteringTemplateSelector.MieScatteringTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
-                                    <TextBlock Text="{Binding ConverterParameter=Value_ParticleRadius, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="1,0,1,0" />
-                                    <TextBox Text="{Binding Scatterer.ParticleRadius, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" 
-                                             Width="30" Margin="0,0,3,0" KeyDown="TextBox_KeyDown" />
-                                    <TextBlock Text="{Binding ConverterParameter=Value_ParticleN, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="1,0,1,0" />
-                                    <TextBox Text="{Binding Scatterer.ParticleRefractiveIndexMismatch, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}"
-                                             Width="30" Margin="0,0,3,0" KeyDown="TextBox_KeyDown" />
-                                    <TextBlock Text="{Binding ConverterParameter=Value_MediumN, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                    <TextBlock Text="=" VerticalAlignment="Center" Margin="1,0,1,0" />
-                                    <TextBox Text="{Binding Scatterer.MediumRefractiveIndexMismatch, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}"
-                                             Width="30" Margin="0,0,3,0" KeyDown="TextBox_KeyDown" />
-                                    <TextBlock Text="{Binding ConverterParameter=Value_VolumeFraction, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                    <TextBlock Text= "=" VerticalAlignment="Center" Margin="1,0,1,0" />
-                                    <TextBox Text="{Binding Scatterer.VolumeFraction, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" 
-                                             Width="30" KeyDown="TextBox_KeyDown" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </templates:ScatteringTemplateSelector.MieScatteringTemplate>
-                        <!-- Powerlaw parameters -->
-                        <templates:ScatteringTemplateSelector.PowerLawScatteringTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Vertical" Margin="3,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding ConverterParameter=Value_A, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                        <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
-                                        <TextBox Text="{Binding Scatterer.A, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="Auto"
-                                                 Margin="0,0,5,0" KeyDown="TextBox_KeyDown" />
-                                        <TextBlock Text="{Binding ConverterParameter=Value_b, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                        <TextBlock Text="=" VerticalAlignment="Center" Margin="2,0,2,0" />
-                                        <TextBox Text="{Binding Scatterer.B, Converter={StaticResource MyDoubleToStringConverter}, Mode=TwoWay}" Width="Auto"
-                                                 Margin="0,0,5,0" KeyDown="TextBox_KeyDown" />
-                                        <TextBlock Text="{Binding ConverterParameter=Label_PowerLawDefinitionA, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </DataTemplate>
-                        </templates:ScatteringTemplateSelector.PowerLawScatteringTemplate>
-                    </templates:ScatteringTemplateSelector>
+                    <ContentControl Content="{Binding}">
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ScatteringTypeName, Mode=TwoWay}" Value="Vts.SpectralMapping.MieScatterer">
+                                        <Setter Property="ContentTemplate" Value="{DynamicResource MieScattering}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ScatteringTypeName, Mode=TwoWay}" Value="Vts.SpectralMapping.IntralipidScatterer">
+                                        <Setter Property="ContentTemplate" Value="{DynamicResource IntralipidScattering}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ScatteringTypeName, Mode=TwoWay}" Value="Vts.SpectralMapping.PowerLawScatterer">
+                                        <Setter Property="ContentTemplate" Value="{DynamicResource PowerLawScattering}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
                 </StackPanel>
                 <!-- Wavelength Range -->
                 <StackPanel Orientation="Vertical" Margin="0,10,0,0" VerticalAlignment="Top">

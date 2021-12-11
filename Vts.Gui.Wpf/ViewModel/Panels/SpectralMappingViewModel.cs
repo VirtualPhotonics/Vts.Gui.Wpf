@@ -38,19 +38,11 @@ namespace Vts.Gui.Wpf.ViewModel
             ScatteringTypeVM.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "SelectedValue" && SelectedTissue != null)
-                    //SelectedTissue.ScattererType != ScatteringTypeVM.SelectedValue)
                 {
                     SelectedTissue.Scatterer = SolverFactory.GetScattererType(ScatteringTypeVM.SelectedValue);
-                    var bindableScatterer = SelectedTissue.Scatterer as INotifyPropertyChanged;
-                    if (bindableScatterer != null)
+                    if (SelectedTissue.Scatterer is INotifyPropertyChanged bindableScatterer)
                     {
                         bindableScatterer.PropertyChanged += (s, a) => UpdateOpticalProperties();
-                    }
-                    //LM - Temporary Fix to reset the tissue type after a new scatterer is created
-                    if (SelectedTissue.ScattererType == ScatteringType.PowerLaw)
-                    {
-                        var myScatterer = (PowerLawScatterer) SelectedTissue.Scatterer;
-                        myScatterer.SetTissueType(SelectedTissue.TissueType);
                     }
                     ScatteringTypeName = SelectedTissue.Scatterer.GetType().FullName;
                 }
@@ -90,7 +82,7 @@ namespace Vts.Gui.Wpf.ViewModel
             SelectedTissue = Tissues.First();
             ScatteringTypeVM.SelectedValue = SelectedTissue.ScattererType;
                 // forces update to all bindings established in hanlder for ScatteringTypeVM.PropertyChanged above
-            ScatteringTypeName = SelectedTissue.GetType().FullName;
+            ScatteringTypeName = SelectedTissue.Scatterer.GetType().FullName;
             OpticalProperties = new OpticalProperties(0.01, 1, 0.8, 1.4);
             Wavelength = 650;
 
@@ -139,14 +131,12 @@ namespace Vts.Gui.Wpf.ViewModel
             get { return _selectedTissue; }
             set
             {
-                // var realScatterer = value.Scatterer;
-
                 _selectedTissue = value;
+                ScatteringTypeName = _selectedTissue.Scatterer.GetType().FullName;
                 OnPropertyChanged("SelectedTissue");
                 OnPropertyChanged("Scatterer");
 
                 ScatteringTypeVM.Options[_selectedTissue.Scatterer.ScattererType].IsSelected = true;
-                ScatteringTypeName = _selectedTissue.Scatterer.GetType().FullName;
 
                 UpdateOpticalProperties();
 
