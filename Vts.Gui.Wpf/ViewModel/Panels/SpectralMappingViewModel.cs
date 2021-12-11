@@ -81,8 +81,15 @@ namespace Vts.Gui.Wpf.ViewModel
 
             SelectedTissue = Tissues.First();
             ScatteringTypeVM.SelectedValue = SelectedTissue.ScattererType;
-                // forces update to all bindings established in hanlder for ScatteringTypeVM.PropertyChanged above
+            // forces update to all bindings established in hanlder for ScatteringTypeVM.PropertyChanged above
             ScatteringTypeName = SelectedTissue.Scatterer.GetType().FullName;
+            // Set the tissue type again for skin so it will set the PowerLaw A and B values correctly
+            if (SelectedTissue.ScattererType == ScatteringType.PowerLaw)
+            {
+                var myScatterer = (PowerLawScatterer)SelectedTissue.Scatterer;
+                myScatterer.SetTissueType(SelectedTissue.TissueType);
+            }
+
             OpticalProperties = new OpticalProperties(0.01, 1, 0.8, 1.4);
             Wavelength = 650;
 
