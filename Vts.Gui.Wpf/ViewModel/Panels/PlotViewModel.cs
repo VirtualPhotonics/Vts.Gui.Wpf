@@ -9,7 +9,8 @@ using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Legends;
+// todo: Once the popout bug is fixed and we update OxyPlot, uncomment this using:
+//using OxyPlot.Legends;
 using OxyPlot.Series;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
@@ -116,6 +117,8 @@ namespace Vts.Gui.Wpf.ViewModel
             PlotModel = new PlotModel
             {
                 Title = "",
+                // todo: Once the popout bug is fixed and we update OxyPlot, remove the line below:
+                LegendPlacement = LegendPlacement.Outside,
                 DefaultColors = new List<OxyColor>
                 {
                     OxyColor.FromRgb(0x00, 0x80, 0x00),     // Green
@@ -132,12 +135,13 @@ namespace Vts.Gui.Wpf.ViewModel
                     OxyColor.FromRgb(0x99, 0x99, 0x00),     // Olive Green
                 }
             };
-            var legend = new Legend
-            {
-                LegendPlacement = LegendPlacement.Outside,
-                IsLegendVisible = true
-            };
-            PlotModel.Legends.Add(legend);
+            // todo: Once the popout bug is fixed and we update OxyPlot, uncomment this code:
+            //var legend = new Legend
+            //{
+            //    LegendPlacement = LegendPlacement.Outside,
+            //    IsLegendVisible = true
+            //};
+            //PlotModel.Legends.Add(legend);
             PlotType = ReflectancePlotType.ForwardSolver;
             _holdOn = true;
             _hideKey = false;
@@ -449,9 +453,9 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void Plot_DuplicateWindow_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var vm = Clone();
-            vm.UpdatePlotSeries();
-            MainWindow.Current.Main_DuplicatePlotView_Executed(vm);
+            var plotViewModel = Clone();
+            plotViewModel.UpdatePlotSeries();
+            MainWindow.Current.Main_DuplicatePlotView_Executed(plotViewModel);
         }
 
         public PlotViewModel Clone()
@@ -464,40 +468,40 @@ namespace Vts.Gui.Wpf.ViewModel
             var output = new PlotViewModel(plotToClone._plotViewId + 1);
             plotToClone._plotViewId += 1;
 
-            output._title = plotToClone._title;
-            output._plotTitles = plotToClone._plotTitles.ToList();
-            output._plotType = plotToClone._plotType;
-            output._holdOn = plotToClone._holdOn;
-            output._plotSeriesCollection = new PlotPointCollection();
-            output._labels = plotToClone._labels.ToList();
-            output._customPlotLabel = plotToClone._customPlotLabel;
+            output.Title = plotToClone.Title;
+            output.PlotTitles = plotToClone.PlotTitles.ToList();
+            output.PlotType = plotToClone.PlotType;
+            output.HoldOn = plotToClone.HoldOn;
+            output.PlotSeriesCollection = new PlotPointCollection();
+            output.Labels = plotToClone._labels.ToList();
+            output.CustomPlotLabel = plotToClone.CustomPlotLabel;
             output.ShowInPlotView = false;
-            output._hideKey = plotToClone.HideKey;
-            output._showAxes = plotToClone._showAxes;
-            output._minYValue = plotToClone._minYValue;
-            output._maxYValue = plotToClone._maxYValue;
-            output._minXValue = plotToClone._minXValue;
-            output._maxXValue = plotToClone._maxXValue;
-            output._autoScaleX = plotToClone._autoScaleX;
-            output._autoScaleY = plotToClone._autoScaleY;
+            output.HideKey = plotToClone.HideKey;
+            output.ShowAxes = plotToClone.ShowAxes;
+            output.MinYValue = plotToClone.MinYValue;
+            output.MaxYValue = plotToClone.MaxYValue;
+            output.MinXValue = plotToClone.MinXValue;
+            output.MaxXValue = plotToClone.MaxXValue;
+            output.AutoScaleX = plotToClone.AutoScaleX;
+            output.AutoScaleY = plotToClone.AutoScaleY;
             output._isComplexPlot = plotToClone._isComplexPlot;
-            output._currentIndependentVariableAxis = plotToClone._currentIndependentVariableAxis;
+            output.CurrentIndependentVariableAxis = plotToClone.CurrentIndependentVariableAxis;
 
             output.RealLabels = plotToClone.RealLabels;
             output.ImagLabels = plotToClone.ImagLabels;
             output.PhaseLabels = plotToClone.PhaseLabels;
             output.AmplitudeLabels = plotToClone.AmplitudeLabels;
 
-            output._yAxisSpacingOptionVm.Options[output._yAxisSpacingOptionVm.SelectedValue].IsSelected = false;
-            output._plotNormalizationTypeOptionVm.Options[output._plotNormalizationTypeOptionVm.SelectedValue]
+            output.YAxisSpacingOptionVm.Options[output._yAxisSpacingOptionVm.SelectedValue].IsSelected = false;
+            output.PlotNormalizationTypeOptionVm.Options[output._plotNormalizationTypeOptionVm.SelectedValue]
                 .IsSelected = false;
-            output._plotToggleTypeOptionVm.Options[output._plotToggleTypeOptionVm.SelectedValue].IsSelected = false;
-            output._xAxisSpacingOptionVm.Options[output._xAxisSpacingOptionVm.SelectedValue].IsSelected = false;
-            output._yAxisSpacingOptionVm.Options[plotToClone._yAxisSpacingOptionVm.SelectedValue].IsSelected = true;
-            output._plotNormalizationTypeOptionVm.Options[plotToClone._plotNormalizationTypeOptionVm.SelectedValue]
+            output.PlotToggleTypeOptionVm.Options[output._plotToggleTypeOptionVm.SelectedValue].IsSelected = false;
+            output.XAxisSpacingOptionVm.Options[output._xAxisSpacingOptionVm.SelectedValue].IsSelected = false;
+            output.YAxisSpacingOptionVm.Options[plotToClone._yAxisSpacingOptionVm.SelectedValue].IsSelected = true;
+            output.PlotNormalizationTypeOptionVm.Options[plotToClone._plotNormalizationTypeOptionVm.SelectedValue]
                 .IsSelected = true;
-            output._plotToggleTypeOptionVm.Options[plotToClone._plotToggleTypeOptionVm.SelectedValue].IsSelected = true;
-            output._xAxisSpacingOptionVm.Options[plotToClone._xAxisSpacingOptionVm.SelectedValue].IsSelected = true;
+            output.PlotToggleTypeOptionVm.Options[plotToClone._plotToggleTypeOptionVm.SelectedValue].IsSelected = true;
+            output.XAxisSpacingOptionVm.Options[plotToClone._xAxisSpacingOptionVm.SelectedValue].IsSelected = true;
 
             output.DataSeriesCollection =
                 plotToClone.DataSeriesCollection.Select(
