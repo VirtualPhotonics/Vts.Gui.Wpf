@@ -39,6 +39,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     "SingleVoxel"
                 });
 #endif
+            UpdateTissueTypeVM(_simulationInput.TissueInput.TissueType);
             _simulationOptionsVM.PropertyChanged += (sender, args) =>
             {
                 if (_simulationOptionsVM.TrackStatistics && _simulationOptionsVM.OutputFolder != null)
@@ -148,6 +149,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     throw new ArgumentOutOfRangeException();
             }
 
+            _tissueInputVM = _simulationInput.TissueInput;
             TissueTypeVM.Options[tissueType].IsSelected = true;
         }
 

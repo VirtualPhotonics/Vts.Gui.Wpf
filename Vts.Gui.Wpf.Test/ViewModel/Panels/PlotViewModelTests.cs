@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
-using OxyPlot.Legends;
+using OxyPlot;
+// todo: Once the popout bug is fixed and we update OxyPlot, uncomment this using:
+//using OxyPlot.Legends;
 using Vts.Gui.Wpf.ViewModel;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
@@ -44,10 +46,12 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.IsTrue(viewModel.YAxisSpacingOptionVm != null);
             Assert.IsTrue(viewModel.PlotToggleTypeOptionVm != null);
             Assert.IsTrue(viewModel.PlotNormalizationTypeOptionVm != null);
-            Assert.AreEqual(viewModel.CustomPlotLabel,"");
-            Assert.AreEqual(viewModel.PlotType, ReflectancePlotType.ForwardSolver);
-            Assert.AreEqual(viewModel.PlotModel.Title, "");
-            Assert.AreEqual(viewModel.PlotModel.Legends[0].LegendPlacement, LegendPlacement.Outside);
+            Assert.AreEqual("", viewModel.CustomPlotLabel);
+            Assert.AreEqual(ReflectancePlotType.ForwardSolver, viewModel.PlotType);
+            Assert.AreEqual("", viewModel.PlotModel.Title);
+            Assert.AreEqual(viewModel.PlotModel.LegendPlacement, LegendPlacement.Outside);
+            // todo: Once the popout bug is fixed and we update OxyPlot, replace the above line with this one:
+            //Assert.AreEqual(viewModel.PlotModel.Legends[0].LegendPlacement, LegendPlacement.Outside);
         }
 
         // The following tests verify the Relay Commands

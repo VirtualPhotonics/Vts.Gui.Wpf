@@ -91,13 +91,13 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        public OpticalPropertyViewModel OpticalPropertyVm
+        public OpticalPropertyViewModel OpticalPropertyVM
         {
             get => _opticalPropertyVm;
             set
             {
                 _opticalPropertyVm = value;
-                OnPropertyChanged("OpticalPropertyVm");
+                OnPropertyChanged("OpticalPropertyVM");
             }
         }
 

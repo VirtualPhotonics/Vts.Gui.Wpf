@@ -45,12 +45,12 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 listOfTissueTypes);
             Assert.IsTrue(viewModel.SelectedTissue.TissueType == TissueType.Skin);
             Assert.AreEqual(viewModel.ScatteringTypeVM.SelectedValue, viewModel.SelectedTissue.ScattererType);
-            Assert.AreEqual(viewModel.ScatteringTypeName, "Vts.SpectralMapping.Tissue");
+            Assert.AreEqual("Vts.SpectralMapping.PowerLawScatterer", viewModel.ScatteringTypeName);
             Assert.IsTrue(Math.Abs(viewModel.OpticalProperties.Mua - 0.1677) < 0.0001);
             Assert.IsTrue(Math.Abs(viewModel.OpticalProperties.Musp - 2.212) < 0.001);
-            Assert.AreEqual(viewModel.OpticalProperties.G, 0.8);
-            Assert.AreEqual(viewModel.OpticalProperties.N, 1.4);
-            Assert.AreEqual(viewModel.Wavelength, 650);
+            Assert.AreEqual(0.8, viewModel.OpticalProperties.G);
+            Assert.AreEqual(1.4, viewModel.OpticalProperties.N);
+            Assert.AreEqual(650, viewModel.Wavelength);
         }
 
         // The following tests verify the Relay Commands

@@ -38,13 +38,13 @@
                     <RadioButton
                         Grid.Row="0" Grid.Column="1"
                         DataContext="{Binding ROfRhoOption}"
-                        Tag="{Binding ID}" Content="{Binding DisplayName}"
+                        Content="{Binding DisplayName}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="OptionGroup" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="0" Grid.Column="2"
                         DataContext="{Binding ROfFxOption}"
-                        Tag="{Binding ID}" Content="{Binding DisplayName}"
+                        Content="{Binding DisplayName}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="OptionGroup" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <!-- TIME-DOMAIN -->
@@ -56,14 +56,14 @@
                         Grid.Row="1" Grid.Column="1"
                         DataContext="{Binding ROfRhoAndTimeOption}"
                         IsEnabled="{Binding IsEnabled, Mode=OneWay}"
-                        Tag="{Binding ID}" Content="{Binding DisplayName}"
+                        Content="{Binding DisplayName}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="OptionGroup" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="1" Grid.Column="2"
                         DataContext="{Binding ROfFxAndTimeOption}"
                         IsEnabled="{Binding IsEnabled, Mode=OneWay}"
-                        Tag="{Binding ID}" Content="{Binding DisplayName}"
+                        Content="{Binding DisplayName}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="OptionGroup" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <!-- FREQUENCY-DOMAIN -->
@@ -75,14 +75,14 @@
                         Grid.Row="2" Grid.Column="1"
                         DataContext="{Binding ROfRhoAndFtOption}"
                         IsEnabled="{Binding IsEnabled, Mode=OneWay}"
-                        Tag="{Binding ID}" Content="{Binding DisplayName}"
+                        Content="{Binding DisplayName}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="OptionGroup" VerticalAlignment="Center" HorizontalAlignment="Left" />
                     <RadioButton
                         Grid.Row="2" Grid.Column="2"
                         DataContext="{Binding ROfFxAndFtOption}"
                         IsEnabled="{Binding IsEnabled, Mode=OneWay}"
-                        Tag="{Binding ID}" Content="{Binding DisplayName}"
+                        Content="{Binding DisplayName}"
                         IsChecked="{Binding IsSelected, Mode=TwoWay}"
                         GroupName="OptionGroup" VerticalAlignment="Center" HorizontalAlignment="Left" />
                 </Grid>

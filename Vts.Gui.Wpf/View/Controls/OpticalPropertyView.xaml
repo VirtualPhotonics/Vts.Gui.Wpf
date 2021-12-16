@@ -1,17 +1,12 @@
 ﻿<UserControl x:Class="Vts.Gui.Wpf.View.OpticalPropertyView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:Vts.Gui.Wpf.ViewModel">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
-    <!-- This is to provide design-time support. It is expected that the ViewModel be created in the constructor -->
-    <!--<UserControl.DataContext>
-        <vm:OpticalPropertyViewModel />
-    </UserControl.DataContext>--> 
     <StackPanel Orientation="Vertical">
         <TextBlock
             Text="{Binding Title}"
             FontWeight="Bold"
-            Visibility="{Binding ShowTitle}" />
+            Visibility="{Binding ShowTitle, Converter={StaticResource MyBooleanToVisibilityConverter}}" />
         <StackPanel x:Name="LayoutRoot" Orientation="Horizontal" Margin="3,0,0,0">
             <StackPanel Orientation="Vertical" Width="70">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">

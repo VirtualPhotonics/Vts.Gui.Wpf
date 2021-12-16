@@ -23,7 +23,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             Assert.IsTrue(viewModel.IsEllipsoid);
             Assert.IsFalse(viewModel.IsLayer);
             Assert.AreEqual(StringLookup.GetLocalizedString("Measurement_mm"), viewModel.Units);
-            Assert.IsTrue(viewModel.OpticalPropertyVm != null);
+            Assert.IsTrue(viewModel.OpticalPropertyVM != null);
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             Assert.IsTrue(viewModel.IsEllipsoid);
             Assert.IsFalse(viewModel.IsLayer);
             Assert.AreEqual(StringLookup.GetLocalizedString("Measurement_mm"),viewModel.Units);
-            Assert.IsTrue(viewModel.OpticalPropertyVm != null);
+            Assert.IsTrue(viewModel.OpticalPropertyVM != null);
         }
 
         [Test]
@@ -57,14 +57,14 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             viewModel.X = 0.1;
             viewModel.Y = 0.2;
             viewModel.Z = 0.3;
-            viewModel.OpticalPropertyVm = new OpticalPropertyViewModel(new OpticalProperties() { G = 0.8, Mua = 0.1, Musp = 0.01, N = 1.4 }, "cm", "NewTitle");
+            viewModel.OpticalPropertyVM = new OpticalPropertyViewModel(new OpticalProperties() { G = 0.8, Mua = 0.1, Musp = 0.01, N = 1.4 }, "cm", "NewTitle");
             viewModel.Name = "NewName";
             Assert.AreEqual("NewName" + StringLookup.GetLocalizedString("Label_Tissue"), viewModel.Name);
-            Assert.AreEqual(0.1,viewModel.OpticalPropertyVm.Mua);
-            Assert.AreEqual(0.8, viewModel.OpticalPropertyVm.G);
-            Assert.AreEqual(0.01, viewModel.OpticalPropertyVm.Musp);
-            Assert.AreEqual(1.4, viewModel.OpticalPropertyVm.N);
-            Assert.AreEqual("cm", viewModel.OpticalPropertyVm.Units);
+            Assert.AreEqual(0.1,viewModel.OpticalPropertyVM.Mua);
+            Assert.AreEqual(0.8, viewModel.OpticalPropertyVM.G);
+            Assert.AreEqual(0.01, viewModel.OpticalPropertyVM.Musp);
+            Assert.AreEqual(1.4, viewModel.OpticalPropertyVM.N);
+            Assert.AreEqual("cm", viewModel.OpticalPropertyVM.Units);
             Assert.AreEqual(0.1, viewModel.X);
             Assert.AreEqual(0.2, viewModel.Y);
             Assert.AreEqual(0.3, viewModel.Z);

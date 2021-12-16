@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
     VerticalAlignment="Top">
+
     <StackPanel Orientation="Vertical" VerticalAlignment="Top" Width="480">
         <!-- Solver Engine -->
         <StackPanel Orientation="Horizontal">
@@ -116,25 +117,43 @@
                             VerticalAlignment="Top" />
         </StackPanel>
         <!-- Optical Properties (single- or multi-region property editor shown, depending on forward model type -->
-        <StackPanel Visibility="{Binding IsSemiInfinite, Converter={StaticResource MyBooleanToVisibilityConverter}}"
-                    Margin="0,15,0,0">
-            <view:OpticalPropertyView DataContext="{Binding TissueInputVM}" 
-                                      HorizontalAlignment="Left"
-                                      VerticalAlignment="Top" />
-        </StackPanel>
-        <StackPanel Visibility="{Binding IsMultiRegion, Converter={StaticResource MyBooleanToVisibilityConverter}}"
-                    Margin="0,10,0,0">
-            <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVM}" 
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top" />
+        <StackPanel>
+            <StackPanel.Resources>
+                <DataTemplate x:Key="SemiInfinite">
+                    <StackPanel>
+                        <view:OpticalPropertyView DataContext="{Binding TissueInputVM}" 
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Top" 
+                                                  Margin="0,3,0,0" />
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate x:Key="MultiRegion">
+                    <StackPanel>
+                        <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVM}" 
+                                                             HorizontalAlignment="Left"
+                                                             VerticalAlignment="Top" 
+                                                             Margin="0,3,0,0" />
+                    </StackPanel>
+                </DataTemplate>
+            </StackPanel.Resources>
+            <ContentControl Content="{Binding}">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSemiInfinite}" Value="True">
+                                <Setter Property="ContentTemplate" Value="{DynamicResource SemiInfinite}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsMultiRegion}" Value="True">
+                                <Setter Property="ContentTemplate" Value="{DynamicResource MultiRegion}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
         </StackPanel>
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Top">
-            <!-- This Radio button choice does not appear on the panel -->
-            <view:RadioButtonOptionView DataContext="{Binding ForwardAnalysisTypeOptionVM}" 
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top" />
             <!-- Button -->
             <Button
                 VerticalAlignment="Bottom"

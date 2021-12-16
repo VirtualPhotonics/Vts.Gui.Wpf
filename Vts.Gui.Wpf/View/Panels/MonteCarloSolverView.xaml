@@ -5,9 +5,7 @@
     xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
     xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
     VerticalAlignment="Top">
-    <UserControl.DataContext>
-        <viewModel:MonteCarloSolverViewModel />
-    </UserControl.DataContext>
+
     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
         <TextBlock Text="{Binding ConverterParameter=Label_SpecifyInputsFromFile, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" />
         <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
