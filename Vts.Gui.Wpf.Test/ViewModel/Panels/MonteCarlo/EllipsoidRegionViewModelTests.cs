@@ -50,15 +50,22 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         [Test]
         public void Verify_setting_properties()
         {
-            var viewModel = new EllipsoidRegionViewModel(new EllipsoidTissueRegion(), "CurrentName");
-            viewModel.Dx = 0.7;
-            viewModel.Dy = 0.4;
-            viewModel.Dz = 5.0;
-            viewModel.X = 0.1;
-            viewModel.Y = 0.2;
-            viewModel.Z = 0.3;
-            viewModel.OpticalPropertyVM = new OpticalPropertyViewModel(new OpticalProperties() { G = 0.8, Mua = 0.1, Musp = 0.01, N = 1.4 }, "cm", "NewTitle");
-            viewModel.Name = "NewName";
+            var viewModel = new EllipsoidRegionViewModel(new EllipsoidTissueRegion(), "CurrentName")
+            {
+                Dx = 0.7,
+                Dy = 0.4,
+                Dz = 5.0,
+                X = 0.1,
+                Y = 0.2,
+                Z = 0.3,
+                OpticalPropertyVM =
+                    new OpticalPropertyViewModel(new OpticalProperties()
+                        {
+                            G = 0.8, Mua = 0.1, Musp = 0.01, N = 1.4
+                        },
+                        "cm", "NewTitle"),
+                Name = "NewName"
+            };
             Assert.AreEqual("NewName" + StringLookup.GetLocalizedString("Label_Tissue"), viewModel.Name);
             Assert.AreEqual(0.1,viewModel.OpticalPropertyVM.Mua);
             Assert.AreEqual(0.8, viewModel.OpticalPropertyVM.G);

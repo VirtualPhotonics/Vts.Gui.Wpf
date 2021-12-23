@@ -13,38 +13,38 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
         /// Verifies that OpticalPropertyViewModel default constructor instantiates properties correctly
         /// </summary>
         [Test]
-        public void verify_default_constructor_sets_properties_correctly()
+        public void Verify_default_constructor_sets_properties_correctly()
         {
             var opticalPropertyVM = new OpticalPropertyViewModel();
-            Assert.AreEqual(opticalPropertyVM.Mua, 0.01);
-            Assert.AreEqual(opticalPropertyVM.Musp, 1.0);
-            Assert.AreEqual(opticalPropertyVM.G, 0.8);
-            Assert.AreEqual(opticalPropertyVM.N, 1.4);
+            Assert.AreEqual(0.01, opticalPropertyVM.Mua);
+            Assert.AreEqual(1.0, opticalPropertyVM.Musp);
+            Assert.AreEqual(0.8, opticalPropertyVM.G);
+            Assert.AreEqual(1.4, opticalPropertyVM.N);
         }
 
         /// <summary>
         /// Verifies that TextOutputViewModel constructor with arguments instantiates properties correctly
         /// </summary>
         [Test]
-        public void verify_constructor_with_arguments_sets_properties_correctly()
+        public void Verify_constructor_with_arguments_sets_properties_correctly()
         {
             var opticalPropertyVM = new OpticalPropertyViewModel(
-                new OpticalProperties(0.01, 1.0, 0.8, 1.4),
+                new OpticalProperties(0.1, 1.1, 0.9, 1.3),
                 IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
                 "title",
                 true,
                 true,
                 false,
                 false);
-            Assert.AreEqual(opticalPropertyVM.Mua, 0.01);
-            Assert.AreEqual(opticalPropertyVM.Musp, 1.0);
-            Assert.AreEqual(opticalPropertyVM.G, 0.8);
-            Assert.AreEqual(opticalPropertyVM.N, 1.4);
-            Assert.AreEqual(opticalPropertyVM.Units, IndependentVariableAxisUnits.InverseMM.GetInternationalizedString());
-            Assert.AreEqual(opticalPropertyVM.EnableMua, true);
-            Assert.AreEqual(opticalPropertyVM.EnableMusp, true);
-            Assert.AreEqual(opticalPropertyVM.EnableG, false);
-            Assert.AreEqual(opticalPropertyVM.EnableN, false);
+            Assert.AreEqual(0.1, opticalPropertyVM.Mua);
+            Assert.AreEqual(1.1, opticalPropertyVM.Musp);
+            Assert.AreEqual(0.9, opticalPropertyVM.G);
+            Assert.AreEqual(1.3, opticalPropertyVM.N);
+            Assert.AreEqual(IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(), opticalPropertyVM.Units);
+            Assert.IsTrue(opticalPropertyVM.EnableMua);
+            Assert.IsTrue(opticalPropertyVM.EnableMusp);
+            Assert.IsFalse(opticalPropertyVM.EnableG);
+            Assert.IsFalse(opticalPropertyVM.EnableN);
         }
 
     }

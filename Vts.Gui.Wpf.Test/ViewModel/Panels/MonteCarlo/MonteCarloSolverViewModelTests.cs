@@ -1,10 +1,8 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.ViewModel;
-using Vts.MonteCarlo;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
 {
@@ -14,8 +12,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
     [TestFixture]
     public class MonteCarloSolverViewModelTests
     {
-
-        List<string> listOfInfileFolders = new List<string>()
+        readonly List<string> listOfInfileFolders = new List<string>()
         {
             "ellip_FluenceOfRhoAndZ",
             "embeddedDirectionalCircularSourceEllipTissue",

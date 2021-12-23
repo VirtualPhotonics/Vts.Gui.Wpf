@@ -4,7 +4,7 @@ using Vts.Gui.Wpf.Extensions;
 namespace Vts.Gui.Wpf.Test.Extensions
 {
     /// <summary>
-    /// Tests StringLookup classe
+    /// Tests StringLookup classes
     /// </summary>
     [TestFixture]
     public class StringLookupTests
@@ -13,13 +13,13 @@ namespace Vts.Gui.Wpf.Test.Extensions
         /// Verifies method GetLocalizedString works properly for string in Resources/Strings.resx
         /// </summary>
         [Test]
-        public void verify_method_GetLocalizedString_works_correctly_for_existing_string()
+        public void Verify_method_GetLocalizedString_works_correctly_for_existing_string()
         {
             var stringLookup = StringLookup.GetLocalizedString("Label_FwdSolver");
-            Assert.AreEqual(stringLookup, "Fwd Solver:");
+            Assert.AreEqual("Fwd Solver:", stringLookup);
         }
         [Test]
-        public void verify_method_GetLocalizedString_works_correctly_for_nonexisting_string()
+        public void Verify_method_GetLocalizedString_works_correctly_for_nonexisting_string()
         {
             var stringLookup = StringLookup.GetLocalizedString("nonexistingString");
             Assert.IsEmpty(stringLookup);

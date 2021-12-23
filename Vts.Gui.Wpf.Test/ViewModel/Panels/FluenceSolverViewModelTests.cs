@@ -15,7 +15,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         /// Verifies that FluenceSolverViewModel default constructor instantiates sub viewmodels
         /// </summary>
         [Test]
-        public void verify_default_constructor_sets_properties_correctly()
+        public void Verify_default_constructor_sets_properties_correctly()
         {
             // WindowViewModel needs to be instantiated for default constructor
             var windowViewModel = new WindowViewModel();
@@ -43,7 +43,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         /// Verifies that the ExecuteFluenceSolverCommand returns correct values
         /// </summary>
         [Test]
-        public void verify_ExecuteFluenceSolverCommand_returns_correct_values()
+        public void Verify_ExecuteFluenceSolverCommand_returns_correct_values()
         {
             // WindowViewModel needs to be instantiated for default constructor
             var windowViewModel = new WindowViewModel();
@@ -53,14 +53,14 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var result = viewModel.GetMapData();
             result.Wait();
             // ExecuteForwardSolver default settings
-            PlotViewModel plotViewModel = windowViewModel.PlotVM;
-            Assert.AreEqual(plotViewModel.Labels.Count, 0);
-            Assert.AreEqual(plotViewModel.Title, null);
-            TextOutputViewModel textOutputViewModel = windowViewModel.TextOutputVM;
-            double d1 = 0.01;
-            int i1 = 1;
-            double g = 0.8;
-            double n = 1.4;
+            var plotViewModel = windowViewModel.PlotVM;
+            Assert.AreEqual(0, plotViewModel.Labels.Count);
+            Assert.IsNull(plotViewModel.Title);
+            var textOutputViewModel = windowViewModel.TextOutputVM;
+            const double d1 = 0.01;
+            const int i1 = 1;
+            const double g = 0.8;
+            const double n = 1.4;
             var s1 = StringLookup.GetLocalizedString("Label_FluenceSolver") +
                      StringLookup.GetLocalizedString("Label_MuA") + "=" +
                      d1.ToString(CultureInfo.CurrentCulture) + " " +
@@ -69,7 +69,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                      g.ToString(CultureInfo.CurrentCulture) + " n=" +
                      n.ToString(CultureInfo.CurrentCulture) + "; " +
                      StringLookup.GetLocalizedString("Label_Units") + " = 1/mm\r";
-            Assert.AreEqual(textOutputViewModel.Text, s1);
+            Assert.AreEqual(s1, textOutputViewModel.Text);
         }
     }
 }
