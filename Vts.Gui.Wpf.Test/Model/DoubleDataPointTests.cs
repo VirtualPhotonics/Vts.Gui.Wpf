@@ -55,5 +55,13 @@ namespace Vts.Gui.Wpf.Test.Model
             var hashCode = dataPoint1.GetHashCode(dataPoint2);
             Assert.AreEqual(-1439151695, hashCode);
         }
+
+        [Test]
+        public void Verify_equals()
+        {
+            object dataPoint1 = new DoubleDataPoint(0.8, 0.2);
+            object dataPoint2 = new DoubleDataPoint(0.8, 0.2);
+            Assert.IsTrue(dataPoint1.Equals(dataPoint2));
+        }
     }
 }
