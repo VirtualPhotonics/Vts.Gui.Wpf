@@ -141,6 +141,7 @@
     <Compile Include="Converters\DoubleToStringConverterTests.cs" />
     <Compile Include="Converters\BooleanToVisiblityConverterTests.cs" />
     <Compile Include="Extensions\EnumExtensionsTests.cs" />
+    <Compile Include="Extensions\LocalizedStringsTests.cs" />
     <Compile Include="Extensions\StringLookupTests.cs" />
     <Compile Include="Model\ComplexDataPointTests.cs" />
     <Compile Include="Model\DoubleDataPointTests.cs" />

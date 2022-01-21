@@ -1,10 +1,11 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Vts.Gui.Wpf.Extensions;
 
 namespace Vts.Gui.Wpf.Test.Extensions
 {
     /// <summary>
-    /// Tests EnumExtensions classe
+    /// Tests EnumExtensions classes
     /// </summary>
     [TestFixture]
     public class EnumExtensionsTests
@@ -47,6 +48,112 @@ namespace Vts.Gui.Wpf.Test.Extensions
             Assert.AreEqual(2, IndependentVariableAxis.Ft.GetMaxArgumentLocation());
             Assert.AreEqual(1, IndependentVariableAxis.Z.GetMaxArgumentLocation());
             Assert.AreEqual(2, IndependentVariableAxis.Wavelength.GetMaxArgumentLocation());
+        }
+
+        /// <summary>
+        /// Verified that extension method throws an exception
+        /// </summary>
+        [Test]
+        public void Verify_GetMaxArgumentLocation_throws_exception()
+        {
+            const IndependentVariableAxis invalidEnum = (IndependentVariableAxis)99;
+            Assert.Throws<NotImplementedException>(() => invalidEnum.GetMaxArgumentLocation());
+        }
+
+        /// <summary>
+        /// Verify that extension method returns the correct value
+        /// </summary>
+        [Test]
+        public void Verify_IsSpatialAxis_returns_correct_value()
+        {
+            Assert.IsTrue(IndependentVariableAxis.Rho.IsSpatialAxis());
+            Assert.IsTrue(IndependentVariableAxis.Fx.IsSpatialAxis());
+            Assert.IsFalse(IndependentVariableAxis.Time.IsSpatialAxis());
+            Assert.IsFalse(IndependentVariableAxis.Ft.IsSpatialAxis());
+            Assert.IsFalse(IndependentVariableAxis.Z.IsSpatialAxis());
+            Assert.IsFalse(IndependentVariableAxis.Wavelength.IsSpatialAxis());
+        }
+
+        /// <summary>
+        /// Verified that extension method throws an exception
+        /// </summary>
+        [Test]
+        public void Verify_IsSpatialAxis_throws_exception()
+        {
+            const IndependentVariableAxis invalidEnum = (IndependentVariableAxis)99;
+            Assert.Throws<NotImplementedException>(() => invalidEnum.IsSpatialAxis());
+        }
+
+        /// <summary>
+        /// Verify that extension method returns the correct value
+        /// </summary>
+        [Test]
+        public void Verify_IsTemporalAxis_returns_correct_value()
+        {
+            Assert.IsTrue(IndependentVariableAxis.Time.IsTemporalAxis());
+            Assert.IsTrue(IndependentVariableAxis.Ft.IsTemporalAxis());
+            Assert.IsFalse(IndependentVariableAxis.Rho.IsTemporalAxis());
+            Assert.IsFalse(IndependentVariableAxis.Fx.IsTemporalAxis());
+            Assert.IsFalse(IndependentVariableAxis.Z.IsTemporalAxis());
+            Assert.IsFalse(IndependentVariableAxis.Wavelength.IsTemporalAxis());
+        }
+
+        /// <summary>
+        /// Verified that extension method throws an exception
+        /// </summary>
+        [Test]
+        public void Verify_IsTemporalAxis_throws_exception()
+        {
+            const IndependentVariableAxis invalidEnum = (IndependentVariableAxis)99;
+            Assert.Throws<NotImplementedException>(() => invalidEnum.IsTemporalAxis());
+        }
+
+        /// <summary>
+        /// Verify that extension method returns the correct value
+        /// </summary>
+        [Test]
+        public void Verify_IsDepthAxis_returns_correct_value()
+        {
+            Assert.IsTrue(IndependentVariableAxis.Z.IsDepthAxis());
+            Assert.IsFalse(IndependentVariableAxis.Time.IsDepthAxis());
+            Assert.IsFalse(IndependentVariableAxis.Ft.IsDepthAxis());
+            Assert.IsFalse(IndependentVariableAxis.Rho.IsDepthAxis());
+            Assert.IsFalse(IndependentVariableAxis.Fx.IsDepthAxis());
+            Assert.IsFalse(IndependentVariableAxis.Wavelength.IsDepthAxis());
+        }
+
+        /// <summary>
+        /// Verified that extension method throws an exception
+        /// </summary>
+        [Test]
+        public void Verify_IsDepthAxis_throws_exception()
+        {
+            const IndependentVariableAxis invalidEnum = (IndependentVariableAxis)99;
+            Assert.Throws<NotImplementedException>(() => invalidEnum.IsDepthAxis());
+        }
+
+        /// <summary>
+        /// Verify that extension method returns the correct value
+        /// </summary>
+        [Test]
+        public void Verify_IsWavelengthAxis_returns_correct_value()
+        {
+            Assert.IsTrue(IndependentVariableAxis.Wavelength.IsWavelengthAxis());
+            Assert.IsFalse(IndependentVariableAxis.Z.IsWavelengthAxis());
+            Assert.IsFalse(IndependentVariableAxis.Time.IsWavelengthAxis());
+            Assert.IsFalse(IndependentVariableAxis.Ft.IsWavelengthAxis());
+            Assert.IsFalse(IndependentVariableAxis.Rho.IsWavelengthAxis());
+            Assert.IsFalse(IndependentVariableAxis.Fx.IsWavelengthAxis());
+        }
+
+        /// <summary>
+        /// Verified that extension method throws an exception
+        /// </summary>
+        [Test]
+        public void Verify_IsWavelengthAxis_throws_exception()
+        {
+            const IndependentVariableAxis invalidEnum = (IndependentVariableAxis)99;
+            Assert.Throws<NotImplementedException>(() => invalidEnum.IsWavelengthAxis());
         }
 
         /// <summary>
