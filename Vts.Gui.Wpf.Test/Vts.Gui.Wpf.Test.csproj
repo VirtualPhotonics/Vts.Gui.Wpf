@@ -170,6 +170,7 @@
     <Compile Include="ViewModel\Panels\SubPanels\FluenceSolutionDomainOptionViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\BloodConcentrationViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\AbstractSolutionDomainOptionViewModelTests.cs" />
+    <Compile Include="ViewModel\WindowViewModelTests.cs" />
     <Compile Include="View\Helpers\ColormapTests.cs" />
   </ItemGroup>
   <ItemGroup>

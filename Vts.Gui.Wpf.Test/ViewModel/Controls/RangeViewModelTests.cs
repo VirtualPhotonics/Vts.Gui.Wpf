@@ -10,6 +10,19 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
     [TestFixture]
     public class RangeViewModelTests
     {
+        private RangeViewModel _rangeViewModel;
+
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            _rangeViewModel = new RangeViewModel(
+                new DoubleRange(0.0, 100.0, 101),
+                "xx",
+                IndependentVariableAxis.Time,
+                "Test:",
+                false);
+        }
+
         /// <summary>
         /// Verifies that RangeViewModel default constructor instantiates properties correctly
         /// </summary>
@@ -43,5 +56,26 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
             Assert.IsFalse(rangeVM.EnableNumber);
         }
 
+        [Test]
+        public void Verify_show_title_returns_true()
+        {
+            Assert.IsTrue(_rangeViewModel.ShowTitle);
+        }
+
+        [Test]
+        public void Verify_enable_number_returns_true()
+        {
+            Assert.IsFalse(_rangeViewModel.EnableNumber);
+            _rangeViewModel.EnableNumber = true;
+            Assert.IsTrue(_rangeViewModel.EnableNumber);
+        }
+
+        [Test]
+        public void Verify_setting_axis_type_changes_value()
+        {
+            Assert.AreEqual(IndependentVariableAxis.Time, _rangeViewModel.AxisType);
+            _rangeViewModel.AxisType = IndependentVariableAxis.Rho;
+            Assert.AreEqual(IndependentVariableAxis.Rho, _rangeViewModel.AxisType);
+        }
     }
 }
