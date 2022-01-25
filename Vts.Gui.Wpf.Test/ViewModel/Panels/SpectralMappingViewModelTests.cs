@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Vts.Gui.Wpf.ViewModel;
 using Vts.SpectralMapping;
@@ -50,6 +51,23 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.AreEqual(0.8, viewModel.OpticalProperties.G);
             Assert.AreEqual(1.4, viewModel.OpticalProperties.N);
             Assert.AreEqual(650, viewModel.Wavelength);
+            Assert.AreEqual(viewModel.OpticalProperties.Mua, viewModel.Mua);
+            Assert.AreEqual(viewModel.OpticalProperties.Musp, viewModel.Musp);
+            Assert.AreEqual(viewModel.OpticalProperties.N, viewModel.N);
+            Assert.AreEqual(viewModel.OpticalProperties.G, viewModel.G);
+        }
+
+        [Test]
+        public void Verify_optical_property_values()
+        {
+            viewModel.Mua = 0.01;
+            viewModel.Musp = 1.0;
+            viewModel.N = 1.5;
+            viewModel.G = 0.5;
+            Assert.AreEqual(viewModel.Mua, viewModel.OpticalProperties.Mua);
+            Assert.AreEqual(viewModel.Musp, viewModel.OpticalProperties.Musp);
+            Assert.AreEqual(viewModel.N, viewModel.OpticalProperties.N);
+            Assert.AreEqual(viewModel.G, viewModel.OpticalProperties.G);
         }
 
         // The following tests verify the Relay Commands
@@ -79,6 +97,22 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.AreEqual("μs' [mm-1] versus λ [nm]", windowViewModel.PlotVM.Title);
             var textOutputViewModel = windowViewModel.TextOutputVM;
             Assert.AreEqual("Plot View: plot cleared due to independent axis variable change\rPlotted μs' spectrum; wavelength range [nm]: [650, 1000]\r", textOutputViewModel.Text);
+        }
+
+        [Test]
+        public void Verify_ResetConcentrations_resets_values()
+        {
+            var tissue = new Tissue(TissueType.Skin);
+            viewModel.ResetConcentrations.Execute(tissue);
+            Assert.IsInstanceOf<IList<IChromophoreAbsorber>>(viewModel.SelectedTissue.Absorbers);
+        }
+
+        [Test]
+        public void Verify_UpdateWavelength_resets_values()
+        {
+            const double wavelength = 600;
+            viewModel.UpdateWavelength.Execute(wavelength);
+            Assert.AreEqual(600, viewModel.Wavelength);
         }
 
         // the following tests verify that the Tissue selection and the ScattererType selection work together and independently
