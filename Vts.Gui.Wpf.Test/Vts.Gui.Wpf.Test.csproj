@@ -151,6 +151,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\Controls\OptionViewModelTest.cs" />
     <Compile Include="ViewModel\Controls\OpticalPropertyViewModelTests.cs" />
+    <Compile Include="ViewModel\Controls\PositionViewModelTests.cs" />
     <Compile Include="ViewModel\Controls\RangeViewModelTests.cs" />
     <Compile Include="ViewModel\Controls\TextOutputViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\FluenceSolverViewModelTests.cs" />

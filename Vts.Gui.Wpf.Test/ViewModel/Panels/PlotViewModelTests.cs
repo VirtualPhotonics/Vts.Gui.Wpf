@@ -1,5 +1,8 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Windows;
+using NUnit.Framework;
 using OxyPlot;
+using Vts.Gui.Wpf.Model;
 // todo: Once the popout bug is fixed and we update OxyPlot, uncomment this using:
 //using OxyPlot.Legends;
 using Vts.Gui.Wpf.ViewModel;
@@ -7,7 +10,125 @@ using Vts.Gui.Wpf.ViewModel;
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
 {
     /// <summary>
-    /// Summary description for PlotViewModelTests
+    /// DataPointCollection Tests
+    /// </summary>
+    [TestFixture]
+    public class DataPointCollectionTests
+    {
+        [Test]
+        public void Verify_data_point_collection()
+        {
+            var dataPointCollection = new DataPointCollection
+            {
+                Title = "Title",
+                DataPoints = new IDataPoint[]
+                {
+                    new DoubleDataPoint(0, 0), 
+                    new DoubleDataPoint(1, 1)
+                },
+                ColorTag = "HSV"
+            };
+            Assert.AreEqual("Title", dataPointCollection.Title);
+            Assert.AreEqual(0, dataPointCollection.DataPoints[0].X);
+            Assert.AreEqual(1, dataPointCollection.DataPoints[1].X);
+            Assert.AreEqual("HSV", dataPointCollection.ColorTag);
+        }
+    }
+
+    /// <summary>
+    /// PlotPointCollection Tests
+    /// </summary>
+    [TestFixture]
+    public class PlotPointCollectionTests
+    {
+        [Test]
+        public void Verify_default_constructor()
+        {
+            var plotPointCollection = new PlotPointCollection();
+            Assert.IsInstanceOf<List<string>>(plotPointCollection.ColorTags);
+        }
+
+        [Test]
+        public void Verify_constructor()
+        {
+            var points = new[]
+            {
+                new[]
+                {
+                    new Point(0, 0), 
+                    new Point(1, 1), 
+                    new Point(3, 3)
+                },
+                new[]
+                {
+                    new Point(0.5, 0.5),
+                    new Point(1.5, 1.5),
+                    new Point(3.5, 3.5)
+                },
+            };
+            var colorTags = new List<string> {"red", "white"};
+            var plotPointCollection = new PlotPointCollection(points, colorTags);
+            Assert.AreEqual("white",plotPointCollection.ColorTags[1]);
+            Assert.AreEqual(2, plotPointCollection.Count);
+        }
+
+        [Test]
+        public void Verify_add_points()
+        {
+            var points = new[]
+            {
+                new[]
+                {
+                    new Point(0.5, 0.5),
+                    new Point(1.5, 1.5),
+                    new Point(3.5, 3.5)
+                },
+            };
+            var colorTags = new List<string> { "black" };
+            var plotPointCollection = new PlotPointCollection(points, colorTags);
+            Assert.AreEqual("black", plotPointCollection.ColorTags[0]);
+            Assert.AreEqual(1, plotPointCollection.Count);
+            var pointsBlue = new[]
+            {
+                new Point(0, 0),
+                new Point(1, 1),
+                new Point(3, 3)
+            };
+            var pointsYellow = new[]
+            {
+                new Point(0, 0),
+                new Point(1, 1),
+                new Point(3, 3)
+            };
+            plotPointCollection.Add(pointsBlue, "blue");
+            plotPointCollection.Add(pointsYellow, "yellow");
+            Assert.AreEqual(3, plotPointCollection.Count);
+            Assert.AreEqual("blue", plotPointCollection.ColorTags[1]);
+            Assert.AreEqual("yellow", plotPointCollection.ColorTags[2]);
+        }
+
+        [Test]
+        public void Verify_clone()
+        {
+            var points = new[]
+            {
+                new[]
+                {
+                    new Point(0.5, 0.5),
+                    new Point(1.5, 1.5),
+                    new Point(3.5, 3.5)
+                },
+            };
+            var colorTags = new List<string> { "black" };
+            var plotPointCollection = new PlotPointCollection(points, colorTags);
+            var plotPointCollectionClone = plotPointCollection.Clone();
+            Assert.AreEqual(plotPointCollection.ColorTags[0], plotPointCollectionClone.ColorTags[0]);
+            Assert.AreEqual(plotPointCollectionClone.Count, plotPointCollection.Count);
+        }
+    }
+
+    /// <summary>
+    /// Summary description for PlotViewModel Tests
     /// </summary>
     [TestFixture]
     public class PlotViewModelTests
