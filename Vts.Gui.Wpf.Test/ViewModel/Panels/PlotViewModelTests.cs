@@ -207,6 +207,22 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.IsFalse(viewModel.ShowComplexPlotToggle);
         }
 
+        [Test]
+        public void Verify_clone()
+        {
+            var viewModel = new PlotViewModel();
+            var viewModelClone = viewModel.Clone();
+            // when we clone a plot view model without any plots, the min and max values will be infinity
+            Assert.AreEqual(double.PositiveInfinity, viewModelClone.MinXValue);
+            Assert.AreEqual(double.NegativeInfinity, viewModelClone.MaxXValue);
+            Assert.AreEqual(double.PositiveInfinity, viewModelClone.MinYValue);
+            Assert.AreEqual(double.NegativeInfinity, viewModelClone.MaxYValue);
+            Assert.AreEqual(viewModel.CustomPlotLabel, viewModelClone.CustomPlotLabel);
+            Assert.AreEqual(viewModel.PlotType, viewModelClone.PlotType);
+            Assert.AreEqual(viewModel.PlotModel.Title, viewModelClone.PlotModel.Title);
+            Assert.AreEqual(viewModel.PlotModel.LegendPlacement, viewModelClone.PlotModel.LegendPlacement);
+        }
+
         /// <summary>
         /// ClearPlotSingleCommand changes DataSeriesCollection which is private so not tested
         /// ExportDataToTextCommand brings up Dialog window so not tested
