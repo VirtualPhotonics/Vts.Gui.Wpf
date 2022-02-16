@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection;
 using System.Windows;
 using NUnit.Framework;
 using OxyPlot;
+using Vts.Common;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel; // todo: Once the popout bug is fixed and we update OxyPlot, uncomment this using:
 //using OxyPlot.Legends;
@@ -142,7 +144,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         {
             var points = new[]
             {
-                new Point(0, 0),
+                new Point(0.5, 0.5),
                 new Point(1, 1),
                 new Point(2, 2),
                 new Point(3, 3),
@@ -204,10 +206,46 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         public void Verify_SetAxesLabelsCommand_returns_correct_values()
         {
             var viewModel = new PlotViewModel();
-            viewModel.SetAxesLabels.Execute(null);
-            // the following validation values were determined by prior running of unit test
-            Assert.AreEqual(IndependentVariableAxis.Rho, viewModel.CurrentIndependentVariableAxis);
-            Assert.IsNull(viewModel.Title);
+            var labels = new PlotAxesLabels("dependent", "units", 
+                new IndependentAxisViewModel 
+                {
+                    AxisLabel = "independent",
+                    AxisRangeVM = new RangeViewModel(new DoubleRange(0.5, 9.5, 19), "mm", IndependentVariableAxis.Rho, "Detector Positions"),
+                    AxisType = IndependentVariableAxis.Rho,
+                    AxisUnits = "units"
+                }, 
+                new[] { new ConstantAxisViewModel
+                {
+                    AxisLabel = "t",
+                    AxisType = IndependentVariableAxis.Time,
+                    AxisUnits = "ns",
+                    AxisValue = 0.05,
+                    ImageHeight = 1
+                }});
+            viewModel.SetAxesLabels.Execute(labels);
+            Assert.AreEqual("dependent [units] versus independent [units] at t = 0.05 ns", viewModel.Title);
+            var constantAxes = new[]
+            {
+                new ConstantAxisViewModel
+                {
+                    AxisLabel = "t",
+                    AxisType = IndependentVariableAxis.Time,
+                    AxisUnits = "ns",
+                    AxisValue = 0.05,
+                    ImageHeight = 1
+                },
+                new ConstantAxisViewModel
+                {
+                    AxisLabel = "z",
+                    AxisType = IndependentVariableAxis.Z,
+                    AxisUnits = "mm",
+                    AxisValue = 0.1,
+                    ImageHeight = 1
+                }
+            };
+            labels.ConstantAxes = constantAxes;
+            viewModel.SetAxesLabels.Execute(labels);
+            Assert.AreEqual("dependent [units] versus independent [units] at t = 0.05 ns and z = 0.1 mm", viewModel.Title);
         }
 
         // The following tests verify the Relay Commands
@@ -230,6 +268,44 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             viewModel.PlotValues.Execute(data);
             Assert.AreEqual("customPlotLabel", viewModel.CustomPlotLabel);
             Assert.IsFalse(viewModel.ShowComplexPlotToggle);
+        }
+
+        [Test]
+        public void Verify_hold_on_false()
+        {
+            var viewModel = new PlotViewModel();
+            // AddValuesToPlot settings 
+            viewModel.PlotValues.Execute(_plotData);
+            viewModel.HoldOn = true;
+            viewModel.AutoScaleX = false;
+            viewModel.AutoScaleY = false;
+            Assert.AreEqual(1, viewModel.PlotModel.Series.Count);
+            viewModel.PlotValues.Execute(_plotData);
+            Assert.AreEqual(2, viewModel.PlotModel.Series.Count);
+            viewModel.HoldOn = false;
+            viewModel.PlotValues.Execute(_plotData);
+            Assert.AreEqual(1, viewModel.PlotModel.Series.Count);
+        }
+
+        [Test]
+        public void Verify_auto_scale_false()
+        {
+            var viewModel = new PlotViewModel();
+            viewModel.PlotValues.Execute(_plotData);
+            viewModel.AutoScaleX = true;
+            viewModel.AutoScaleY = false;
+            Assert.AreEqual(1, viewModel.PlotModel.Series.Count);
+            Assert.AreEqual(0.5, viewModel.MinXValue);
+            Assert.AreEqual(9.0, viewModel.MaxXValue);
+            Assert.AreEqual(0.5, viewModel.MinYValue);
+            Assert.AreEqual(9.0, viewModel.MaxYValue);
+            viewModel.PlotValues.Execute(_plotData);
+            viewModel.AutoScaleX = false;
+            viewModel.AutoScaleY = true;
+            Assert.AreEqual(0.5, viewModel.MinXValue);
+            Assert.AreEqual(9.0, viewModel.MaxXValue);
+            Assert.AreEqual(0.5, viewModel.MinYValue);
+            Assert.AreEqual(9.0, viewModel.MaxYValue);
         }
 
         [Test]
@@ -416,8 +492,71 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 Assert.IsInstanceOf<Point>(point);
                 i++;
             }
-            // todo: need to ask Carole why this value is 9 and not 10
-            Assert.AreEqual(9, i);
+            Assert.AreEqual(10, i);
+        }
+
+        [Test]
+        public void Verify_max_normalization_complex()
+        {
+            IDataPoint[] points = {
+                new ComplexDataPoint(0, new Complex(0, 1)),
+                new ComplexDataPoint(1, new Complex(1, 2)),
+                new ComplexDataPoint(2, new Complex(2, 3)),
+                new ComplexDataPoint(3, new Complex(3, 4)),
+                new ComplexDataPoint(4, new Complex(4, 5)),
+                new ComplexDataPoint(5, new Complex(5, 6)),
+                new ComplexDataPoint(6, new Complex(6, 7)),
+                new ComplexDataPoint(7, new Complex(7, 8)),
+                new ComplexDataPoint(8, new Complex(8, 9)),
+                new ComplexDataPoint(9, new Complex(9, 10))
+            };
+            var plotData = new[] { new PlotData(points, "Complex plot") };
+            var windowViewModel = new WindowViewModel();
+            var plotViewModel = windowViewModel.PlotVM;
+            plotViewModel.PlotValues.Execute(plotData);
+            plotViewModel.PlotValues.Execute(plotData);
+            Assert.AreEqual(4, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToMax;
+            var plotSeries = plotViewModel.PlotSeriesCollection[0];
+            var i = 0;
+            foreach (var point in plotSeries)
+            {
+                Assert.IsInstanceOf<Point>(point);
+                i++;
+            }
+            Assert.AreEqual(10, i);
+        }
+
+        [Test]
+        public void Verify_curve_normalization_complex()
+        {
+            IDataPoint[] points = {
+                new ComplexDataPoint(2, new Complex(5, 1)),
+                new ComplexDataPoint(1, new Complex(1, 2)),
+                new ComplexDataPoint(2, new Complex(2, 3)),
+                new ComplexDataPoint(3, new Complex(3, 4)),
+                new ComplexDataPoint(4, new Complex(4, 5)),
+                new ComplexDataPoint(5, new Complex(5, 6)),
+                new ComplexDataPoint(6, new Complex(6, 7)),
+                new ComplexDataPoint(7, new Complex(7, 8)),
+                new ComplexDataPoint(8, new Complex(8, 9)),
+                new ComplexDataPoint(9, new Complex(9, 10))
+            };
+            var plotData = new[] { new PlotData(points, "Complex plot") };
+            var windowViewModel = new WindowViewModel();
+            var plotViewModel = windowViewModel.PlotVM;
+            plotViewModel.PlotValues.Execute(plotData);
+            plotViewModel.PlotValues.Execute(plotData);
+            Assert.AreEqual(4, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToCurve;
+            var plotSeries = plotViewModel.PlotSeriesCollection[0];
+            var i = 0;
+            foreach (var point in plotSeries)
+            {
+                Assert.IsInstanceOf<Point>(point);
+                i++;
+            }
+            Assert.AreEqual(10, i);
         }
 
         /// <summary>
