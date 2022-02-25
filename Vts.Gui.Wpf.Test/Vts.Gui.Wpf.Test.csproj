@@ -167,6 +167,7 @@
     <Compile Include="ViewModel\Panels\PlotViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\ForwardSolverViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\MonteCarlo\MonteCarloSolverViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\SubPanels\ConstantAxisViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\SolutionDomainOptionViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\FluenceSolutionDomainOptionViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\BloodConcentrationViewModelTests.cs" />
