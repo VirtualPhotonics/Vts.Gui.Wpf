@@ -18,12 +18,8 @@ namespace Vts.Gui.Wpf.ViewModel
         private string _GroupName;
         private Dictionary<TValue, OptionModel<TValue>> _Options;
         private string _SelectedDisplayName;
-        private string[] _selectedDisplayNames;
         private TValue _SelectedValue;
-        private TValue[] _selectedValues;
         private bool _ShowTitle;
-        private string[] _unSelectedDisplayNames;
-        private TValue[] _unSelectedValues;
 
 
         public OptionViewModel(string groupName, bool showTitle, TValue initialValue, TValue[] allValues,
@@ -123,45 +119,13 @@ namespace Vts.Gui.Wpf.ViewModel
         }
 
         // todo: created this in parallel with SelectedValue, so as not to break other code. need to merge functionality across codebase to use this version
-        public TValue[] SelectedValues
-        {
-            get { return _selectedValues; }
-            set
-            {
-                _selectedValues = value;
-                OnPropertyChanged("SelectedValues");
-            }
-        }
+        public TValue[] SelectedValues { get; private set; }
 
-        public string[] SelectedDisplayNames
-        {
-            get { return _selectedDisplayNames; }
-            set
-            {
-                _selectedDisplayNames = value;
-                OnPropertyChanged("SelectedDisplayNames");
-            }
-        }
+        public string[] SelectedDisplayNames { get; private set; }
 
-        public TValue[] UnSelectedValues
-        {
-            get { return _unSelectedValues; }
-            set
-            {
-                _unSelectedValues = value;
-                OnPropertyChanged("UnSelectedValues");
-            }
-        }
+        public TValue[] UnSelectedValues { get; private set; }
 
-        public string[] UnSelectedDisplayNames
-        {
-            get { return _unSelectedDisplayNames; }
-            set
-            {
-                _unSelectedDisplayNames = value;
-                OnPropertyChanged("UnSelectedDisplayNames");
-            }
-        }
+        public string[] UnSelectedDisplayNames { get; private set; }
 
         public Dictionary<TValue, OptionModel<TValue>> Options
         {
@@ -208,10 +172,10 @@ namespace Vts.Gui.Wpf.ViewModel
             var unSelectedOptions = (from o in _Options where !o.Value.IsSelected select o).ToArray();
 
             // update arrays and explicitly fire property changed, so we don't trip on intermediate changes 
-            _selectedValues = selectedOptions.Select(item => item.Value.Value).ToArray();
-            _selectedDisplayNames = selectedOptions.Select(item => item.Value.DisplayName).ToArray();
-            _unSelectedValues = unSelectedOptions.Select(item => item.Value.Value).ToArray();
-            _unSelectedDisplayNames = unSelectedOptions.Select(item => item.Value.DisplayName).ToArray();
+            SelectedValues = selectedOptions.Select(item => item.Value.Value).ToArray();
+            SelectedDisplayNames = selectedOptions.Select(item => item.Value.DisplayName).ToArray();
+            UnSelectedValues = unSelectedOptions.Select(item => item.Value.Value).ToArray();
+            UnSelectedDisplayNames = unSelectedOptions.Select(item => item.Value.DisplayName).ToArray();
             OnPropertyChanged("SelectedValues");
             OnPropertyChanged("SelectedDisplayNames");
             OnPropertyChanged("UnSelectedValues");
