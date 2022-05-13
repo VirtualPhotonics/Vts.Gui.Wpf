@@ -1,3 +1,5 @@
+using Vts.Factories;
+
 namespace Vts.Gui.Wpf.ViewModel
 {
     /// <summary>
@@ -20,5 +22,6 @@ namespace Vts.Gui.Wpf.ViewModel
         public string DependentAxisName { get; set; }
         public IndependentAxisViewModel IndependentAxis { get; set; }
         public ConstantAxisViewModel[] ConstantAxes { get; set; }
+        public bool IsComplexPlot { get; set; }
     }
 }

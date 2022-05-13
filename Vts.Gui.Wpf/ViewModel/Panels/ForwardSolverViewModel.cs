@@ -334,7 +334,10 @@ namespace Vts.Gui.Wpf.ViewModel
             var axesLabels = new PlotAxesLabels(
                 sd.SelectedDisplayName, sd.SelectedValue.GetUnits(),
                 sd.IndependentAxesVMs.First(vm => vm.AxisType == AllRangeVMs.First().AxisType),
-                sd.ConstantAxesVMs);
+                sd.ConstantAxesVMs)
+            {
+                IsComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVM.SelectedValue)
+            };
             return axesLabels;
         }
 
