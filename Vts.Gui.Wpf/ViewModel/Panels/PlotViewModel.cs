@@ -1,3 +1,9 @@
+using GalaSoft.MvvmLight.Command;
+using OxyPlot;
+using OxyPlot.Axes;
+// todo: Once the popout bug is fixed and we update OxyPlot, uncomment this using:
+//using OxyPlot.Legends;
+using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -5,17 +11,11 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
-using Microsoft.Win32;
-using OxyPlot;
-using OxyPlot.Axes;
-// todo: Once the popout bug is fixed and we update OxyPlot, uncomment this using:
-//using OxyPlot.Legends;
-using OxyPlot.Series;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
 using FontWeights = OxyPlot.FontWeights;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -70,6 +70,7 @@ namespace Vts.Gui.Wpf.ViewModel
         private IndependentVariableAxis _currentIndependentVariableAxis;
         private string _customPlotLabel;
 
+        private bool _clearPlot;
         private bool _hideKey;
         private bool _holdOn;
         private bool _isComplexPlot;
@@ -316,7 +317,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 // if user switches independent variable, clear plot
-                if (_currentIndependentVariableAxis != value && ShowInPlotView)
+                if (_clearPlot && ShowInPlotView)
                 {
                     ClearPlot();
                     WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
@@ -531,8 +532,19 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             if (sender is PlotAxesLabels labels)
             {
+                _clearPlot = false;
                 // set CurrentIndependtVariableAxis prior to setting Title because property
                 // might ClearPlot including Title
+                if (CurrentIndependentVariableAxis != labels.IndependentAxis.AxisType)
+                {
+                    _clearPlot = true;
+                }
+
+                if (_isComplexPlot != labels.IsComplexPlot)
+                {
+                    _clearPlot = true;
+                    _isComplexPlot = labels.IsComplexPlot;
+                }
                 CurrentIndependentVariableAxis = labels.IndependentAxis.AxisType;
                 // set the x and y axis labels
                 XAxis = labels.IndependentAxis.AxisLabel + " [" + labels.IndependentAxis.AxisUnits + "]";
@@ -740,6 +752,7 @@ namespace Vts.Gui.Wpf.ViewModel
             var lineSeriesB = new LineSeries(); //we need B for complex
             if (dataPointCollection.DataPoints[0] is ComplexDataPoint)
             {
+                _isComplexPlot = true;
                 // normalization calculations
                 var max = 1.0;
                 var maxRe = 1.0;
@@ -872,6 +885,7 @@ namespace Vts.Gui.Wpf.ViewModel
                     }
                     curveIndex += 1;
                 }
+
                 ShowComplexPlotToggle = true; // right now, it's all or nothing - assume all plots are ComplexDataPoints
             }
             else
@@ -961,6 +975,7 @@ namespace Vts.Gui.Wpf.ViewModel
             PlotModel.Series.Clear();
             PlotSeriesCollection.Clear(); //clear the PlotSeriesCollection because it will recreate each time
             ShowComplexPlotToggle = false; // do not show the complex toggle until a complex plot is plotted
+            _isComplexPlot = false;
 
             foreach (var series in DataSeriesCollection)
             {
