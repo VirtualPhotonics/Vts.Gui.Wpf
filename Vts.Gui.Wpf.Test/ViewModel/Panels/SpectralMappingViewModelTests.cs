@@ -1,7 +1,6 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Linq;
-using NUnit.Framework;
-using Vts;
 using Vts.Gui.Wpf.ViewModel;
 using Vts.SpectralMapping;
 

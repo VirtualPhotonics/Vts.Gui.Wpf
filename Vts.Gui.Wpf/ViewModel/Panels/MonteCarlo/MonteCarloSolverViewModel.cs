@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
 using Vts.Common.Logging;
 using Vts.Gui.Wpf.Model;
 using Vts.IO;
@@ -16,6 +15,7 @@ using Vts.MonteCarlo.Detectors;
 using Vts.MonteCarlo.IO;
 using System.Runtime.Caching;
 using System.Windows.Forms;
+using CommunityToolkit.Mvvm.Input;
 using Vts.Gui.Wpf.Extensions;
 using Vts.MonteCarlo.Tissues;
 

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using CommunityToolkit.Mvvm.Input;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using GalaSoft.MvvmLight.Command;
 using Vts.Common;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
