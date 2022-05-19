@@ -1,7 +1,7 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Windows.Forms;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
 using Vts.Gui.Wpf.Extensions;
 using Vts.MonteCarlo;
 

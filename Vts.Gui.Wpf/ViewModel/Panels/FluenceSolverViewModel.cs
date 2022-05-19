@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
@@ -7,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using GalaSoft.MvvmLight.Command;
 using Vts.Common;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;

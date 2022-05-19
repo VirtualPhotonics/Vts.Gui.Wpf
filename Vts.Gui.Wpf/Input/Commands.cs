@@ -1,5 +1,5 @@
+using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Vts.Gui.Wpf.Input
 {

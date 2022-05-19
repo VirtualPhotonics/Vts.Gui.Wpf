@@ -1,9 +1,9 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
 using Vts.Common;
 using Vts.Extensions;
 using Vts.Factories;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Windows.Input;
-using GalaSoft.MvvmLight.Command;
+using CommunityToolkit.Mvvm.Input;
 using Vts.Extensions;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;

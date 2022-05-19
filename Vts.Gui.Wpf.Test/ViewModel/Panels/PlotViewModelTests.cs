@@ -425,7 +425,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotViewModel = windowViewModel.PlotVM;
             plotViewModel.PlotValues.Execute(_plotData);
             // there is not an instance of window so duplicate with throw an error
-            Assert.Throws<TargetInvocationException>(() => plotViewModel.DuplicateWindowCommand.Execute(plotViewModel));
+            Assert.Throws<NullReferenceException>(() => plotViewModel.DuplicateWindowCommand.Execute(plotViewModel));
         }
 
         [Test]

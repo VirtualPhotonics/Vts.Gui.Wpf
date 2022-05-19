@@ -1,4 +1,4 @@
-using GalaSoft.MvvmLight.Command;
+using CommunityToolkit.Mvvm.Input;
 using OxyPlot;
 using OxyPlot.Axes;
 // todo: Once the popout bug is fixed and we update OxyPlot, uncomment this using:

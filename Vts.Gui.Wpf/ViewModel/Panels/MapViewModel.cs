@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Linq;
@@ -5,8 +7,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using GalaSoft.MvvmLight.Command;
-using Microsoft.Win32;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
