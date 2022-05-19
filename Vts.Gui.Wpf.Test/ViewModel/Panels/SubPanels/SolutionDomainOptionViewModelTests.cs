@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using Vts.Gui.Wpf.ViewModel;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
@@ -10,10 +11,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
     public class SolutionDomainOptionViewModelTests
     {
         /// <summary>
-        /// Verifies that SolutionDomainOptionModel default constructor instantiates sub viewmodels
+        /// Verifies that SolutionDomainOptionModel default constructor instantiates sub ViewModels
         /// </summary>
         [Test]
-        public void verify_default_constructor_sets_properties_correctly()
+        public void Verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new SolutionDomainOptionViewModel();
             Assert.AreEqual(viewModel.ROfRhoOption, viewModel.Options[SolutionDomainType.ROfRho]);
@@ -24,6 +25,31 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
             Assert.AreEqual(viewModel.ROfFxAndFtOption, viewModel.Options[SolutionDomainType.ROfFxAndFt]);
         }
 
-        // could add test for UpdateOptions results here
+        /// <summary>
+        /// Test the update options
+        /// </summary>
+        [Test]
+        public void Verify_constructor_sets_update_options_correctly()
+        {
+            var viewModel = new SolutionDomainOptionViewModel("ROfRhoAndTime", SolutionDomainType.ROfRhoAndTime);
+            Assert.AreEqual(SolutionDomainType.ROfRhoAndTime, viewModel.SelectedValue);
+            viewModel = new SolutionDomainOptionViewModel("ROfFx", SolutionDomainType.ROfFx);
+            Assert.AreEqual(SolutionDomainType.ROfFx, viewModel.SelectedValue);
+            viewModel = new SolutionDomainOptionViewModel("ROfFxAndTime", SolutionDomainType.ROfFxAndTime);
+            Assert.AreEqual(SolutionDomainType.ROfFxAndTime, viewModel.SelectedValue);
+            viewModel = new SolutionDomainOptionViewModel("ROfFxAndFt", SolutionDomainType.ROfFxAndFt);
+            Assert.AreEqual(SolutionDomainType.ROfFxAndFt, viewModel.SelectedValue);
+            viewModel = new SolutionDomainOptionViewModel("ROfRhoAndFt", SolutionDomainType.ROfRhoAndFt);
+            Assert.AreEqual(SolutionDomainType.ROfRhoAndFt, viewModel.SelectedValue);
+        }
+
+        [Test]
+        public void Verify_update_options_throws_exception()
+        {
+            Assert.Throws<NotImplementedException>(() =>
+            {
+                var solutionDomainOptionViewModel = new SolutionDomainOptionViewModel("InvalidOption", (SolutionDomainType) 99);
+            });
+        }
     }
 }

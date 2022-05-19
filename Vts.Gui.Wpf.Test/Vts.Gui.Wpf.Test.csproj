@@ -145,6 +145,7 @@
     <Compile Include="Converters\DoubleToStringConverterTests.cs" />
     <Compile Include="Converters\BooleanToVisiblityConverterTests.cs" />
     <Compile Include="Extensions\EnumExtensionsTests.cs" />
+    <Compile Include="Extensions\LocalizedStringsTests.cs" />
     <Compile Include="Extensions\StringLookupTests.cs" />
     <Compile Include="Model\ComplexDataPointTests.cs" />
     <Compile Include="Model\DoubleDataPointTests.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\Controls\OptionViewModelTest.cs" />
     <Compile Include="ViewModel\Controls\OpticalPropertyViewModelTests.cs" />
+    <Compile Include="ViewModel\Controls\PositionViewModelTests.cs" />
     <Compile Include="ViewModel\Controls\RangeViewModelTests.cs" />
     <Compile Include="ViewModel\Controls\TextOutputViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\FluenceSolverViewModelTests.cs" />
@@ -169,10 +171,12 @@
     <Compile Include="ViewModel\Panels\PlotViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\ForwardSolverViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\MonteCarlo\MonteCarloSolverViewModelTests.cs" />
+    <Compile Include="ViewModel\Panels\SubPanels\ConstantAxisViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\SolutionDomainOptionViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\FluenceSolutionDomainOptionViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\BloodConcentrationViewModelTests.cs" />
     <Compile Include="ViewModel\Panels\SubPanels\AbstractSolutionDomainOptionViewModelTests.cs" />
+    <Compile Include="ViewModel\WindowViewModelTests.cs" />
     <Compile Include="View\Helpers\ColormapTests.cs" />
   </ItemGroup>
   <ItemGroup>

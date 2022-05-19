@@ -173,9 +173,9 @@ namespace Vts.Gui.Wpf.Model
 
             if (list.Count > 0)
             {
-                var option =
-                    list.FirstOrDefault(
-                        optionModel => EqualityComparer<TValue>.Default.Equals(optionModel.Value, initialValue));
+                var option = list.FirstOrDefault(
+                    optionModel => EqualityComparer<TValue>.Default.Equals(optionModel.Value, initialValue));
+                if (option == null) return list.ToDictionary(item => item.Value);
                 option.IsSelected = true;
                 option.IsEnabled = !enableMultiSelect;
             }

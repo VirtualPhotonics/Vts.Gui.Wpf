@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using Vts.Gui.Wpf.ViewModel;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
@@ -10,10 +11,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
     public class FluenceSolutionDomainOptionViewModelTests
     {
         /// <summary>
-        /// Verifies that FluenceSolutionDomainOptionModel default constructor instantiates sub viewmodels
+        /// Verifies that FluenceSolutionDomainOptionModel default constructor instantiates sub ViewModels
         /// </summary>
         [Test]
-        public void verify_default_constructor_sets_properties_correctly()
+        public void Verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new FluenceSolutionDomainOptionViewModel();
             Assert.AreEqual(viewModel.FluenceOfRhoAndZOption, viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZ]);
@@ -24,6 +25,36 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
             Assert.AreEqual(viewModel.FluenceOfFxAndZAndFtOption, viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZAndFt]);
         }
 
-        // could add test for results set by UpdateOptions
+        /// <summary>
+        /// Test the update options
+        /// </summary>
+        [Test]
+        public void Verify_constructor_sets_update_options_correctly()
+        {
+            var viewModel = new FluenceSolutionDomainOptionViewModel();
+            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfRhoAndZ, viewModel.SelectedValue);
+            viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZ].IsSelected = true;
+            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfFxAndZ, viewModel.SelectedValue);
+            viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZAndFt].IsSelected = true;
+            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfFxAndZAndFt, viewModel.SelectedValue);
+            viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZAndTime].IsSelected = true;
+            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfFxAndZAndTime, viewModel.SelectedValue);
+            viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZAndFt].IsSelected = true;
+            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfRhoAndZAndFt, viewModel.SelectedValue);
+            viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZAndTime].IsSelected = true;
+            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfRhoAndZAndTime, viewModel.SelectedValue);
+        }
+
+        [Test]
+        public void Verify_update_options_throws_exception()
+        {
+            Assert.Throws<NotImplementedException>(() =>
+            {
+                var viewModel = new FluenceSolutionDomainOptionViewModel
+                {
+                    SelectedValue = (FluenceSolutionDomainType) 99
+                };
+            });
+        }
     }
 }

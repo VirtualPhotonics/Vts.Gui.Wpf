@@ -477,7 +477,6 @@ namespace Vts.Gui.Wpf.ViewModel
             output.Labels = plotToClone._labels.ToList();
             output.CustomPlotLabel = plotToClone.CustomPlotLabel;
             output.ShowInPlotView = false;
-            output.HideKey = plotToClone.HideKey;
             output.ShowAxes = plotToClone.ShowAxes;
             output.MinYValue = plotToClone.MinYValue;
             output.MaxYValue = plotToClone.MaxYValue;
@@ -513,6 +512,8 @@ namespace Vts.Gui.Wpf.ViewModel
                             ColorTag = ds.ColorTag,
                             Title = ds.Title
                         }).ToList();
+            // add a property at the end that will call UpdatePlotSeries so the plot data is in the clone
+            output.HideKey = plotToClone.HideKey;
             return output;
         }
 

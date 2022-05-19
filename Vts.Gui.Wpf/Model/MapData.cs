@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Vts.Common.Math;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
+
+[assembly: InternalsVisibleTo("Vts.Gui.Wpf.Test")]
 
 namespace Vts.Gui.Wpf.Model
 {

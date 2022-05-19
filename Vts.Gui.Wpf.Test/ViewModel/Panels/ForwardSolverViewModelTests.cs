@@ -77,10 +77,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var viewModel = windowViewModel.ForwardSolverVM;
             // set forward solver to TwoLayerSDA
             viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.TwoLayerSDA;
-            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.AllowMultiAxis == false);
-            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.UseSpectralInputs == false);
-            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.EnableMultiAxis == false);
-            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.EnableSpectralPanelInputs == false);
+            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.AllowMultiAxis);
+            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.UseSpectralInputs);
+            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.EnableMultiAxis);
+            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.EnableSpectralPanelInputs);
         }
         /// <summary>
         /// Verifies that ForwardSolverViewModel disallows time-dependent solution domain options
@@ -95,10 +95,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             // set forward solver to DistributedGaussianSourceSDA
             viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.DistributedGaussianSourceSDA;
 
-            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndTimeEnabled == false);
-            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndFtEnabled == false);
-            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndTimeEnabled == false);
-            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndFtEnabled == false);
+            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndTimeEnabled);
+            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndFtEnabled);
+            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndTimeEnabled);
+            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndFtEnabled);
         }
     }
 }
