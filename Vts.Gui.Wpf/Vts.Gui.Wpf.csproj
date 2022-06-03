@@ -23,13 +23,16 @@
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<Compile Update="Properties\Resources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Resources.resx" />
+		<Compile Update="Properties\Resources.Designer.cs">
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
 		<Compile Update="Properties\Settings.Designer.cs">
 		  <DesignTimeSharedInput>True</DesignTimeSharedInput>
 		  <AutoGen>True</AutoGen>
 		  <DependentUpon>Settings.settings</DependentUpon>
 		</Compile>
-		<Compile Update="Settings.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="Settings.settings" />
 		<None Update="logo.ico">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
@@ -38,7 +41,6 @@
 		  <Generator>SettingsSingleFileGenerator</Generator>
 		  <LastGenOutput>Settings.Designer.cs</LastGenOutput>
 		</None>
-		<None Update="Settings.settings" SubType="Designer" LastGenOutput="Settings.Designer.cs" Generator="SettingsSingleFileGenerator" />
 		<Compile Update="Resources\Strings.Designer.cs">
 			<AutoGen>True</AutoGen>
 			<DesignTime>True</DesignTime>
