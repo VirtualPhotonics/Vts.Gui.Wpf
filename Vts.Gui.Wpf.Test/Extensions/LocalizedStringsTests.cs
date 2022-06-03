@@ -13,7 +13,9 @@ namespace Vts.Gui.Wpf.Test.Extensions
             var localizedStrings = new LocalizedStrings();
             var strings = localizedStrings.MainResource;
             Assert.IsInstanceOf<Strings>(strings);
-            Assert.AreEqual("Cancel", Strings.Button_Cancel);
+            Assert.IsInstanceOf<string>(Strings.Button_Cancel);
+            Assert.IsTrue(Strings.Button_Cancel.Length > 0);
+
         }
     }
 }
