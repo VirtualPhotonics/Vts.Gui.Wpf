@@ -3,6 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
 		<IsPackable>false</IsPackable>
+		<Configurations>Debug;Release;WhiteList</Configurations>
 	</PropertyGroup>
 
 	<ItemGroup>
