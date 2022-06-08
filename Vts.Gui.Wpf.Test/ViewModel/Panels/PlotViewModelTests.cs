@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using NUnit.Framework;
 using OxyPlot;
@@ -223,7 +224,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                     ImageHeight = 1
                 }});
             viewModel.SetAxesLabels.Execute(labels);
-            Assert.AreEqual("dependent [units] versus independent [units] at t = 0.05 ns", viewModel.Title);
+            Assert.AreEqual($"dependent [units] versus independent [units] at t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns", viewModel.Title);
             var constantAxes = new[]
             {
                 new ConstantAxisViewModel
@@ -245,7 +246,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             };
             labels.ConstantAxes = constantAxes;
             viewModel.SetAxesLabels.Execute(labels);
-            Assert.AreEqual("dependent [units] versus independent [units] at t = 0.05 ns and z = 0.1 mm", viewModel.Title);
+            Assert.AreEqual($"dependent [units] versus independent [units] at t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns and z = {0.1.ToString(Thread.CurrentThread.CurrentCulture)} mm", viewModel.Title);
         }
 
         // The following tests verify the Relay Commands

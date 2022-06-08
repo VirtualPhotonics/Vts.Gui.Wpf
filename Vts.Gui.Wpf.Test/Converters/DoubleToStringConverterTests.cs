@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Threading;
 using Vts.Gui.Wpf.Converters;
 using Vts.Gui.Wpf.Extensions;
 
@@ -43,7 +44,7 @@ namespace Vts.Gui.Wpf.Test.Converters
                 null, // no parameters
                 System.Globalization.CultureInfo.CurrentCulture));
             Assert.AreEqual(StringLookup.GetLocalizedString("Exception_DoubleOrInt"), exception?.Message);
-            Assert.AreEqual("1.50", dtsConverter.Convert(
+            Assert.AreEqual($"{1.50.ToString("0.00", Thread.CurrentThread.CurrentCulture)}", dtsConverter.Convert(
                 1.5,  // double to convert
                 typeof(string),
                 "N2", // pass a formatting parameter

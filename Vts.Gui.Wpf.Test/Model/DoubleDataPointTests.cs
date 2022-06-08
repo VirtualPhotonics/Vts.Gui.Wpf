@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Globalization;
+using System.Threading;
+using NUnit.Framework;
 using Vts.Gui.Wpf.Model;
 
 namespace Vts.Gui.Wpf.Test.Model
@@ -36,7 +38,8 @@ namespace Vts.Gui.Wpf.Test.Model
         public void Verify_to_string_value()
         {
             var dataPoint = new DoubleDataPoint(0.1, 0.3);
-            Assert.AreEqual("0.1, 0.3", dataPoint.ToString());
+            var localizedString = $"{0.1.ToString(Thread.CurrentThread.CurrentCulture)}, {0.3.ToString(Thread.CurrentThread.CurrentCulture)}";
+            Assert.AreEqual(localizedString, dataPoint.ToString());
         }
 
         [Test]
