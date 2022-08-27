@@ -1,8 +1,5 @@
-## Downloads
-To download the latest version, click [here](https://github.com/VirtualPhotonics/Vts.Gui.Wpf/wiki/Download)
-
-## Releases and Source Codes
-To access all releases and source code, click [here](https://github.com/VirtualPhotonics/Vts.Gui.Wpf/releases). 
+## Releases
+To access all releases, click [here](https://github.com/VirtualPhotonics/Vts.Gui.Wpf/releases). 
 
 ## Acknowledgement
 Use the following citation or acknowledgement in publications or applications that make use of this open source software or underlying technology and research:
