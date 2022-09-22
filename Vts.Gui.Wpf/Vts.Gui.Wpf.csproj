@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
 		<OutputType>winexe</OutputType>
-		<TargetFramework>net48</TargetFramework>
+		<TargetFramework>net6.0-windows8.0</TargetFramework>
 		<ApplicationIcon>logo.ico</ApplicationIcon>
 		<OutputTypeEx>winexe</OutputTypeEx>
 		<StartupObject />
@@ -17,6 +17,9 @@
 		<FileVersion>3.0.0.0</FileVersion>
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<Configurations>Debug;Release;WhiteList</Configurations>
+		<UseWPF>True</UseWPF>
+		<UseWindowsForms>True</UseWindowsForms>
+		<EnableDefaultPageItems>False</EnableDefaultPageItems>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -55,13 +58,8 @@
 			<SubType>Designer</SubType>
 		</EmbeddedResource>
 
-		<Page Include="**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" Exclude="App.xaml" />
+		<Page Include="**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
 		<Compile Update="**\*.xaml.cs" SubType="Designer" DependentUpon="%(Filename)" />
-
-		<ApplicationDefinition Include="App.xaml">
-			<Generator>MsBuild:Compile</Generator>
-			<SubType>Designer</SubType>
-		</ApplicationDefinition>
 
 	</ItemGroup>
 
@@ -75,19 +73,16 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
-		<PackageReference Include="Mvvm" Version="1.0.4" />
-		<PackageReference Include="NLog" Version="5.0.2" />
+		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.346202" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+		<PackageReference Include="NLog" Version="5.0.4" />
 		<PackageReference Include="OxyPlot.Core" Version="2.0.0" />
 		<PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
 		<PackageReference Include="VirtualPhotonics.Vts" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="PresentationCore" />
-		<Reference Include="PresentationFramework" />
-		<Reference Include="System.ComponentModel.DataAnnotations" />
 		<Reference Include="System.Runtime.Caching" />
-		<Reference Include="System.Xaml" />
 	</ItemGroup>
 
 </Project>
