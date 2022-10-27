@@ -1,22 +1,22 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
 using System.IO;
-using System.Windows;
-using System.Windows.Media.Animation;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Caching;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using Vts.Common.Logging;
+using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
 using Vts.IO;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Detectors;
 using Vts.MonteCarlo.IO;
-using System.Runtime.Caching;
-using System.Windows.Forms;
-using CommunityToolkit.Mvvm.Input;
-using Vts.Gui.Wpf.Extensions;
 using Vts.MonteCarlo.Tissues;
 
 namespace Vts.Gui.Wpf.ViewModel
@@ -168,8 +168,11 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 var input = _simulationInputVm.SimulationInput;
 
-                MainWindow.Current.Wait.Visibility = Visibility.Visible;
-                ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Begin();
+                if (MainWindow.Current != null)
+                {
+                    MainWindow.Current.Wait.Visibility = Visibility.Visible;
+                    ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Begin();
+                }
                 _newResultsAvailable = false;
 
                 var validationResult = SimulationInputValidation.ValidateInput(input);
@@ -212,10 +215,12 @@ namespace Vts.Gui.Wpf.ViewModel
                             (x, y) => new DoubleDataPoint(x, y)).ToArray();
 
                         var axesLabels = GetPlotLabels();
-                        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+                        if (MainWindow.Current != null)
+                            WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
 
                         var plotLabel = GetPlotLabel();
-                        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
+                        if (MainWindow.Current != null)
+                            WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
                         plotView = true;
                         logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                     }
@@ -270,13 +275,17 @@ namespace Vts.Gui.Wpf.ViewModel
                         logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                     }
                     // put map view on top if no plot and plot view on top if no map otherwise stay on current view
-                    if (!(plotView && mapView))
+                    if (!(plotView && mapView) && MainWindow.Current != null)
                     {
                         MainWindow.Current.Main_SelectView_Executed(rOfRhoDetectorInputs.Any() ? 0 : 1);
                     }
                 }
-                ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
-                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+
+                if (MainWindow.Current != null)
+                {
+                    ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                    MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                }
                 await Task.Run(() => MC_CacheSimulationResults(input), _currentCancellationTokenSource.Token);
                 CanRunSimulation = true;
                 CanLoadInputFile = true;
@@ -286,13 +295,19 @@ namespace Vts.Gui.Wpf.ViewModel
             }
             catch (OperationCanceledException)
             {
-                ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
-                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                if (MainWindow.Current != null)
+                {
+                    ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                    MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                }
             }
             finally
             {
-                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
-                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                if (MainWindow.Current != null)
+                {
+                    ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                    MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                }
             }
         }
 
