@@ -1,8 +1,7 @@
 using CommunityToolkit.Mvvm.Input;
 using OxyPlot;
 using OxyPlot.Axes;
-// todo: Once the popout bug is fixed and we update OxyPlot, uncomment this using:
-//using OxyPlot.Legends;
+using OxyPlot.Legends;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
@@ -118,8 +117,6 @@ namespace Vts.Gui.Wpf.ViewModel
             PlotModel = new PlotModel
             {
                 Title = "",
-                // todo: Once the popout bug is fixed and we update OxyPlot, remove the line below:
-                LegendPlacement = LegendPlacement.Outside,
                 DefaultColors = new List<OxyColor>
                 {
                     OxyColor.FromRgb(0x00, 0x80, 0x00),     // Green
@@ -136,13 +133,12 @@ namespace Vts.Gui.Wpf.ViewModel
                     OxyColor.FromRgb(0x99, 0x99, 0x00),     // Olive Green
                 }
             };
-            // todo: Once the popout bug is fixed and we update OxyPlot, uncomment this code:
-            //var legend = new Legend
-            //{
-            //    LegendPlacement = LegendPlacement.Outside,
-            //    IsLegendVisible = true
-            //};
-            //PlotModel.Legends.Add(legend);
+            var legend = new Legend
+            {
+                LegendPlacement = LegendPlacement.Outside,
+                IsLegendVisible = true
+            };
+            PlotModel.Legends.Add(legend);
             PlotType = ReflectancePlotType.ForwardSolver;
             _holdOn = true;
             _hideKey = false;

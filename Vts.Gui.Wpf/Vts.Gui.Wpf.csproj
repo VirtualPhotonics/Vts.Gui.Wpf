@@ -72,12 +72,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
-		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.4.0" />
-		<PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.4.346202" />
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
-		<PackageReference Include="NLog" Version="5.0.4" />
-		<PackageReference Include="OxyPlot.Core" Version="2.0.0" />
-		<PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
+		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.2" />
+		<PackageReference Include="NLog" Version="5.1.0" />
+		<PackageReference Include="OxyPlot.Core" Version="2.1.2" />
+		<PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
 		<PackageReference Include="VirtualPhotonics.Vts" Version="8.0.0" />
 	</ItemGroup>
 
