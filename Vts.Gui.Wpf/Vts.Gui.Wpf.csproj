@@ -8,13 +8,13 @@
 		<OutputTypeEx>winexe</OutputTypeEx>
 		<StartupObject />
 		<Description>The WPF GUI provides a simple interface to access some basic functionality of the Virtual Tissue Simulator.</Description>
-		<Copyright>Copyright ©  2022</Copyright>
+		<Copyright>Copyright ©  2023</Copyright>
 		<PackageIcon>logo.ico</PackageIcon>
 		<PackageReadmeFile>readme.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/VirtualPhotonics/Vts.Gui.Wpf</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<AssemblyVersion>4.0.0.0</AssemblyVersion>
-		<FileVersion>4.0.0.0</FileVersion>
+		<AssemblyVersion>4.1.0.0</AssemblyVersion>
+		<FileVersion>4.1.0.0</FileVersion>
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<Configurations>Debug;Release;WhiteList</Configurations>
 		<UseWPF>True</UseWPF>
@@ -71,13 +71,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
 		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.5.0" />
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.6" />
-		<PackageReference Include="NLog" Version="5.1.0" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.4" />
+		<PackageReference Include="NLog" Version="5.2.2" />
 		<PackageReference Include="OxyPlot.Core" Version="2.1.2" />
 		<PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
-		<PackageReference Include="VirtualPhotonics.Vts" Version="9.0.0" />
+		<PackageReference Include="VirtualPhotonics.Vts" Version="9.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
