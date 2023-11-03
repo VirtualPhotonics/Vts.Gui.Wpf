@@ -25,12 +25,11 @@ namespace Vts.Gui.Wpf.ViewModel
             _enableNumber = enableNumber;
             _axisType = axisType;
 
-            // todo: does this do anything? (start, stop, number already directly modified)
-            _range.PropertyChanged += (s, a) =>
+            _range.PropertyChanged += (_, _) =>
             {
-                OnPropertyChanged("Start");
-                OnPropertyChanged("Stop");
-                OnPropertyChanged("Number");
+                OnPropertyChanged(nameof(Start));
+                OnPropertyChanged(nameof(Stop));
+                OnPropertyChanged(nameof(Number));
             };
         }
 
@@ -48,11 +47,11 @@ namespace Vts.Gui.Wpf.ViewModel
         /// </summary>
         public double Start
         {
-            get { return _range.Start; }
+            get => _range.Start;
             set
             {
                 _range.Start = value;
-                OnPropertyChanged("Start");
+                OnPropertyChanged(nameof(Start));
             }
         }
 
@@ -61,11 +60,11 @@ namespace Vts.Gui.Wpf.ViewModel
         /// </summary>
         public double Stop
         {
-            get { return _range.Stop; }
+            get => _range.Stop;
             set
             {
                 _range.Stop = value;
-                OnPropertyChanged("Stop");
+                OnPropertyChanged(nameof(Stop));
             }
         }
 
@@ -74,63 +73,57 @@ namespace Vts.Gui.Wpf.ViewModel
         /// </summary>
         public int Number
         {
-            get { return _range.Count; }
+            get => _range.Count;
             set
             {
                 _range.Count = value;
-                OnPropertyChanged("Number");
+                OnPropertyChanged(nameof(Number));
             }
         }
 
         public string Units
         {
-            get { return _units; }
+            get => _units;
             set
             {
                 _units = value;
-                OnPropertyChanged("Units");
+                OnPropertyChanged(nameof(Units));
             }
         }
 
         public string Title
         {
-            get { return _title; }
+            get => _title;
             set
             {
                 _title = value;
-                OnPropertyChanged("Title");
-                OnPropertyChanged("ShowTitle");
+                OnPropertyChanged(nameof(Title));
+                OnPropertyChanged(nameof(ShowTitle));
             }
         }
 
         public bool EnableNumber
         {
-            get { return _enableNumber; }
+            get => _enableNumber;
             set
             {
                 _enableNumber = value;
-                OnPropertyChanged("EnableNumber");
+                OnPropertyChanged(nameof(EnableNumber));
             }
         }
 
-        public bool ShowTitle
-        {
-            get { return Title.Length > 0; }
-        }
+        public bool ShowTitle => Title.Length > 0;
 
         public IndependentVariableAxis AxisType
         {
-            get { return _axisType; }
+            get => _axisType;
             set
             {
                 _axisType = value;
-                OnPropertyChanged("AxisType");
+                OnPropertyChanged(nameof(AxisType));
             }
         }
 
-        public IEnumerable<double> Values
-        {
-            get { return _range.AsEnumerable(); }
-        }
+        public IEnumerable<double> Values => _range;
     }
 }
