@@ -600,6 +600,8 @@ namespace Vts.Gui.Wpf.ViewModel
                         sw.WriteLine();
                         foreach (var t in _plotSeriesCollection)
                         {
+                            // check if user selected (X/Y) Axis Scaled to Log10 and if so
+                            // make sure un-log10 data is written to file
                             if (XAxisSpacingOptionVm.SelectedValue == ScalingType.Log)
                             {
                                 sw.Write(Math.Pow(10, t[i].X) + "\t");
