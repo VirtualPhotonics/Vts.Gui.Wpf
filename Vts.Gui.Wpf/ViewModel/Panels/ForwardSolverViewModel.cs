@@ -33,6 +33,7 @@ namespace Vts.Gui.Wpf.ViewModel
         private SingleEllipsoidTissueInput _currentSingleEllipsoidTissueInput;
         private OptionViewModel<ForwardAnalysisType> _ForwardAnalysisTypeOptionVM;
         private OptionViewModel<ForwardSolverType> _ForwardSolverTypeOptionVM;
+        private OptionViewModel<PlotToggleType> _phaseAmpToggleTypeOptionVm;
 
         private bool _showOpticalProperties;
         private SolutionDomainOptionViewModel _SolutionDomainTypeOptionVM;
@@ -41,12 +42,13 @@ namespace Vts.Gui.Wpf.ViewModel
         // either an OpticalPropertyViewModel or a MultiRegionTissueViewModel is stored here, and dynamically displayed
 
         private bool _useSpectralPanelData;
+        private bool _showComplexPlotToggle;
 
         public ForwardSolverViewModel()
         {
             _showOpticalProperties = true;
             _useSpectralPanelData = false;
-
+            _showComplexPlotToggle = false;
 
             _allRangeVMs = new[] {new RangeViewModel {Title = StringLookup.GetLocalizedString("IndependentVariableAxis_Rho")}};
 
@@ -58,6 +60,15 @@ namespace Vts.Gui.Wpf.ViewModel
             SolutionDomainTypeOptionVM = new SolutionDomainOptionViewModel("Solution Domain", SolutionDomainType.ROfRho);
 
             ForwardAnalysisTypeOptionVM = new OptionViewModel<ForwardAnalysisType>(StringLookup.GetLocalizedString("Heading_ModelAnalysisOutput"), true);
+
+            ForwardAnalysisTypeOptionVM.PropertyChanged += (sender, args) =>
+            {
+                var isComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVM.SelectedValue);
+                ShowComplexPlotToggle = ForwardAnalysisTypeOptionVM.SelectedValue != ForwardAnalysisType.R && isComplexPlot;
+                OnPropertyChanged(nameof(ShowComplexPlotToggle));
+            };
+
+            PhaseAmpToggleOptionVm = new OptionViewModel<PlotToggleType>("Plot Toggle", false);
 
             ForwardSolverTypeOptionVM.PropertyChanged += (sender, args) =>
             {
@@ -82,6 +93,10 @@ namespace Vts.Gui.Wpf.ViewModel
 
             SolutionDomainTypeOptionVM.PropertyChanged += (sender, args) =>
             {
+                var isComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVM.SelectedValue);
+                ShowComplexPlotToggle = ForwardAnalysisTypeOptionVM.SelectedValue != ForwardAnalysisType.R && isComplexPlot;
+                OnPropertyChanged(nameof(ShowComplexPlotToggle));
+
                 if (args.PropertyName == "UseSpectralInputs")
                 {
                     UseSpectralPanelData = SolutionDomainTypeOptionVM.UseSpectralInputs;
@@ -230,6 +245,7 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 _SolutionDomainTypeOptionVM = value;
                 OnPropertyChanged("SolutionDomainTypeOptionVM");
+                OnPropertyChanged(nameof(ShowComplexPlotToggle));
             }
         }
         public OptionViewModel<ForwardSolverType> ForwardSolverTypeOptionVM
@@ -278,7 +294,27 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _ForwardAnalysisTypeOptionVM = value;
-                OnPropertyChanged("ForwardAnalysisTypeOptionVM");
+                OnPropertyChanged(nameof(ForwardAnalysisTypeOptionVM));
+            }
+        }
+
+        public OptionViewModel<PlotToggleType> PhaseAmpToggleOptionVm
+        {
+            get => _phaseAmpToggleTypeOptionVm;
+            set
+            {
+                _phaseAmpToggleTypeOptionVm = value;
+                OnPropertyChanged(nameof(PhaseAmpToggleOptionVm));
+            }
+        }
+
+        public bool ShowComplexPlotToggle
+        {
+            get => _showComplexPlotToggle;
+            set
+            {
+                _showComplexPlotToggle = value;
+                OnPropertyChanged(nameof(ShowComplexPlotToggle));
             }
         }
 
