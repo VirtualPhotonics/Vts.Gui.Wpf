@@ -600,7 +600,22 @@ namespace Vts.Gui.Wpf.ViewModel
                         sw.WriteLine();
                         foreach (var t in _plotSeriesCollection)
                         {
-                            sw.Write(t[i].X + "\t" + t[i].Y + "\t");
+                            if (XAxisSpacingOptionVm.SelectedValue == ScalingType.Log)
+                            {
+                                sw.Write(Math.Pow(10, t[i].X) + "\t");
+                            }
+                            else
+                            {
+                                sw.Write(t[i].X + "\t");
+                            }
+                            if (YAxisSpacingOptionVm.SelectedValue == ScalingType.Log)
+                            {
+                                sw.Write(Math.Pow(10, t[i].Y) + "\t");
+                            }
+                            else
+                            {
+                                sw.Write(t[i].Y + "\t");
+                            }
                         }
                     }
                 }
