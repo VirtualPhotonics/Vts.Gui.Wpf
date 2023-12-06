@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Windows;
 using System.Windows.Input;
 using Vts.Common;
 using Vts.Extensions;
@@ -561,6 +562,60 @@ namespace Vts.Gui.Wpf.ViewModel
                 SolutionDomainTypeOptionVM.SelectedValue,
                 ForwardAnalysisTypeOptionVM.SelectedValue,
                 parameters.Values.ToArray());
+
+            return GetDataPoints(reflectance);
+        }
+
+        public IDataPoint[][] ExecuteForwardSolver(PlotToggleType type)
+        {
+            var opticalProperties = GetOpticalProperties();
+
+            var parameters = GetParametersInOrder(opticalProperties);
+
+            var reflectance = ComputationFactory.ComputeReflectance(
+                ForwardSolverTypeOptionVM.SelectedValue,
+                SolutionDomainTypeOptionVM.SelectedValue,
+                ForwardAnalysisType.R,
+                parameters.Values.ToArray());
+
+            double x;
+            double y;
+
+            var dataPointCollection = GetDataPoints(reflectance);
+            if (dataPointCollection[0][0] is ComplexDataPoint)
+            {
+                var points = dataPointCollection[0].Cast<ComplexDataPoint>().ToArray();
+                foreach (var dp in points)
+                {
+                    x = dp.X;
+                    y = dp.Y.Real;
+                    switch (type)
+                    {
+                        case PlotToggleType.Phase:
+                            y = -(dp.Y.Phase * (180 / Math.PI));
+                            // force phase to be between 0 and 360
+                            if (y < 0)
+                            {
+                                y += 360;
+                            }
+                            break;
+                        case PlotToggleType.Amp:
+                            y = dp.Y.Magnitude;
+                            break;
+                        case PlotToggleType.Complex:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                    }
+                    var point = new Point(x, y);
+                }
+            }
+
+            reflectance = ComputationFactory.ComputeReflectance(
+            ForwardSolverTypeOptionVM.SelectedValue,
+            SolutionDomainTypeOptionVM.SelectedValue,
+            ForwardAnalysisTypeOptionVM.SelectedValue,
+            parameters.Values.ToArray());
 
             return GetDataPoints(reflectance);
         }
