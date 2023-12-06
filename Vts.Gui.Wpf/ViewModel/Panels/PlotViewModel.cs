@@ -111,8 +111,8 @@ namespace Vts.Gui.Wpf.ViewModel
             
             Labels = new List<string>();
             PlotTitles = new List<string>();
-            DataSeriesCollection = new List<DataPointCollection>();
-            PlotSeriesCollection = new PlotPointCollection();
+            DataSeriesCollection = new List<DataPointCollection>(); // raw data
+            PlotSeriesCollection = new PlotPointCollection(); // raw data manipulated by the user toggles
 
             PlotModel = new PlotModel
             {
@@ -569,10 +569,10 @@ namespace Vts.Gui.Wpf.ViewModel
         /// <param name="e"></param>
         private void Plot_ExportDataToText_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_labels != null && _labels.Count > 0 && _plotSeriesCollection != null && _plotSeriesCollection.Count > 0)
+            if (_labels != null && _labels.Count > 0 && DataSeriesCollection != null && DataSeriesCollection.Count > 0)
             {
-                // Create SaveFileDialog 
-                var dialog = new SaveFileDialog
+                    // Create SaveFileDialog 
+                    var dialog = new SaveFileDialog
                 {
                     DefaultExt = ".txt",
                     Filter = "Text Files (*.txt)|*.txt"
@@ -595,29 +595,12 @@ namespace Vts.Gui.Wpf.ViewModel
                     sw.Write("%");
                     _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Y)" + "\t"));
                     sw.WriteLine();
-                    for (var i = 0; i < _plotSeriesCollection[0].Length; i++)
+                    for (var i = 0; i < DataSeriesCollection.Count - 1; i++)
                     {
-                        sw.WriteLine();
+                            sw.WriteLine();
                         foreach (var t in _plotSeriesCollection)
                         {
-                            // check if user selected (X/Y) Axis Scaled to Log10 and if so
-                            // make sure un-log10 data is written to file
-                            if (XAxisSpacingOptionVm.SelectedValue == ScalingType.Log)
-                            {
-                                sw.Write(Math.Pow(10, t[i].X) + "\t");
-                            }
-                            else
-                            {
-                                sw.Write(t[i].X + "\t");
-                            }
-                            if (YAxisSpacingOptionVm.SelectedValue == ScalingType.Log)
-                            {
-                                sw.Write(Math.Pow(10, t[i].Y) + "\t");
-                            }
-                            else
-                            {
-                                sw.Write(t[i].Y + "\t");
-                            }
+                            sw.Write(t[i].X + "\t" + t[i].Y + "\t");
                         }
                     }
                 }
