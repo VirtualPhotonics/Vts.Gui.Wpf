@@ -569,58 +569,56 @@ namespace Vts.Gui.Wpf.ViewModel
         /// <param name="e"></param>
         private void Plot_ExportDataToText_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_labels != null && _labels.Count > 0 && DataSeriesCollection != null && DataSeriesCollection.Count > 0)
+            if (_labels == null || _labels.Count <= 0 || DataSeriesCollection == null ||
+                DataSeriesCollection.Count <= 0) return;
+
+            // Create SaveFileDialog 
+            var dialog = new SaveFileDialog
             {
-                    // Create SaveFileDialog 
-                    var dialog = new SaveFileDialog
-                {
-                    DefaultExt = ".txt",
-                    Filter = "Text Files (*.txt)|*.txt"
-                };
+                DefaultExt = ".txt",
+                Filter = "Text Files (*.txt)|*.txt"
+            };
 
-                // Display OpenFileDialog by calling ShowDialog method 
-                var result = dialog.ShowDialog();
+            // Display OpenFileDialog by calling ShowDialog method 
+            var result = dialog.ShowDialog();
 
-                // if the file dialog returns true - file was selected 
-                var filename = "";
-                if (result == true)
+            // if the file dialog returns true - file was selected 
+            var filename = "";
+            if (result == true)
+            {
+                // Get the filename from the dialog 
+                filename = dialog.FileName;
+            }
+            if (filename == "") return;
+            var stream = new FileStream(filename, FileMode.Create);
+            using var sw = new StreamWriter(stream);
+            sw.Write("%");
+            if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint)
+            {
+                _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Y)" + "\t"));
+            }
+            else // ComplexDataPoint
+            {
+                _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Real)" + "\t" + label + " (Imag)" + "\t"));
+            }
+            sw.WriteLine();
+            foreach (var dataSet in DataSeriesCollection)
+            {
+                sw.WriteLine();
+                if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint)
                 {
-                    // Get the filename from the dialog 
-                    filename = dialog.FileName;
-                }
-                if (filename == "") return;
-                var stream = new FileStream(filename, FileMode.Create);
-                using (var sw = new StreamWriter(stream))
-                {
-                    sw.Write("%");
-                    if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint)
+                    foreach (var t in dataSet.DataPoints.Cast<DoubleDataPoint>().ToArray())
                     {
-                        _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Y)" + "\t"));
-                    }
-                    else // ComplexDataPoint
-                    {
-                        _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Real)" + "\t" + label + " (Imag)" + "\t"));
-                    }
-                    sw.WriteLine();
-                    for (var i = 0; i < DataSeriesCollection.Count; i++)
-                    {
+                        sw.Write(t.X + "\t" + t.Y + "\t");
                         sw.WriteLine();
-                        if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint)
-                        {
-                            foreach (var t in DataSeriesCollection[i].DataPoints.Cast<DoubleDataPoint>().ToArray())
-                            {
-                                sw.Write(t.X + "\t" + t.Y + "\t");
-                                sw.WriteLine();
-                            }
-                        }
-                        else  // ComplexDataPoint
-                        {
-                            foreach (var t in DataSeriesCollection[i].DataPoints.Cast<ComplexDataPoint>().ToArray())
-                            {
-                                sw.Write(t.X + "\t" + t.Y.Real + "\t" + t.Y.Imaginary + "\t");
-                                sw.WriteLine();
-                            }
-                        }
+                    }
+                }
+                else  // ComplexDataPoint
+                {
+                    foreach (var t in dataSet.DataPoints.Cast<ComplexDataPoint>().ToArray())
+                    {
+                        sw.Write(t.X + "\t" + t.Y.Real + "\t" + t.Y.Imaginary + "\t");
+                        sw.WriteLine();
                     }
                 }
             }

@@ -2,14 +2,12 @@
 using OxyPlot.Legends;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Numerics;
 using System.Threading;
-using Microsoft.Win32;
+using System.Windows;
 using Vts.Common;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel;
-using Point = System.Windows.Point;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
 {
@@ -175,7 +173,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.AreEqual("", viewModel.CustomPlotLabel);
             Assert.AreEqual(ReflectancePlotType.ForwardSolver, viewModel.PlotType);
             Assert.AreEqual("", viewModel.PlotModel.Title);
-            Assert.AreEqual(LegendPlacement.Outside, viewModel.PlotModel.Legends[0].LegendPlacement);
+            Assert.AreEqual(viewModel.PlotModel.Legends[0].LegendPlacement, LegendPlacement.Outside);
         }
 
         // The following tests verify the Relay Commands
@@ -578,33 +576,13 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 Assert.IsInstanceOf<Point>(point);
                 i++;
             }
-
             Assert.AreEqual(10, i);
         }
-
-
-        //[Test]
-        //public void Verify_ExportDataToText_correct_when_X_andor_Y_scaling_set_to_log()
-        //{
-        //    var points = new[]
-        //    {
-        //        new Point(1, 1),
-        //        new Point(2, 2),
-        //        new Point(3, 3),
-        //        new Point(4, 4),
-        //        new Point(5, 5),
-        //        new Point(6, 6),
-        //    };
-        //    _plotData = new[] { new PlotData(points, "Diagonal Line") };
-        //    _plotViewModel = new PlotViewModel();
-        //    _plotViewModel.PlotValues.Execute(_plotData);
-        //    //var openFileDialogMock = Substitute.For<OpenFileDialog>();
-
-        //}
 
         /// <summary>
         /// ExportDataToTextCommand brings up Dialog window so not tested
         /// DuplicateWindowCommand - not sure if can test 
         /// </summary>
+
     }
 }
