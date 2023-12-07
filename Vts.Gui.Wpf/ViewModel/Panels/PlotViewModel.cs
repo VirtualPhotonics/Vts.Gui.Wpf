@@ -593,14 +593,33 @@ namespace Vts.Gui.Wpf.ViewModel
                 using (var sw = new StreamWriter(stream))
                 {
                     sw.Write("%");
-                    _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Y)" + "\t"));
-                    sw.WriteLine();
-                    for (var i = 0; i < DataSeriesCollection.Count - 1; i++)
+                    if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint)
                     {
-                            sw.WriteLine();
-                        foreach (var t in _plotSeriesCollection)
+                        _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Y)" + "\t"));
+                    }
+                    else // ComplexDataPoint
+                    {
+                        _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Real)" + "\t" + label + " (Imag)" + "\t"));
+                    }
+                    sw.WriteLine();
+                    for (var i = 0; i < DataSeriesCollection.Count; i++)
+                    {
+                        sw.WriteLine();
+                        if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint)
                         {
-                            sw.Write(t[i].X + "\t" + t[i].Y + "\t");
+                            foreach (var t in DataSeriesCollection[i].DataPoints.Cast<DoubleDataPoint>().ToArray())
+                            {
+                                sw.Write(t.X + "\t" + t.Y + "\t");
+                                sw.WriteLine();
+                            }
+                        }
+                        else  // ComplexDataPoint
+                        {
+                            foreach (var t in DataSeriesCollection[i].DataPoints.Cast<ComplexDataPoint>().ToArray())
+                            {
+                                sw.Write(t.X + "\t" + t.Y.Real + "\t" + t.Y.Imaginary + "\t");
+                                sw.WriteLine();
+                            }
                         }
                     }
                 }
