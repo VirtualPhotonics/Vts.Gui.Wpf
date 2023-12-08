@@ -5,9 +5,12 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Threading;
 using System.Windows;
+using Microsoft.Win32;
+using NSubstitute;
 using Vts.Common;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel;
+using System.IO;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
 {
@@ -25,7 +28,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 Title = "Title",
                 DataPoints = new IDataPoint[]
                 {
-                    new DoubleDataPoint(0, 0),
+                    new DoubleDataPoint(0, 0), 
                     new DoubleDataPoint(1, 1)
                 },
                 ColorTag = "HSV"
@@ -57,8 +60,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             {
                 new[]
                 {
-                    new Point(0, 0),
-                    new Point(1, 1),
+                    new Point(0, 0), 
+                    new Point(1, 1), 
                     new Point(3, 3)
                 },
                 new[]
@@ -68,9 +71,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                     new Point(3.5, 3.5)
                 },
             };
-            var colorTags = new List<string> { "red", "white" };
+            var colorTags = new List<string> {"red", "white"};
             var plotPointCollection = new PlotPointCollection(points, colorTags);
-            Assert.AreEqual("white", plotPointCollection.ColorTags[1]);
+            Assert.AreEqual("white",plotPointCollection.ColorTags[1]);
             Assert.AreEqual(2, plotPointCollection.Count);
         }
 
@@ -203,30 +206,24 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         public void Verify_SetAxesLabelsCommand_returns_correct_values()
         {
             var viewModel = new PlotViewModel();
-            var labels = new PlotAxesLabels("dependent", "units",
-                new IndependentAxisViewModel
+            var labels = new PlotAxesLabels("dependent", "units", 
+                new IndependentAxisViewModel 
                 {
                     AxisLabel = "independent",
-                    AxisRangeVM = new RangeViewModel(new DoubleRange(0.5, 9.5, 19), "mm", IndependentVariableAxis.Rho,
-                        "Detector Positions"),
+                    AxisRangeVM = new RangeViewModel(new DoubleRange(0.5, 9.5, 19), "mm", IndependentVariableAxis.Rho, "Detector Positions"),
                     AxisType = IndependentVariableAxis.Rho,
                     AxisUnits = "units"
-                },
-                new[]
+                }, 
+                new[] { new ConstantAxisViewModel
                 {
-                    new ConstantAxisViewModel
-                    {
-                        AxisLabel = "t",
-                        AxisType = IndependentVariableAxis.Time,
-                        AxisUnits = "ns",
-                        AxisValue = 0.05,
-                        ImageHeight = 1
-                    }
-                });
+                    AxisLabel = "t",
+                    AxisType = IndependentVariableAxis.Time,
+                    AxisUnits = "ns",
+                    AxisValue = 0.05,
+                    ImageHeight = 1
+                }});
             viewModel.SetAxesLabels.Execute(labels);
-            Assert.AreEqual(
-                $"dependent [units] versus independent [units] at t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns",
-                viewModel.Title);
+            Assert.AreEqual($"dependent [units] versus independent [units] at t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns", viewModel.Title);
             var constantAxes = new[]
             {
                 new ConstantAxisViewModel
@@ -248,9 +245,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             };
             labels.ConstantAxes = constantAxes;
             viewModel.SetAxesLabels.Execute(labels);
-            Assert.AreEqual(
-                $"dependent [units] versus independent [units] at t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns and z = {0.1.ToString(Thread.CurrentThread.CurrentCulture)} mm",
-                viewModel.Title);
+            Assert.AreEqual($"dependent [units] versus independent [units] at t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns and z = {0.1.ToString(Thread.CurrentThread.CurrentCulture)} mm", viewModel.Title);
         }
 
         // The following tests verify the Relay Commands
@@ -343,14 +338,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
 
             Assert.AreEqual(viewModel.CurrentIndependentVariableAxis, viewModelClone.CurrentIndependentVariableAxis);
 
-            Assert.IsTrue(viewModelClone.PlotNormalizationTypeOptionVm
-                .Options[viewModelClone.PlotNormalizationTypeOptionVm.SelectedValue].IsSelected);
-            Assert.IsTrue(viewModelClone.PlotToggleTypeOptionVm
-                .Options[viewModelClone.PlotToggleTypeOptionVm.SelectedValue].IsSelected);
-            Assert.IsTrue(viewModelClone.XAxisSpacingOptionVm.Options[viewModelClone.XAxisSpacingOptionVm.SelectedValue]
-                .IsSelected);
-            Assert.IsTrue(viewModelClone.YAxisSpacingOptionVm.Options[viewModelClone.YAxisSpacingOptionVm.SelectedValue]
-                .IsSelected);
+            Assert.IsTrue(viewModelClone.PlotNormalizationTypeOptionVm.Options[viewModelClone.PlotNormalizationTypeOptionVm.SelectedValue].IsSelected);
+            Assert.IsTrue(viewModelClone.PlotToggleTypeOptionVm.Options[viewModelClone.PlotToggleTypeOptionVm.SelectedValue].IsSelected);
+            Assert.IsTrue(viewModelClone.XAxisSpacingOptionVm.Options[viewModelClone.XAxisSpacingOptionVm.SelectedValue].IsSelected);
+            Assert.IsTrue(viewModelClone.YAxisSpacingOptionVm.Options[viewModelClone.YAxisSpacingOptionVm.SelectedValue].IsSelected);
         }
 
         [Test]
@@ -381,17 +372,12 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.AreEqual(_plotViewModel.AutoScaleX, viewModelClone.AutoScaleX);
             Assert.AreEqual(_plotViewModel.AutoScaleY, viewModelClone.AutoScaleY);
 
-            Assert.AreEqual(_plotViewModel.CurrentIndependentVariableAxis,
-                viewModelClone.CurrentIndependentVariableAxis);
+            Assert.AreEqual(_plotViewModel.CurrentIndependentVariableAxis, viewModelClone.CurrentIndependentVariableAxis);
 
-            Assert.IsTrue(viewModelClone.PlotNormalizationTypeOptionVm
-                .Options[viewModelClone.PlotNormalizationTypeOptionVm.SelectedValue].IsSelected);
-            Assert.IsTrue(viewModelClone.PlotToggleTypeOptionVm
-                .Options[viewModelClone.PlotToggleTypeOptionVm.SelectedValue].IsSelected);
-            Assert.IsTrue(viewModelClone.XAxisSpacingOptionVm.Options[viewModelClone.XAxisSpacingOptionVm.SelectedValue]
-                .IsSelected);
-            Assert.IsTrue(viewModelClone.YAxisSpacingOptionVm.Options[viewModelClone.YAxisSpacingOptionVm.SelectedValue]
-                .IsSelected);
+            Assert.IsTrue(viewModelClone.PlotNormalizationTypeOptionVm.Options[viewModelClone.PlotNormalizationTypeOptionVm.SelectedValue].IsSelected);
+            Assert.IsTrue(viewModelClone.PlotToggleTypeOptionVm.Options[viewModelClone.PlotToggleTypeOptionVm.SelectedValue].IsSelected);
+            Assert.IsTrue(viewModelClone.XAxisSpacingOptionVm.Options[viewModelClone.XAxisSpacingOptionVm.SelectedValue].IsSelected);
+            Assert.IsTrue(viewModelClone.YAxisSpacingOptionVm.Options[viewModelClone.YAxisSpacingOptionVm.SelectedValue].IsSelected);
         }
 
         [Test]
@@ -445,8 +431,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         [Test]
         public void Verify_complex_plot()
         {
-            IDataPoint[] points =
-            {
+            IDataPoint[] points = {
                 new ComplexDataPoint(0, new Complex(0, 1)),
                 new ComplexDataPoint(1, new Complex(1, 2)),
                 new ComplexDataPoint(2, new Complex(2, 3)),
@@ -488,7 +473,6 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 Assert.IsInstanceOf<Point>(point);
                 i++;
             }
-
             Assert.AreEqual(10, i);
         }
 
@@ -508,15 +492,13 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 Assert.IsInstanceOf<Point>(point);
                 i++;
             }
-
             Assert.AreEqual(10, i);
         }
 
         [Test]
         public void Verify_max_normalization_complex()
         {
-            IDataPoint[] points =
-            {
+            IDataPoint[] points = {
                 new ComplexDataPoint(0, new Complex(0, 1)),
                 new ComplexDataPoint(1, new Complex(1, 2)),
                 new ComplexDataPoint(2, new Complex(2, 3)),
@@ -542,15 +524,13 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 Assert.IsInstanceOf<Point>(point);
                 i++;
             }
-
             Assert.AreEqual(10, i);
         }
 
         [Test]
         public void Verify_curve_normalization_complex()
         {
-            IDataPoint[] points =
-            {
+            IDataPoint[] points = {
                 new ComplexDataPoint(2, new Complex(5, 1)),
                 new ComplexDataPoint(1, new Complex(1, 2)),
                 new ComplexDataPoint(2, new Complex(2, 3)),
@@ -583,6 +563,42 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         /// ExportDataToTextCommand brings up Dialog window so not tested
         /// DuplicateWindowCommand - not sure if can test 
         /// </summary>
+
+        [Test]
+        public void Verify_ExportDataToText_correct_when_X_andor_Y_scaling_set_to_log()
+        {
+            var points = new[]
+            {
+                new Point(1, 1),
+                new Point(2, 2),
+                new Point(3, 3),
+                new Point(4, 4),
+                new Point(5, 5),
+                new Point(6, 6),
+            };
+            // plot the data to be saved
+            _plotData = new[] { new PlotData(points, "Diagonal Line") };
+            _plotViewModel = new PlotViewModel();
+
+            //// mock the SaveFileDialog
+            //var saveFileDialogMock = Substitute.For<SaveFileDialog>();
+            //const string exportFileName = "testexportdata.txt";
+            //saveFileDialogMock.FileName = exportFileName;
+            //saveFileDialogMock.ShowDialog() = true;
+            //_plotViewModel.PlotValues.Execute(_plotData);
+
+            //// verify results in file
+            //var stream = new FileStream(exportFileName, FileMode.Create);
+            //using var sw = new StreamReader(stream);
+            //var line = sw.ReadLine(); // this has to skip header
+            //var data = line.Split();
+        }
+
+        public interface ISaveFileDialog
+        {
+            bool? ShowDialog();
+            string FileName { get; set; }
+        }
 
     }
 }
