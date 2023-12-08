@@ -95,7 +95,9 @@ namespace Vts.Gui.Wpf.ViewModel
             SolutionDomainTypeOptionVM.PropertyChanged += (sender, args) =>
             {
                 var isComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVM.SelectedValue);
-                ShowComplexPlotToggle = ForwardAnalysisTypeOptionVM.SelectedValue != ForwardAnalysisType.R && isComplexPlot;
+                ShowComplexPlotToggle = ForwardAnalysisTypeOptionVM.SelectedValue != ForwardAnalysisType.R 
+                                        && isComplexPlot 
+                                        && !SolutionDomainTypeOptionVM.AllowMultiAxis;
                 OnPropertyChanged(nameof(ShowComplexPlotToggle));
 
                 if (args.PropertyName == "UseSpectralInputs")
@@ -346,7 +348,18 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             try
             {
-                var points = ExecuteForwardSolver();
+                IDataPoint[][] points;
+                if (ForwardAnalysisTypeOptionVM.SelectedValue != ForwardAnalysisType.R &&
+                    PhaseAmpToggleOptionVm.SelectedValue != PlotToggleType.Complex &&
+                    ShowComplexPlotToggle)
+                {
+                    points = ExecuteForwardSolver(PhaseAmpToggleOptionVm.SelectedValue);
+
+                }
+                else
+                {
+                    points = ExecuteForwardSolver();
+                }
                 var axesLabels = GetPlotLabels();
                 WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
 
@@ -578,8 +591,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 ForwardAnalysisType.R,
                 parameters.Values.ToArray());
 
-            double x;
-            double y;
+            var values = new List<double>();
 
             var dataPointCollection = GetDataPoints(reflectance);
             if (dataPointCollection[0][0] is ComplexDataPoint)
@@ -587,8 +599,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 var points = dataPointCollection[0].Cast<ComplexDataPoint>().ToArray();
                 foreach (var dp in points)
                 {
-                    x = dp.X;
-                    y = dp.Y.Real;
+                    var y = dp.Y.Real;
                     switch (type)
                     {
                         case PlotToggleType.Phase:
@@ -607,9 +618,13 @@ namespace Vts.Gui.Wpf.ViewModel
                         default:
                             throw new ArgumentOutOfRangeException(nameof(type), type, null);
                     }
-                    var point = new Point(x, y);
+                    values.Add(y);
                 }
             }
+
+            var independentVariableAxis = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.UnSelectedValues[0];
+            parameters[independentVariableAxis] = values.ToArray();
+            //parameters.Add((IndependentVariableAxis)Enum.GetNames(typeof(IndependentVariableAxis)).Length + 1, values.ToArray());
 
             reflectance = ComputationFactory.ComputeReflectance(
             ForwardSolverTypeOptionVM.SelectedValue,
