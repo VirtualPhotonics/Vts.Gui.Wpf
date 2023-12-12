@@ -595,30 +595,30 @@ namespace Vts.Gui.Wpf.ViewModel
             sw.Write("%");
             if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint)
             {
-                _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Y)" + "\t"));
+                _labels.ForEach(label => sw.WriteLine(label + " (X)" + "\t" + " (Y)" + "\t"));
+                sw.WriteLine("%");
             }
             else // ComplexDataPoint
             {
-                _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Real)" + "\t" + label + " (Imag)" + "\t"));
+                _labels.ForEach(label => sw.WriteLine(label + " (X)" + "\t" + label + " (Real)" + "\t" + " (Imag)" + "\t"));
             }
+            // the following assumes that the data plotted is all doubles or all Complex 
             sw.WriteLine();
             foreach (var dataSet in DataSeriesCollection)
             {
-                sw.WriteLine();
-                if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint)
+                sw.WriteLine(); 
+                if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint) // doubles
                 {
                     foreach (var t in dataSet.DataPoints.Cast<DoubleDataPoint>().ToArray())
                     {
-                        sw.Write(t.X + "\t" + t.Y + "\t");
-                        sw.WriteLine();
+                        sw.WriteLine(t.X + "\t" + t.Y + "\t");
                     }
                 }
-                else  // ComplexDataPoint
-                {
+                else  // Complex
+                { 
                     foreach (var t in dataSet.DataPoints.Cast<ComplexDataPoint>().ToArray())
                     {
-                        sw.Write(t.X + "\t" + t.Y.Real + "\t" + t.Y.Imaginary + "\t");
-                        sw.WriteLine();
+                        sw.WriteLine(t.X + "\t" + t.Y.Real + "\t" + t.Y.Imaginary + "\t");
                     }
                 }
             }

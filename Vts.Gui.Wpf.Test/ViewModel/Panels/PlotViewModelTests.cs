@@ -11,6 +11,8 @@ using Vts.Common;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel;
 using System.IO;
+using System.Reflection;
+using System.Windows.Input;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
 {
@@ -579,13 +581,21 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             // plot the data to be saved
             _plotData = new[] { new PlotData(points, "Diagonal Line") };
             _plotViewModel = new PlotViewModel();
+            _plotViewModel.PlotValues.Execute(_plotData);
 
-            //// mock the SaveFileDialog
-            //var saveFileDialogMock = Substitute.For<SaveFileDialog>();
+            // mock the SaveFileDialog
+            //var saveFileDialogMock = Substitute.For<ISaveFileDialog>();
             //const string exportFileName = "testexportdata.txt";
-            //saveFileDialogMock.FileName = exportFileName;
-            //saveFileDialogMock.ShowDialog() = true;
-            //_plotViewModel.PlotValues.Execute(_plotData);
+            //saveFileDialogMock.FileName.Returns(exportFileName);
+            //saveFileDialogMock.ShowDialog().Returns(true);
+            //_plotViewModel.ExportDataToTextCommand.Execute(_plotData);
+
+            // try another way
+            //var executedRoutedEventArgsMock = Substitute.For<ISaveFileDialog>();
+            //var mockArgs = Activator.CreateInstance(
+            //    typeof(ExecutedRoutedEventArgs), BindingFlags.NonPublic,
+            //    BindingFlags.Instance, saveFileDialogMock );
+            //_plotViewModel.ExportDataToTextCommand.Execute(_plotData, mockArgs);
 
             //// verify results in file
             //var stream = new FileStream(exportFileName, FileMode.Create);
