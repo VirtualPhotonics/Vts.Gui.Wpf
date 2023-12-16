@@ -588,49 +588,57 @@ namespace Vts.Gui.Wpf.ViewModel
             var reflectance = ComputationFactory.ComputeReflectance(
                 ForwardSolverTypeOptionVM.SelectedValue,
                 SolutionDomainTypeOptionVM.SelectedValue,
-                ForwardAnalysisType.R,
+                ForwardAnalysisTypeOptionVM.SelectedValue,
+                type,
                 parameters.Values.ToArray());
 
-            var values = new List<double>();
+            //var reflectance2 = ComputationFactory.ComputeReflectance(
+            //    ForwardSolverTypeOptionVM.SelectedValue,
+            //    SolutionDomainTypeOptionVM.SelectedValue,
+            //    ForwardAnalysisTypeOptionVM.SelectedValue,
+            //    parameters.Values.ToArray());
 
-            var dataPointCollection = GetDataPoints(reflectance);
-            if (dataPointCollection[0][0] is ComplexDataPoint)
-            {
-                var points = dataPointCollection[0].Cast<ComplexDataPoint>().ToArray();
-                foreach (var dp in points)
-                {
-                    var y = dp.Y.Real;
-                    switch (type)
-                    {
-                        case PlotToggleType.Phase:
-                            y = -(dp.Y.Phase * (180 / Math.PI));
-                            // force phase to be between 0 and 360
-                            if (y < 0)
-                            {
-                                y += 360;
-                            }
-                            break;
-                        case PlotToggleType.Amp:
-                            y = dp.Y.Magnitude;
-                            break;
-                        case PlotToggleType.Complex:
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(type), type, null);
-                    }
-                    values.Add(y);
-                }
-            }
+            //var values = new List<double>();
 
-            var independentVariableAxis = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.UnSelectedValues[0];
-            parameters[independentVariableAxis] = values.ToArray();
-            //parameters.Add((IndependentVariableAxis)Enum.GetNames(typeof(IndependentVariableAxis)).Length + 1, values.ToArray());
+            //var dataPointCollection = GetDataPoints(reflectance);
+            //if (dataPointCollection[0][0] is ComplexDataPoint)
+            //{
+            //    var points = dataPointCollection[0].Cast<ComplexDataPoint>().ToArray();
+            //    foreach (var dp in points)
+            //    {
+            //        var y = dp.Y.Real;
+            //        switch (type)
+            //        {
+            //            case PlotToggleType.Phase:
+            //                y = -(dp.Y.Phase * (180 / Math.PI));
+            //                // force phase to be between 0 and 360
+            //                if (y < 0)
+            //                {
+            //                    y += 360;
+            //                }
+            //                break;
+            //            case PlotToggleType.Amp:
+            //                y = dp.Y.Magnitude;
+            //                break;
+            //            case PlotToggleType.Complex:
+            //                break;
+            //            default:
+            //                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            //        }
+            //        values.Add(y);
+            //    }
+            //}
 
-            reflectance = ComputationFactory.ComputeReflectance(
-            ForwardSolverTypeOptionVM.SelectedValue,
-            SolutionDomainTypeOptionVM.SelectedValue,
-            ForwardAnalysisTypeOptionVM.SelectedValue,
-            parameters.Values.ToArray());
+            //var independentVariableAxis = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.UnSelectedValues[0];
+            //parameters[independentVariableAxis] = values.ToArray();
+            ////parameters.Add((IndependentVariableAxis)Enum.GetNames(typeof(IndependentVariableAxis)).Length + 1, values.ToArray());
+
+            //reflectance = ComputationFactory.ComputeGUIReflectance(
+            //ForwardSolverTypeOptionVM.SelectedValue,
+            //SolutionDomainTypeOptionVM.SelectedValue,
+            //ForwardAnalysisTypeOptionVM.SelectedValue,
+            //type,
+            //parameters.Values.ToArray());
 
             return GetDataPoints(reflectance);
         }
@@ -639,6 +647,8 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             var plotIsVsWavelength = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
             var isComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVM.SelectedValue);
+            // ckh: isComplexPlot needs to be false if Amplitude or Phase selected
+            isComplexPlot = false;
             var primaryIdependentValues = _allRangeVMs.First().Values.ToArray();
             var numPointsPerCurve = primaryIdependentValues.Length;
             var numForwardValues = isComplexPlot ? reflectance.Length/2 : reflectance.Length;
