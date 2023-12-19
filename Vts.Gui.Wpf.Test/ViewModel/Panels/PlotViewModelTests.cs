@@ -3,16 +3,15 @@ using OxyPlot.Legends;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
-using Microsoft.Win32;
+using System.Windows.Forms;
+using System.Windows.Input;
 using NSubstitute;
 using Vts.Common;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel;
-using System.IO;
-using System.Reflection;
-using System.Windows.Input;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
 {
@@ -584,18 +583,18 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             _plotViewModel.PlotValues.Execute(_plotData);
 
             // mock the SaveFileDialog
+            var saveFileDialogMock = Substitute.For<ISaveFileDialog>();
+            const string exportFileName = "testexportdata.txt";
+            saveFileDialogMock.FileName.Returns(exportFileName);
+            saveFileDialogMock.ShowDialog().Returns(false);
+            
+
             //var saveFileDialogMock = Substitute.For<ISaveFileDialog>();
             //const string exportFileName = "testexportdata.txt";
             //saveFileDialogMock.FileName.Returns(exportFileName);
-            //saveFileDialogMock.ShowDialog().Returns(true);
+            //saveFileDialogMock.ShowDialog().Returns(false);
             //_plotViewModel.ExportDataToTextCommand.Execute(_plotData);
 
-            // try another way
-            //var executedRoutedEventArgsMock = Substitute.For<ISaveFileDialog>();
-            //var mockArgs = Activator.CreateInstance(
-            //    typeof(ExecutedRoutedEventArgs), BindingFlags.NonPublic,
-            //    BindingFlags.Instance, saveFileDialogMock );
-            //_plotViewModel.ExportDataToTextCommand.Execute(_plotData, mockArgs);
 
             //// verify results in file
             //var stream = new FileStream(exportFileName, FileMode.Create);

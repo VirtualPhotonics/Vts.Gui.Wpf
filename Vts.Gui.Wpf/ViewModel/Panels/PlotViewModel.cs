@@ -593,14 +593,25 @@ namespace Vts.Gui.Wpf.ViewModel
             var stream = new FileStream(filename, FileMode.Create);
             using var sw = new StreamWriter(stream);
             sw.Write("%");
+
             if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint)
             {
-                _labels.ForEach(label => sw.WriteLine(label + " (X)" + "\t" + " (Y)" + "\t"));
-                sw.WriteLine("%");
+                for (var i = 0; i < _labels.Count; i++)
+                {
+                    sw.Write(PlotTitles[i]);
+                    sw.WriteLine(_labels[i] + " (X)" + "\t" + _labels[i] + " (Y)" + "\t\n");
+                }
+                //_labels.ForEach(label => sw.WriteLine(label + " (X)" + "\t" + " (Y)" + "\t"));
             }
             else // ComplexDataPoint
             {
-                _labels.ForEach(label => sw.WriteLine(label + " (X)" + "\t" + label + " (Real)" + "\t" + " (Imag)" + "\t"));
+                // output plot titles and labels together
+                for (var i = 0; i < _labels.Count; i++)
+                {
+                    sw.Write(PlotTitles[i]);
+                    sw.WriteLine(_labels[i] + " (X)" + "\t" + _labels[i] + " (Real)" + "\t" + " (Imag)" + "\t\n");
+                }
+                //_labels.ForEach(label => sw.WriteLine(label + " (X)" + "\t" + label + " (Real)" + "\t" + " (Imag)" + "\t"));
             }
             // the following assumes that the data plotted is all doubles or all Complex 
             sw.WriteLine();
