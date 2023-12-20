@@ -96,8 +96,7 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 var isComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVM.SelectedValue);
                 ShowComplexPlotToggle = ForwardAnalysisTypeOptionVM.SelectedValue != ForwardAnalysisType.R 
-                                        && isComplexPlot 
-                                        && !SolutionDomainTypeOptionVM.AllowMultiAxis;
+                                        && isComplexPlot;
                 OnPropertyChanged(nameof(ShowComplexPlotToggle));
 
                 if (args.PropertyName == "UseSpectralInputs")
