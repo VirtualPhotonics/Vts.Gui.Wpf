@@ -8,13 +8,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
+using static Vts.Gui.Wpf.ViewModel.PlotViewModel;
 using FontWeights = OxyPlot.FontWeights;
-using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using System.Windows.Shapes;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -62,8 +66,11 @@ namespace Vts.Gui.Wpf.ViewModel
     /// <summary>
     ///     View model implementing Plot panel functionality
     /// </summary>
-    public class PlotViewModel : BindableObject
+    public class PlotViewModel : BindableObject, ITextFileService
     {
+        private readonly IOpenFileDialog _openFileDialog;
+        private readonly IFileSystem _file;
+    
         private bool _autoScaleX;
         private bool _autoScaleY;
         private IndependentVariableAxis _currentIndependentVariableAxis;
@@ -167,6 +174,43 @@ namespace Vts.Gui.Wpf.ViewModel
             ClearPlotSingleCommand = new RelayCommand(() => Plot_ClearedSingle(null, null));
             ExportDataToTextCommand = new RelayCommand(() => Plot_ExportDataToText_Executed(null, null));
             DuplicateWindowCommand = new RelayCommand(() => Plot_DuplicateWindow_Executed(null, null));
+        }
+
+        ///  <summary>
+        ///  new code to try out idea in 
+        /// https://stackoverflow.com/questions/43312666/unit-test-file-reading-method-with-openfiledialog-c-sharp
+        ///  </summary>
+        ///  <param name="plotViewId"></param>
+        ///  <param name="openFileDialog"></param>
+        ///  <param name="file"></param>
+        public PlotViewModel(int plotViewId, IOpenFileDialog openFileDialog, IFileSystem file) : this(plotViewId)
+        {
+            this._openFileDialog = openFileDialog;
+            this._file = file;
+        }
+
+        public interface IOpenFileDialog
+        { 
+            string Filter { get; set; }
+            bool? ShowDialog();
+            string FileName { get; set; }
+        }
+        public interface ITextFileService
+        {
+            Tuple<string, string> OpenTextFile();
+        }
+        public Tuple<string, string> OpenTextFile()
+        {
+            _openFileDialog.Filter = "Text |*.txt";
+
+            var accept = _openFileDialog.ShowDialog();
+
+            return accept.GetValueOrDefault(false) ? Tuple.Create(_file.WriteExportedData(_openFileDialog.FileName, Encoding.UTF8), _openFileDialog.FileName) : null;
+        }
+
+        public interface IFileSystem
+        {
+            string WriteExportedData(string path, Encoding encoding);
         }
 
         public RelayCommand<Array> PlotValues { get; set; }
@@ -569,28 +613,36 @@ namespace Vts.Gui.Wpf.ViewModel
         /// <param name="e"></param>
         private void Plot_ExportDataToText_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_labels == null || _labels.Count <= 0 || DataSeriesCollection == null ||
-                DataSeriesCollection.Count <= 0) return;
+            // check if list of labels or list of data have any elements
+            if (_labels is not { Count: > 0 } || DataSeriesCollection is not { Count: > 0 }) return;
 
-            // Create SaveFileDialog 
-            var dialog = new SaveFileDialog
-            {
-                DefaultExt = ".txt",
-                Filter = "Text Files (*.txt)|*.txt"
-            };
+            var filename = OpenTextFile();
+            WriteExportedData(filename, Encoding.UTF8);
 
-            // Display OpenFileDialog by calling ShowDialog method 
-            var result = dialog.ShowDialog();
+            //// Create SaveFileDialog 
+            //var dialog = new SaveFileDialog
+            //{
+            //    DefaultExt = ".txt",
+            //    Filter = "Text Files (*.txt)|*.txt"
+            //};
 
-            // if the file dialog returns true - file was selected 
-            var filename = "";
-            if (result == true)
-            {
-                // Get the filename from the dialog 
-                filename = dialog.FileName;
-            }
-            if (filename == "") return;
-            var stream = new FileStream(filename, FileMode.Create);
+            //// Display OpenFileDialog by calling ShowDialog method 
+            //var result = dialog.ShowDialog();
+
+            //// if the file dialog returns true - file was selected 
+            //var filename = "";
+            //if (result == true)
+            //{
+            //    // Get the filename from the dialog 
+            //    filename = dialog.FileName;
+            //}
+
+        }
+
+        protected virtual void WriteExportedData(Tuple<string,string> filename, Encoding encoding)
+        {
+            if (filename.Item2 == "") return;
+            var stream = new FileStream(filename.Item2, FileMode.Create);
             using var sw = new StreamWriter(stream);
             sw.Write("%");
 
@@ -601,7 +653,6 @@ namespace Vts.Gui.Wpf.ViewModel
                     sw.Write(PlotTitles[i]);
                     sw.WriteLine(_labels[i] + " (X)" + "\t" + _labels[i] + " (Y)" + "\t\n");
                 }
-                //_labels.ForEach(label => sw.WriteLine(label + " (X)" + "\t" + " (Y)" + "\t"));
             }
             else // ComplexDataPoint
             {
@@ -611,7 +662,6 @@ namespace Vts.Gui.Wpf.ViewModel
                     sw.Write(PlotTitles[i]);
                     sw.WriteLine(_labels[i] + " (X)" + "\t" + _labels[i] + " (Real)" + "\t" + " (Imag)" + "\t\n");
                 }
-                //_labels.ForEach(label => sw.WriteLine(label + " (X)" + "\t" + label + " (Real)" + "\t" + " (Imag)" + "\t"));
             }
             // the following assumes that the data plotted is all doubles or all Complex 
             sw.WriteLine();
