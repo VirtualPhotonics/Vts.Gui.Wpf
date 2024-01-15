@@ -68,6 +68,7 @@ namespace Vts.Gui.Wpf.ViewModel
         private bool _autoScaleY;
         private IndependentVariableAxis _currentIndependentVariableAxis;
         private string _customPlotLabel;
+        private string _additionalPlotValue;
 
         private bool _clearPlot;
         private bool _hideKey;
@@ -160,6 +161,7 @@ namespace Vts.Gui.Wpf.ViewModel
             PlotNormalizationTypeOptionVm.PropertyChanged += (sender, args) => UpdatePlotSeries();
 
             CustomPlotLabel = "";
+            _additionalPlotValue = "";
 
             PlotValues = new RelayCommand<Array>(Plot_Executed);
             SetAxesLabels = new RelayCommand<object>(Plot_SetAxesLabels_Executed);
@@ -551,13 +553,13 @@ namespace Vts.Gui.Wpf.ViewModel
 
                 if (labels.ConstantAxes.Length > 0)
                 {
-                    Title += " at " + labels.ConstantAxes[0].AxisLabel + " = " + labels.ConstantAxes[0].AxisValue + " " +
-                             labels.ConstantAxes[0].AxisUnits;
+                    _additionalPlotValue = labels.ConstantAxes[0].AxisLabel + " = " + labels.ConstantAxes[0].AxisValue + " " +
+                                           labels.ConstantAxes[0].AxisUnits;
                 }
                 if (labels.ConstantAxes.Length > 1)
                 {
-                    Title += " and " + labels.ConstantAxes[1].AxisLabel + " = " + labels.ConstantAxes[1].AxisValue + " " +
-                             labels.ConstantAxes[1].AxisUnits;
+                    _additionalPlotValue += " and " + labels.ConstantAxes[1].AxisLabel + " = " + labels.ConstantAxes[1].AxisValue + " " +
+                                            labels.ConstantAxes[1].AxisUnits;
                 }
             }
         }
@@ -638,7 +640,7 @@ namespace Vts.Gui.Wpf.ViewModel
             foreach (var t in plotData)
             {
                 var points = t.Points;
-                var title = customLabel + t.Title;
+                var title = $"{customLabel} {t.Title} \r{_additionalPlotValue}";
 
                 Labels.Add(title + customLabel);
                 DataSeriesCollection.Add(new DataPointCollection
@@ -659,6 +661,7 @@ namespace Vts.Gui.Wpf.ViewModel
             Labels.Clear();
             PlotTitles.Clear();
             PlotModel.Title = "";
+            _additionalPlotValue = "";
             foreach (var axis in PlotModel.Axes)
             {
                 axis.Reset();

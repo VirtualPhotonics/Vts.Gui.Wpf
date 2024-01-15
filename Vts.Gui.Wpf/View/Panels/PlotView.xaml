@@ -54,7 +54,7 @@
                         <view:RadioButtonOptionView DataContext="{Binding YAxisSpacingOptionVm}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0"
-                                Visibility="{Binding ShowComplexPlotToggle, Converter={StaticResource MyBooleanToVisibilityConverter}}">
+                                Visibility="Collapsed">
                         <TextBlock Text="{Binding ConverterParameter=Label_PlotToggle, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,2,0" />
                         <view:RadioButtonOptionView DataContext="{Binding PlotToggleTypeOptionVm}" VerticalAlignment="Center" />
                     </StackPanel>

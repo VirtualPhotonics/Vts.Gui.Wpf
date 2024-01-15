@@ -103,7 +103,6 @@
             <!-- Complex/Phase/Amp -->
             <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" Margin="0"
                         Visibility="{Binding ShowComplexPlotToggle, Converter={StaticResource MyBooleanToVisibilityConverter}, Mode=TwoWay}">
-                <TextBlock Text="{Binding ConverterParameter=Label_PlotToggle, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,2,0" />
                 <view:RadioButtonOptionView DataContext="{Binding PhaseAmpToggleOptionVm}" VerticalAlignment="Center" />
             </StackPanel>
             <!-- Button -->
