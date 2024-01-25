@@ -39,6 +39,7 @@ namespace Vts.Gui.Wpf
                 OutputTabControl != null && OutputTabControl.Items.Count > 1)
             {
                 if (!(inputTab.SelectedItem is TabItem tabItem)) return;
+                WindowViewModel.Current.PlotVM?.SetCustomPlotLabel.Execute("");
                 switch (tabItem.Name)
                 {
                     // default handles: "TabForward":
@@ -58,6 +59,9 @@ namespace Vts.Gui.Wpf
                     case "TabMonteCarlo":
                         ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Visible;
                         ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Visible;
+                        break;
+                    case "TabSpectral":
+                        WindowViewModel.Current.PlotVM?.SetCustomPlotLabel.Execute(WindowViewModel.Current.SpectralMappingVM.SelectedTissue.Name);
                         break;
                 }
             }

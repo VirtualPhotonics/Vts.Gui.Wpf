@@ -30,7 +30,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         /// Verifies that the ExecuteForwardSolverCommand returns correct values
         /// </summary>
         [Test]
-        public void verify_ExecuteForwardSolverCommand_returns_correct_values()
+        public void Verify_ExecuteForwardSolverCommand_returns_correct_values()
         {
             // WindowViewModel needs to be instantiated for default constructor
             var windowViewModel = new WindowViewModel();
@@ -39,13 +39,13 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             viewModel.SolutionDomainTypeOptionVM.SelectedValue = SolutionDomainType.ROfRho;
             viewModel.ExecuteForwardSolverCommand.Execute(null);
             // ExecuteForwardSolver default settings
-            PlotViewModel plotViewModel = windowViewModel.PlotVM;
-            double d1 = 0.01;
-            int i1 = 1;
-            double g = 0.8;
-            double n = 1.4;
-            double d2 = 0.0100;
-            double d3 = 1.0000;
+            var plotViewModel = windowViewModel.PlotVM;
+            const double d1 = 0.01;
+            const int i1 = 1;
+            const double g = 0.8;
+            const double n = 1.4;
+            const double d2 = 0.0100;
+            const double d3 = 1.0000;
             var s1 = StringLookup.GetLocalizedString("Label_ForwardSolver") +
                      StringLookup.GetLocalizedString("Label_MuA") + "=" +
                      d1.ToString(CultureInfo.CurrentCulture) + " " +
@@ -61,11 +61,12 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                      d2.ToString("N4", CultureInfo.CurrentCulture) + " \r" +
                      StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
                      d3.ToString("N4", CultureInfo.CurrentCulture);
-            Assert.AreEqual(plotViewModel.Labels[0], s3);
-            Assert.AreEqual(plotViewModel.Title, s2);
-            TextOutputViewModel textOutputViewModel = windowViewModel.TextOutputVM;
-            Assert.AreEqual(textOutputViewModel.Text, s1);
+            Assert.AreEqual(s3, plotViewModel.Labels[0]);
+            Assert.AreEqual(s2, plotViewModel.Title);
+            var textOutputViewModel = windowViewModel.TextOutputVM;
+            Assert.AreEqual(s1, textOutputViewModel.Text);
         }
+
         /// <summary>
         /// Verifies that ForwardSolverViewModel disallows spectral panel inputs for TwoLayerSDA selection
         /// </summary>
