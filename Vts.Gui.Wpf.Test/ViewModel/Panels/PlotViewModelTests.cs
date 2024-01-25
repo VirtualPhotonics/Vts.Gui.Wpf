@@ -220,7 +220,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                     ImageHeight = 1
                 }});
             viewModel.SetAxesLabels.Execute(labels);
-            Assert.AreEqual($"dependent [units] versus independent [units] at t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns", viewModel.Title);
+            Assert.AreEqual($"dependent [units] versus independent [units]", viewModel.Title);
+            Assert.AreEqual($"t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns", viewModel.AdditionalPlotValue);
             var constantAxes = new[]
             {
                 new ConstantAxisViewModel
@@ -242,7 +243,16 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             };
             labels.ConstantAxes = constantAxes;
             viewModel.SetAxesLabels.Execute(labels);
-            Assert.AreEqual($"dependent [units] versus independent [units] at t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns and z = {0.1.ToString(Thread.CurrentThread.CurrentCulture)} mm", viewModel.Title);
+            Assert.AreEqual($"dependent [units] versus independent [units]", viewModel.Title);
+            Assert.AreEqual($"t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns\rz = {0.1.ToString(Thread.CurrentThread.CurrentCulture)} mm", viewModel.AdditionalPlotValue);
+        }
+
+        [Test]
+        public void Verify_Plot_SetCustomPlotLabel_Executed_is_correct()
+        {
+            var viewModel = new PlotViewModel();
+            viewModel.SetCustomPlotLabel.Execute("customPlotLabel");
+            Assert.AreEqual("customPlotLabel", viewModel.CustomPlotLabel);
         }
 
         // The following tests verify the Relay Commands
