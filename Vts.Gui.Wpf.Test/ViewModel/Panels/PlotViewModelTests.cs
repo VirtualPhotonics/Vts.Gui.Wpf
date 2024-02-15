@@ -503,7 +503,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         }
 
         [Test]
-        public void Verify_max_normalization_complex()
+        [TestCase(PlotToggleType.Complex)]
+        [TestCase(PlotToggleType.Phase)]
+        [TestCase(PlotToggleType.Amp)]
+        public void Verify_max_normalization_phase_amp_complex(PlotToggleType toggleType)
         {
             IDataPoint[] points = {
                 new ComplexDataPoint(0, new Complex(0, 1)),
@@ -520,9 +523,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotData = new[] { new PlotData(points, "Complex plot") };
             var windowViewModel = new WindowViewModel();
             var plotViewModel = windowViewModel.PlotVM;
+            plotViewModel.PlotToggleTypeOptionVm.SelectedValue = toggleType;
             plotViewModel.PlotValues.Execute(plotData);
             plotViewModel.PlotValues.Execute(plotData);
-            Assert.AreEqual(4, plotViewModel.PlotModel.Series.Count);
+            Assert.AreEqual(toggleType == PlotToggleType.Complex ? 4 : 2, plotViewModel.PlotModel.Series.Count);
             plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToMax;
             var plotSeries = plotViewModel.PlotSeriesCollection[0];
             var i = 0;
