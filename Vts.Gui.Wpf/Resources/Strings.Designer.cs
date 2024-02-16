@@ -19,7 +19,7 @@ namespace Vts.Gui.Wpf.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -529,6 +529,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (damp).
+        /// </summary>
+        public static string Label_AmplitudeDerivative {
+            get {
+                return ResourceManager.GetString("Label_AmplitudeDerivative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Analog.
         /// </summary>
         public static string Label_Analog {
@@ -885,6 +894,15 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Label_Imaginary {
             get {
                 return ResourceManager.GetString("Label_Imaginary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (dimag).
+        /// </summary>
+        public static string Label_ImaginaryDerivative {
+            get {
+                return ResourceManager.GetString("Label_ImaginaryDerivative", resourceCulture);
             }
         }
         
@@ -1258,6 +1276,15 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (dphase).
+        /// </summary>
+        public static string Label_PhaseDerivative {
+            get {
+                return ResourceManager.GetString("Label_PhaseDerivative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Phase Function Type:.
         /// </summary>
         public static string Label_PhaseFunctionType {
@@ -1389,6 +1416,15 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Label_Real {
             get {
                 return ResourceManager.GetString("Label_Real", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (dreal).
+        /// </summary>
+        public static string Label_RealDerivative {
+            get {
+                return ResourceManager.GetString("Label_RealDerivative", resourceCulture);
             }
         }
         

@@ -748,14 +748,19 @@ namespace Vts.Gui.Wpf.ViewModel
             var normToMax = PlotNormalizationTypeOptionVm.SelectedValue == PlotNormalizationType.RelativeToMax &&
                             DataSeriesCollection.Count > 0;
 
-            if (dataPointCollection.DataPoints[0] is ComplexDataPoint)
+            switch (dataPointCollection.DataPoints[0])
             {
-                GenerateComplexPlot(dataPointCollection, normToMax, normToCurve);
+                case ComplexDataPoint:
+                    GenerateComplexPlot(dataPointCollection, normToMax, normToCurve);
+                    break;
+                case ComplexDerivativeDataPoint:
+                    GenerateComplexDerivativePlot(dataPointCollection, normToMax, normToCurve);
+                    break;
+                default:
+                    GenerateNonComplexPlot(dataPointCollection, normToMax, normToCurve);
+                    break;
             }
-            else
-            {
-                GenerateNonComplexPlot(dataPointCollection, normToMax, normToCurve);
-            }
+
             PlotModel.Axes.Clear();
             PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = XAxis, TitleFontWeight = FontWeights.Bold });
             PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = YAxis, TitleFontWeight = FontWeights.Bold });
@@ -907,6 +912,159 @@ namespace Vts.Gui.Wpf.ViewModel
                     break;
                 case PlotToggleType.Amp:
                     lineSeriesA.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_Amplitude");
+                    break;
+            }
+            lineSeriesA.MarkerType = MarkerType.Circle;
+            PlotModel.Series.Add(lineSeriesA);
+            PlotModel.Title = PlotTitles[^1];
+            PlotSeriesCollection.Add(tempPointArrayA.ToArray());
+        }
+        private void GenerateComplexDerivativePlot(DataPointCollection dataPointCollection, bool normToMax, bool normToCurve)
+        {
+            var tempPointArrayA = new List<Point>();
+            var tempPointArrayB = new List<Point>();
+
+            var lineSeriesA = new LineSeries();
+            var lineSeriesB = new LineSeries(); //we need B for complex
+            _isComplexPlot = true;
+            // normalization calculations
+            var max = 1.0;
+            var maxRe = 1.0;
+            var maxIm = 1.0;
+            if (normToMax)
+            {
+                var points = dataPointCollection.DataPoints.Cast<ComplexDerivativeDataPoint>().ToArray();
+                switch (PlotToggleTypeOptionVm.SelectedValue)
+                {
+                    case PlotToggleType.Phase:
+                        max = points.Select(p => p.PhaseDerivative * (-180 / Math.PI)).Max();
+                        break;
+                    case PlotToggleType.Amp:
+                        max = points.Select(p => p.AmplitudeDerivative).Max();
+                        break;
+                    case PlotToggleType.Complex:
+                        maxRe = points.Select(p => p.Dy.Real).Max();
+                        maxIm = points.Select(p => p.Dy.Imaginary).Max();
+                        break;
+                }
+            }
+
+            double[] tempAmp = null;
+            double[] tempPh = null;
+            double[] tempRe = null;
+            double[] tempIm = null;
+            if (normToCurve)
+            {
+                tempAmp = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
+                           select dp.AmplitudeDerivative).ToArray();
+                tempPh = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
+                          select dp.PhaseDerivative * (-180 / Math.PI)).ToArray();
+                tempRe = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
+                          select dp.Y.Real).ToArray();
+                tempIm = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
+                          select dp.Y.Imaginary).ToArray();
+            }
+
+            var curveIndex = 0;
+            foreach (var dp in dataPointCollection.DataPoints.Cast<ComplexDerivativeDataPoint>())
+            {
+                var x = XAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(dp.X) : dp.X;
+                double y;
+                switch (PlotToggleTypeOptionVm.SelectedValue)
+                {
+                    case PlotToggleType.Phase:
+                        y = -(dp.PhaseDerivative * (180 / Math.PI));
+                        // force phase to be between 0 and 360
+                        if (y < 0)
+                        {
+                            y += 360;
+                        }
+                        switch (PlotNormalizationTypeOptionVm.SelectedValue)
+                        {
+                            case PlotNormalizationType.RelativeToCurve:
+                                var curveY = normToCurve ? tempPh[curveIndex] : 1.0;
+                                y /= curveY;
+                                break;
+                            case PlotNormalizationType.RelativeToMax:
+                                y /= max;
+                                break;
+                        }
+                        break;
+                    case PlotToggleType.Amp:
+                        y = dp.AmplitudeDerivative;
+                        switch (PlotNormalizationTypeOptionVm.SelectedValue)
+                        {
+                            case PlotNormalizationType.RelativeToCurve:
+                                var curveY = normToCurve ? tempAmp[curveIndex] : 1.0;
+                                y /= curveY;
+                                break;
+                            case PlotNormalizationType.RelativeToMax:
+                                y /= max;
+                                break;
+                        }
+                        break;
+                    default: // case PlotToggleType.Complex:
+                        y = dp.Dy.Real;
+                        switch (PlotNormalizationTypeOptionVm.SelectedValue)
+                        {
+                            case PlotNormalizationType.RelativeToCurve:
+                                var curveY = normToCurve ? tempRe[curveIndex] : 1.0;
+                                y /= curveY;
+                                break;
+                            case PlotNormalizationType.RelativeToMax:
+                                max = maxRe;
+                                y /= max;
+                                break;
+                        }
+                        y = YAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
+                        var p = new DataPoint(x, y);
+                        if (IsValidDataPoint(p) && IsWithinAxes(p))
+                        {
+                            lineSeriesB.Points.Add(p);
+                            //Add the data to the tempPointArray to add to the PlotSeriesCollection
+                            tempPointArrayB.Add(new Point(x, y));
+                        }
+                        y = dp.Y.Imaginary;
+                        //break; // handle imag within switch
+                        switch (PlotNormalizationTypeOptionVm.SelectedValue)
+                        {
+                            case PlotNormalizationType.RelativeToCurve:
+                                var curveY = normToCurve ? tempIm[curveIndex] : 1.0;
+                                y /= curveY;
+                                break;
+                            case PlotNormalizationType.RelativeToMax:
+                                max = maxIm;
+                                y /= max;
+                                break;
+                        }
+                        break;
+                }
+                y = YAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
+                var point = new DataPoint(x, y);
+                if (IsValidDataPoint(point) && IsWithinAxes(point))
+                {
+                    lineSeriesA.Points.Add(point);
+                    //Add the data to the tempPointArray to add to the PlotSeriesCollection
+                    tempPointArrayA.Add(new Point(x, y));
+                }
+                curveIndex += 1;
+            }
+
+            ShowComplexPlotToggle = true; // right now, it's all or nothing - assume all plots are ComplexDataPoints
+            switch (PlotToggleTypeOptionVm.SelectedValue)
+            {
+                case PlotToggleType.Complex:
+                    lineSeriesA.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_ImaginaryDerivative");
+                    lineSeriesB.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_RealDerivative");
+                    lineSeriesB.MarkerType = MarkerType.Circle;
+                    PlotModel.Series.Add(lineSeriesB);
+                    PlotSeriesCollection.Add(tempPointArrayB.ToArray());
+                    break;
+                case PlotToggleType.Phase:
+                    lineSeriesA.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_PhaseDerivative");
+                    break;
+                case PlotToggleType.Amp:
+                    lineSeriesA.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_AmplitudeDerivative");
                     break;
             }
             lineSeriesA.MarkerType = MarkerType.Circle;
