@@ -960,9 +960,9 @@ namespace Vts.Gui.Wpf.ViewModel
                 tempPh = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
                           select dp.PhaseDerivative * (-180 / Math.PI)).ToArray();
                 tempRe = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
-                          select dp.Y.Real).ToArray();
+                          select dp.Dy.Real).ToArray();
                 tempIm = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
-                          select dp.Y.Imaginary).ToArray();
+                          select dp.Dy.Imaginary).ToArray();
             }
 
             var curveIndex = 0;
@@ -1024,7 +1024,7 @@ namespace Vts.Gui.Wpf.ViewModel
                             //Add the data to the tempPointArray to add to the PlotSeriesCollection
                             tempPointArrayB.Add(new Point(x, y));
                         }
-                        y = dp.Y.Imaginary;
+                        y = dp.Dy.Imaginary;
                         //break; // handle imag within switch
                         switch (PlotNormalizationTypeOptionVm.SelectedValue)
                         {
