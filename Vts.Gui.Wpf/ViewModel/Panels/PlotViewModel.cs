@@ -974,11 +974,11 @@ namespace Vts.Gui.Wpf.ViewModel
                 {
                     case PlotToggleType.Phase:
                         y = -(dp.PhaseDerivative * (180 / Math.PI));
-                        // force phase to be between 0 and 360
-                        if (y < 0)
-                        {
-                            y += 360;
-                        }
+                        //// force phase to be between 0 and 360
+                        //if (y < 0)
+                        //{
+                        //    y += 360;
+                        //}
                         switch (PlotNormalizationTypeOptionVm.SelectedValue)
                         {
                             case PlotNormalizationType.RelativeToCurve:
