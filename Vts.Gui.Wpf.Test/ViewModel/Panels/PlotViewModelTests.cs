@@ -603,7 +603,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 new Point(6, 6),
             };
             // plot the data to be saved
-            _plotData = new[] { new PlotData(points, "Diagonal Line") };
+            var plotData = new[] { new PlotData(points, "Diagonal Line") };
             // can't call WindowViewModel because not fixed yet
             //var windowViewModel = new WindowViewModel();
             //var plotViewModel = windowViewModel.PlotVM;
@@ -618,10 +618,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             fileSystemMock.WriteExportedData(exportFilename, Encoding.UTF8);
 
             _plotViewModel = new PlotViewModel(0, openFileDialogMock, fileSystemMock);
-            _plotViewModel.PlotValues.Execute(_plotData);
+            _plotViewModel.PlotValues.Execute(plotData);
             _plotViewModel.XAxisSpacingOptionVm.SelectedValue = ScalingType.Log;
             _plotViewModel.YAxisSpacingOptionVm.SelectedValue = ScalingType.Log;
-            _plotViewModel.ExportDataToTextCommand.Execute(_plotData);
+            _plotViewModel.ExportDataToTextCommand.Execute(plotData);
 
             // verify results in file
             var stream = new FileStream(exportFilename, FileMode.Open);
@@ -665,7 +665,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 new ComplexDataPoint(6, new Complex(6, 6)),
             };
             // plot the data to be saved
-            _plotData = new[] { new PlotData(points, "Real and Imaginary Lines") };
+            var plotData = new[] { new PlotData(points, "Real and Imaginary Lines") };
 
             // mock the IOpenFileDialog
             var openFileDialogMock = Substitute.For<PlotViewModel.IOpenFileDialog>();
@@ -676,9 +676,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             fileSystemMock.WriteExportedData(exportFilename, Encoding.UTF8);
 
             _plotViewModel = new PlotViewModel(0, openFileDialogMock, fileSystemMock);
-            _plotViewModel.PlotValues.Execute(_plotData);
+            _plotViewModel.PlotValues.Execute(plotData);
             _plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Amp;
-            _plotViewModel.ExportDataToTextCommand.Execute(_plotData);
+            _plotViewModel.ExportDataToTextCommand.Execute(plotData);
 
             // verify results in file
             var stream = new FileStream(exportFilename, FileMode.Open);
