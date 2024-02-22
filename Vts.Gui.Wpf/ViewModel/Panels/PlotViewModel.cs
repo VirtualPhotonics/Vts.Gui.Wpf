@@ -8,13 +8,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
+using Vts.Gui.Wpf.FileSystem;
 using Vts.Gui.Wpf.Model;
 using FontWeights = OxyPlot.FontWeights;
-using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -62,8 +63,10 @@ namespace Vts.Gui.Wpf.ViewModel
     /// <summary>
     ///     View model implementing Plot panel functionality
     /// </summary>
-    public class PlotViewModel : BindableObject
+    public class PlotViewModel : BindableObject, ITextFileService
     {
+        private ISaveFileDialog _saveFileDialog;
+    
         private bool _autoScaleX;
         private bool _autoScaleY;
         private IndependentVariableAxis _currentIndependentVariableAxis;
@@ -118,8 +121,8 @@ namespace Vts.Gui.Wpf.ViewModel
             
             Labels = new List<string>();
             PlotTitles = new List<string>();
-            DataSeriesCollection = new List<DataPointCollection>();
-            PlotSeriesCollection = new PlotPointCollection();
+            DataSeriesCollection = new List<DataPointCollection>(); // raw data
+            PlotSeriesCollection = new PlotPointCollection(); // raw data manipulated by the user toggles
 
             PlotModel = new PlotModel
             {
@@ -176,6 +179,28 @@ namespace Vts.Gui.Wpf.ViewModel
             ClearPlotSingleCommand = new RelayCommand(() => Plot_ClearedSingle(null, null));
             ExportDataToTextCommand = new RelayCommand(() => Plot_ExportDataToText_Executed(null, null));
             DuplicateWindowCommand = new RelayCommand(() => Plot_DuplicateWindow_Executed(null, null));
+        }
+
+        ///  <summary>
+        ///  new code to try out idea in 
+        /// https://stackoverflow.com/questions/43312666/unit-test-file-reading-method-with-openfiledialog-c-sharp
+        ///  </summary>
+        ///  <param name="plotViewId"></param>
+        ///  <param name="saveFileDialog"></param>
+        public PlotViewModel(int plotViewId, ISaveFileDialog saveFileDialog) : this(plotViewId)
+        {
+            _saveFileDialog = saveFileDialog;
+        }
+
+        public Tuple<FileStream, string> OpenTextFile()
+        {
+            _saveFileDialog ??= new SaveFileDialog();
+            _saveFileDialog.Filter = "Text |*.txt";
+            _saveFileDialog.DefaultExtension = ".txt";
+
+            var accept = _saveFileDialog.ShowDialog();
+
+            return accept.GetValueOrDefault(false) ? Tuple.Create(File.Open(_saveFileDialog.FileName, FileMode.Create), _saveFileDialog.FileName) : null;
         }
 
         public RelayCommand<Array> PlotValues { get; set; }
@@ -588,39 +613,55 @@ namespace Vts.Gui.Wpf.ViewModel
         /// <param name="e"></param>
         private void Plot_ExportDataToText_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_labels != null && _labels.Count > 0 && _plotSeriesCollection != null && _plotSeriesCollection.Count > 0)
+            // check if list of labels or list of data have any elements
+            if (_labels is not { Count: > 0 } || DataSeriesCollection is not { Count: > 0 }) return;
+
+            var file = OpenTextFile();
+            if (file == null || file.Item2 == "") return;
+            WriteExportedData(file, Encoding.UTF8);
+        }
+
+        protected virtual void WriteExportedData(Tuple<FileStream,string> file, Encoding encoding)
+        {
+            if (file == null || file.Item2 == "") return;
+            var stream = file.Item1;
+            using var sw = new StreamWriter(stream);
+            sw.Write("%");
+
+            if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint)
             {
-                // Create SaveFileDialog 
-                var dialog = new SaveFileDialog
+                for (var i = 0; i < _labels.Count; i++)
                 {
-                    DefaultExt = ".txt",
-                    Filter = "Text Files (*.txt)|*.txt"
-                };
-
-                // Display OpenFileDialog by calling ShowDialog method 
-                var result = dialog.ShowDialog();
-
-                // if the file dialog returns true - file was selected 
-                var filename = "";
-                if (result == true)
-                {
-                    // Get the filename from the dialog 
-                    filename = dialog.FileName;
+                    sw.Write(PlotTitles[i]);
+                    sw.WriteLine(_labels[i] + " (X)" + "\t" + _labels[i] + " (Y)" + "\t\n");
                 }
-                if (filename == "") return;
-                var stream = new FileStream(filename, FileMode.Create);
-                using (var sw = new StreamWriter(stream))
+            }
+            else // ComplexDataPoint
+            {
+                // output plot titles and labels together
+                for (var i = 0; i < _labels.Count; i++)
                 {
-                    sw.Write("%");
-                    _labels.ForEach(label => sw.Write(label + " (X)" + "\t" + label + " (Y)" + "\t"));
-                    sw.WriteLine();
-                    for (var i = 0; i < _plotSeriesCollection[0].Length; i++)
+                    sw.Write(PlotTitles[i]);
+                    sw.WriteLine(_labels[i] + " (X)" + "\t" + _labels[i] + " (Real)" + "\t" + " (Imag)" + "\t\n");
+                }
+            }
+            // the following assumes that the data plotted is all doubles or all Complex 
+            sw.WriteLine();
+            foreach (var dataSet in DataSeriesCollection)
+            {
+                sw.WriteLine(); 
+                if (DataSeriesCollection[0].DataPoints[0] is DoubleDataPoint) // doubles
+                {
+                    foreach (var t in dataSet.DataPoints.Cast<DoubleDataPoint>().ToArray())
                     {
-                        sw.WriteLine();
-                        foreach (var t in _plotSeriesCollection)
-                        {
-                            sw.Write(t[i].X + "\t" + t[i].Y + "\t");
-                        }
+                        sw.WriteLine(t.X + "\t" + t.Y + "\t");
+                    }
+                }
+                else  // Complex
+                { 
+                    foreach (var t in dataSet.DataPoints.Cast<ComplexDataPoint>().ToArray())
+                    {
+                        sw.WriteLine(t.X + "\t" + t.Y.Real + "\t" + t.Y.Imaginary + "\t");
                     }
                 }
             }

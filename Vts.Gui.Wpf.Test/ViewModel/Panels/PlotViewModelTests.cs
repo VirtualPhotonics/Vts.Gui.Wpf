@@ -1,13 +1,21 @@
-﻿using NUnit.Framework;
+﻿using NSubstitute;
+using NUnit.Framework;
 using OxyPlot.Legends;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Numerics;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using Vts.Common;
+using Vts.Gui.Wpf.FileSystem;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel;
+using Vts.IO;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels
 {
@@ -574,6 +582,122 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         /// ExportDataToTextCommand brings up Dialog window so not tested
         /// DuplicateWindowCommand - not sure if can test 
         /// </summary>
+
+        /// <summary>
+        /// Test to verify only linear values written if user specifies
+        /// x-axis log scale and/or y-axis log scale to be plotted
+        /// </summary>
+        [Test]
+        public void Verify_ExportDataToText_correct_when_X_and_Y_scaling_set_to_log()
+        {
+            // clear any prior test results
+            const string exportFilename = "testexportdata.txt";
+            FileIO.FileDelete(exportFilename);
+
+            var points = new[]
+            {
+                new Point(1, 1),
+                new Point(2, 2),
+                new Point(3, 3),
+                new Point(4, 4),
+                new Point(5, 5),
+                new Point(6, 6),
+            };
+            // plot the data to be saved
+            var plotData = new[] { new PlotData(points, "Diagonal Line") };
+            // can't call WindowViewModel because not fixed yet
+            //var windowViewModel = new WindowViewModel();
+            //var plotViewModel = windowViewModel.PlotVM;
+            //plotViewModel.PlotValues.Execute(_plotData);
+
+            // mock the IOpenFileDialog
+            var openFileDialogMock = Substitute.For<ISaveFileDialog>();
+            openFileDialogMock.FileName.Returns(exportFilename);
+            openFileDialogMock.ShowDialog().Returns(true);
+
+            _plotViewModel = new PlotViewModel(0, openFileDialogMock);
+            _plotViewModel.PlotValues.Execute(plotData);
+            _plotViewModel.XAxisSpacingOptionVm.SelectedValue = ScalingType.Log;
+            _plotViewModel.YAxisSpacingOptionVm.SelectedValue = ScalingType.Log;
+            _plotViewModel.ExportDataToTextCommand.Execute(plotData);
+
+            // verify results in file
+            var stream = new FileStream(exportFilename, FileMode.Open);
+            using var sw = new StreamReader(stream);
+            // skip header
+            for (var i = 0; i < 4; i++)
+            {
+                sw.ReadLine();
+            }
+            // read and verify data
+            foreach (var t in points)
+            {
+                var line = sw.ReadLine();
+                if (line == null) continue;
+                var data = line.Split();
+                // check x value
+                Assert.AreEqual(t.X.ToString(CultureInfo.InvariantCulture), data[0]);
+                // check y value
+                Assert.AreEqual(t.Y.ToString(CultureInfo.InvariantCulture), data[1]);
+            }
+        }
+
+        /// <summary>
+        /// Test to verify only real and imaginary values written if user specifies
+        /// phase or amplitude to be plotted
+        /// </summary>
+        [Test]
+        public void Verify_ExportDataToText_correct_when_complex_data_plotted()
+        {
+            // clear any prior test results
+            const string exportFilename = "testexportdata.txt";
+            FileIO.FileDelete(exportFilename);
+
+            IDataPoint[] points =
+            {
+                new ComplexDataPoint(1, new Complex(1, 1)),
+                new ComplexDataPoint(2, new Complex(2, 2)),
+                new ComplexDataPoint(3, new Complex(3, 3)),
+                new ComplexDataPoint(4, new Complex(4, 4)),
+                new ComplexDataPoint(5, new Complex(5, 5)),
+                new ComplexDataPoint(6, new Complex(6, 6)),
+            };
+            // plot the data to be saved
+            var plotData = new[] { new PlotData(points, "Real and Imaginary Lines") };
+
+            // mock the IOpenFileDialog
+            var openFileDialogMock = Substitute.For<ISaveFileDialog>();
+            openFileDialogMock.FileName.Returns(exportFilename);
+            openFileDialogMock.ShowDialog().Returns(true);
+
+            _plotViewModel = new PlotViewModel(0, openFileDialogMock);
+            _plotViewModel.PlotValues.Execute(plotData);
+            _plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Amp;
+            _plotViewModel.ExportDataToTextCommand.Execute(plotData);
+
+            // verify results in file
+            var stream = new FileStream(exportFilename, FileMode.Open);
+            using var sw = new StreamReader(stream);
+            // skip header
+            for (var i = 0; i < 4; i++)
+            {
+                sw.ReadLine();
+            }
+            // read and verify data
+            foreach (var t in points.Cast<ComplexDataPoint>().ToArray())
+            {
+                var line = sw.ReadLine();
+                if (line == null) continue;
+                var data = line.Split();
+                // check x value
+                Assert.AreEqual(t.X.ToString(CultureInfo.InvariantCulture), data[0]);
+                // check real value
+                Assert.AreEqual(t.Y.Real.ToString(CultureInfo.InvariantCulture), data[1]);
+                // check imaginary value
+                Assert.AreEqual(t.Y.Imaginary.ToString(CultureInfo.InvariantCulture), data[1]);
+
+            }
+        }
 
     }
 }

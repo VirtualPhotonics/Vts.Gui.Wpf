@@ -358,7 +358,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 {
                     await GetMapData();
                 }
-                catch (System.ArgumentException ex)
+                catch (ArgumentException ex)
                 {
                     WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
                         StringLookup.GetLocalizedString("Label_FluenceSolver\r"));
