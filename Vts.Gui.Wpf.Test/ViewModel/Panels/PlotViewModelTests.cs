@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using Vts.Common;
+using Vts.Gui.Wpf.FileSystem;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel;
 using Vts.IO;
@@ -610,12 +611,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             //plotViewModel.PlotValues.Execute(_plotData);
 
             // mock the IOpenFileDialog
-            var openFileDialogMock = Substitute.For<PlotViewModel.ISaveFileDialog>();
+            var openFileDialogMock = Substitute.For<ISaveFileDialog>();
             openFileDialogMock.FileName.Returns(exportFilename);
             openFileDialogMock.ShowDialog().Returns(true);
-            // mock IFileSystem
-            var fileSystemMock = Substitute.For<PlotViewModel.IFileSystem>();
-            fileSystemMock.WriteExportedData(exportFilename, Encoding.UTF8);
 
             _plotViewModel = new PlotViewModel(0, openFileDialogMock);
             _plotViewModel.PlotValues.Execute(plotData);
@@ -668,12 +666,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotData = new[] { new PlotData(points, "Real and Imaginary Lines") };
 
             // mock the IOpenFileDialog
-            var openFileDialogMock = Substitute.For<PlotViewModel.ISaveFileDialog>();
+            var openFileDialogMock = Substitute.For<ISaveFileDialog>();
             openFileDialogMock.FileName.Returns(exportFilename);
             openFileDialogMock.ShowDialog().Returns(true);
-            // mock IFileSystem
-            var fileSystemMock = Substitute.For<PlotViewModel.IFileSystem>();
-            fileSystemMock.WriteExportedData(exportFilename, Encoding.UTF8);
 
             _plotViewModel = new PlotViewModel(0, openFileDialogMock);
             _plotViewModel.PlotValues.Execute(plotData);

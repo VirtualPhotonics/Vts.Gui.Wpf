@@ -13,8 +13,8 @@ using System.Windows;
 using System.Windows.Input;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
+using Vts.Gui.Wpf.FileSystem;
 using Vts.Gui.Wpf.Model;
-using static Vts.Gui.Wpf.ViewModel.PlotViewModel;
 using FontWeights = OxyPlot.FontWeights;
 
 namespace Vts.Gui.Wpf.ViewModel
@@ -192,49 +192,15 @@ namespace Vts.Gui.Wpf.ViewModel
             _saveFileDialog = saveFileDialog;
         }
 
-        public interface ISaveFileDialog
-        { 
-            string Filter { get; set; }
-            bool? ShowDialog();
-            string FileName { get; set; }
-        }
-
-        public class SaveFileDialog : ISaveFileDialog
-        {
-            public string Filter { get; set; }
-            public bool? ShowDialog()
-            {
-                var dialog = new Microsoft.Win32.SaveFileDialog
-                {
-                    DefaultExt = ".txt",
-                    Filter = Filter
-                };
-                var result = dialog.ShowDialog();
-                FileName = dialog.FileName;
-                return result;
-            }
-
-            public string FileName { get; set; }
-        }
-
-        public interface ITextFileService
-        {
-            public Tuple<FileStream, string> OpenTextFile();
-        }
-
         public Tuple<FileStream, string> OpenTextFile()
         {
             _saveFileDialog ??= new SaveFileDialog();
             _saveFileDialog.Filter = "Text |*.txt";
+            _saveFileDialog.DefaultExtension = ".txt";
 
             var accept = _saveFileDialog.ShowDialog();
 
             return accept.GetValueOrDefault(false) ? Tuple.Create(File.Open(_saveFileDialog.FileName, FileMode.Create), _saveFileDialog.FileName) : null;
-        }
-
-        public interface IFileSystem
-        {
-            string WriteExportedData(string path, Encoding encoding);
         }
 
         public RelayCommand<Array> PlotValues { get; set; }
@@ -653,25 +619,6 @@ namespace Vts.Gui.Wpf.ViewModel
             var file = OpenTextFile();
             if (file == null || file.Item2 == "") return;
             WriteExportedData(file, Encoding.UTF8);
-
-            //// Create SaveFileDialog 
-            //var dialog = new SaveFileDialog
-            //{
-            //    DefaultExt = ".txt",
-            //    Filter = "Text Files (*.txt)|*.txt"
-            //};
-
-            //// Display OpenFileDialog by calling ShowDialog method 
-            //var result = dialog.ShowDialog();
-
-            //// if the file dialog returns true - file was selected 
-            //var filename = "";
-            //if (result == true)
-            //{
-            //    // Get the filename from the dialog 
-            //    filename = dialog.FileName;
-            //}
-
         }
 
         protected virtual void WriteExportedData(Tuple<FileStream,string> file, Encoding encoding)
