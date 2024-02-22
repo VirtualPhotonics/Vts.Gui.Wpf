@@ -2,6 +2,6 @@
 {
     public interface IDataPoint
     {
-        double X { get; set; }
+        double X { get; set; }  // only X here to work for both Double and Complex points
     }
 }

@@ -115,7 +115,7 @@ namespace Vts.Gui.Wpf.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Export Data.
+        ///   Looks up a localized string similar to Export Raw Data.
         /// </summary>
         public static string Button_ExportData {
             get {

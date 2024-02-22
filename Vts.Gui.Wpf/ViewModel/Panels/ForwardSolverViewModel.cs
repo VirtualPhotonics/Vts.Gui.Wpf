@@ -321,7 +321,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
                     StringLookup.GetLocalizedString("Label_ForwardSolver") + TissueInputVM + "\r");
             }
-            catch (System.ArgumentException ex)
+            catch (ArgumentException ex)
             {
                 WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
                     StringLookup.GetLocalizedString("Label_ForwardSolver\r"));
