@@ -610,14 +610,14 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             //plotViewModel.PlotValues.Execute(_plotData);
 
             // mock the IOpenFileDialog
-            var openFileDialogMock = Substitute.For<PlotViewModel.IOpenFileDialog>();
+            var openFileDialogMock = Substitute.For<PlotViewModel.ISaveFileDialog>();
             openFileDialogMock.FileName.Returns(exportFilename);
             openFileDialogMock.ShowDialog().Returns(true);
             // mock IFileSystem
             var fileSystemMock = Substitute.For<PlotViewModel.IFileSystem>();
             fileSystemMock.WriteExportedData(exportFilename, Encoding.UTF8);
 
-            _plotViewModel = new PlotViewModel(0, openFileDialogMock, fileSystemMock);
+            _plotViewModel = new PlotViewModel(0, openFileDialogMock);
             _plotViewModel.PlotValues.Execute(plotData);
             _plotViewModel.XAxisSpacingOptionVm.SelectedValue = ScalingType.Log;
             _plotViewModel.YAxisSpacingOptionVm.SelectedValue = ScalingType.Log;
@@ -668,14 +668,14 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotData = new[] { new PlotData(points, "Real and Imaginary Lines") };
 
             // mock the IOpenFileDialog
-            var openFileDialogMock = Substitute.For<PlotViewModel.IOpenFileDialog>();
+            var openFileDialogMock = Substitute.For<PlotViewModel.ISaveFileDialog>();
             openFileDialogMock.FileName.Returns(exportFilename);
             openFileDialogMock.ShowDialog().Returns(true);
             // mock IFileSystem
             var fileSystemMock = Substitute.For<PlotViewModel.IFileSystem>();
             fileSystemMock.WriteExportedData(exportFilename, Encoding.UTF8);
 
-            _plotViewModel = new PlotViewModel(0, openFileDialogMock, fileSystemMock);
+            _plotViewModel = new PlotViewModel(0, openFileDialogMock);
             _plotViewModel.PlotValues.Execute(plotData);
             _plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Amp;
             _plotViewModel.ExportDataToTextCommand.Execute(plotData);

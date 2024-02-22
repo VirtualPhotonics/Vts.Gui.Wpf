@@ -11,14 +11,11 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.Win32;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
 using static Vts.Gui.Wpf.ViewModel.PlotViewModel;
 using FontWeights = OxyPlot.FontWeights;
-using System.Windows.Shapes;
-using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
 namespace Vts.Gui.Wpf.ViewModel
 {
@@ -68,8 +65,7 @@ namespace Vts.Gui.Wpf.ViewModel
     /// </summary>
     public class PlotViewModel : BindableObject, ITextFileService
     {
-        private readonly IOpenFileDialog _openFileDialog;
-        private readonly IFileSystem _file;
+        private ISaveFileDialog _saveFileDialog;
     
         private bool _autoScaleX;
         private bool _autoScaleY;
@@ -190,31 +186,50 @@ namespace Vts.Gui.Wpf.ViewModel
         /// https://stackoverflow.com/questions/43312666/unit-test-file-reading-method-with-openfiledialog-c-sharp
         ///  </summary>
         ///  <param name="plotViewId"></param>
-        ///  <param name="openFileDialog"></param>
-        ///  <param name="file"></param>
-        public PlotViewModel(int plotViewId, IOpenFileDialog openFileDialog, IFileSystem file) : this(plotViewId)
+        ///  <param name="saveFileDialog"></param>
+        public PlotViewModel(int plotViewId, ISaveFileDialog saveFileDialog) : this(plotViewId)
         {
-            this._openFileDialog = openFileDialog;
-            this._file = file;
+            _saveFileDialog = saveFileDialog;
         }
 
-        public interface IOpenFileDialog
+        public interface ISaveFileDialog
         { 
             string Filter { get; set; }
             bool? ShowDialog();
             string FileName { get; set; }
         }
+
+        public class SaveFileDialog : ISaveFileDialog
+        {
+            public string Filter { get; set; }
+            public bool? ShowDialog()
+            {
+                var dialog = new Microsoft.Win32.SaveFileDialog
+                {
+                    DefaultExt = ".txt",
+                    Filter = Filter
+                };
+                var result = dialog.ShowDialog();
+                FileName = dialog.FileName;
+                return result;
+            }
+
+            public string FileName { get; set; }
+        }
+
         public interface ITextFileService
         {
-            Tuple<string, string> OpenTextFile();
+            public Tuple<FileStream, string> OpenTextFile();
         }
-        public Tuple<string, string> OpenTextFile()
+
+        public Tuple<FileStream, string> OpenTextFile()
         {
-            _openFileDialog.Filter = "Text |*.txt";
+            _saveFileDialog ??= new SaveFileDialog();
+            _saveFileDialog.Filter = "Text |*.txt";
 
-            var accept = _openFileDialog.ShowDialog();
+            var accept = _saveFileDialog.ShowDialog();
 
-            return accept.GetValueOrDefault(false) ? Tuple.Create(_file.WriteExportedData(_openFileDialog.FileName, Encoding.UTF8), _openFileDialog.FileName) : null;
+            return accept.GetValueOrDefault(false) ? Tuple.Create(File.Open(_saveFileDialog.FileName, FileMode.Create), _saveFileDialog.FileName) : null;
         }
 
         public interface IFileSystem
@@ -635,8 +650,9 @@ namespace Vts.Gui.Wpf.ViewModel
             // check if list of labels or list of data have any elements
             if (_labels is not { Count: > 0 } || DataSeriesCollection is not { Count: > 0 }) return;
 
-            var filename = OpenTextFile();
-            WriteExportedData(filename, Encoding.UTF8);
+            var file = OpenTextFile();
+            if (file == null || file.Item2 == "") return;
+            WriteExportedData(file, Encoding.UTF8);
 
             //// Create SaveFileDialog 
             //var dialog = new SaveFileDialog
@@ -658,10 +674,10 @@ namespace Vts.Gui.Wpf.ViewModel
 
         }
 
-        protected virtual void WriteExportedData(Tuple<string,string> filename, Encoding encoding)
+        protected virtual void WriteExportedData(Tuple<FileStream,string> file, Encoding encoding)
         {
-            if (filename.Item2 == "") return;
-            var stream = new FileStream(filename.Item2, FileMode.Create);
+            if (file == null || file.Item2 == "") return;
+            var stream = file.Item1;
             using var sw = new StreamWriter(stream);
             sw.Write("%");
 
