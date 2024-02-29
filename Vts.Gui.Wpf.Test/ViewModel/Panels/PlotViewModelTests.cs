@@ -1,14 +1,13 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
+using OxyPlot;
 using OxyPlot.Legends;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using Vts.Common;
@@ -469,7 +468,46 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
             plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Complex;
             Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
-            // add in value verification?
+            // value verification performed in ComplexDataPoint tests
+        }
+
+        [Test]
+        public void Verify_complex_derivative_plot()
+        {
+            IDataPoint[] points = {
+                new ComplexDerivativeDataPoint(
+                    0, 
+                    new Complex(0, 1),
+                    new Complex(2, 3),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    1,
+                    new Complex(1, 2),
+                    new Complex(3, 4),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    2,
+                    new Complex(2, 3),
+                    new Complex(4, 5),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    3,
+                    new Complex(4, 5),
+                    new Complex(5, 6),
+                    ForwardAnalysisType.dRdMua),
+            };
+            var plotData = new[] { new PlotData(points, "Complex derivative plot") };
+            var plotViewModel = new PlotViewModel();
+            plotViewModel.PlotValues.Execute(plotData);
+            // complex plots have 2 plots
+            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Phase;
+            Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Amp;
+            Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Complex;
+            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            // value verification performed in ComplexDerivativeDataPoint tests
         }
 
         [Test]
@@ -605,10 +643,6 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             };
             // plot the data to be saved
             var plotData = new[] { new PlotData(points, "Diagonal Line") };
-            // can't call WindowViewModel because not fixed yet
-            //var windowViewModel = new WindowViewModel();
-            //var plotViewModel = windowViewModel.PlotVM;
-            //plotViewModel.PlotValues.Execute(_plotData);
 
             // mock the IOpenFileDialog
             var openFileDialogMock = Substitute.For<ISaveFileDialog>();
