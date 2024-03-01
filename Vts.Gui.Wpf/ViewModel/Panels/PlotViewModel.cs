@@ -564,7 +564,7 @@ namespace Vts.Gui.Wpf.ViewModel
             if (sender is PlotAxesLabels labels)
             {
                 _clearPlot = false;
-                // set CurrentIndependtVariableAxis prior to setting Title because property
+                // set CurrentIndependentVariableAxis prior to setting Title because property
                 // might ClearPlot including Title
                 if (CurrentIndependentVariableAxis != labels.IndependentAxis.AxisType)
                 {
@@ -1015,11 +1015,6 @@ namespace Vts.Gui.Wpf.ViewModel
                 {
                     case PlotToggleType.Phase:
                         y = -(dp.PhaseDerivative * (180 / Math.PI));
-                        //// force phase to be between 0 and 360
-                        //if (y < 0)
-                        //{
-                        //    y += 360;
-                        //}
                         switch (PlotNormalizationTypeOptionVm.SelectedValue)
                         {
                             case PlotNormalizationType.RelativeToCurve:
