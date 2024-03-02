@@ -1,6 +1,5 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
-using OxyPlot;
 using OxyPlot.Legends;
 using System;
 using System.Collections.Generic;
@@ -614,6 +613,94 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 i++;
             }
             Assert.AreEqual(10, i);
+        }
+
+        [Test]
+        [TestCase(PlotToggleType.Complex)]
+        [TestCase(PlotToggleType.Phase)]
+        [TestCase(PlotToggleType.Amp)]
+        public void Verify_max_normalization_phase_amp_complex_derivative(PlotToggleType toggleType)
+        {
+            IDataPoint[] points = {
+                new ComplexDerivativeDataPoint(
+                    0,
+                    new Complex(0, 1),
+                    new Complex(2, 3),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    1,
+                    new Complex(1, 2),
+                    new Complex(3, 4),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    2,
+                    new Complex(2, 3),
+                    new Complex(4, 5),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    3,
+                    new Complex(4, 5),
+                    new Complex(5, 6),
+                    ForwardAnalysisType.dRdMua),
+            };
+            var plotData = new[] { new PlotData(points, "Complex derivative plot") };
+            var windowViewModel = new WindowViewModel();
+            var plotViewModel = windowViewModel.PlotVM;
+            plotViewModel.PlotToggleTypeOptionVm.SelectedValue = toggleType;
+            plotViewModel.PlotValues.Execute(plotData);
+            plotViewModel.PlotValues.Execute(plotData);
+            Assert.AreEqual(toggleType == PlotToggleType.Complex ? 4 : 2, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToMax;
+            var plotSeries = plotViewModel.PlotSeriesCollection[0];
+            var i = 0;
+            foreach (var point in plotSeries)
+            {
+                Assert.IsInstanceOf<Point>(point);
+                i++;
+            }
+            Assert.AreEqual(toggleType == PlotToggleType.Phase ? 3 : 4, i);
+        }
+
+        [Test]
+        public void Verify_curve_normalization_complex_derivative()
+        {
+            IDataPoint[] points = {
+                new ComplexDerivativeDataPoint(
+                    0,
+                    new Complex(0, 1),
+                    new Complex(2, 3),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    1,
+                    new Complex(1, 2),
+                    new Complex(3, 4),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    2,
+                    new Complex(2, 3),
+                    new Complex(4, 5),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    3,
+                    new Complex(4, 5),
+                    new Complex(5, 6),
+                    ForwardAnalysisType.dRdMua),
+            };
+            var plotData = new[] { new PlotData(points, "Complex derivative plot") };
+            var windowViewModel = new WindowViewModel();
+            var plotViewModel = windowViewModel.PlotVM;
+            plotViewModel.PlotValues.Execute(plotData);
+            plotViewModel.PlotValues.Execute(plotData);
+            Assert.AreEqual(4, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToCurve;
+            var plotSeries = plotViewModel.PlotSeriesCollection[0];
+            var i = 0;
+            foreach (var point in plotSeries)
+            {
+                Assert.IsInstanceOf<Point>(point);
+                i++;
+            }
+            Assert.AreEqual(4, i);
         }
 
         /// <summary>
