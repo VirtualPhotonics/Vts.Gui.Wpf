@@ -6,6 +6,8 @@ namespace Vts.Gui.Wpf.Model
 {
     public sealed class ComplexDerivativeDataPoint : IDataPoint, IEquatable<ComplexDerivativeDataPoint>, IEqualityComparer<ComplexDerivativeDataPoint>
     {
+        private readonly int _hashCode;
+
         /// <summary>
         /// Constructor for the ComplexDerivativeDataPoint
         /// </summary>
@@ -19,6 +21,7 @@ namespace Vts.Gui.Wpf.Model
             Y = y;
             Dy = dy;
             DerivativeVariable = derivativeVariable;
+            _hashCode = new { x, y, dy, derivativeVariable }.GetHashCode();
         }
 
         /// <summary>
@@ -108,12 +111,7 @@ namespace Vts.Gui.Wpf.Model
         /// Returns the hash code for this ComplexDerivativeDataPoint.
         /// </summary>
         /// <returns>Returns the hash code for this ComplexDerivativeDataPoint</returns>
-        public override int GetHashCode()
-        {
-            var hashCode = 76543890;
-            hashCode = hashCode * -5678 + Y.GetHashCode();
-            return hashCode;
-        }
+        public override int GetHashCode() => _hashCode;
 
         /// <summary>
         /// Returns the hash code for this ComplexDerivativeDataPoint.
@@ -122,8 +120,7 @@ namespace Vts.Gui.Wpf.Model
         /// <returns>Returns the hash code for the parameter ComplexDerivativeDataPoint</returns>
         public int GetHashCode(ComplexDerivativeDataPoint obj)
         {
-            var hashCode = 76543890;
-            hashCode = hashCode * -5678 + obj.Y.GetHashCode();
+            var hashCode = new { obj.X, obj.Y, obj.Dy, obj.DerivativeVariable }.GetHashCode();
             return hashCode;
         }
     }

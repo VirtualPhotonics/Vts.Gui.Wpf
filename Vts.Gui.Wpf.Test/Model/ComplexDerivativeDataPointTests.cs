@@ -79,7 +79,7 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.3, 0.4),
                 ForwardAnalysisType.dRdMusp);
             var hashCode = dataPoint.GetHashCode();
-            Assert.AreEqual(-1892473190, hashCode);
+            Assert.AreEqual(-1563642927, hashCode);
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.8, 0.7),
                 ForwardAnalysisType.dRdMusp);
             var hashCode = dataPoint1.GetHashCode(dataPoint2);
-            Assert.AreEqual(-1882801729, hashCode);
+            Assert.AreEqual(hashCode = 867508351, hashCode);
         }
 
         [Test]

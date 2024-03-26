@@ -536,10 +536,9 @@ namespace Vts.Gui.Wpf.ViewModel
             var isComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVM.SelectedValue);
             var forwardAnalysisType = ForwardAnalysisTypeOptionVM.SelectedValue;
             var isDerivativePlot = ForwardAnalysisTypeOptionVM.SelectedValue != ForwardAnalysisType.R;
-            var primaryIndependentValues = _allRangeVMs.First().Values.ToArray();
+            var primaryIndependentValues = _allRangeVMs[0].Values.ToArray();
             var numPointsPerCurve = primaryIndependentValues.Length;
 
-            //var numForwardValues = isComplexPlot ? reflectance.Length/2 : reflectance.Length;
             int numForwardValues;
             if (isComplexPlot)
             {
