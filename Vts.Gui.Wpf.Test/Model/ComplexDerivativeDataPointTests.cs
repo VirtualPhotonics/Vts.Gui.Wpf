@@ -44,14 +44,12 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.2, 0.4),
                 new Complex(0.4, 0.5),
                 ForwardAnalysisType.dRdN);
-            Assert.AreEqual(false, dataPoint1.Equals(dataPoint2));
             Assert.IsFalse(dataPoint1.Equals(dataPoint2));
             var dataPoint3 = new ComplexDerivativeDataPoint(
                 0.1, 
                 new Complex(0.2, 0.3),
             new Complex(0.4, 0.5),
             ForwardAnalysisType.dRdN);
-            Assert.AreEqual(true, dataPoint1.Equals(dataPoint3));
             Assert.IsTrue(dataPoint1.Equals(dataPoint3));
             Assert.IsTrue(dataPoint1.Equals(dataPoint1, dataPoint3));
         }
@@ -78,8 +76,7 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.2, 0.5),
                 new Complex(0.3, 0.4),
                 ForwardAnalysisType.dRdMusp);
-            var hashCode = dataPoint.GetHashCode();
-            Assert.AreEqual(-1563642927, hashCode);
+            Assert.AreEqual(-1563642927, dataPoint.GetHashCode());
         }
 
         [Test]
@@ -95,8 +92,9 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.9, 0.5),
                 new Complex(0.8, 0.7),
                 ForwardAnalysisType.dRdMusp);
-            var hashCode = dataPoint1.GetHashCode(dataPoint2);
-            Assert.AreEqual(hashCode = 867508351, hashCode);
+            Assert.IsNotNull(dataPoint1);
+            Assert.IsNotNull(dataPoint2);
+            Assert.AreEqual(867508351, dataPoint1.GetHashCode(dataPoint2));
         }
 
         [Test]

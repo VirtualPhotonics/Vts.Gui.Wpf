@@ -71,28 +71,42 @@ namespace Vts.Gui.Wpf.Model
         /// Determines whether the specified ComplexDerivativeDataPoint contains the same
         /// values as this ComplexDerivativeDataPoint.
         /// </summary>
-        /// <param name="other">An ComplexDerivativeDataPoint to check for equality</param>
+        /// <param name="point">An ComplexDerivativeDataPoint to check for equality</param>
         /// <returns>
         /// Returns true if the ComplexDerivativeDataPoint contains the same ComplexDerivativeDataPoint.X
         /// and ComplexDerivativeDataPoint.Y values as this ComplexDerivativeDataPoint; otherwise, false.
         /// </returns>
-        public bool Equals(ComplexDerivativeDataPoint other)
+        public bool Equals(ComplexDerivativeDataPoint point)
         {
-            return X == other.X && Y == other.Y;
+            const double tolerance = 1e-6; // small value
+
+            return Math.Abs(X - point!.X) < tolerance 
+                   && Math.Abs(Y.Real - point.Y.Real) < tolerance 
+                   && Math.Abs(Y.Imaginary - point.Y.Imaginary) < tolerance
+                    && Math.Abs(Dy.Real - point.Dy.Real) < tolerance
+                    && Math.Abs(Dy.Imaginary - point.Dy.Imaginary) < tolerance
+                    && DerivativeVariable == point.DerivativeVariable;
         }
 
         /// <summary>
         /// Compares two ComplexDerivativeDataPoint structures for equality.
         /// </summary>
-        /// <param name="x">The first ComplexDerivativeDataPoint to compare equality.</param>
-        /// <param name="y">The second ComplexDerivativeDataPoint to compare equality.</param>
+        /// <param name="point">The first ComplexDerivativeDataPoint to compare equality.</param>
+        /// <param name="comparePoint">The second ComplexDerivativeDataPoint to compare equality.</param>
         /// <returns>
         /// Returns true if both ComplexDerivativeDataPoint structures contain the same ComplexDerivativeDataPoint.X
         /// and ComplexDerivativeDataPoint.Y values; otherwise, false.
         /// </returns>
-        public bool Equals(ComplexDerivativeDataPoint x, ComplexDerivativeDataPoint y)
+        public bool Equals(ComplexDerivativeDataPoint point, ComplexDerivativeDataPoint comparePoint)
         {
-            return x.X == y.X && x.Y == y.Y;
+            const double tolerance = 1e-6; // small value
+
+            return Math.Abs(point!.X - comparePoint!.X) < tolerance 
+                   && Math.Abs(point.Y.Real - comparePoint.Y.Real) < tolerance 
+                   && Math.Abs(point.Y.Imaginary - comparePoint.Y.Imaginary) < tolerance
+                   && Math.Abs(point.Dy.Real - comparePoint.Dy.Real) < tolerance
+                   && Math.Abs(point.Dy.Imaginary - comparePoint.Dy.Imaginary) < tolerance
+                   && point.DerivativeVariable == comparePoint.DerivativeVariable;
         }
 
         /// <summary>
