@@ -3,12 +3,10 @@ using NUnit.Framework;
 using OxyPlot.Legends;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using Vts.Common;
@@ -469,7 +467,46 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
             plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Complex;
             Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
-            // add in value verification?
+            // value verification performed in ComplexDataPoint tests
+        }
+
+        [Test]
+        public void Verify_complex_derivative_plot()
+        {
+            IDataPoint[] points = {
+                new ComplexDerivativeDataPoint(
+                    0, 
+                    new Complex(0, 1),
+                    new Complex(2, 3),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    1,
+                    new Complex(1, 2),
+                    new Complex(3, 4),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    2,
+                    new Complex(2, 3),
+                    new Complex(4, 5),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    3,
+                    new Complex(4, 5),
+                    new Complex(5, 6),
+                    ForwardAnalysisType.dRdMua),
+            };
+            var plotData = new[] { new PlotData(points, "Complex derivative plot") };
+            var plotViewModel = new PlotViewModel();
+            plotViewModel.PlotValues.Execute(plotData);
+            // complex plots have 2 plots
+            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Phase;
+            Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Amp;
+            Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Complex;
+            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            // value verification performed in ComplexDerivativeDataPoint tests
         }
 
         [Test]
@@ -578,6 +615,94 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.AreEqual(10, i);
         }
 
+        [Test]
+        [TestCase(PlotToggleType.Complex)]
+        [TestCase(PlotToggleType.Phase)]
+        [TestCase(PlotToggleType.Amp)]
+        public void Verify_max_normalization_phase_amp_complex_derivative(PlotToggleType toggleType)
+        {
+            IDataPoint[] points = {
+                new ComplexDerivativeDataPoint(
+                    0,
+                    new Complex(0, 1),
+                    new Complex(2, 3),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    1,
+                    new Complex(1, 2),
+                    new Complex(3, 4),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    2,
+                    new Complex(2, 3),
+                    new Complex(4, 5),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    3,
+                    new Complex(4, 5),
+                    new Complex(5, 6),
+                    ForwardAnalysisType.dRdMua),
+            };
+            var plotData = new[] { new PlotData(points, "Complex derivative plot") };
+            var windowViewModel = new WindowViewModel();
+            var plotViewModel = windowViewModel.PlotVM;
+            plotViewModel.PlotToggleTypeOptionVm.SelectedValue = toggleType;
+            plotViewModel.PlotValues.Execute(plotData);
+            plotViewModel.PlotValues.Execute(plotData);
+            Assert.AreEqual(toggleType == PlotToggleType.Complex ? 4 : 2, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToMax;
+            var plotSeries = plotViewModel.PlotSeriesCollection[0];
+            var i = 0;
+            foreach (var point in plotSeries)
+            {
+                Assert.IsInstanceOf<Point>(point);
+                i++;
+            }
+            Assert.AreEqual(toggleType == PlotToggleType.Phase ? 3 : 4, i);
+        }
+
+        [Test]
+        public void Verify_curve_normalization_complex_derivative()
+        {
+            IDataPoint[] points = {
+                new ComplexDerivativeDataPoint(
+                    0,
+                    new Complex(0, 1),
+                    new Complex(2, 3),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    1,
+                    new Complex(1, 2),
+                    new Complex(3, 4),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    2,
+                    new Complex(2, 3),
+                    new Complex(4, 5),
+                    ForwardAnalysisType.dRdMua),
+                new ComplexDerivativeDataPoint(
+                    3,
+                    new Complex(4, 5),
+                    new Complex(5, 6),
+                    ForwardAnalysisType.dRdMua),
+            };
+            var plotData = new[] { new PlotData(points, "Complex derivative plot") };
+            var windowViewModel = new WindowViewModel();
+            var plotViewModel = windowViewModel.PlotVM;
+            plotViewModel.PlotValues.Execute(plotData);
+            plotViewModel.PlotValues.Execute(plotData);
+            Assert.AreEqual(4, plotViewModel.PlotModel.Series.Count);
+            plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToCurve;
+            var plotSeries = plotViewModel.PlotSeriesCollection[0];
+            var i = 0;
+            foreach (var point in plotSeries)
+            {
+                Assert.IsInstanceOf<Point>(point);
+                i++;
+            }
+            Assert.AreEqual(4, i);
+        }
+
         /// <summary>
         /// ExportDataToTextCommand brings up Dialog window so not tested
         /// DuplicateWindowCommand - not sure if can test 
@@ -605,10 +730,6 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             };
             // plot the data to be saved
             var plotData = new[] { new PlotData(points, "Diagonal Line") };
-            // can't call WindowViewModel because not fixed yet
-            //var windowViewModel = new WindowViewModel();
-            //var plotViewModel = windowViewModel.PlotVM;
-            //plotViewModel.PlotValues.Execute(_plotData);
 
             // mock the IOpenFileDialog
             var openFileDialogMock = Substitute.For<ISaveFileDialog>();
