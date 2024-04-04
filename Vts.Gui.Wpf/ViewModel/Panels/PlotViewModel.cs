@@ -803,8 +803,16 @@ namespace Vts.Gui.Wpf.ViewModel
             }
 
             PlotModel.Axes.Clear();
-            PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = XAxis, TitleFontWeight = FontWeights.Bold });
-            PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = YAxis, TitleFontWeight = FontWeights.Bold });
+            if (XAxisSpacingOptionVm.SelectedValue == ScalingType.Log)
+                PlotModel.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = XAxis, TitleFontWeight = FontWeights.Bold });
+            else
+                PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = XAxis, TitleFontWeight = FontWeights.Bold });
+
+
+            if (YAxisSpacingOptionVm.SelectedValue == ScalingType.Log)
+                PlotModel.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = YAxis, TitleFontWeight = FontWeights.Bold });
+            else
+                PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = YAxis, TitleFontWeight = FontWeights.Bold });
         }
 
         private void GenerateComplexPlot(DataPointCollection dataPointCollection, bool normToMax, bool normToCurve)
@@ -856,7 +864,7 @@ namespace Vts.Gui.Wpf.ViewModel
             var curveIndex = 0;
             foreach (var dp in dataPointCollection.DataPoints.Cast<ComplexDataPoint>())
             {
-                var x = XAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(dp.X) : dp.X;
+                var x = dp.X;
                 double y;
                 switch (PlotToggleTypeOptionVm.SelectedValue)
                 {
@@ -904,7 +912,6 @@ namespace Vts.Gui.Wpf.ViewModel
                                 y /= max;
                                 break;
                         }
-                        y = YAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
                         var p = new DataPoint(x, y);
                         if (IsValidDataPoint(p) && IsWithinAxes(p))
                         {
@@ -927,7 +934,6 @@ namespace Vts.Gui.Wpf.ViewModel
                         }
                         break;
                 }
-                y = YAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
                 var point = new DataPoint(x, y);
                 if (IsValidDataPoint(point) && IsWithinAxes(point))
                 {
@@ -1009,7 +1015,7 @@ namespace Vts.Gui.Wpf.ViewModel
             var curveIndex = 0;
             foreach (var dp in dataPointCollection.DataPoints.Cast<ComplexDerivativeDataPoint>())
             {
-                var x = XAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(dp.X) : dp.X;
+                var x = dp.X;
                 double y;
                 switch (PlotToggleTypeOptionVm.SelectedValue)
                 {
@@ -1052,7 +1058,6 @@ namespace Vts.Gui.Wpf.ViewModel
                                 y /= max;
                                 break;
                         }
-                        y = YAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
                         var p = new DataPoint(x, y);
                         if (IsValidDataPoint(p) && IsWithinAxes(p))
                         {
@@ -1075,7 +1080,6 @@ namespace Vts.Gui.Wpf.ViewModel
                         }
                         break;
                 }
-                y = YAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
                 var point = new DataPoint(x, y);
                 if (IsValidDataPoint(point) && IsWithinAxes(point))
                 {
@@ -1129,7 +1133,7 @@ namespace Vts.Gui.Wpf.ViewModel
             var curveIndex = 0;
             foreach (var dp in dataPointCollection.DataPoints.Cast<DoubleDataPoint>())
             {
-                var x = XAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(dp.X) : dp.X;
+                var x = dp.X;
                 double y;
                 switch (PlotNormalizationTypeOptionVm.SelectedValue)
                 {
@@ -1144,7 +1148,6 @@ namespace Vts.Gui.Wpf.ViewModel
                         y = dp.Y;
                         break;
                 }
-                y = YAxisSpacingOptionVm.SelectedValue == ScalingType.Log ? Math.Log10(y) : y;
                 var point = new DataPoint(x, y);
                 if (IsValidDataPoint(point) && IsWithinAxes(point))
                 {
