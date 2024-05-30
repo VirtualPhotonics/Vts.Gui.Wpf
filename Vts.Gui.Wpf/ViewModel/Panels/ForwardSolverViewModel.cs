@@ -113,6 +113,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
                     // update solution domain wavelength constant if applicable
                     if (useSpectralPanelDataAndNotNull &&
+                        WindowViewModel.Current != null &&
                         SolutionDomainTypeOptionVM.ConstantAxesVMs.Any(
                             axis => axis.AxisType == IndependentVariableAxis.Wavelength))
                     {
