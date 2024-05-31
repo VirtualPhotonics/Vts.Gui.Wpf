@@ -795,4 +795,16 @@
   <data name="Error_NoTissueTypeExists" xml:space="preserve">
     <value>No tissue of the specified type exists</value>
   </data>
+  <data name="Label_AmplitudeDerivative" xml:space="preserve">
+    <value>(damp)</value>
+  </data>
+  <data name="Label_ImaginaryDerivative" xml:space="preserve">
+    <value>(dimag)</value>
+  </data>
+  <data name="Label_PhaseDerivative" xml:space="preserve">
+    <value>(dphase)</value>
+  </data>
+  <data name="Label_RealDerivative" xml:space="preserve">
+    <value>(dreal)</value>
+  </data>
 </root>

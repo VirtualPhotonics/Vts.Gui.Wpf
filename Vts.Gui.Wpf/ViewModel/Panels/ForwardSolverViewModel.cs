@@ -10,6 +10,7 @@ using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
 using Vts.IO;
+using Vts.Modeling;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
 
@@ -112,6 +113,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
                     // update solution domain wavelength constant if applicable
                     if (useSpectralPanelDataAndNotNull &&
+                        WindowViewModel.Current != null &&
                         SolutionDomainTypeOptionVM.ConstantAxesVMs.Any(
                             axis => axis.AxisType == IndependentVariableAxis.Wavelength))
                     {
@@ -533,9 +535,19 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             var plotIsVsWavelength = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
             var isComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVM.SelectedValue);
-            var primaryIdependentValues = _allRangeVMs.First().Values.ToArray();
-            var numPointsPerCurve = primaryIdependentValues.Length;
-            var numForwardValues = isComplexPlot ? reflectance.Length/2 : reflectance.Length;
+            var forwardAnalysisType = ForwardAnalysisTypeOptionVM.SelectedValue;
+            var isDerivativePlot = ForwardAnalysisTypeOptionVM.SelectedValue != ForwardAnalysisType.R;
+            var primaryIndependentValues = _allRangeVMs[0].Values.ToArray();
+            var numPointsPerCurve = primaryIndependentValues.Length;
+
+            int numForwardValues;
+            if (isComplexPlot)
+            {
+                if (isDerivativePlot) numForwardValues = reflectance.Length / 4;
+                else numForwardValues = reflectance.Length / 2;
+            }
+            else numForwardValues = reflectance.Length;
+
             // complex reported as all reals, then all imaginaries
             var numCurves = numForwardValues/numPointsPerCurve;
 
@@ -544,14 +556,24 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 // man, this is getting hacky...
                 var index = plotIsVsWavelength
-                    ? i*numCurves + j
-                    : j*numPointsPerCurve + i;
-                return isComplexPlot
-                    ? (IDataPoint)
-                        new ComplexDataPoint(primaryIdependentValues[i],
-                            new Complex(reflectance[index], reflectance[index + numForwardValues]))
-                    : (IDataPoint) new DoubleDataPoint(primaryIdependentValues[i], reflectance[index]);
+                    ? i * numCurves + j
+                    : j * numPointsPerCurve + i;
+                if (!isComplexPlot)
+                    return (IDataPoint)new DoubleDataPoint(primaryIndependentValues[i], reflectance[index]);
+                if (isDerivativePlot)
+                {
+                    // derivatives should be appended to real,imag, i.e. real,imag,dreal,dimag
+                    return (IDataPoint)new ComplexDerivativeDataPoint(primaryIndependentValues[i],
+                        new Complex(reflectance[index], reflectance[index + numForwardValues]),
+                        new Complex(reflectance[index + 2 * numForwardValues],
+                            reflectance[index + 3 * numForwardValues]), forwardAnalysisType);
+                }
+
+                return (IDataPoint)new ComplexDataPoint(
+                    primaryIndependentValues[i],
+                    new Complex(reflectance[index], reflectance[index + numForwardValues]));
             };
+
             for (var j = 0; j < numCurves; j++)
             {
                 points[j] = new IDataPoint[numPointsPerCurve];
