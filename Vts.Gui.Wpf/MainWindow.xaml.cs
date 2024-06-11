@@ -35,35 +35,34 @@ namespace Vts.Gui.Wpf
         public static MainWindow Current { get; set; }
         private void InputTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is TabControl inputTab &&
-                OutputTabControl != null && OutputTabControl.Items.Count > 1)
+            if (sender is not TabControl inputTab ||
+                OutputTabControl == null || OutputTabControl.Items.Count <= 1) return;
+            if (inputTab.SelectedItem is not TabItem tabItem) return;
+            WindowViewModel.Current.PlotVM?.SetCustomPlotLabel.Execute("");
+            switch (tabItem.Name)
             {
-                if (!(inputTab.SelectedItem is TabItem tabItem)) return;
-                WindowViewModel.Current.PlotVM?.SetCustomPlotLabel.Execute("");
-                switch (tabItem.Name)
-                {
-                    // default handles: "TabForward":
-                    // "TabInverse":
-                    // "TabSpectral":
-                    default:
-                        _logger.Debug($"Current Tab: {tabItem.Header}\n");
-                        OutputTabControl.SelectedItem = OutputTabControl.Items[0];
-                        ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Visible;
-                        ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Collapsed;
-                        break;
-                    case "TabFluence":
-                        OutputTabControl.SelectedItem = OutputTabControl.Items[1];
-                        ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Visible;
-                        ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Collapsed;
-                        break;
-                    case "TabMonteCarlo":
-                        ((TabItem)OutputTabControl.Items[1]).Visibility = Visibility.Visible;
-                        ((TabItem)OutputTabControl.Items[0]).Visibility = Visibility.Visible;
-                        break;
-                    case "TabSpectral":
-                        WindowViewModel.Current.PlotVM?.SetCustomPlotLabel.Execute(WindowViewModel.Current.SpectralMappingVM.SelectedTissue.Name);
-                        break;
-                }
+                // default handles: "TabForward":
+                // "TabInverse":
+                default:
+                    OutputTabControl.SelectedItem = OutputTabControl.Items[0];
+                    (((TabItem)OutputTabControl.Items[0])!).Visibility = Visibility.Visible;
+                    (((TabItem)OutputTabControl.Items[1])!).Visibility = Visibility.Collapsed;
+                    break;
+                case "TabFluence":
+                    OutputTabControl.SelectedItem = OutputTabControl.Items[1];
+                    (((TabItem)OutputTabControl.Items[1])!).Visibility = Visibility.Visible;
+                    (((TabItem)OutputTabControl.Items[0])!).Visibility = Visibility.Collapsed;
+                    break;
+                case "TabMonteCarlo":
+                    (((TabItem)OutputTabControl.Items[1])!).Visibility = Visibility.Visible;
+                    (((TabItem)OutputTabControl.Items[0])!).Visibility = Visibility.Visible;
+                    break;
+                case "TabSpectral":
+                    OutputTabControl.SelectedItem = OutputTabControl.Items[0];
+                    (((TabItem)OutputTabControl.Items[0])!).Visibility = Visibility.Visible;
+                    (((TabItem)OutputTabControl.Items[1])!).Visibility = Visibility.Collapsed;
+                    WindowViewModel.Current.PlotVM?.SetCustomPlotLabel.Execute(WindowViewModel.Current.SpectralMappingVM.SelectedTissue.Name);
+                    break;
             }
         }
 
