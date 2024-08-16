@@ -685,10 +685,10 @@ namespace Vts.Gui.Wpf.ViewModel
                 select new KeyValuePair<IndependentVariableAxis, object>(iv, GetParameterValues(iv));
 
             // OPs are always first in the list
-            return
-                new KeyValuePair<IndependentVariableAxis, object>(IndependentVariableAxis.Wavelength, opticalProperties)
-                    .AsEnumerable()
-                    .Concat(allParameters).ToDictionary();
+            var returnValue = new KeyValuePair<IndependentVariableAxis, object>(IndependentVariableAxis.Wavelength, opticalProperties).AsEnumerable().Concat(allParameters);
+
+            // convert the parameters to a dictionary for return
+            return EnumerableExtensions.ToDictionary(returnValue);
         }
 
         private object GetOpticalProperties()

@@ -1,87 +1,78 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
-		<OutputType>winexe</OutputType>
-		<TargetFramework>net6.0-windows8.0</TargetFramework>
-		<ApplicationIcon>logo.ico</ApplicationIcon>
-		<OutputTypeEx>winexe</OutputTypeEx>
-		<StartupObject />
-		<Description>The WPF GUI provides a simple interface to access some basic functionality of the Virtual Tissue Simulator.</Description>
-		<Copyright>Copyright ©  2024</Copyright>
-		<PackageIcon>logo.ico</PackageIcon>
-		<PackageReadmeFile>readme.md</PackageReadmeFile>
-		<RepositoryUrl>https://github.com/VirtualPhotonics/Vts.Gui.Wpf</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<AssemblyVersion>4.4.0.0</AssemblyVersion>
-		<FileVersion>4.4.0.0</FileVersion>
-		<PlatformTarget>AnyCPU</PlatformTarget>
-		<Configurations>Debug;Release;WhiteList</Configurations>
-		<UseWPF>True</UseWPF>
-		<UseWindowsForms>True</UseWindowsForms>
-		<EnableDefaultPageItems>False</EnableDefaultPageItems>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Update="Properties\Resources.resx">
-			<Generator>ResXFileCodeGenerator</Generator>
-			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<Compile Update="Properties\Resources.Designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Resources.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Properties\Settings.Designer.cs">
-		  <DesignTimeSharedInput>True</DesignTimeSharedInput>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>Settings.settings</DependentUpon>
-		</Compile>
-		<None Update="logo.ico">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Update="Properties\Settings.settings">
-		  <Generator>SettingsSingleFileGenerator</Generator>
-		  <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-		</None>
-		<Compile Update="Resources\Strings.Designer.cs">
-			<AutoGen>True</AutoGen>
-			<DesignTime>True</DesignTime>
-			<DependentUpon>Strings.resx</DependentUpon>
-		</Compile>
-
-		<EmbeddedResource Update="Resources\Strings.fr.resx" />
-		<EmbeddedResource Update="Resources\Strings.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Strings.Designer.cs</LastGenOutput>
-			<SubType>Designer</SubType>
-		</EmbeddedResource>
-
-		<Page Include="**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
-		<Compile Update="**\*.xaml.cs" SubType="Designer" DependentUpon="%(Filename)" />
-
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Include="..\readme.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.0" />
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.6" />
-		<PackageReference Include="NLog" Version="5.3.2" />
-		<PackageReference Include="OxyPlot.Core" Version="2.1.2" />
-		<PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
-		<PackageReference Include="VirtualPhotonics.Vts" Version="11.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="System.Runtime.Caching" />
-	</ItemGroup>
-
+  <PropertyGroup>
+    <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
+    <OutputType>winexe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <OutputTypeEx>winexe</OutputTypeEx>
+    <StartupObject />
+    <Description>The WPF GUI provides a simple interface to access some basic functionality of the Virtual Tissue Simulator.</Description>
+    <Copyright>Copyright ©  2024</Copyright>
+    <PackageIcon>logo.ico</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/VirtualPhotonics/Vts.Gui.Wpf</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <AssemblyVersion>5.0.0.0</AssemblyVersion>
+    <FileVersion>5.0.0.0</FileVersion>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Configurations>Debug;Release;WhiteList</Configurations>
+    <UseWPF>True</UseWPF>
+    <UseWindowsForms>True</UseWindowsForms>
+    <EnableDefaultPageItems>False</EnableDefaultPageItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <None Update="logo.ico">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Update="Resources\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="Resources\Strings.fr.resx" />
+    <EmbeddedResource Update="Resources\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Page Include="**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
+    <Compile Update="**\*.xaml.cs" SubType="Designer" DependentUpon="%(Filename)" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.1" />
+    <PackageReference Include="NLog" Version="5.3.3" />
+    <PackageReference Include="OxyPlot.Core" Version="2.1.2" />
+    <PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
+    <PackageReference Include="VirtualPhotonics.Vts" Version="11.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Runtime.Caching" />
+  </ItemGroup>
 </Project>
