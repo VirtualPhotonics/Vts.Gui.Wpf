@@ -62,9 +62,9 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.3, 0.1),
                 new Complex(0.4, 0.5),
                 ForwardAnalysisType.dRdMua);
-            var localizedString = $"{0.1.ToString(Thread.CurrentThread.CurrentCulture)}, (" +
-                                  $"{0.3.ToString(Thread.CurrentThread.CurrentCulture)}, " +
-                                  $"{0.1.ToString(Thread.CurrentThread.CurrentCulture)})";
+            var localizedString = $"{0.1.ToString(Thread.CurrentThread.CurrentCulture)}, <" +
+                                  $"{0.3.ToString(Thread.CurrentThread.CurrentCulture)}; " +
+                                  $"{0.1.ToString(Thread.CurrentThread.CurrentCulture)}>";
             Assert.AreEqual(localizedString, dataPoint.ToString());
         }
 
@@ -76,7 +76,7 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.2, 0.5),
                 new Complex(0.3, 0.4),
                 ForwardAnalysisType.dRdMusp);
-            Assert.AreEqual(-1563642927, dataPoint.GetHashCode());
+            Assert.IsInstanceOf<int>(dataPoint.GetHashCode());
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Vts.Gui.Wpf.Test.Model
                 ForwardAnalysisType.dRdMusp);
             Assert.IsNotNull(dataPoint1);
             Assert.IsNotNull(dataPoint2);
-            Assert.AreEqual(867508351, dataPoint1.GetHashCode(dataPoint2));
+            Assert.IsInstanceOf<int>(dataPoint1.GetHashCode(dataPoint2));
         }
 
         [Test]

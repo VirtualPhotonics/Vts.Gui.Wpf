@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
@@ -661,10 +662,11 @@ namespace Vts.Gui.Wpf.ViewModel
                 select new KeyValuePair<IndependentVariableAxis, object>(iv, GetParameterValues(iv));
 
             // OPs are always first in the list
-            return
-                new KeyValuePair<IndependentVariableAxis, object>(IndependentVariableAxis.Wavelength, opticalProperties)
+            var returnValue = new KeyValuePair<IndependentVariableAxis, object>(IndependentVariableAxis.Wavelength, opticalProperties)
                     .AsEnumerable()
-                    .Concat(allParameters).ToDictionary();
+                    .Concat(allParameters);
+            return
+                EnumerableExtensions.ToDictionary(returnValue);
         }
 
         /// <summary>
