@@ -31,18 +31,16 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             Assert.That(viewModel.BloodConcentrationVM != null, Is.True);
             Assert.That(viewModel.WavelengthRangeVM != null, Is.True);
             var listOfTissueTypes = viewModel.Tissues.Select(t => t.TissueType).ToList();
-            //CollectionAssert.AreEquivalent(new[]
-                //{
-                //    TissueType.Skin,
-                //    TissueType.BrainWhiteMatter,
-                //    TissueType.BrainGrayMatter,
-                //    TissueType.BreastPreMenopause,
-                //    TissueType.BreastPostMenopause,
-                //    TissueType.Liver,
-                //    TissueType.IntralipidPhantom,
-                //    TissueType.Custom
-                //}, 
-                //listOfTissueTypes);
+            Assert.That(listOfTissueTypes, Is.EquivalentTo([
+                TissueType.Skin,
+                TissueType.BrainWhiteMatter,
+                TissueType.BrainGrayMatter,
+                TissueType.BreastPreMenopause,
+                TissueType.BreastPostMenopause,
+                TissueType.Liver,
+                TissueType.IntralipidPhantom,
+                TissueType.Custom
+            ]));
             Assert.That(viewModel.SelectedTissue.TissueType == TissueType.Skin, Is.True);
             Assert.That(viewModel.SelectedTissue.ScattererType, Is.EqualTo(viewModel.ScatteringTypeVM.SelectedValue));
             Assert.That(viewModel.ScatteringTypeName, Is.EqualTo("Vts.SpectralMapping.PowerLawScatterer"));
