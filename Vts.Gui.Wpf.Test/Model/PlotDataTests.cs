@@ -22,9 +22,9 @@ namespace Vts.Gui.Wpf.Test.Model
                 new DoubleDataPoint(0.3, 0.4)
             };
             var plotData = new PlotData(dataPoints, "title");
-            Assert.AreEqual(dataPoints[0], plotData.Points[0]);
-            Assert.AreEqual(dataPoints[1], plotData.Points[1]);
-            Assert.AreEqual("title", plotData.Title);
+            Assert.That(plotData.Points[0], Is.EqualTo(dataPoints[0]));
+            Assert.That(plotData.Points[1], Is.EqualTo(dataPoints[1]));
+            Assert.That(plotData.Title, Is.EqualTo("title"));
         }
 
         /// <summary>
@@ -39,9 +39,9 @@ namespace Vts.Gui.Wpf.Test.Model
                 new ComplexDataPoint(0.4, new Complex(0.5, 0.6))
             };
             var plotData = new PlotData(dataPoints, "title");
-            Assert.AreEqual(dataPoints[0], plotData.Points[0]);
-            Assert.AreEqual(dataPoints[1], plotData.Points[1]);
-            Assert.AreEqual("title", plotData.Title);
+            Assert.That(plotData.Points[0], Is.EqualTo(dataPoints[0]));
+            Assert.That(plotData.Points[1], Is.EqualTo(dataPoints[1]));
+            Assert.That(plotData.Title, Is.EqualTo("title"));
         }
 
     }

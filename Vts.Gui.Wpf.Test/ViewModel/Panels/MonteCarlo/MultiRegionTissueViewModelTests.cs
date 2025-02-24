@@ -22,21 +22,21 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             // verify MultiLayerTissueInput
             tissueInput = new MultiLayerTissueInput();
             var viewModel = new MultiRegionTissueViewModel(tissueInput); 
-            Assert.IsTrue(viewModel.RegionsVM != null);
+            Assert.That(viewModel.RegionsVM != null, Is.True);
             var listOfTissueRegions = viewModel.RegionsVM;
-            Assert.IsTrue(((LayerRegionViewModel)listOfTissueRegions[1]).IsLayer);
+            Assert.That(((LayerRegionViewModel)listOfTissueRegions[1]).IsLayer, Is.True);
             // verify SingleEllipsoidTissueInput
             tissueInput = new SingleEllipsoidTissueInput();
             viewModel = new MultiRegionTissueViewModel(tissueInput);
-            Assert.IsTrue(viewModel.RegionsVM != null);
+            Assert.That(viewModel.RegionsVM != null, Is.True);
             listOfTissueRegions = viewModel.RegionsVM;
-            Assert.IsTrue(((EllipsoidRegionViewModel) listOfTissueRegions[3]).IsEllipsoid);
+            Assert.That(((EllipsoidRegionViewModel) listOfTissueRegions[3]).IsEllipsoid, Is.True);
             // verify SingleVoxelTissueInput
             tissueInput = new SingleVoxelTissueInput();
             viewModel = new MultiRegionTissueViewModel(tissueInput);
-            Assert.IsTrue(viewModel.RegionsVM != null);
+            Assert.That(viewModel.RegionsVM != null, Is.True);
             listOfTissueRegions = viewModel.RegionsVM;
-            Assert.IsTrue(((VoxelRegionViewModel)listOfTissueRegions[3]).IsVoxel);
+            Assert.That(((VoxelRegionViewModel)listOfTissueRegions[3]).IsVoxel, Is.True);
         }
    
         // The following tests verify the Relay Commands

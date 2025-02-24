@@ -16,10 +16,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         public void verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new SimulationOptionsViewModel();
-            Assert.IsTrue(viewModel.AbsorptionWeightingTypeVM != null);
-            Assert.IsTrue(viewModel.PhaseFunctionTypeVM != null);
-            Assert.IsTrue(viewModel.RandomNumberGeneratorTypeVM != null);
-            Assert.IsTrue(viewModel.RandomNumberGeneratorTypeVM != null);
+            Assert.That(viewModel.AbsorptionWeightingTypeVM != null, Is.True);
+            Assert.That(viewModel.PhaseFunctionTypeVM != null, Is.True);
+            Assert.That(viewModel.RandomNumberGeneratorTypeVM != null, Is.True);
+            Assert.That(viewModel.RandomNumberGeneratorTypeVM != null, Is.True);
         }
 
         // The following tests verify the Relay Commands

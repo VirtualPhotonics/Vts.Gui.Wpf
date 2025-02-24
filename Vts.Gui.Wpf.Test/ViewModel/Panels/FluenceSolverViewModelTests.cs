@@ -20,22 +20,22 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             // WindowViewModel needs to be instantiated for default constructor
             var windowViewModel = new WindowViewModel();
             var viewModel = windowViewModel.FluenceSolverVM;
-            Assert.IsTrue(viewModel.ForwardSolverTypeOptionVM != null);
-            Assert.IsTrue(viewModel.AbsorbedEnergySolutionDomainTypeOptionVM != null);
-            Assert.IsTrue(viewModel.FluenceSolutionDomainTypeOptionVM != null);
-            Assert.IsTrue(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVM != null);
-            Assert.IsTrue(viewModel.MapTypeOptionVM != null);
-            Assert.IsTrue(viewModel.TissueInputVM != null);
-            Assert.IsTrue(viewModel.RhoRangeVM != null);
-            Assert.IsTrue(viewModel.ZRangeVM != null);
+            Assert.That(viewModel.ForwardSolverTypeOptionVM != null, Is.True);
+            Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVM != null, Is.True);
+            Assert.That(viewModel.FluenceSolutionDomainTypeOptionVM != null, Is.True);
+            Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVM != null, Is.True);
+            Assert.That(viewModel.MapTypeOptionVM != null, Is.True);
+            Assert.That(viewModel.TissueInputVM != null, Is.True);
+            Assert.That(viewModel.RhoRangeVM != null, Is.True);
+            Assert.That(viewModel.ZRangeVM != null, Is.True);
             // default settings
-            Assert.IsFalse(viewModel.FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled);
-            Assert.IsTrue(viewModel.FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled);
-            Assert.IsTrue(viewModel.FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled);
-            Assert.IsFalse(viewModel.AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled);
-            Assert.IsTrue(viewModel.AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled);
-            Assert.IsFalse(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled);
-            Assert.IsTrue(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled);
+            Assert.That(viewModel.FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
+            Assert.That(viewModel.FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
+            Assert.That(viewModel.FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
+            Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
+            Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
+            Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
+            Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
         }
 
         // The following tests verify the Relay Commands
@@ -54,8 +54,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             result.Wait();
             // ExecuteForwardSolver default settings
             var plotViewModel = windowViewModel.PlotVM;
-            Assert.AreEqual(0, plotViewModel.Labels.Count);
-            Assert.IsNull(plotViewModel.Title);
+            Assert.That(plotViewModel.Labels.Count, Is.EqualTo(0));
+            Assert.That(plotViewModel.Title, Is.Null);
             var textOutputViewModel = windowViewModel.TextOutputVM;
             const double d1 = 0.01;
             const int i1 = 1;
@@ -69,7 +69,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                      g.ToString(CultureInfo.CurrentCulture) + " n=" +
                      n.ToString(CultureInfo.CurrentCulture) + "; " +
                      StringLookup.GetLocalizedString("Label_Units") + " = 1/mm\r";
-            Assert.AreEqual(s1, textOutputViewModel.Text);
+            Assert.That(textOutputViewModel.Text, Is.EqualTo(s1));
         }
     }
 }

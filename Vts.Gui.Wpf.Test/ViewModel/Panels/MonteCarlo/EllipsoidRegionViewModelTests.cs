@@ -19,22 +19,22 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         public void Verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new EllipsoidRegionViewModel();
-            Assert.AreEqual(StringLookup.GetLocalizedString("Label_Tissue"), viewModel.Name);
-            Assert.IsTrue(viewModel.IsEllipsoid);
-            Assert.IsFalse(viewModel.IsLayer);
-            Assert.AreEqual(StringLookup.GetLocalizedString("Measurement_mm"), viewModel.Units);
-            Assert.IsTrue(viewModel.OpticalPropertyVM != null);
+            Assert.That(viewModel.Name, Is.EqualTo(StringLookup.GetLocalizedString("Label_Tissue")));
+            Assert.That(viewModel.IsEllipsoid, Is.True);
+            Assert.That(viewModel.IsLayer, Is.False);
+            Assert.That(viewModel.Units, Is.EqualTo(StringLookup.GetLocalizedString("Measurement_mm")));
+            Assert.That(viewModel.OpticalPropertyVM != null, Is.True);
         }
 
         [Test]
         public void Verify_constructor_sets_properties_correctly()
         {
             var viewModel = new EllipsoidRegionViewModel(new EllipsoidTissueRegion(), "TestEllipsiodTissue");
-            Assert.AreEqual("TestEllipsiodTissue" + StringLookup.GetLocalizedString("Label_Tissue"), viewModel.Name);
-            Assert.IsTrue(viewModel.IsEllipsoid);
-            Assert.IsFalse(viewModel.IsLayer);
-            Assert.AreEqual(StringLookup.GetLocalizedString("Measurement_mm"),viewModel.Units);
-            Assert.IsTrue(viewModel.OpticalPropertyVM != null);
+            Assert.That(viewModel.Name, Is.EqualTo("TestEllipsiodTissue" + StringLookup.GetLocalizedString("Label_Tissue")));
+            Assert.That(viewModel.IsEllipsoid, Is.True);
+            Assert.That(viewModel.IsLayer, Is.False);
+            Assert.That(viewModel.Units, Is.EqualTo(StringLookup.GetLocalizedString("Measurement_mm")));
+            Assert.That(viewModel.OpticalPropertyVM != null, Is.True);
         }
 
         [Test]
@@ -43,8 +43,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             var ellisoidTissueRegion = new EllipsoidTissueRegion {RegionOP = {G = 0.8, Mua = 0D, Mus = 1E-10}};
             ellisoidTissueRegion.RegionOP.G = 1.4;
             var viewModel = new EllipsoidRegionViewModel(ellisoidTissueRegion, "TestEllipsiodTissue");
-            Assert.IsTrue(ellisoidTissueRegion.IsAir());
-            Assert.AreEqual("TestEllipsiodTissue" + StringLookup.GetLocalizedString("Label_Air"), viewModel.Name);
+            Assert.That(ellisoidTissueRegion.IsAir(), Is.True);
+            Assert.That(viewModel.Name, Is.EqualTo("TestEllipsiodTissue" + StringLookup.GetLocalizedString("Label_Air")));
         }
 
         [Test]
@@ -66,18 +66,18 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
                         "cm", "NewTitle"),
                 Name = "NewName"
             };
-            Assert.AreEqual("NewName" + StringLookup.GetLocalizedString("Label_Tissue"), viewModel.Name);
-            Assert.AreEqual(0.1,viewModel.OpticalPropertyVM.Mua);
-            Assert.AreEqual(0.8, viewModel.OpticalPropertyVM.G);
-            Assert.AreEqual(0.01, viewModel.OpticalPropertyVM.Musp);
-            Assert.AreEqual(1.4, viewModel.OpticalPropertyVM.N);
-            Assert.AreEqual("cm", viewModel.OpticalPropertyVM.Units);
-            Assert.AreEqual(0.1, viewModel.X);
-            Assert.AreEqual(0.2, viewModel.Y);
-            Assert.AreEqual(0.3, viewModel.Z);
-            Assert.AreEqual(0.7, viewModel.Dx);
-            Assert.AreEqual(0.4, viewModel.Dy);
-            Assert.AreEqual(5.0, viewModel.Dz);
+            Assert.That(viewModel.Name, Is.EqualTo("NewName" + StringLookup.GetLocalizedString("Label_Tissue")));
+            Assert.That(viewModel.OpticalPropertyVM.Mua, Is.EqualTo(0.1));
+            Assert.That(viewModel.OpticalPropertyVM.G, Is.EqualTo(0.8));
+            Assert.That(viewModel.OpticalPropertyVM.Musp, Is.EqualTo(0.01));
+            Assert.That(viewModel.OpticalPropertyVM.N, Is.EqualTo(1.4));
+            Assert.That(viewModel.OpticalPropertyVM.Units, Is.EqualTo("cm"));
+            Assert.That(viewModel.X, Is.EqualTo(0.1));
+            Assert.That(viewModel.Y, Is.EqualTo(0.2));
+            Assert.That(viewModel.Z, Is.EqualTo(0.3));
+            Assert.That(viewModel.Dx, Is.EqualTo(0.7));
+            Assert.That(viewModel.Dy, Is.EqualTo(0.4));
+            Assert.That(viewModel.Dz, Is.EqualTo(5.0));
         }
     }
 }

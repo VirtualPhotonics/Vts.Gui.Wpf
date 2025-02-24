@@ -10,7 +10,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel
         public void Verify_version_returns_value()
         {
             var windowViewModel = new WindowViewModel();
-            Assert.IsNotNull(windowViewModel.Version);
+            Assert.That(windowViewModel.Version, Is.Not.Null);
         }
     }
 }

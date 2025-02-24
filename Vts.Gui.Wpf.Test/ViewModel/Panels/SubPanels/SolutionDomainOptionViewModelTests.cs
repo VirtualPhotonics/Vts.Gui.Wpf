@@ -17,12 +17,12 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
         public void Verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new SolutionDomainOptionViewModel();
-            Assert.AreEqual(viewModel.ROfRhoOption, viewModel.Options[SolutionDomainType.ROfRho]);
-            Assert.AreEqual(viewModel.ROfFxOption, viewModel.Options[SolutionDomainType.ROfFx]);
-            Assert.AreEqual(viewModel.ROfRhoAndTimeOption, viewModel.Options[SolutionDomainType.ROfRhoAndTime]);
-            Assert.AreEqual(viewModel.ROfFxAndTimeOption, viewModel.Options[SolutionDomainType.ROfFxAndTime]);
-            Assert.AreEqual(viewModel.ROfRhoAndFtOption, viewModel.Options[SolutionDomainType.ROfRhoAndFt]);
-            Assert.AreEqual(viewModel.ROfFxAndFtOption, viewModel.Options[SolutionDomainType.ROfFxAndFt]);
+            Assert.That(viewModel.Options[SolutionDomainType.ROfRho], Is.EqualTo(viewModel.ROfRhoOption));
+            Assert.That(viewModel.Options[SolutionDomainType.ROfFx], Is.EqualTo(viewModel.ROfFxOption));
+            Assert.That(viewModel.Options[SolutionDomainType.ROfRhoAndTime], Is.EqualTo(viewModel.ROfRhoAndTimeOption));
+            Assert.That(viewModel.Options[SolutionDomainType.ROfFxAndTime], Is.EqualTo(viewModel.ROfFxAndTimeOption));
+            Assert.That(viewModel.Options[SolutionDomainType.ROfRhoAndFt], Is.EqualTo(viewModel.ROfRhoAndFtOption));
+            Assert.That(viewModel.Options[SolutionDomainType.ROfFxAndFt], Is.EqualTo(viewModel.ROfFxAndFtOption));
         }
 
         /// <summary>
@@ -32,15 +32,15 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
         public void Verify_constructor_sets_update_options_correctly()
         {
             var viewModel = new SolutionDomainOptionViewModel("ROfRhoAndTime", SolutionDomainType.ROfRhoAndTime);
-            Assert.AreEqual(SolutionDomainType.ROfRhoAndTime, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(SolutionDomainType.ROfRhoAndTime));
             viewModel = new SolutionDomainOptionViewModel("ROfFx", SolutionDomainType.ROfFx);
-            Assert.AreEqual(SolutionDomainType.ROfFx, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(SolutionDomainType.ROfFx));
             viewModel = new SolutionDomainOptionViewModel("ROfFxAndTime", SolutionDomainType.ROfFxAndTime);
-            Assert.AreEqual(SolutionDomainType.ROfFxAndTime, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(SolutionDomainType.ROfFxAndTime));
             viewModel = new SolutionDomainOptionViewModel("ROfFxAndFt", SolutionDomainType.ROfFxAndFt);
-            Assert.AreEqual(SolutionDomainType.ROfFxAndFt, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(SolutionDomainType.ROfFxAndFt));
             viewModel = new SolutionDomainOptionViewModel("ROfRhoAndFt", SolutionDomainType.ROfRhoAndFt);
-            Assert.AreEqual(SolutionDomainType.ROfRhoAndFt, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(SolutionDomainType.ROfRhoAndFt));
         }
 
         [Test]

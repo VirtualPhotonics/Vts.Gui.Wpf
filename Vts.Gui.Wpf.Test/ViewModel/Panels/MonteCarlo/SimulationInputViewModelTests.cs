@@ -16,9 +16,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         public void verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new SimulationInputViewModel();
-            Assert.IsTrue(viewModel.SimulationOptionsVM != null);
-            Assert.IsTrue(viewModel.TissueInputVM != null);
-            Assert.IsTrue(viewModel.TissueTypeVM != null);
+            Assert.That(viewModel.SimulationOptionsVM != null, Is.True);
+            Assert.That(viewModel.TissueInputVM != null, Is.True);
+            Assert.That(viewModel.TissueTypeVM != null, Is.True);
         }
 
         // The following tests verify the Relay Commands

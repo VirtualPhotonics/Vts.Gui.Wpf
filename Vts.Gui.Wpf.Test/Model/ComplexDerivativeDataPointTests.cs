@@ -19,12 +19,12 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.2, 0.3),
                 new Complex(0.4, 0.5),
                 ForwardAnalysisType.dRdG);
-            Assert.AreEqual(0.1, dataPoint.X);
-            Assert.AreEqual(0.2,dataPoint.Y.Real);
-            Assert.AreEqual(0.3, dataPoint.Y.Imaginary);
-            Assert.AreEqual(0.4, dataPoint.Dy.Real);
-            Assert.AreEqual(0.5, dataPoint.Dy.Imaginary);
-            Assert.AreEqual(ForwardAnalysisType.dRdG, dataPoint.DerivativeVariable);
+            Assert.That(dataPoint.X, Is.EqualTo(0.1));
+            Assert.That(dataPoint.Y.Real, Is.EqualTo(0.2));
+            Assert.That(dataPoint.Y.Imaginary, Is.EqualTo(0.3));
+            Assert.That(dataPoint.Dy.Real, Is.EqualTo(0.4));
+            Assert.That(dataPoint.Dy.Imaginary, Is.EqualTo(0.5));
+            Assert.That(dataPoint.DerivativeVariable, Is.EqualTo(ForwardAnalysisType.dRdG));
 
         }
 
@@ -44,14 +44,14 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.2, 0.4),
                 new Complex(0.4, 0.5),
                 ForwardAnalysisType.dRdN);
-            Assert.IsFalse(dataPoint1.Equals(dataPoint2));
+            Assert.That(dataPoint1.Equals(dataPoint2), Is.False);
             var dataPoint3 = new ComplexDerivativeDataPoint(
                 0.1, 
                 new Complex(0.2, 0.3),
             new Complex(0.4, 0.5),
             ForwardAnalysisType.dRdN);
-            Assert.IsTrue(dataPoint1.Equals(dataPoint3));
-            Assert.IsTrue(dataPoint1.Equals(dataPoint1, dataPoint3));
+            Assert.That(dataPoint1.Equals(dataPoint3), Is.True);
+            Assert.That(dataPoint1.Equals(dataPoint1, dataPoint3), Is.True);
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace Vts.Gui.Wpf.Test.Model
             var localizedString = $"{0.1.ToString(Thread.CurrentThread.CurrentCulture)}, <" +
                                   $"{0.3.ToString(Thread.CurrentThread.CurrentCulture)}; " +
                                   $"{0.1.ToString(Thread.CurrentThread.CurrentCulture)}>";
-            Assert.AreEqual(localizedString, dataPoint.ToString());
+            Assert.That(dataPoint.ToString(), Is.EqualTo(localizedString));
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.2, 0.5),
                 new Complex(0.3, 0.4),
                 ForwardAnalysisType.dRdMusp);
-            Assert.IsInstanceOf<int>(dataPoint.GetHashCode());
+            Assert.That(dataPoint.GetHashCode(), Is.InstanceOf<int>());
         }
 
         [Test]
@@ -92,9 +92,9 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.9, 0.5),
                 new Complex(0.8, 0.7),
                 ForwardAnalysisType.dRdMusp);
-            Assert.IsNotNull(dataPoint1);
-            Assert.IsNotNull(dataPoint2);
-            Assert.IsInstanceOf<int>(dataPoint1.GetHashCode(dataPoint2));
+            Assert.That(dataPoint1, Is.Not.Null);
+            Assert.That(dataPoint2, Is.Not.Null);
+            Assert.That(dataPoint1.GetHashCode(dataPoint2), Is.InstanceOf<int>());
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.1, 0.2),
                 new Complex(0.3, 0.4),
                 ForwardAnalysisType.R);
-            Assert.IsTrue(dataPoint1.Equals(dataPoint2));
+            Assert.That(dataPoint1.Equals(dataPoint2), Is.True);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.3, 0.4),
                 ForwardAnalysisType.dRdMua);
             var phaseDerivative = ((ComplexDerivativeDataPoint)dataPoint).PhaseDerivative;
-            Assert.IsTrue(Math.Abs(-0.399999 - phaseDerivative) < 1e-6);
+            Assert.That(Math.Abs(-0.399999 - phaseDerivative) < 1e-6, Is.True);
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace Vts.Gui.Wpf.Test.Model
                 new Complex(0.3, 0.4),
                 ForwardAnalysisType.dRdMua);
             var phaseDerivative = ((ComplexDerivativeDataPoint)dataPoint).AmplitudeDerivative;
-            Assert.IsTrue(Math.Abs(0.491934 - phaseDerivative) < 1e-6);
+            Assert.That(Math.Abs(0.491934 - phaseDerivative) < 1e-6, Is.True);
         }
     }
 }

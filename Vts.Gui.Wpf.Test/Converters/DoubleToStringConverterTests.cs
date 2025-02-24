@@ -26,29 +26,27 @@ namespace Vts.Gui.Wpf.Test.Converters
         public void Verify_method_Convert_returns_correct_value()
         {
             var dtsConverter = new DoubleToStringConverter();
-            Assert.AreEqual(D1.ToString(System.Globalization.CultureInfo.CurrentCulture), 
-                dtsConverter.Convert(
+            Assert.That(dtsConverter.Convert(
                 D1,  // double to convert
                 typeof(string),
                 null, // no parameters
-                System.Globalization.CultureInfo.CurrentCulture));
-            Assert.AreEqual(_d2.ToString(System.Globalization.CultureInfo.CurrentCulture),
-                dtsConverter.Convert(
+                System.Globalization.CultureInfo.CurrentCulture), Is.EqualTo(D1.ToString(System.Globalization.CultureInfo.CurrentCulture)));
+            Assert.That(dtsConverter.Convert(
                 I1,  // int to convert - OK
                 typeof(string),
                 null, // no parameters
-                System.Globalization.CultureInfo.CurrentCulture));
+                System.Globalization.CultureInfo.CurrentCulture), Is.EqualTo(_d2.ToString(System.Globalization.CultureInfo.CurrentCulture)));
             var exception = Assert.Throws<ArgumentException>(() => dtsConverter.Convert(
                 "string", // string not a double
                 typeof(string),
                 null, // no parameters
                 System.Globalization.CultureInfo.CurrentCulture));
-            Assert.AreEqual(StringLookup.GetLocalizedString("Exception_DoubleOrInt"), exception?.Message);
-            Assert.AreEqual($"{1.50.ToString("0.00", Thread.CurrentThread.CurrentCulture)}", dtsConverter.Convert(
+            Assert.That(exception?.Message, Is.EqualTo(StringLookup.GetLocalizedString("Exception_DoubleOrInt")));
+            Assert.That(dtsConverter.Convert(
                 1.5,  // double to convert
                 typeof(string),
                 "N2", // pass a formatting parameter
-                System.Globalization.CultureInfo.CurrentCulture));
+                System.Globalization.CultureInfo.CurrentCulture), Is.EqualTo($"{1.50.ToString("0.00", Thread.CurrentThread.CurrentCulture)}"));
         }
 
         /// <summary>
@@ -58,27 +56,27 @@ namespace Vts.Gui.Wpf.Test.Converters
         public void Verify_method_ConvertBack_returns_correct_value()
         {
             var dtsConverter = new DoubleToStringConverter();
-            Assert.AreEqual(D1, dtsConverter.ConvertBack(
+            Assert.That(dtsConverter.ConvertBack(
                 _s1,  // string to convert (double)
                 typeof(string),
                 null, // no parameters
-                System.Globalization.CultureInfo.CurrentCulture));
-            Assert.AreEqual((double)I1, dtsConverter.ConvertBack(
+                System.Globalization.CultureInfo.CurrentCulture), Is.EqualTo(D1));
+            Assert.That(dtsConverter.ConvertBack(
                 _s2, // string to convert (int)
                 typeof(string),
                 null, // no parameters
-                System.Globalization.CultureInfo.CurrentCulture));
-            Assert.AreEqual(0, dtsConverter.ConvertBack(
+                System.Globalization.CultureInfo.CurrentCulture), Is.EqualTo((double)I1));
+            Assert.That(dtsConverter.ConvertBack(
                 "t", // string to convert (NaN)
                 typeof(string),
                 null, // no parameters
-                System.Globalization.CultureInfo.CurrentCulture));
+                System.Globalization.CultureInfo.CurrentCulture), Is.EqualTo(0));
             var exception = Assert.Throws<ArgumentException>(() => dtsConverter.ConvertBack(
                 12, // int value
                 typeof(string),
                 null, // no parameters
                 System.Globalization.CultureInfo.CurrentCulture));
-            Assert.AreEqual(StringLookup.GetLocalizedString("Exception_String"), exception?.Message);
+            Assert.That(exception?.Message, Is.EqualTo(StringLookup.GetLocalizedString("Exception_String")));
         }
 
     }

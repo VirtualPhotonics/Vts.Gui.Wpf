@@ -17,10 +17,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         public void verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new VoxelRegionViewModel();
-            Assert.AreEqual(viewModel.Name, StringLookup.GetLocalizedString("Label_Tissue"));
-            Assert.IsFalse(viewModel.IsLayer);
-            Assert.AreEqual(viewModel.Units, StringLookup.GetLocalizedString("Measurement_mm"));
-            Assert.IsTrue(viewModel.OpticalPropertyVM != null);
+            Assert.That(StringLookup.GetLocalizedString("Label_Tissue"), Is.EqualTo(viewModel.Name));
+            Assert.That(viewModel.IsLayer, Is.False);
+            Assert.That(StringLookup.GetLocalizedString("Measurement_mm"), Is.EqualTo(viewModel.Units));
+            Assert.That(viewModel.OpticalPropertyVM != null, Is.True);
         }
         
     }

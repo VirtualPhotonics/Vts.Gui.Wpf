@@ -36,10 +36,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 },
                 ColorTag = "HSV"
             };
-            Assert.AreEqual("Title", dataPointCollection.Title);
-            Assert.AreEqual(0, dataPointCollection.DataPoints[0].X);
-            Assert.AreEqual(1, dataPointCollection.DataPoints[1].X);
-            Assert.AreEqual("HSV", dataPointCollection.ColorTag);
+            Assert.That(dataPointCollection.Title, Is.EqualTo("Title"));
+            Assert.That(dataPointCollection.DataPoints[0].X, Is.EqualTo(0));
+            Assert.That(dataPointCollection.DataPoints[1].X, Is.EqualTo(1));
+            Assert.That(dataPointCollection.ColorTag, Is.EqualTo("HSV"));
         }
     }
 
@@ -53,7 +53,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         public void Verify_default_constructor()
         {
             var plotPointCollection = new PlotPointCollection();
-            Assert.IsInstanceOf<List<string>>(plotPointCollection.ColorTags);
+            Assert.That(plotPointCollection.ColorTags, Is.InstanceOf<List<string>>());
         }
 
         [Test]
@@ -76,8 +76,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             };
             var colorTags = new List<string> {"red", "white"};
             var plotPointCollection = new PlotPointCollection(points, colorTags);
-            Assert.AreEqual("white",plotPointCollection.ColorTags[1]);
-            Assert.AreEqual(2, plotPointCollection.Count);
+            Assert.That(plotPointCollection.ColorTags[1], Is.EqualTo("white"));
+            Assert.That(plotPointCollection.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -94,8 +94,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             };
             var colorTags = new List<string> { "black" };
             var plotPointCollection = new PlotPointCollection(points, colorTags);
-            Assert.AreEqual("black", plotPointCollection.ColorTags[0]);
-            Assert.AreEqual(1, plotPointCollection.Count);
+            Assert.That(plotPointCollection.ColorTags[0], Is.EqualTo("black"));
+            Assert.That(plotPointCollection.Count, Is.EqualTo(1));
             var pointsBlue = new[]
             {
                 new Point(0, 0),
@@ -110,9 +110,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             };
             plotPointCollection.Add(pointsBlue, "blue");
             plotPointCollection.Add(pointsYellow, "yellow");
-            Assert.AreEqual(3, plotPointCollection.Count);
-            Assert.AreEqual("blue", plotPointCollection.ColorTags[1]);
-            Assert.AreEqual("yellow", plotPointCollection.ColorTags[2]);
+            Assert.That(plotPointCollection.Count, Is.EqualTo(3));
+            Assert.That(plotPointCollection.ColorTags[1], Is.EqualTo("blue"));
+            Assert.That(plotPointCollection.ColorTags[2], Is.EqualTo("yellow"));
         }
 
         [Test]
@@ -130,8 +130,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var colorTags = new List<string> { "black" };
             var plotPointCollection = new PlotPointCollection(points, colorTags);
             var plotPointCollectionClone = plotPointCollection.Clone();
-            Assert.AreEqual(plotPointCollection.ColorTags[0], plotPointCollectionClone.ColorTags[0]);
-            Assert.AreEqual(plotPointCollectionClone.Count, plotPointCollection.Count);
+            Assert.That(plotPointCollectionClone.ColorTags[0], Is.EqualTo(plotPointCollection.ColorTags[0]));
+            Assert.That(plotPointCollection.Count, Is.EqualTo(plotPointCollectionClone.Count));
         }
     }
 
@@ -172,14 +172,14 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         public void Verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new PlotViewModel();
-            Assert.IsInstanceOf<OptionViewModel<ScalingType>>(viewModel.XAxisSpacingOptionVm);
-            Assert.IsInstanceOf<OptionViewModel<ScalingType>>(viewModel.YAxisSpacingOptionVm);
-            Assert.IsInstanceOf<OptionViewModel<PlotToggleType>>(viewModel.PlotToggleTypeOptionVm);
-            Assert.IsInstanceOf<OptionViewModel<PlotNormalizationType>>(viewModel.PlotNormalizationTypeOptionVm);
-            Assert.AreEqual("", viewModel.CustomPlotLabel);
-            Assert.AreEqual(ReflectancePlotType.ForwardSolver, viewModel.PlotType);
-            Assert.AreEqual("", viewModel.PlotModel.Title);
-            Assert.AreEqual(viewModel.PlotModel.Legends[0].LegendPlacement, LegendPlacement.Outside);
+            Assert.That(viewModel.XAxisSpacingOptionVm, Is.InstanceOf<OptionViewModel<ScalingType>>());
+            Assert.That(viewModel.YAxisSpacingOptionVm, Is.InstanceOf<OptionViewModel<ScalingType>>());
+            Assert.That(viewModel.PlotToggleTypeOptionVm, Is.InstanceOf<OptionViewModel<PlotToggleType>>());
+            Assert.That(viewModel.PlotNormalizationTypeOptionVm, Is.InstanceOf<OptionViewModel<PlotNormalizationType>>());
+            Assert.That(viewModel.CustomPlotLabel, Is.EqualTo(""));
+            Assert.That(viewModel.PlotType, Is.EqualTo(ReflectancePlotType.ForwardSolver));
+            Assert.That(viewModel.PlotModel.Title, Is.EqualTo(""));
+            Assert.That(LegendPlacement.Outside, Is.EqualTo(viewModel.PlotModel.Legends[0].LegendPlacement));
         }
 
         // The following tests verify the Relay Commands
@@ -193,13 +193,13 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var viewModel = new PlotViewModel();
             viewModel.ClearPlotCommand.Execute(null);
             // ClearPlot public settings
-            Assert.AreEqual(0, viewModel.Labels.Count);
-            Assert.IsNull(viewModel.Title);
+            Assert.That(viewModel.Labels.Count, Is.EqualTo(0));
+            Assert.That(viewModel.Title, Is.Null);
             // UpdatePlotSeries settings
-            Assert.AreEqual(0, viewModel.PlotModel.Series.Count);
-            Assert.AreEqual(0, viewModel.PlotSeriesCollection.Count);
-            Assert.IsFalse(viewModel.ShowComplexPlotToggle);
-            Assert.IsTrue(viewModel.PlotModel.IsLegendVisible);
+            Assert.That(viewModel.PlotModel.Series.Count, Is.EqualTo(0));
+            Assert.That(viewModel.PlotSeriesCollection.Count, Is.EqualTo(0));
+            Assert.That(viewModel.ShowComplexPlotToggle, Is.False);
+            Assert.That(viewModel.PlotModel.IsLegendVisible, Is.True);
         }
 
         /// <summary>
@@ -226,8 +226,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                     ImageHeight = 1
                 }});
             viewModel.SetAxesLabels.Execute(labels);
-            Assert.AreEqual($"dependent [units] versus independent [units]", viewModel.Title);
-            Assert.AreEqual($"t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns", viewModel.AdditionalPlotValue);
+            Assert.That(viewModel.Title, Is.EqualTo($"dependent [units] versus independent [units]"));
+            Assert.That(viewModel.AdditionalPlotValue, Is.EqualTo($"t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns"));
             var constantAxes = new[]
             {
                 new ConstantAxisViewModel
@@ -249,8 +249,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             };
             labels.ConstantAxes = constantAxes;
             viewModel.SetAxesLabels.Execute(labels);
-            Assert.AreEqual($"dependent [units] versus independent [units]", viewModel.Title);
-            Assert.AreEqual($"t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns\rz = {0.1.ToString(Thread.CurrentThread.CurrentCulture)} mm", viewModel.AdditionalPlotValue);
+            Assert.That(viewModel.Title, Is.EqualTo($"dependent [units] versus independent [units]"));
+            Assert.That(viewModel.AdditionalPlotValue, Is.EqualTo($"t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns\rz = {0.1.ToString(Thread.CurrentThread.CurrentCulture)} mm"));
         }
 
         [Test]
@@ -258,7 +258,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         {
             var viewModel = new PlotViewModel();
             viewModel.SetCustomPlotLabel.Execute("customPlotLabel");
-            Assert.AreEqual("customPlotLabel", viewModel.CustomPlotLabel);
+            Assert.That(viewModel.CustomPlotLabel, Is.EqualTo("customPlotLabel"));
         }
 
         // The following tests verify the Relay Commands
@@ -270,17 +270,17 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         {
             var viewModel = new PlotViewModel();
             // CalculateMinMax settings
-            Assert.AreEqual(1e-9, viewModel.MinXValue);
-            Assert.AreEqual(1.0, viewModel.MaxXValue);
-            Assert.AreEqual(1e-9, viewModel.MinYValue);
-            Assert.AreEqual(1.0, viewModel.MaxXValue);
+            Assert.That(viewModel.MinXValue, Is.EqualTo(1e-9));
+            Assert.That(viewModel.MaxXValue, Is.EqualTo(1.0));
+            Assert.That(viewModel.MinYValue, Is.EqualTo(1e-9));
+            Assert.That(viewModel.MaxXValue, Is.EqualTo(1.0));
             // AddValuesToPlot settings 
             // Note cannot validate plotted data because DataSeriesCollection is private
             var data = new[,] { { 1.0, 2.0 }, { 3.0, 4.0 } };
             viewModel.CustomPlotLabel = "customPlotLabel";
             viewModel.PlotValues.Execute(data);
-            Assert.AreEqual("customPlotLabel", viewModel.CustomPlotLabel);
-            Assert.IsFalse(viewModel.ShowComplexPlotToggle);
+            Assert.That(viewModel.CustomPlotLabel, Is.EqualTo("customPlotLabel"));
+            Assert.That(viewModel.ShowComplexPlotToggle, Is.False);
         }
 
         [Test]
@@ -292,12 +292,12 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             viewModel.HoldOn = true;
             viewModel.AutoScaleX = false;
             viewModel.AutoScaleY = false;
-            Assert.AreEqual(1, viewModel.PlotModel.Series.Count);
+            Assert.That(viewModel.PlotModel.Series.Count, Is.EqualTo(1));
             viewModel.PlotValues.Execute(_plotData);
-            Assert.AreEqual(2, viewModel.PlotModel.Series.Count);
+            Assert.That(viewModel.PlotModel.Series.Count, Is.EqualTo(2));
             viewModel.HoldOn = false;
             viewModel.PlotValues.Execute(_plotData);
-            Assert.AreEqual(1, viewModel.PlotModel.Series.Count);
+            Assert.That(viewModel.PlotModel.Series.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -307,18 +307,18 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             viewModel.PlotValues.Execute(_plotData);
             viewModel.AutoScaleX = true;
             viewModel.AutoScaleY = false;
-            Assert.AreEqual(1, viewModel.PlotModel.Series.Count);
-            Assert.AreEqual(0.5, viewModel.MinXValue);
-            Assert.AreEqual(9.0, viewModel.MaxXValue);
-            Assert.AreEqual(0.5, viewModel.MinYValue);
-            Assert.AreEqual(9.0, viewModel.MaxYValue);
+            Assert.That(viewModel.PlotModel.Series.Count, Is.EqualTo(1));
+            Assert.That(viewModel.MinXValue, Is.EqualTo(0.5));
+            Assert.That(viewModel.MaxXValue, Is.EqualTo(9.0));
+            Assert.That(viewModel.MinYValue, Is.EqualTo(0.5));
+            Assert.That(viewModel.MaxYValue, Is.EqualTo(9.0));
             viewModel.PlotValues.Execute(_plotData);
             viewModel.AutoScaleX = false;
             viewModel.AutoScaleY = true;
-            Assert.AreEqual(0.5, viewModel.MinXValue);
-            Assert.AreEqual(9.0, viewModel.MaxXValue);
-            Assert.AreEqual(0.5, viewModel.MinYValue);
-            Assert.AreEqual(9.0, viewModel.MaxYValue);
+            Assert.That(viewModel.MinXValue, Is.EqualTo(0.5));
+            Assert.That(viewModel.MaxXValue, Is.EqualTo(9.0));
+            Assert.That(viewModel.MinYValue, Is.EqualTo(0.5));
+            Assert.That(viewModel.MaxYValue, Is.EqualTo(9.0));
         }
 
         [Test]
@@ -327,34 +327,34 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var viewModel = new PlotViewModel();
             var viewModelClone = viewModel.Clone();
 
-            Assert.AreEqual(viewModel.Title, viewModelClone.Title);
-            Assert.AreEqual(viewModel.PlotTitles.Count, viewModelClone.PlotTitles.Count);
-            Assert.AreEqual(viewModel.PlotType, viewModelClone.PlotType);
-            Assert.AreEqual(viewModel.HoldOn, viewModelClone.HoldOn);
+            Assert.That(viewModelClone.Title, Is.EqualTo(viewModel.Title));
+            Assert.That(viewModelClone.PlotTitles.Count, Is.EqualTo(viewModel.PlotTitles.Count));
+            Assert.That(viewModelClone.PlotType, Is.EqualTo(viewModel.PlotType));
+            Assert.That(viewModelClone.HoldOn, Is.EqualTo(viewModel.HoldOn));
 
-            Assert.AreEqual(viewModel.Labels.Count, viewModelClone.Labels.Count);
+            Assert.That(viewModelClone.Labels.Count, Is.EqualTo(viewModel.Labels.Count));
 
-            Assert.AreEqual(viewModel.CustomPlotLabel, viewModelClone.CustomPlotLabel);
-            Assert.IsFalse(viewModelClone.ShowInPlotView);
+            Assert.That(viewModelClone.CustomPlotLabel, Is.EqualTo(viewModel.CustomPlotLabel));
+            Assert.That(viewModelClone.ShowInPlotView, Is.False);
 
-            Assert.AreEqual(viewModel.HideKey, viewModelClone.HideKey);
-            Assert.AreEqual(viewModel.ShowAxes, viewModelClone.ShowAxes);
+            Assert.That(viewModelClone.HideKey, Is.EqualTo(viewModel.HideKey));
+            Assert.That(viewModelClone.ShowAxes, Is.EqualTo(viewModel.ShowAxes));
 
             // when we clone a plot view model without any plots, the min and max values will be infinity
-            Assert.AreEqual(double.PositiveInfinity, viewModelClone.MinXValue);
-            Assert.AreEqual(double.NegativeInfinity, viewModelClone.MaxXValue);
-            Assert.AreEqual(double.PositiveInfinity, viewModelClone.MinYValue);
-            Assert.AreEqual(double.NegativeInfinity, viewModelClone.MaxYValue);
+            Assert.That(viewModelClone.MinXValue, Is.EqualTo(double.PositiveInfinity));
+            Assert.That(viewModelClone.MaxXValue, Is.EqualTo(double.NegativeInfinity));
+            Assert.That(viewModelClone.MinYValue, Is.EqualTo(double.PositiveInfinity));
+            Assert.That(viewModelClone.MaxYValue, Is.EqualTo(double.NegativeInfinity));
 
-            Assert.AreEqual(viewModel.AutoScaleX, viewModelClone.AutoScaleX);
-            Assert.AreEqual(viewModel.AutoScaleY, viewModelClone.AutoScaleY);
+            Assert.That(viewModelClone.AutoScaleX, Is.EqualTo(viewModel.AutoScaleX));
+            Assert.That(viewModelClone.AutoScaleY, Is.EqualTo(viewModel.AutoScaleY));
 
-            Assert.AreEqual(viewModel.CurrentIndependentVariableAxis, viewModelClone.CurrentIndependentVariableAxis);
+            Assert.That(viewModelClone.CurrentIndependentVariableAxis, Is.EqualTo(viewModel.CurrentIndependentVariableAxis));
 
-            Assert.IsTrue(viewModelClone.PlotNormalizationTypeOptionVm.Options[viewModelClone.PlotNormalizationTypeOptionVm.SelectedValue].IsSelected);
-            Assert.IsTrue(viewModelClone.PlotToggleTypeOptionVm.Options[viewModelClone.PlotToggleTypeOptionVm.SelectedValue].IsSelected);
-            Assert.IsTrue(viewModelClone.XAxisSpacingOptionVm.Options[viewModelClone.XAxisSpacingOptionVm.SelectedValue].IsSelected);
-            Assert.IsTrue(viewModelClone.YAxisSpacingOptionVm.Options[viewModelClone.YAxisSpacingOptionVm.SelectedValue].IsSelected);
+            Assert.That(viewModelClone.PlotNormalizationTypeOptionVm.Options[viewModelClone.PlotNormalizationTypeOptionVm.SelectedValue].IsSelected, Is.True);
+            Assert.That(viewModelClone.PlotToggleTypeOptionVm.Options[viewModelClone.PlotToggleTypeOptionVm.SelectedValue].IsSelected, Is.True);
+            Assert.That(viewModelClone.XAxisSpacingOptionVm.Options[viewModelClone.XAxisSpacingOptionVm.SelectedValue].IsSelected, Is.True);
+            Assert.That(viewModelClone.YAxisSpacingOptionVm.Options[viewModelClone.YAxisSpacingOptionVm.SelectedValue].IsSelected, Is.True);
         }
 
         [Test]
@@ -362,49 +362,49 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         {
             var viewModelClone = _plotViewModel.Clone();
 
-            Assert.AreEqual(_plotViewModel.Title, viewModelClone.Title);
-            Assert.AreEqual(_plotViewModel.PlotTitles.Count, viewModelClone.PlotTitles.Count);
-            Assert.AreEqual(_plotViewModel.PlotTitles[0], viewModelClone.PlotTitles[0]);
-            Assert.AreEqual(_plotViewModel.PlotType, viewModelClone.PlotType);
-            Assert.AreEqual(_plotViewModel.HoldOn, viewModelClone.HoldOn);
+            Assert.That(viewModelClone.Title, Is.EqualTo(_plotViewModel.Title));
+            Assert.That(viewModelClone.PlotTitles.Count, Is.EqualTo(_plotViewModel.PlotTitles.Count));
+            Assert.That(viewModelClone.PlotTitles[0], Is.EqualTo(_plotViewModel.PlotTitles[0]));
+            Assert.That(viewModelClone.PlotType, Is.EqualTo(_plotViewModel.PlotType));
+            Assert.That(viewModelClone.HoldOn, Is.EqualTo(_plotViewModel.HoldOn));
 
-            Assert.AreEqual(_plotViewModel.Labels.Count, viewModelClone.Labels.Count);
-            Assert.AreEqual(_plotViewModel.Labels[0], viewModelClone.Labels[0]);
+            Assert.That(viewModelClone.Labels.Count, Is.EqualTo(_plotViewModel.Labels.Count));
+            Assert.That(viewModelClone.Labels[0], Is.EqualTo(_plotViewModel.Labels[0]));
 
-            Assert.AreEqual(_plotViewModel.CustomPlotLabel, viewModelClone.CustomPlotLabel);
-            Assert.IsFalse(viewModelClone.ShowInPlotView);
+            Assert.That(viewModelClone.CustomPlotLabel, Is.EqualTo(_plotViewModel.CustomPlotLabel));
+            Assert.That(viewModelClone.ShowInPlotView, Is.False);
 
-            Assert.AreEqual(_plotViewModel.HideKey, viewModelClone.HideKey);
-            Assert.AreEqual(_plotViewModel.ShowAxes, viewModelClone.ShowAxes);
+            Assert.That(viewModelClone.HideKey, Is.EqualTo(_plotViewModel.HideKey));
+            Assert.That(viewModelClone.ShowAxes, Is.EqualTo(_plotViewModel.ShowAxes));
 
-            Assert.AreEqual(_plotViewModel.MinXValue, viewModelClone.MinXValue);
-            Assert.AreEqual(_plotViewModel.MaxXValue, viewModelClone.MaxXValue);
-            Assert.AreEqual(_plotViewModel.MinYValue, viewModelClone.MinYValue);
-            Assert.AreEqual(_plotViewModel.MaxYValue, viewModelClone.MaxYValue);
+            Assert.That(viewModelClone.MinXValue, Is.EqualTo(_plotViewModel.MinXValue));
+            Assert.That(viewModelClone.MaxXValue, Is.EqualTo(_plotViewModel.MaxXValue));
+            Assert.That(viewModelClone.MinYValue, Is.EqualTo(_plotViewModel.MinYValue));
+            Assert.That(viewModelClone.MaxYValue, Is.EqualTo(_plotViewModel.MaxYValue));
 
-            Assert.AreEqual(_plotViewModel.AutoScaleX, viewModelClone.AutoScaleX);
-            Assert.AreEqual(_plotViewModel.AutoScaleY, viewModelClone.AutoScaleY);
+            Assert.That(viewModelClone.AutoScaleX, Is.EqualTo(_plotViewModel.AutoScaleX));
+            Assert.That(viewModelClone.AutoScaleY, Is.EqualTo(_plotViewModel.AutoScaleY));
 
-            Assert.AreEqual(_plotViewModel.CurrentIndependentVariableAxis, viewModelClone.CurrentIndependentVariableAxis);
+            Assert.That(viewModelClone.CurrentIndependentVariableAxis, Is.EqualTo(_plotViewModel.CurrentIndependentVariableAxis));
 
-            Assert.IsTrue(viewModelClone.PlotNormalizationTypeOptionVm.Options[viewModelClone.PlotNormalizationTypeOptionVm.SelectedValue].IsSelected);
-            Assert.IsTrue(viewModelClone.PlotToggleTypeOptionVm.Options[viewModelClone.PlotToggleTypeOptionVm.SelectedValue].IsSelected);
-            Assert.IsTrue(viewModelClone.XAxisSpacingOptionVm.Options[viewModelClone.XAxisSpacingOptionVm.SelectedValue].IsSelected);
-            Assert.IsTrue(viewModelClone.YAxisSpacingOptionVm.Options[viewModelClone.YAxisSpacingOptionVm.SelectedValue].IsSelected);
+            Assert.That(viewModelClone.PlotNormalizationTypeOptionVm.Options[viewModelClone.PlotNormalizationTypeOptionVm.SelectedValue].IsSelected, Is.True);
+            Assert.That(viewModelClone.PlotToggleTypeOptionVm.Options[viewModelClone.PlotToggleTypeOptionVm.SelectedValue].IsSelected, Is.True);
+            Assert.That(viewModelClone.XAxisSpacingOptionVm.Options[viewModelClone.XAxisSpacingOptionVm.SelectedValue].IsSelected, Is.True);
+            Assert.That(viewModelClone.YAxisSpacingOptionVm.Options[viewModelClone.YAxisSpacingOptionVm.SelectedValue].IsSelected, Is.True);
         }
 
         [Test]
         public void Verify_manual_scales()
         {
             var viewModel = new PlotViewModel();
-            Assert.IsFalse(viewModel.ManualScaleX);
-            Assert.IsFalse(viewModel.ManualScaleY);
+            Assert.That(viewModel.ManualScaleX, Is.False);
+            Assert.That(viewModel.ManualScaleY, Is.False);
             viewModel.ManualScaleX = true;
             viewModel.ManualScaleY = true;
-            Assert.IsTrue(viewModel.ManualScaleX);
-            Assert.IsTrue(viewModel.ManualScaleY);
-            Assert.IsFalse(viewModel.AutoScaleX);
-            Assert.IsFalse(viewModel.AutoScaleY);
+            Assert.That(viewModel.ManualScaleX, Is.True);
+            Assert.That(viewModel.ManualScaleY, Is.True);
+            Assert.That(viewModel.AutoScaleX, Is.False);
+            Assert.That(viewModel.AutoScaleY, Is.False);
         }
 
         [Test]
@@ -414,9 +414,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotViewModel = windowViewModel.PlotVM;
             plotViewModel.PlotValues.Execute(_plotData);
             plotViewModel.PlotValues.Execute(_plotData);
-            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
             plotViewModel.ClearPlotSingleCommand.Execute(null);
-            Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -426,9 +426,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotViewModel = windowViewModel.PlotVM;
             plotViewModel.PlotValues.Execute(_plotData);
             plotViewModel.PlotValues.Execute(_plotData);
-            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
             plotViewModel.ClearPlotCommand.Execute(null);
-            Assert.AreEqual(0, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -460,13 +460,13 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotViewModel = new PlotViewModel();
             plotViewModel.PlotValues.Execute(plotData);
             // complex plots have 2 plots
-            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
             plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Phase;
-            Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(1));
             plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Amp;
-            Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(1));
             plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Complex;
-            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
             // value verification performed in ComplexDataPoint tests
         }
 
@@ -499,13 +499,13 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotViewModel = new PlotViewModel();
             plotViewModel.PlotValues.Execute(plotData);
             // complex plots have 2 plots
-            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
             plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Phase;
-            Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(1));
             plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Amp;
-            Assert.AreEqual(1, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(1));
             plotViewModel.PlotToggleTypeOptionVm.SelectedValue = PlotToggleType.Complex;
-            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
             // value verification performed in ComplexDerivativeDataPoint tests
         }
 
@@ -516,16 +516,16 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotViewModel = windowViewModel.PlotVM;
             plotViewModel.PlotValues.Execute(_plotData);
             plotViewModel.PlotValues.Execute(_plotData);
-            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
             plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToMax;
             var plotSeries = plotViewModel.PlotSeriesCollection[0];
             var i = 0;
             foreach (var point in plotSeries)
             {
-                Assert.IsInstanceOf<Point>(point);
+                Assert.That(point, Is.InstanceOf<Point>());
                 i++;
             }
-            Assert.AreEqual(10, i);
+            Assert.That(i, Is.EqualTo(10));
         }
 
         [Test]
@@ -535,16 +535,16 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotViewModel = windowViewModel.PlotVM;
             plotViewModel.PlotValues.Execute(_plotData);
             plotViewModel.PlotValues.Execute(_plotData);
-            Assert.AreEqual(2, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
             plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToCurve;
             var plotSeries = plotViewModel.PlotSeriesCollection[0];
             var i = 0;
             foreach (var point in plotSeries)
             {
-                Assert.IsInstanceOf<Point>(point);
+                Assert.That(point, Is.InstanceOf<Point>());
                 i++;
             }
-            Assert.AreEqual(10, i);
+            Assert.That(i, Is.EqualTo(10));
         }
 
         [Test]
@@ -571,16 +571,16 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             plotViewModel.PlotToggleTypeOptionVm.SelectedValue = toggleType;
             plotViewModel.PlotValues.Execute(plotData);
             plotViewModel.PlotValues.Execute(plotData);
-            Assert.AreEqual(toggleType == PlotToggleType.Complex ? 4 : 2, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(toggleType == PlotToggleType.Complex ? 4 : 2));
             plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToMax;
             var plotSeries = plotViewModel.PlotSeriesCollection[0];
             var i = 0;
             foreach (var point in plotSeries)
             {
-                Assert.IsInstanceOf<Point>(point);
+                Assert.That(point, Is.InstanceOf<Point>());
                 i++;
             }
-            Assert.AreEqual(10, i);
+            Assert.That(i, Is.EqualTo(10));
         }
 
         [Test]
@@ -603,16 +603,16 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotViewModel = windowViewModel.PlotVM;
             plotViewModel.PlotValues.Execute(plotData);
             plotViewModel.PlotValues.Execute(plotData);
-            Assert.AreEqual(4, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(4));
             plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToCurve;
             var plotSeries = plotViewModel.PlotSeriesCollection[0];
             var i = 0;
             foreach (var point in plotSeries)
             {
-                Assert.IsInstanceOf<Point>(point);
+                Assert.That(point, Is.InstanceOf<Point>());
                 i++;
             }
-            Assert.AreEqual(10, i);
+            Assert.That(i, Is.EqualTo(10));
         }
 
         [Test]
@@ -649,16 +649,16 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             plotViewModel.PlotToggleTypeOptionVm.SelectedValue = toggleType;
             plotViewModel.PlotValues.Execute(plotData);
             plotViewModel.PlotValues.Execute(plotData);
-            Assert.AreEqual(toggleType == PlotToggleType.Complex ? 4 : 2, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(toggleType == PlotToggleType.Complex ? 4 : 2));
             plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToMax;
             var plotSeries = plotViewModel.PlotSeriesCollection[0];
             var i = 0;
             foreach (var point in plotSeries)
             {
-                Assert.IsInstanceOf<Point>(point);
+                Assert.That(point, Is.InstanceOf<Point>());
                 i++;
             }
-            Assert.AreEqual(toggleType == PlotToggleType.Phase ? 3 : 4, i);
+            Assert.That(i, Is.EqualTo(toggleType == PlotToggleType.Phase ? 3 : 4));
         }
 
         [Test]
@@ -691,16 +691,16 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var plotViewModel = windowViewModel.PlotVM;
             plotViewModel.PlotValues.Execute(plotData);
             plotViewModel.PlotValues.Execute(plotData);
-            Assert.AreEqual(4, plotViewModel.PlotModel.Series.Count);
+            Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(4));
             plotViewModel.PlotNormalizationTypeOptionVm.SelectedValue = PlotNormalizationType.RelativeToCurve;
             var plotSeries = plotViewModel.PlotSeriesCollection[0];
             var i = 0;
             foreach (var point in plotSeries)
             {
-                Assert.IsInstanceOf<Point>(point);
+                Assert.That(point, Is.InstanceOf<Point>());
                 i++;
             }
-            Assert.AreEqual(4, i);
+            Assert.That(i, Is.EqualTo(4));
         }
 
         /// <summary>
@@ -757,9 +757,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 if (line == null) continue;
                 var data = line.Split();
                 // check x value
-                Assert.AreEqual(t.X.ToString(CultureInfo.InvariantCulture), data[0]);
+                Assert.That(data[0], Is.EqualTo(t.X.ToString(CultureInfo.InvariantCulture)));
                 // check y value
-                Assert.AreEqual(t.Y.ToString(CultureInfo.InvariantCulture), data[1]);
+                Assert.That(data[1], Is.EqualTo(t.Y.ToString(CultureInfo.InvariantCulture)));
             }
         }
 
@@ -811,11 +811,11 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 if (line == null) continue;
                 var data = line.Split();
                 // check x value
-                Assert.AreEqual(t.X.ToString(CultureInfo.InvariantCulture), data[0]);
+                Assert.That(data[0], Is.EqualTo(t.X.ToString(CultureInfo.InvariantCulture)));
                 // check real value
-                Assert.AreEqual(t.Y.Real.ToString(CultureInfo.InvariantCulture), data[1]);
+                Assert.That(data[1], Is.EqualTo(t.Y.Real.ToString(CultureInfo.InvariantCulture)));
                 // check imaginary value
-                Assert.AreEqual(t.Y.Imaginary.ToString(CultureInfo.InvariantCulture), data[1]);
+                Assert.That(data[1], Is.EqualTo(t.Y.Imaginary.ToString(CultureInfo.InvariantCulture)));
 
             }
         }

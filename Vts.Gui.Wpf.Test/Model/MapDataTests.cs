@@ -33,11 +33,11 @@ namespace Vts.Gui.Wpf.Test.Model
         {
 
             var mapData = new MapData(_rawData, _xValues, _yValues, _dxValues, _dyValues);
-            Assert.AreEqual(mapData.RawData, _rawData); // nunit AreEqual compares arrays item by item
-            Assert.AreEqual(_xValues, mapData.XValues);
-            Assert.AreEqual(_yValues, mapData.YValues);
-            Assert.AreEqual(_dxValues, mapData.DxValues);
-            Assert.AreEqual(_dyValues, mapData.DyValues);
+            Assert.That(_rawData, Is.EqualTo(mapData.RawData)); // nunit AreEqual compares arrays item by item
+            Assert.That(mapData.XValues, Is.EqualTo(_xValues));
+            Assert.That(mapData.YValues, Is.EqualTo(_yValues));
+            Assert.That(mapData.DxValues, Is.EqualTo(_dxValues));
+            Assert.That(mapData.DyValues, Is.EqualTo(_dyValues));
         }
 
         /// <summary>
@@ -47,11 +47,11 @@ namespace Vts.Gui.Wpf.Test.Model
         public void Verify_class_methods_work_correctly()
         {
             var mapData = new MapData(_rawData, _xValues, _yValues, _dxValues, _dyValues);
-            Assert.AreEqual(2, mapData.Width); // length of xvalues
-            Assert.AreEqual(2, mapData.Height); // length of yvalues
-            Assert.AreEqual(0.1, mapData.Min); // min of rawdata
-            Assert.AreEqual(0.4, mapData.Max); // max of rawdata
-            Assert.Less(Math.Abs(mapData.YExpectationValue - 0.771593), 0.000001);
+            Assert.That(mapData.Width, Is.EqualTo(2)); // length of x values
+            Assert.That(mapData.Height, Is.EqualTo(2)); // length of y values
+            Assert.That(mapData.Min, Is.EqualTo(0.1)); // min of raw data
+            Assert.That(mapData.Max, Is.EqualTo(0.4)); // max of raw data
+            Assert.That(Math.Abs(mapData.YExpectationValue - 0.771593), Is.LessThan(0.000001));
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Vts.Gui.Wpf.Test.Model
         public void Verify_Create_method_works_correctly()
         {
             var mapData = MapData.Create(_rawData, _xValues, _yValues, _dxValues, _dyValues);
-            Assert.IsInstanceOf<MapData>(mapData);
+            Assert.That(mapData, Is.InstanceOf<MapData>());
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Vts.Gui.Wpf.Test.Model
         {
             var rawData = new[,] { { 0.1, 0.2 }, { 0.3, 0.4 } };
             var mapData = MapData.Create(rawData, _xValues, _yValues, _dxValues, _dyValues);
-            Assert.IsInstanceOf<MapData>(mapData);
+            Assert.That(mapData, Is.InstanceOf<MapData>());
         }
 
         /// <summary>

@@ -16,37 +16,37 @@ namespace Vts.Gui.Wpf.Test.Extensions
         public void Verify_method_GetLocalizedString_works_correctly_for_existing_string()
         {
             var stringLookup = StringLookup.GetLocalizedString("Label_FwdSolver");
-            Assert.AreEqual("Fwd Solver:", stringLookup);
+            Assert.That(stringLookup, Is.EqualTo("Fwd Solver:"));
         }
 
         [Test]
         public void Verify_method_GetLocalizedString_works_correctly_for_non_existent_string()
         {
             var stringLookup = StringLookup.GetLocalizedString("non_existent_string");
-            Assert.IsEmpty(stringLookup);
+            Assert.That(stringLookup, Is.Empty);
         }
 
         [Test]
         public void Verify_GetLocalizedString_overload_returns_string()
         {
             var stringLookup = StringLookup.GetLocalizedString("Button", "Cancel");
-            Assert.IsInstanceOf<string>(stringLookup);
-            Assert.IsTrue(stringLookup.Length > 0);
+            Assert.That(stringLookup, Is.InstanceOf<string>());
+            Assert.That(stringLookup.Length > 0, Is.True);
         }
 
         [Test]
         public void Verify_GetLocalizedString_enum_returns_empty_string()
         {
             var stringLookup = AbsorptionWeightingType.Analog.GetLocalizedString();
-            Assert.IsEmpty(stringLookup);
+            Assert.That(stringLookup, Is.Empty);
         }
 
         [Test]
         public void Verify_GetLocalizedString_enum_returns_string()
         {
             var stringLookup = IndependentVariableAxis.Time.GetLocalizedString();
-            Assert.IsInstanceOf<string>(stringLookup);
-            Assert.IsTrue(stringLookup.Length > 0);
+            Assert.That(stringLookup, Is.InstanceOf<string>());
+            Assert.That(stringLookup.Length > 0, Is.True);
         }
     }
 }

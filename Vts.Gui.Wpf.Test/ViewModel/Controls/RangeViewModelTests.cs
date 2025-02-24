@@ -30,9 +30,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
         public void Verify_default_constructor_sets_properties_correctly()
         {
             var rangeVM = new RangeViewModel();
-            Assert.AreEqual(1.0, rangeVM.Start);
-            Assert.AreEqual(6, rangeVM.Stop);
-            Assert.AreEqual(60, rangeVM.Number);
+            Assert.That(rangeVM.Start, Is.EqualTo(1.0));
+            Assert.That(rangeVM.Stop, Is.EqualTo(6));
+            Assert.That(rangeVM.Number, Is.EqualTo(60));
         }
 
         /// <summary>
@@ -47,35 +47,35 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
                 IndependentVariableAxis.Time, 
                 "Test:", 
                 false);
-            Assert.AreEqual(0.0, rangeVM.Start);
-            Assert.AreEqual(100.0, rangeVM.Stop);
-            Assert.AreEqual(101, rangeVM.Number);
-            Assert.AreEqual("xx", rangeVM.Units);
-            Assert.AreEqual(IndependentVariableAxis.Time, rangeVM.AxisType);
-            Assert.AreEqual("Test:", rangeVM.Title);
-            Assert.IsFalse(rangeVM.EnableNumber);
+            Assert.That(rangeVM.Start, Is.EqualTo(0.0));
+            Assert.That(rangeVM.Stop, Is.EqualTo(100.0));
+            Assert.That(rangeVM.Number, Is.EqualTo(101));
+            Assert.That(rangeVM.Units, Is.EqualTo("xx"));
+            Assert.That(rangeVM.AxisType, Is.EqualTo(IndependentVariableAxis.Time));
+            Assert.That(rangeVM.Title, Is.EqualTo("Test:"));
+            Assert.That(rangeVM.EnableNumber, Is.False);
         }
 
         [Test]
         public void Verify_show_title_returns_true()
         {
-            Assert.IsTrue(_rangeViewModel.ShowTitle);
+            Assert.That(_rangeViewModel.ShowTitle, Is.True);
         }
 
         [Test]
         public void Verify_enable_number_returns_true()
         {
-            Assert.IsFalse(_rangeViewModel.EnableNumber);
+            Assert.That(_rangeViewModel.EnableNumber, Is.False);
             _rangeViewModel.EnableNumber = true;
-            Assert.IsTrue(_rangeViewModel.EnableNumber);
+            Assert.That(_rangeViewModel.EnableNumber, Is.True);
         }
 
         [Test]
         public void Verify_setting_axis_type_changes_value()
         {
-            Assert.AreEqual(IndependentVariableAxis.Time, _rangeViewModel.AxisType);
+            Assert.That(_rangeViewModel.AxisType, Is.EqualTo(IndependentVariableAxis.Time));
             _rangeViewModel.AxisType = IndependentVariableAxis.Rho;
-            Assert.AreEqual(IndependentVariableAxis.Rho, _rangeViewModel.AxisType);
+            Assert.That(_rangeViewModel.AxisType, Is.EqualTo(IndependentVariableAxis.Rho));
         }
     }
 }

@@ -17,12 +17,12 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
         public void Verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new FluenceSolutionDomainOptionViewModel();
-            Assert.AreEqual(viewModel.FluenceOfRhoAndZOption, viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZ]);
-            Assert.AreEqual(viewModel.FluenceOfFxAndZOption, viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZ]);
-            Assert.AreEqual(viewModel.FluenceOfRhoAndZAndTimeOption, viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZAndTime]);
-            Assert.AreEqual(viewModel.FluenceOfFxAndZAndTimeOption, viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZAndTime]);
-            Assert.AreEqual(viewModel.FluenceOfRhoAndZAndFtOption, viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZAndFt]);
-            Assert.AreEqual(viewModel.FluenceOfFxAndZAndFtOption, viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZAndFt]);
+            Assert.That(viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZ], Is.EqualTo(viewModel.FluenceOfRhoAndZOption));
+            Assert.That(viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZ], Is.EqualTo(viewModel.FluenceOfFxAndZOption));
+            Assert.That(viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZAndTime], Is.EqualTo(viewModel.FluenceOfRhoAndZAndTimeOption));
+            Assert.That(viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZAndTime], Is.EqualTo(viewModel.FluenceOfFxAndZAndTimeOption));
+            Assert.That(viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZAndFt], Is.EqualTo(viewModel.FluenceOfRhoAndZAndFtOption));
+            Assert.That(viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZAndFt], Is.EqualTo(viewModel.FluenceOfFxAndZAndFtOption));
         }
 
         /// <summary>
@@ -32,17 +32,17 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
         public void Verify_constructor_sets_update_options_correctly()
         {
             var viewModel = new FluenceSolutionDomainOptionViewModel();
-            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfRhoAndZ, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(FluenceSolutionDomainType.FluenceOfRhoAndZ));
             viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZ].IsSelected = true;
-            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfFxAndZ, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(FluenceSolutionDomainType.FluenceOfFxAndZ));
             viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZAndFt].IsSelected = true;
-            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfFxAndZAndFt, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(FluenceSolutionDomainType.FluenceOfFxAndZAndFt));
             viewModel.Options[FluenceSolutionDomainType.FluenceOfFxAndZAndTime].IsSelected = true;
-            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfFxAndZAndTime, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(FluenceSolutionDomainType.FluenceOfFxAndZAndTime));
             viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZAndFt].IsSelected = true;
-            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfRhoAndZAndFt, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(FluenceSolutionDomainType.FluenceOfRhoAndZAndFt));
             viewModel.Options[FluenceSolutionDomainType.FluenceOfRhoAndZAndTime].IsSelected = true;
-            Assert.AreEqual(FluenceSolutionDomainType.FluenceOfRhoAndZAndTime, viewModel.SelectedValue);
+            Assert.That(viewModel.SelectedValue, Is.EqualTo(FluenceSolutionDomainType.FluenceOfRhoAndZAndTime));
         }
 
         [Test]

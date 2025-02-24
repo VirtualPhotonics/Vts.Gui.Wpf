@@ -16,7 +16,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
         public void Verify_default_constructor_relay_command_correctly()
         {
             var textOutputVm = new TextOutputViewModel();
-            Assert.IsTrue(textOutputVm.TextOutput_PostMessage != null);
+            Assert.That(textOutputVm.TextOutput_PostMessage != null, Is.True);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
             var windowViewModel = new WindowViewModel();
             var textOutputVm = windowViewModel.TextOutputVM;
             WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("UnitTest:");
-            Assert.AreEqual("UnitTest:", textOutputVm.Text);
+            Assert.That(textOutputVm.Text, Is.EqualTo("UnitTest:"));
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
             var windowViewModel = new WindowViewModel();
             var textOutputVm = windowViewModel.TextOutputVM;
             textOutputVm.AppendText("Hello");
-            Assert.AreEqual("Hello", textOutputVm.Text);
+            Assert.That(textOutputVm.Text, Is.EqualTo("Hello"));
         }
     }
 }

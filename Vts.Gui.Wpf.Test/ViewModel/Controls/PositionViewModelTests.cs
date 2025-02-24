@@ -10,20 +10,20 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
         public void Verify_default_constructor()
         {
             var positionViewModel = new PositionViewModel();
-            Assert.AreEqual(0, positionViewModel.X);
-            Assert.AreEqual(0, positionViewModel.Y);
-            Assert.AreEqual(0, positionViewModel.Z);
-            Assert.AreEqual("mm", positionViewModel.Units);
-            Assert.AreEqual("Position:", positionViewModel.Title);
+            Assert.That(positionViewModel.X, Is.EqualTo(0));
+            Assert.That(positionViewModel.Y, Is.EqualTo(0));
+            Assert.That(positionViewModel.Z, Is.EqualTo(0));
+            Assert.That(positionViewModel.Units, Is.EqualTo("mm"));
+            Assert.That(positionViewModel.Title, Is.EqualTo("Position:"));
         }
 
         [Test]
         public void Verify_changing_point_values()
         {
             var positionViewModel = new PositionViewModel {X = 1, Y = 2, Z = 3};
-            Assert.AreEqual(1, positionViewModel.X);
-            Assert.AreEqual(2, positionViewModel.Y);
-            Assert.AreEqual(3, positionViewModel.Z);
+            Assert.That(positionViewModel.X, Is.EqualTo(1));
+            Assert.That(positionViewModel.Y, Is.EqualTo(2));
+            Assert.That(positionViewModel.Z, Is.EqualTo(3));
         }
 
         [Test]
@@ -31,16 +31,16 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
         {
             var positionViewModel = new PositionViewModel { X = 2, Y = 4, Z = 6 };
             var position = positionViewModel.GetPosition();
-            Assert.AreEqual(2.0d, position.X);
-            Assert.AreEqual(4.0d, position.Y);
-            Assert.AreEqual(6.0d, position.Z);
+            Assert.That(position.X, Is.EqualTo(2.0d));
+            Assert.That(position.Y, Is.EqualTo(4.0d));
+            Assert.That(position.Z, Is.EqualTo(6.0d));
         }
 
         [Test]
         public void Verify_check_title()
         {
             var positionViewModel = new PositionViewModel();
-            Assert.IsTrue(positionViewModel.ShowTitle);
+            Assert.That(positionViewModel.ShowTitle, Is.True);
         }
     }
 }
