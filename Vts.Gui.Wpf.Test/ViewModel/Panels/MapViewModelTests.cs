@@ -17,10 +17,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         public void Verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new MapViewModel();
-            Assert.AreEqual(1e-9, viewModel.MinValue);
-            Assert.AreEqual(1.0, viewModel.MaxValue);
-            Assert.IsInstanceOf<OptionViewModel<ScalingType>>(viewModel.ScalingTypeOptionVm);
-            Assert.IsInstanceOf<OptionViewModel<ColormapType>>(viewModel.ColormapTypeOptionVm);
+            Assert.That(viewModel.MinValue, Is.EqualTo(1e-9));
+            Assert.That(viewModel.MaxValue, Is.EqualTo(1.0));
+            Assert.That(viewModel.ScalingTypeOptionVm, Is.InstanceOf<OptionViewModel<ScalingType>>());
+            Assert.That(viewModel.ColormapTypeOptionVm, Is.InstanceOf<OptionViewModel<ColormapType>>());
         }
 
         // The following tests verify the Relay Commands
@@ -33,7 +33,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         {
             var viewModel = new MapViewModel();
             viewModel.PlotMap.Execute(null);
-            Assert.IsNull(viewModel.Bitmap);
+            Assert.That(viewModel.Bitmap, Is.Null);
 
         }
 

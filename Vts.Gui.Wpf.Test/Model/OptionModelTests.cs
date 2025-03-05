@@ -28,12 +28,12 @@ namespace Vts.Gui.Wpf.Test.Model
         [Test]
         public void Verify_constructor_sets_properties_correctly()
         {
-            Assert.AreEqual("displayName", _optionModel.DisplayName);
-            Assert.AreEqual(1, _optionModel.Id);
-            Assert.IsFalse(_optionModel.MultiSelectEnabled);
-            Assert.AreEqual(2, _optionModel.SortValue);
-            Assert.AreEqual("groupName", _optionModel.GroupName);
-            Assert.IsTrue(_optionModel.IsEnabled);
+            Assert.That(_optionModel.DisplayName, Is.EqualTo("displayName"));
+            Assert.That(_optionModel.Id, Is.EqualTo(1));
+            Assert.That(_optionModel.MultiSelectEnabled, Is.False);
+            Assert.That(_optionModel.SortValue, Is.EqualTo(2));
+            Assert.That(_optionModel.GroupName, Is.EqualTo("groupName"));
+            Assert.That(_optionModel.IsEnabled, Is.True);
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace Vts.Gui.Wpf.Test.Model
             var optionModel = new OptionModel<ColormapType>(
                 "displayName", ColormapType.Binary, 2, "groupName", false, 3);
             var val = _optionModel.CompareTo(optionModel);
-            Assert.AreEqual(-1, val);
+            Assert.That(val, Is.EqualTo(-1));
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace Vts.Gui.Wpf.Test.Model
         {
             OptionModel<ColormapType> optionModel = null;
             var val = _optionModel.CompareTo(optionModel);
-            Assert.AreEqual(-1, val);
+            Assert.That(val, Is.EqualTo(-1));
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace Vts.Gui.Wpf.Test.Model
             var optionModel = new OptionModel<ColormapType>(
                 "displayName", ColormapType.Binary, 2, "groupName", false, 2);
             var val = _optionModel.CompareTo(optionModel);
-            Assert.AreEqual(0, val);
+            Assert.That(val, Is.EqualTo(0));
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Vts.Gui.Wpf.Test.Model
             var optionModel = new OptionModel<ColormapType>(
                 "displayName", ColormapType.Binary, 2, "groupName", false, int.MinValue);
             var val = _optionModel.CompareTo(optionModel);
-            Assert.AreEqual(-1, val);
+            Assert.That(val, Is.EqualTo(-1));
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Vts.Gui.Wpf.Test.Model
             var optionModelCompare = new OptionModel<ColormapType>(
                 "displayName", ColormapType.Binary, 2, "groupName", false, int.MinValue);
             var val = optionModel.CompareTo(optionModelCompare);
-            Assert.AreEqual(0, val);
+            Assert.That(val, Is.EqualTo(0));
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace Vts.Gui.Wpf.Test.Model
             var optionModelCompare = new OptionModel<ColormapType>(
                 "displayName", ColormapType.Binary, 2, "groupName", false, 2);
             var val = optionModel.CompareTo(optionModelCompare);
-            Assert.AreEqual(1, val);
+            Assert.That(val, Is.EqualTo(1));
         }
 
         [Test]

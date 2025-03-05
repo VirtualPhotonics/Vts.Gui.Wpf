@@ -20,9 +20,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             // WindowViewModel needs to be instantiated for default constructor
             var windowViewModel = new WindowViewModel();
             var viewModel = windowViewModel.ForwardSolverVM;
-            Assert.IsTrue(viewModel.ForwardSolverTypeOptionVM != null);
-            Assert.IsTrue(viewModel.SolutionDomainTypeOptionVM != null);
-            Assert.IsTrue(viewModel.ForwardAnalysisTypeOptionVM != null);
+            Assert.That(viewModel.ForwardSolverTypeOptionVM != null, Is.True);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM != null, Is.True);
+            Assert.That(viewModel.ForwardAnalysisTypeOptionVM != null, Is.True);
         }
 
         // The following tests verify the Relay Commands
@@ -61,10 +61,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                      d2.ToString("N4", CultureInfo.CurrentCulture) + " \r" +
                      StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
                      d3.ToString("N4", CultureInfo.CurrentCulture);
-            Assert.AreEqual(s3, plotViewModel.Labels[0]);
-            Assert.AreEqual(s2, plotViewModel.Title);
+            Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
+            Assert.That(plotViewModel.Title, Is.EqualTo(s2));
             var textOutputViewModel = windowViewModel.TextOutputVM;
-            Assert.AreEqual(s1, textOutputViewModel.Text);
+            Assert.That(textOutputViewModel.Text, Is.EqualTo(s1));
         }
 
         /// <summary>
@@ -101,10 +101,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                      d2.ToString("N4", CultureInfo.CurrentCulture) + "\r" +
                      StringLookup.GetLocalizedString("Label_MuSPrime2") + "=" +
                      i1.ToString("N4", CultureInfo.CurrentCulture);
-            Assert.AreEqual(s3, plotViewModel.Labels[0]);
-            Assert.AreEqual(s2, plotViewModel.Title);
+            Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
+            Assert.That(plotViewModel.Title, Is.EqualTo(s2));
             var textOutputViewModel = windowViewModel.TextOutputVM;
-            Assert.AreEqual(s1, textOutputViewModel.Text);
+            Assert.That(textOutputViewModel.Text, Is.EqualTo(s1));
         }
 
         /// <summary>
@@ -150,10 +150,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                      d3.ToString("N4", CultureInfo.CurrentCulture) + " \rft = " +
                      d4.ToString("N0", CultureInfo.CurrentCulture) + " " +
                      StringLookup.GetLocalizedString("Measurement_GHz");
-            Assert.AreEqual(s3, plotViewModel.Labels[0]);
-            Assert.AreEqual(s2, plotViewModel.Title);
+            Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
+            Assert.That(plotViewModel.Title, Is.EqualTo(s2));
             var textOutputViewModel = windowViewModel.TextOutputVM;
-            Assert.AreEqual(s1, textOutputViewModel.Text);
+            Assert.That(textOutputViewModel.Text, Is.EqualTo(s1));
         }
 
         /// <summary>
@@ -167,10 +167,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             var viewModel = windowViewModel.ForwardSolverVM;
             // set forward solver to TwoLayerSDA
             viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.TwoLayerSDA;
-            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.AllowMultiAxis);
-            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.UseSpectralInputs);
-            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.EnableMultiAxis);
-            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.EnableSpectralPanelInputs);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.AllowMultiAxis, Is.False);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.UseSpectralInputs, Is.False);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.EnableMultiAxis, Is.False);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.EnableSpectralPanelInputs, Is.False);
         }
 
         /// <summary>
@@ -186,10 +186,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             // set forward solver to DistributedGaussianSourceSDA
             viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.DistributedGaussianSourceSDA;
 
-            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndTimeEnabled);
-            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndFtEnabled);
-            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndTimeEnabled);
-            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndFtEnabled);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndTimeEnabled, Is.False);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndFtEnabled, Is.False);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndTimeEnabled, Is.False);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndFtEnabled, Is.False);
         }
 
     

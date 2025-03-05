@@ -16,10 +16,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
         public void Verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new BloodConcentrationViewModel();
-            Assert.AreEqual(30.0, viewModel.HbO2.Concentration);
-            Assert.AreEqual(10.0, viewModel.Hb.Concentration);
-            Assert.AreEqual(0.75, viewModel.StO2); 
-            Assert.AreEqual(40.0, viewModel.TotalHb);
+            Assert.That(viewModel.HbO2.Concentration, Is.EqualTo(30.0));
+            Assert.That(viewModel.Hb.Concentration, Is.EqualTo(10.0));
+            Assert.That(viewModel.StO2, Is.EqualTo(0.75)); 
+            Assert.That(viewModel.TotalHb, Is.EqualTo(40.0));
         }
 
     }

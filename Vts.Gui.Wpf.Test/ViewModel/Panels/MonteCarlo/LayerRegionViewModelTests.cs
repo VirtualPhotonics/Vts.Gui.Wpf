@@ -17,11 +17,11 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         public void verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new LayerRegionViewModel();
-            Assert.AreEqual(viewModel.Name, StringLookup.GetLocalizedString("Label_Tissue"));
-            Assert.IsFalse(viewModel.IsEllipsoid);
-            Assert.IsTrue(viewModel.IsLayer);
-            Assert.IsTrue(viewModel.OpticalPropertyVM != null);
-            Assert.IsTrue(viewModel.OpticalPropertyVM != null);
+            Assert.That(StringLookup.GetLocalizedString("Label_Tissue"), Is.EqualTo(viewModel.Name));
+            Assert.That(viewModel.IsEllipsoid, Is.False);
+            Assert.That(viewModel.IsLayer, Is.True);
+            Assert.That(viewModel.OpticalPropertyVM != null, Is.True);
+            Assert.That(viewModel.OpticalPropertyVM != null, Is.True);
         }
         
     }

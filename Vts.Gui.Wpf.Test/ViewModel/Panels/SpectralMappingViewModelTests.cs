@@ -27,34 +27,32 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         [Test]
         public void Verify_default_constructor_sets_properties_correctly()
         {
-            Assert.IsTrue(viewModel.ScatteringTypeVM != null);
-            Assert.IsTrue(viewModel.BloodConcentrationVM != null);
-            Assert.IsTrue(viewModel.WavelengthRangeVM != null);
+            Assert.That(viewModel.ScatteringTypeVM != null, Is.True);
+            Assert.That(viewModel.BloodConcentrationVM != null, Is.True);
+            Assert.That(viewModel.WavelengthRangeVM != null, Is.True);
             var listOfTissueTypes = viewModel.Tissues.Select(t => t.TissueType).ToList();
-            CollectionAssert.AreEquivalent( new[]
-                {
-                    TissueType.Skin,
-                    TissueType.BrainWhiteMatter,
-                    TissueType.BrainGrayMatter,
-                    TissueType.BreastPreMenopause,
-                    TissueType.BreastPostMenopause,
-                    TissueType.Liver,
-                    TissueType.IntralipidPhantom,
-                    TissueType.Custom
-                }, 
-                listOfTissueTypes);
-            Assert.IsTrue(viewModel.SelectedTissue.TissueType == TissueType.Skin);
-            Assert.AreEqual(viewModel.ScatteringTypeVM.SelectedValue, viewModel.SelectedTissue.ScattererType);
-            Assert.AreEqual("Vts.SpectralMapping.PowerLawScatterer", viewModel.ScatteringTypeName);
-            Assert.IsTrue(Math.Abs(viewModel.OpticalProperties.Mua - 0.1677) < 0.0001);
-            Assert.IsTrue(Math.Abs(viewModel.OpticalProperties.Musp - 2.212) < 0.001);
-            Assert.AreEqual(0.8, viewModel.OpticalProperties.G);
-            Assert.AreEqual(1.4, viewModel.OpticalProperties.N);
-            Assert.AreEqual(650, viewModel.Wavelength);
-            Assert.AreEqual(viewModel.OpticalProperties.Mua, viewModel.Mua);
-            Assert.AreEqual(viewModel.OpticalProperties.Musp, viewModel.Musp);
-            Assert.AreEqual(viewModel.OpticalProperties.N, viewModel.N);
-            Assert.AreEqual(viewModel.OpticalProperties.G, viewModel.G);
+            Assert.That(listOfTissueTypes, Is.EquivalentTo([
+                TissueType.Skin,
+                TissueType.BrainWhiteMatter,
+                TissueType.BrainGrayMatter,
+                TissueType.BreastPreMenopause,
+                TissueType.BreastPostMenopause,
+                TissueType.Liver,
+                TissueType.IntralipidPhantom,
+                TissueType.Custom
+            ]));
+            Assert.That(viewModel.SelectedTissue.TissueType == TissueType.Skin, Is.True);
+            Assert.That(viewModel.SelectedTissue.ScattererType, Is.EqualTo(viewModel.ScatteringTypeVM.SelectedValue));
+            Assert.That(viewModel.ScatteringTypeName, Is.EqualTo("Vts.SpectralMapping.PowerLawScatterer"));
+            Assert.That(Math.Abs(viewModel.OpticalProperties.Mua - 0.1677) < 0.0001, Is.True);
+            Assert.That(Math.Abs(viewModel.OpticalProperties.Musp - 2.212) < 0.001, Is.True);
+            Assert.That(viewModel.OpticalProperties.G, Is.EqualTo(0.8));
+            Assert.That(viewModel.OpticalProperties.N, Is.EqualTo(1.4));
+            Assert.That(viewModel.Wavelength, Is.EqualTo(650));
+            Assert.That(viewModel.Mua, Is.EqualTo(viewModel.OpticalProperties.Mua));
+            Assert.That(viewModel.Musp, Is.EqualTo(viewModel.OpticalProperties.Musp));
+            Assert.That(viewModel.N, Is.EqualTo(viewModel.OpticalProperties.N));
+            Assert.That(viewModel.G, Is.EqualTo(viewModel.OpticalProperties.G));
         }
 
         [Test]
@@ -64,10 +62,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             viewModel.Musp = 1.0;
             viewModel.N = 1.5;
             viewModel.G = 0.5;
-            Assert.AreEqual(viewModel.Mua, viewModel.OpticalProperties.Mua);
-            Assert.AreEqual(viewModel.Musp, viewModel.OpticalProperties.Musp);
-            Assert.AreEqual(viewModel.N, viewModel.OpticalProperties.N);
-            Assert.AreEqual(viewModel.G, viewModel.OpticalProperties.G);
+            Assert.That(viewModel.OpticalProperties.Mua, Is.EqualTo(viewModel.Mua));
+            Assert.That(viewModel.OpticalProperties.Musp, Is.EqualTo(viewModel.Musp));
+            Assert.That(viewModel.OpticalProperties.N, Is.EqualTo(viewModel.N));
+            Assert.That(viewModel.OpticalProperties.G, Is.EqualTo(viewModel.G));
         }
 
         // The following tests verify the Relay Commands
@@ -79,11 +77,11 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         public void Verify_PlotMuaSpectrumCommand_returns_correct_values()
         {
             viewModel.PlotMuaSpectrumCommand.Execute(null);
-            Assert.AreEqual("μa spectra", windowViewModel.PlotVM.Labels[0]);
-            Assert.AreEqual("μa [mm-1] versus λ [nm]", windowViewModel.PlotVM.Title);
+            Assert.That(windowViewModel.PlotVM.Labels[0], Is.EqualTo("μa spectra"));
+            Assert.That(windowViewModel.PlotVM.Title, Is.EqualTo("μa [mm-1] versus λ [nm]"));
             // can't verify plotted data because inside private object
             var textOutputViewModel = windowViewModel.TextOutputVM;
-            Assert.AreEqual("Plot View: plot cleared due to independent axis variable change\rPlotted μa spectrum; wavelength range [nm]: [650, 1000]\r", textOutputViewModel.Text);
+            Assert.That(textOutputViewModel.Text, Is.EqualTo("Plot View: plot cleared due to independent axis variable change\rPlotted μa spectrum; wavelength range [nm]: [650, 1000]\r"));
         }
 
         /// <summary>
@@ -93,10 +91,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         public void Verify_PlotMusSpectrumCommand_returns_correct_values()
         {
             viewModel.PlotMuspSpectrumCommand.Execute(null);
-            Assert.AreEqual("μs' spectra", windowViewModel.PlotVM.Labels[0]);
-            Assert.AreEqual("μs' [mm-1] versus λ [nm]", windowViewModel.PlotVM.Title);
+            Assert.That(windowViewModel.PlotVM.Labels[0], Is.EqualTo("μs' spectra"));
+            Assert.That(windowViewModel.PlotVM.Title, Is.EqualTo("μs' [mm-1] versus λ [nm]"));
             var textOutputViewModel = windowViewModel.TextOutputVM;
-            Assert.AreEqual("Plot View: plot cleared due to independent axis variable change\rPlotted μs' spectrum; wavelength range [nm]: [650, 1000]\r", textOutputViewModel.Text);
+            Assert.That(textOutputViewModel.Text, Is.EqualTo("Plot View: plot cleared due to independent axis variable change\rPlotted μs' spectrum; wavelength range [nm]: [650, 1000]\r"));
         }
 
         [Test]
@@ -104,7 +102,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         {
             var tissue = new Tissue(TissueType.Skin);
             viewModel.ResetConcentrations.Execute(tissue);
-            Assert.IsInstanceOf<IList<IChromophoreAbsorber>>(viewModel.SelectedTissue.Absorbers);
+            Assert.That(viewModel.SelectedTissue.Absorbers, Is.InstanceOf<IList<IChromophoreAbsorber>>());
         }
 
         [Test]
@@ -112,7 +110,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
         {
             const double wavelength = 600;
             viewModel.UpdateWavelength.Execute(wavelength);
-            Assert.AreEqual(600, viewModel.Wavelength);
+            Assert.That(viewModel.Wavelength, Is.EqualTo(600));
         }
 
         // the following tests verify that the Tissue selection and the ScattererType selection work together and independently
@@ -130,62 +128,45 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 switch (tissue.TissueType)
                 {
                     case TissueType.IntralipidPhantom:
-                        Assert.IsTrue(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.Intralipid);
-                        Assert.IsTrue(Math.Abs(
-                            ((IntralipidScatterer)viewModel.Scatterer).VolumeFraction - 0.01) < 1e-3);
+                        Assert.That(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.Intralipid, Is.True);
+                        Assert.That(Math.Abs(((IntralipidScatterer)viewModel.Scatterer).VolumeFraction - 0.01) < 1e-3, Is.True);
                         break;
                     case TissueType.Skin:
-                        Assert.IsTrue(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).A - 1.2) < 1e-1);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).B - 1.42) < 1e-2);
+                        Assert.That(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).A - 1.2) < 1e-1, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).B - 1.42) < 1e-2, Is.True);
                         break;
                     case TissueType.BrainGrayMatter:
-                        Assert.IsTrue(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).A - 0.56) < 1e-2);
-                        Assert.IsTrue(Math.Abs(                                                                    
-                                          ((PowerLawScatterer)viewModel.Scatterer).B - 1.36) < 1e-2); 
+                        Assert.That(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).A - 0.56) < 1e-2, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).B - 1.36) < 1e-2, Is.True); 
                         break;
                     case TissueType.BrainWhiteMatter:
-                        Assert.IsTrue(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).A - 3.56) < 1e-2);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).B - 0.84) < 1e-2);
+                        Assert.That(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).A - 3.56) < 1e-2, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).B - 0.84) < 1e-2, Is.True);
                         break;
                     case TissueType.BreastPostMenopause:
-                        Assert.IsTrue(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).A - 0.72) < 1e-2);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).B - 0.58) < 1e-2);
+                        Assert.That(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).A - 0.72) < 1e-2, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).B - 0.58) < 1e-2, Is.True);
                         break;
                     case TissueType.BreastPreMenopause:
-                        Assert.IsTrue(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).A - 0.67) < 1e-2);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).B - 0.95) < 1e-2);
+                        Assert.That(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).A - 0.67) < 1e-2, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).B - 0.95) < 1e-2, Is.True);
                         break;
                     case TissueType.Liver:
-                        Assert.IsTrue(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).A - 0.84) < 1e-2);
-                        Assert.IsTrue(Math.Abs(
-                                          ((PowerLawScatterer)viewModel.Scatterer).B - 0.55) < 1e-2);
+                        Assert.That(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.PowerLaw, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).A - 0.84) < 1e-2, Is.True);
+                        Assert.That(Math.Abs(((PowerLawScatterer)viewModel.Scatterer).B - 0.55) < 1e-2, Is.True);
                         break;
                     case TissueType.PolystyreneSpherePhantom:
-                        Assert.IsTrue(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.Mie);
-                        Assert.IsTrue(Math.Abs(
-                                          ((MieScatterer)viewModel.Scatterer).ParticleRadius - 0.5) < 1e-1);
-                        Assert.IsTrue(Math.Abs(
-                                          ((MieScatterer)viewModel.Scatterer).ParticleRefractiveIndexMismatch - 1.4) < 1e-1);
-                        Assert.IsTrue(Math.Abs(
-                                          ((MieScatterer)viewModel.Scatterer).MediumRefractiveIndexMismatch - 1.0) < 1e-1);
-                        Assert.IsTrue(Math.Abs(
-                                          ((MieScatterer)viewModel.Scatterer).VolumeFraction - 0.01) < 1e-2);
+                        Assert.That(viewModel.ScatteringTypeVM.SelectedValue == ScatteringType.Mie, Is.True);
+                        Assert.That(Math.Abs(((MieScatterer)viewModel.Scatterer).ParticleRadius - 0.5) < 1e-1, Is.True);
+                        Assert.That(Math.Abs(((MieScatterer)viewModel.Scatterer).ParticleRefractiveIndexMismatch - 1.4) < 1e-1, Is.True);
+                        Assert.That(Math.Abs(((MieScatterer)viewModel.Scatterer).MediumRefractiveIndexMismatch - 1.0) < 1e-1, Is.True);
+                        Assert.That(Math.Abs(((MieScatterer)viewModel.Scatterer).VolumeFraction - 0.01) < 1e-2, Is.True);
                         break;
                     case TissueType.Custom: // Custom does not change Scatterer
                         break; 
@@ -207,13 +188,13 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                 switch (scattererType)
                 {
                     case ScatteringType.Intralipid:
-                        Assert.IsTrue(viewModel.ScatteringTypeName == "Vts.SpectralMapping.IntralipidScatterer");
+                        Assert.That(viewModel.ScatteringTypeName == "Vts.SpectralMapping.IntralipidScatterer", Is.True);
                         break;
                     case ScatteringType.PowerLaw:
-                        Assert.IsTrue(viewModel.ScatteringTypeName == "Vts.SpectralMapping.PowerLawScatterer");
+                        Assert.That(viewModel.ScatteringTypeName == "Vts.SpectralMapping.PowerLawScatterer", Is.True);
                         break;
                     case ScatteringType.Mie:
-                        Assert.IsTrue(viewModel.ScatteringTypeName == "Vts.SpectralMapping.MieScatterer");
+                        Assert.That(viewModel.ScatteringTypeName == "Vts.SpectralMapping.MieScatterer", Is.True);
                         break;
 
                 }

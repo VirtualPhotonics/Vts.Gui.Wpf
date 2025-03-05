@@ -16,10 +16,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
         public void Verify_default_constructor_sets_properties_correctly()
         {
             var opticalPropertyVM = new OpticalPropertyViewModel();
-            Assert.AreEqual(0.01, opticalPropertyVM.Mua);
-            Assert.AreEqual(1.0, opticalPropertyVM.Musp);
-            Assert.AreEqual(0.8, opticalPropertyVM.G);
-            Assert.AreEqual(1.4, opticalPropertyVM.N);
+            Assert.That(opticalPropertyVM.Mua, Is.EqualTo(0.01));
+            Assert.That(opticalPropertyVM.Musp, Is.EqualTo(1.0));
+            Assert.That(opticalPropertyVM.G, Is.EqualTo(0.8));
+            Assert.That(opticalPropertyVM.N, Is.EqualTo(1.4));
         }
 
         /// <summary>
@@ -36,15 +36,15 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
                 true,
                 false,
                 false);
-            Assert.AreEqual(0.1, opticalPropertyVm.Mua);
-            Assert.AreEqual(1.1, opticalPropertyVm.Musp);
-            Assert.AreEqual(0.9, opticalPropertyVm.G);
-            Assert.AreEqual(1.3, opticalPropertyVm.N);
-            Assert.AreEqual(IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(), opticalPropertyVm.Units);
-            Assert.IsTrue(opticalPropertyVm.EnableMua);
-            Assert.IsTrue(opticalPropertyVm.EnableMusp);
-            Assert.IsFalse(opticalPropertyVm.EnableG);
-            Assert.IsFalse(opticalPropertyVm.EnableN);
+            Assert.That(opticalPropertyVm.Mua, Is.EqualTo(0.1));
+            Assert.That(opticalPropertyVm.Musp, Is.EqualTo(1.1));
+            Assert.That(opticalPropertyVm.G, Is.EqualTo(0.9));
+            Assert.That(opticalPropertyVm.N, Is.EqualTo(1.3));
+            Assert.That(opticalPropertyVm.Units, Is.EqualTo(IndependentVariableAxisUnits.InverseMM.GetInternationalizedString()));
+            Assert.That(opticalPropertyVm.EnableMua, Is.True);
+            Assert.That(opticalPropertyVm.EnableMusp, Is.True);
+            Assert.That(opticalPropertyVm.EnableG, Is.False);
+            Assert.That(opticalPropertyVm.EnableN, Is.False);
         }
 
         [Test]
@@ -61,14 +61,14 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
                 EnableG = false,
                 EnableN = true
             };
-            Assert.AreEqual(0.001, opticalPropertyVm.Mua);
-            Assert.AreEqual(0.1, opticalPropertyVm.Musp);
-            Assert.AreEqual(0.9, opticalPropertyVm.G);
-            Assert.AreEqual(1.5, opticalPropertyVm.N);
-            Assert.IsTrue(opticalPropertyVm.EnableMua);
-            Assert.IsTrue(opticalPropertyVm.EnableMusp);
-            Assert.IsFalse(opticalPropertyVm.EnableG);
-            Assert.IsTrue(opticalPropertyVm.EnableN);
+            Assert.That(opticalPropertyVm.Mua, Is.EqualTo(0.001));
+            Assert.That(opticalPropertyVm.Musp, Is.EqualTo(0.1));
+            Assert.That(opticalPropertyVm.G, Is.EqualTo(0.9));
+            Assert.That(opticalPropertyVm.N, Is.EqualTo(1.5));
+            Assert.That(opticalPropertyVm.EnableMua, Is.True);
+            Assert.That(opticalPropertyVm.EnableMusp, Is.True);
+            Assert.That(opticalPropertyVm.EnableG, Is.False);
+            Assert.That(opticalPropertyVm.EnableN, Is.True);
         }
 
         [Test]
@@ -82,8 +82,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
                 G = 0.9,
                 N = 1.5
             };
-            Assert.AreEqual("Optical Properties", opticalPropertyVm.Title);
-            Assert.IsTrue(opticalPropertyVm.ShowTitle);
+            Assert.That(opticalPropertyVm.Title, Is.EqualTo("Optical Properties"));
+            Assert.That(opticalPropertyVm.ShowTitle, Is.True);
         }
     }
 }

@@ -19,16 +19,16 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
         {
             // constructor overload
             var optionVM = new OptionViewModel<ColormapType>("Label_Test");
-            Assert.AreEqual("Label_Test", optionVM.GroupName);
-            Assert.IsTrue(optionVM.ShowTitle);
+            Assert.That(optionVM.GroupName, Is.EqualTo("Label_Test"));
+            Assert.That(optionVM.ShowTitle, Is.True);
         }
 
         [Test]
         public void Verify_constructor_with_groupName_and_showTitle_parameters_sets_properties_correctly()
         {
             var optionVM = new OptionViewModel<ColormapType>("Label_Test", false);
-            Assert.AreEqual("Label_Test", optionVM.GroupName);
-            Assert.IsFalse(optionVM.ShowTitle);
+            Assert.That(optionVM.GroupName, Is.EqualTo("Label_Test"));
+            Assert.That(optionVM.ShowTitle, Is.False);
         }
 
         [Test]
@@ -36,8 +36,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
         {
             var simulationInput = new SimulationInput();
             var optionVM = new OptionViewModel<string>("Label_Test", simulationInput.TissueInput.TissueType);
-            Assert.AreEqual("Label_Test", optionVM.GroupName);
-            Assert.IsTrue(optionVM.ShowTitle);
+            Assert.That(optionVM.GroupName, Is.EqualTo("Label_Test"));
+            Assert.That(optionVM.ShowTitle, Is.True);
         }
 
         [Test]
@@ -52,9 +52,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
                     "SingleVoxel"
                 });
             optionVM.EnableMultiSelect = false;
-            Assert.AreEqual("Tissue Type:", optionVM.GroupName);
-            Assert.IsTrue(optionVM.ShowTitle);
-            Assert.AreEqual(simulationInput.TissueInput.TissueType, optionVM.SelectedValue);
+            Assert.That(optionVM.GroupName, Is.EqualTo("Tissue Type:"));
+            Assert.That(optionVM.ShowTitle, Is.True);
+            Assert.That(optionVM.SelectedValue, Is.EqualTo(simulationInput.TissueInput.TissueType));
         }
 
         [Test]
@@ -71,13 +71,13 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls
             {
                 EnableMultiSelect = true
             };
-            Assert.AreEqual("String List:", optionViewModel.GroupName);
-            Assert.IsTrue(optionViewModel.ShowTitle);
-            Assert.AreEqual("SecondValue", optionViewModel.SelectedValue);
-            Assert.AreEqual(4, optionViewModel.Options.Keys.Count);
-            Assert.AreEqual(1, optionViewModel.SelectedValues.Length);
+            Assert.That(optionViewModel.GroupName, Is.EqualTo("String List:"));
+            Assert.That(optionViewModel.ShowTitle, Is.True);
+            Assert.That(optionViewModel.SelectedValue, Is.EqualTo("SecondValue"));
+            Assert.That(optionViewModel.Options.Keys.Count, Is.EqualTo(4));
+            Assert.That(optionViewModel.SelectedValues.Length, Is.EqualTo(1));
             optionViewModel.Options["FourthValue"].IsSelected = true;
-            Assert.AreEqual(2, optionViewModel.SelectedValues.Length);
+            Assert.That(optionViewModel.SelectedValues.Length, Is.EqualTo(2));
         }
     }
 }

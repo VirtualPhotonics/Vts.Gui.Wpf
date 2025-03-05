@@ -21,22 +21,22 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
             // WindowViewModel needs to be instantiated for default constructor
             var windowViewModel = new WindowViewModel();
             var viewModel = windowViewModel.InverseSolverVM;
-            Assert.IsInstanceOf<SolutionDomainOptionViewModel>(viewModel.SolutionDomainTypeOptionVM);
-            Assert.IsInstanceOf<OptionViewModel<ForwardSolverType>>(viewModel.MeasuredForwardSolverTypeOptionVM);
-            Assert.IsInstanceOf<OptionViewModel<ForwardSolverType>>(viewModel.InverseForwardSolverTypeOptionVM);
-            Assert.IsInstanceOf<OptionViewModel<InverseFitType>>(viewModel.InverseFitTypeOptionVM);
-            Assert.IsInstanceOf<OptionViewModel<OptimizerType>>(viewModel.OptimizerTypeOptionVM);
-            Assert.IsInstanceOf<OpticalPropertyViewModel>(viewModel.MeasuredOpticalPropertyVM);
-            Assert.IsInstanceOf<OpticalPropertyViewModel>(viewModel.InitialGuessOpticalPropertyVM);
-            Assert.IsInstanceOf<OpticalPropertyViewModel>(viewModel.ResultOpticalPropertyVM);
-            Assert.IsInstanceOf<RangeViewModel[]>(viewModel.AllRangeVMs);
-            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.EnableMultiAxis);
-            Assert.IsFalse(viewModel.SolutionDomainTypeOptionVM.AllowMultiAxis);
-            Assert.AreEqual(SolutionDomainType.ROfRho, viewModel.SolutionDomainTypeOptionVM.SelectedValue);
-            Assert.AreEqual(1, viewModel.AllRangeVMs.Length);
-            Assert.IsTrue(Math.Abs(viewModel.AllRangeVMs[0].Start - 1) < 1e-6);
-            Assert.IsTrue(Math.Abs(viewModel.AllRangeVMs[0].Stop - 6) < 1e-6);
-            Assert.AreEqual(60, viewModel.AllRangeVMs[0].Number);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM, Is.InstanceOf<SolutionDomainOptionViewModel>());
+            Assert.That(viewModel.MeasuredForwardSolverTypeOptionVM, Is.InstanceOf<OptionViewModel<ForwardSolverType>>());
+            Assert.That(viewModel.InverseForwardSolverTypeOptionVM, Is.InstanceOf<OptionViewModel<ForwardSolverType>>());
+            Assert.That(viewModel.InverseFitTypeOptionVM, Is.InstanceOf<OptionViewModel<InverseFitType>>());
+            Assert.That(viewModel.OptimizerTypeOptionVM, Is.InstanceOf<OptionViewModel<OptimizerType>>());
+            Assert.That(viewModel.MeasuredOpticalPropertyVM, Is.InstanceOf<OpticalPropertyViewModel>());
+            Assert.That(viewModel.InitialGuessOpticalPropertyVM, Is.InstanceOf<OpticalPropertyViewModel>());
+            Assert.That(viewModel.ResultOpticalPropertyVM, Is.InstanceOf<OpticalPropertyViewModel>());
+            Assert.That(viewModel.AllRangeVMs, Is.InstanceOf<RangeViewModel[]>());
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.EnableMultiAxis, Is.False);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.AllowMultiAxis, Is.False);
+            Assert.That(viewModel.SolutionDomainTypeOptionVM.SelectedValue, Is.EqualTo(SolutionDomainType.ROfRho));
+            Assert.That(viewModel.AllRangeVMs.Length, Is.EqualTo(1));
+            Assert.That(Math.Abs(viewModel.AllRangeVMs[0].Start - 1) < 1e-6, Is.True);
+            Assert.That(Math.Abs(viewModel.AllRangeVMs[0].Stop - 6) < 1e-6, Is.True);
+            Assert.That(viewModel.AllRangeVMs[0].Number, Is.EqualTo(60));
         }
 
         // The following tests verify the Relay Commands
@@ -115,18 +115,18 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels
                      muaError.ToString(CultureInfo.CurrentCulture) + "%  " + 
                      StringLookup.GetLocalizedString("Label_MuSPrime") + " = " + 
                      muspError.ToString(CultureInfo.CurrentCulture) + "% \r";
-            Assert.AreEqual(s3, plotViewModel.Labels[0]);
-            Assert.AreEqual(s2, plotViewModel.Title);
+            Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
+            Assert.That(plotViewModel.Title, Is.EqualTo(s2));
             var textOutputViewModel = windowViewModel.TextOutputVM;
-            Assert.AreEqual(s6, textOutputViewModel.Text);
+            Assert.That(textOutputViewModel.Text, Is.EqualTo(s6));
             // CalculateInitialGuessCommand
             viewModel.CalculateInitialGuessCommand.Execute(null);
-            Assert.AreEqual(s4, plotViewModel.Labels[1]);
-            Assert.AreEqual(s6 + s7, textOutputViewModel.Text);
+            Assert.That(plotViewModel.Labels[1], Is.EqualTo(s4));
+            Assert.That(textOutputViewModel.Text, Is.EqualTo(s6 + s7));
             // SolveInverseCommand
             viewModel.SolveInverseCommand.Execute(null);
-            Assert.AreEqual(s5, plotViewModel.Labels[2]);
-            Assert.AreEqual(s6 + s7 + s8, textOutputViewModel.Text);
+            Assert.That(plotViewModel.Labels[2], Is.EqualTo(s5));
+            Assert.That(textOutputViewModel.Text, Is.EqualTo(s6 + s7 + s8));
         }
     }
 }

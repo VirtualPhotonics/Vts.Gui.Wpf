@@ -64,13 +64,13 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         public void verify_default_constructor_sets_properties_correctly()
         {
             MonteCarloSolverViewModel viewModel = new MonteCarloSolverViewModel();
-            Assert.IsTrue(viewModel.CanDownloadInfiles);
-            Assert.IsTrue(viewModel.CanLoadInputFile);
-            Assert.IsTrue(viewModel.CanRunSimulation);
-            Assert.IsTrue(viewModel.CanRunSimulation);
-            Assert.IsFalse(viewModel.CanCancelSimulation);
-            Assert.IsFalse(viewModel.CanSaveResults);
-            Assert.AreEqual(viewModel.CancelButtonText, StringLookup.GetLocalizedString("Button_Cancel"));
+            Assert.That(viewModel.CanDownloadInfiles, Is.True);
+            Assert.That(viewModel.CanLoadInputFile, Is.True);
+            Assert.That(viewModel.CanRunSimulation, Is.True);
+            Assert.That(viewModel.CanRunSimulation, Is.True);
+            Assert.That(viewModel.CanCancelSimulation, Is.False);
+            Assert.That(viewModel.CanSaveResults, Is.False);
+            Assert.That(StringLookup.GetLocalizedString("Button_Cancel"), Is.EqualTo(viewModel.CancelButtonText));
         }
 
         // The following tests verify the Relay Commands
@@ -91,11 +91,11 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             // this execution of ExecuteMonteCarloSolverCommand errors in "try"
             // because threading not established, so values are as initialized
             viewModel.ExecuteMonteCarloSolverCommand.Execute(null);
-            Assert.IsFalse(viewModel.CanRunSimulation);
-            Assert.IsFalse(viewModel.CanLoadInputFile);
-            Assert.IsTrue(viewModel.CanCancelSimulation);
-            Assert.IsFalse(viewModel.CanSaveResults);
-            Assert.IsTrue(viewModel.CancelButtonText == StringLookup.GetLocalizedString("Button_CancelSimulation"));
+            Assert.That(viewModel.CanRunSimulation, Is.False);
+            Assert.That(viewModel.CanLoadInputFile, Is.False);
+            Assert.That(viewModel.CanCancelSimulation, Is.True);
+            Assert.That(viewModel.CanSaveResults, Is.False);
+            Assert.That(viewModel.CancelButtonText == StringLookup.GetLocalizedString("Button_CancelSimulation"), Is.True);
         }
         ///// <summary>
         ///// Execute Monte Carlo Solver command that runs and verify properties are set correctly
@@ -123,11 +123,11 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         //    // this execution of ExecuteMonteCarloSolverCommand errors in "try"
         //    // because threading not established, so values are as initialized
         //    viewModel.ExecuteMonteCarloSolverCommand.Execute(null);
-        //    Assert.IsTrue(viewModel.CanRunSimulation);
-        //    Assert.IsTrue(viewModel.CanLoadInputFile);
-        //    Assert.IsFalse(viewModel.CanCancelSimulation);
-        //    Assert.IsTrue(viewModel.CanSaveResults);
-        //    Assert.IsTrue(viewModel.CancelButtonText == "Cancel");
+        //    Assert.That(viewModel.CanRunSimulation, Is.True);
+        //    Assert.That(viewModel.CanLoadInputFile, Is.True);
+        //    Assert.That(viewModel.CanCancelSimulation, Is.False);
+        //    Assert.That(viewModel.CanSaveResults, Is.True);
+        //    Assert.That(viewModel.CancelButtonText == "Cancel", Is.True);
         //}
 
         ///// <summary>
@@ -148,7 +148,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         //        viewModel.ExecuteMonteCarloSolverCommand.Execute(null);
         //        // verify text output is correct
         //        TextOutputViewModel textOutputViewModel = windowViewModel.TextOutputVM;
-        //        Assert.AreEqual(textOutputViewModel.Text, "");
+        //        Assert.That("", Is.EqualTo(textOutputViewModel.Text));
         //    }
 
         //}

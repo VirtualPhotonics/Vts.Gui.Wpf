@@ -16,9 +16,9 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
         public void verify_default_constructor_sets_properties_correctly()
         {
             var viewModel = new AbstractSolutionDomainOptionViewModel<IndependentVariableAxis>();
-            Assert.IsFalse(viewModel.UseSpectralInputs);
-            Assert.IsFalse(viewModel.AllowMultiAxis);
-            Assert.IsFalse(viewModel.ShowIndependentAxisChoice);
+            Assert.That(viewModel.UseSpectralInputs, Is.False);
+            Assert.That(viewModel.AllowMultiAxis, Is.False);
+            Assert.That(viewModel.ShowIndependentAxisChoice, Is.False);
         }
 
         // could add test for UpdateAxes method here

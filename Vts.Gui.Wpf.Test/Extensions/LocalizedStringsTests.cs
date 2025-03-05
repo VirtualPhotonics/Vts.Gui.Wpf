@@ -12,9 +12,9 @@ namespace Vts.Gui.Wpf.Test.Extensions
         {
             var localizedStrings = new LocalizedStrings();
             var strings = localizedStrings.MainResource;
-            Assert.IsInstanceOf<Strings>(strings);
-            Assert.IsInstanceOf<string>(Strings.Button_Cancel);
-            Assert.IsTrue(Strings.Button_Cancel.Length > 0);
+            Assert.That(strings, Is.InstanceOf<Strings>());
+            Assert.That(Strings.Button_Cancel, Is.InstanceOf<string>());
+            Assert.That(Strings.Button_Cancel.Length > 0, Is.True);
 
         }
     }

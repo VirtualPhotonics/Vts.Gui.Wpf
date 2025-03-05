@@ -18,11 +18,11 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels
                 AxisValue = 4.0,
                 ImageHeight = 2
             };
-            Assert.AreEqual("AxisLabel", constantAxisViewModel.AxisLabel);
-            Assert.AreEqual(IndependentVariableAxis.Rho, constantAxisViewModel.AxisType);
-            Assert.AreEqual("mm", constantAxisViewModel.AxisUnits);
-            Assert.AreEqual(4.0, constantAxisViewModel.AxisValue);
-            Assert.AreEqual(2, constantAxisViewModel.ImageHeight);
+            Assert.That(constantAxisViewModel.AxisLabel, Is.EqualTo("AxisLabel"));
+            Assert.That(constantAxisViewModel.AxisType, Is.EqualTo(IndependentVariableAxis.Rho));
+            Assert.That(constantAxisViewModel.AxisUnits, Is.EqualTo("mm"));
+            Assert.That(constantAxisViewModel.AxisValue, Is.EqualTo(4.0));
+            Assert.That(constantAxisViewModel.ImageHeight, Is.EqualTo(2));
         }
 
         [Test]
