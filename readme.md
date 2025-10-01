@@ -1,3 +1,7 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=VirtualPhotonics_Vts.Gui.Wpf&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=VirtualPhotonics_Vts.Gui.Wpf)
+
+# VTS GUI
+
 ## Releases
 To access all releases, click [here](https://github.com/VirtualPhotonics/Vts.Gui.Wpf/releases). 
 
