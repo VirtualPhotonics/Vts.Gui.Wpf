@@ -804,15 +804,15 @@ namespace Vts.Gui.Wpf.ViewModel
 
             PlotModel.Axes.Clear();
             if (XAxisSpacingOptionVm.SelectedValue == ScalingType.Log)
-                PlotModel.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = XAxis, TitleFontWeight = FontWeights.Bold });
+                PlotModel.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Bottom, Title = XAxis, TitleFontWeight = FontWeights.Bold, MajorGridlineStyle = LineStyle.Dot});
             else
-                PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = XAxis, TitleFontWeight = FontWeights.Bold });
+                PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = XAxis, TitleFontWeight = FontWeights.Bold, MajorGridlineStyle = LineStyle.Dot });
 
 
             if (YAxisSpacingOptionVm.SelectedValue == ScalingType.Log)
-                PlotModel.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = YAxis, TitleFontWeight = FontWeights.Bold });
+                PlotModel.Axes.Add(new LogarithmicAxis { Position = AxisPosition.Left, Title = YAxis, TitleFontWeight = FontWeights.Bold, MajorGridlineStyle = LineStyle.Dot });
             else
-                PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = YAxis, TitleFontWeight = FontWeights.Bold });
+                PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = YAxis, TitleFontWeight = FontWeights.Bold, MajorGridlineStyle = LineStyle.Dot });
         }
 
         private void GenerateComplexPlot(DataPointCollection dataPointCollection, bool normToMax, bool normToCurve)
