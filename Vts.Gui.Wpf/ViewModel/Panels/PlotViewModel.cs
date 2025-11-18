@@ -716,7 +716,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void ClearPlotSingle()
         {
-            if (!DataSeriesCollection.Any()) return;
+            if (DataSeriesCollection.Count == 0) return;
             DataSeriesCollection.RemoveAt(DataSeriesCollection.Count - 1);
             //Clear the PlotSeriesCollection, it will be recreated with the plot
             PlotSeriesCollection.Clear();
