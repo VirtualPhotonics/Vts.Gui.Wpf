@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Input;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.FileSystem;
@@ -88,7 +87,6 @@ namespace Vts.Gui.Wpf.ViewModel
         private IList<string> _plotTitles;
         private OptionViewModel<PlotToggleType> _plotToggleTypeOptionVm;
         private ReflectancePlotType _plotType;
-        // change from Point to our own custom class so we can bind to color, style, etc, too
 
         private int _plotViewId;
         private bool _showAxes;
@@ -115,14 +113,14 @@ namespace Vts.Gui.Wpf.ViewModel
             _autoScaleY = true;
 
             RealLabels = new List<string>();
-            ImagLabels = new List<string>();
+            ImaginaryLabels = new List<string>();
             PhaseLabels = new List<string>();
             AmplitudeLabels = new List<string>();
             
             Labels = new List<string>();
             PlotTitles = new List<string>();
-            DataSeriesCollection = new List<DataPointCollection>(); // raw data
-            PlotSeriesCollection = new PlotPointCollection(); // raw data manipulated by the user toggles
+            DataSeriesCollection = []; // raw data
+            PlotSeriesCollection = []; // raw data manipulated by the user toggles
 
             PlotModel = new PlotModel
             {
@@ -157,17 +155,17 @@ namespace Vts.Gui.Wpf.ViewModel
             _showComplexPlotToggle = false;
 
             XAxisSpacingOptionVm = new OptionViewModel<ScalingType>("XAxisSpacing_" + _plotViewId, false);
-            XAxisSpacingOptionVm.PropertyChanged += (sender, args) => UpdatePlotSeries();
+            XAxisSpacingOptionVm.PropertyChanged += (_, _) => UpdatePlotSeries();
 
             YAxisSpacingOptionVm = new OptionViewModel<ScalingType>("YAxisSpacing_" + _plotViewId, false);
-            YAxisSpacingOptionVm.PropertyChanged += (sender, args) => UpdatePlotSeries();
+            YAxisSpacingOptionVm.PropertyChanged += (_, _) => UpdatePlotSeries();
 
             PlotToggleTypeOptionVm = new OptionViewModel<PlotToggleType>("ToggleType_" + _plotViewId, false);
-            PlotToggleTypeOptionVm.PropertyChanged += (sender, args) => UpdatePlotSeries();
+            PlotToggleTypeOptionVm.PropertyChanged += (_, _) => UpdatePlotSeries();
 
             PlotNormalizationTypeOptionVm =
                 new OptionViewModel<PlotNormalizationType>("NormalizationType_" + _plotViewId, false);
-            PlotNormalizationTypeOptionVm.PropertyChanged += (sender, args) => UpdatePlotSeries();
+            PlotNormalizationTypeOptionVm.PropertyChanged += (_, _) => UpdatePlotSeries();
 
             CustomPlotLabel = "";
             AdditionalPlotValue = "";
@@ -175,10 +173,10 @@ namespace Vts.Gui.Wpf.ViewModel
             PlotValues = new RelayCommand<Array>(Plot_Executed);
             SetAxesLabels = new RelayCommand<object>(Plot_SetAxesLabels_Executed);
             SetCustomPlotLabel = new RelayCommand<object>(Plot_SetCustomPlotLabel_Executed);
-            ClearPlotCommand = new RelayCommand(() => Plot_Cleared(null, null));
-            ClearPlotSingleCommand = new RelayCommand(() => Plot_ClearedSingle(null, null));
-            ExportDataToTextCommand = new RelayCommand(() => Plot_ExportDataToText_Executed(null, null));
-            DuplicateWindowCommand = new RelayCommand(() => Plot_DuplicateWindow_Executed(null, null));
+            ClearPlotCommand = new RelayCommand(Plot_Cleared);
+            ClearPlotSingleCommand = new RelayCommand(Plot_ClearedSingle);
+            ExportDataToTextCommand = new RelayCommand(Plot_ExportDataToText_Executed);
+            DuplicateWindowCommand = new RelayCommand(Plot_DuplicateWindow_Executed);
         }
 
         ///  <summary>
@@ -217,7 +215,7 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private List<DataPointCollection> DataSeriesCollection { get; set; }
         private IList<string> RealLabels { get; set; }
-        private IList<string> ImagLabels { get; set; }
+        private IList<string> ImaginaryLabels { get; set; }
         private IList<string> PhaseLabels { get; set; }
         private IList<string> AmplitudeLabels { get; set; }
 
@@ -483,7 +481,7 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        private void Plot_DuplicateWindow_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void Plot_DuplicateWindow_Executed()
         {
             var plotViewModel = Clone();
             plotViewModel.UpdatePlotSeries();
@@ -504,7 +502,7 @@ namespace Vts.Gui.Wpf.ViewModel
             output.PlotTitles = plotToClone.PlotTitles.ToList();
             output.PlotType = plotToClone.PlotType;
             output.HoldOn = plotToClone.HoldOn;
-            output.PlotSeriesCollection = new PlotPointCollection();
+            output.PlotSeriesCollection = [];
             output.Labels = plotToClone._labels.ToList();
             output.CustomPlotLabel = plotToClone.CustomPlotLabel;
             output.ShowInPlotView = false;
@@ -519,7 +517,7 @@ namespace Vts.Gui.Wpf.ViewModel
             output.CurrentIndependentVariableAxis = plotToClone.CurrentIndependentVariableAxis;
 
             output.RealLabels = plotToClone.RealLabels;
-            output.ImagLabels = plotToClone.ImagLabels;
+            output.ImaginaryLabels = plotToClone.ImaginaryLabels;
             output.PhaseLabels = plotToClone.PhaseLabels;
             output.AmplitudeLabels = plotToClone.AmplitudeLabels;
 
@@ -550,8 +548,8 @@ namespace Vts.Gui.Wpf.ViewModel
 
         protected override void AfterPropertyChanged(string propertyName)
         {
-            if ((!AutoScaleX && (propertyName == "MinXValue" || propertyName == "MaxXValue")) ||
-                (!AutoScaleY && (propertyName == "MinYValue" || propertyName == "MaxYValue")) ||
+            if ((!AutoScaleX && propertyName is "MinXValue" or "MaxXValue") ||
+                (!AutoScaleY && propertyName is "MinYValue" or "MaxYValue") ||
                 propertyName == "AutoScaleX" ||
                 propertyName == "AutoScaleY")
             {
@@ -561,39 +559,33 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void Plot_SetAxesLabels_Executed(object sender)
         {
-            if (sender is PlotAxesLabels labels)
+            if (sender is not PlotAxesLabels labels) return;
+            _clearPlot = CurrentIndependentVariableAxis != labels.IndependentAxis.AxisType;
+            // set CurrentIndependentVariableAxis prior to setting Title because property
+            // might ClearPlot including Title
+
+            if (_isComplexPlot != labels.IsComplexPlot)
             {
-                _clearPlot = false;
-                // set CurrentIndependentVariableAxis prior to setting Title because property
-                // might ClearPlot including Title
-                if (CurrentIndependentVariableAxis != labels.IndependentAxis.AxisType)
-                {
-                    _clearPlot = true;
-                }
+                _clearPlot = true;
+                _isComplexPlot = labels.IsComplexPlot;
+            }
+            CurrentIndependentVariableAxis = labels.IndependentAxis.AxisType;
+            // set the x and y-axis labels
+            XAxis = labels.IndependentAxis.AxisLabel + " [" + labels.IndependentAxis.AxisUnits + "]";
+            YAxis = labels.DependentAxisName + " [" + labels.DependentAxisUnits + "]";
 
-                if (_isComplexPlot != labels.IsComplexPlot)
-                {
-                    _clearPlot = true;
-                    _isComplexPlot = labels.IsComplexPlot;
-                }
-                CurrentIndependentVariableAxis = labels.IndependentAxis.AxisType;
-                // set the x and y axis labels
-                XAxis = labels.IndependentAxis.AxisLabel + " [" + labels.IndependentAxis.AxisUnits + "]";
-                YAxis = labels.DependentAxisName + " [" + labels.DependentAxisUnits + "]";
+            Title = labels.DependentAxisName + " [" + labels.DependentAxisUnits + "] " + StringLookup.GetLocalizedString("Label_Versus") + " " +
+                    labels.IndependentAxis.AxisLabel + " [" + labels.IndependentAxis.AxisUnits + "]";
 
-                Title = labels.DependentAxisName + " [" + labels.DependentAxisUnits + "] " + StringLookup.GetLocalizedString("Label_Versus") + " " +
-                        labels.IndependentAxis.AxisLabel + " [" + labels.IndependentAxis.AxisUnits + "]";
-
-                if (labels.ConstantAxes.Length > 0)
-                {
-                    AdditionalPlotValue = labels.ConstantAxes[0].AxisLabel + " = " + labels.ConstantAxes[0].AxisValue + " " +
-                                           labels.ConstantAxes[0].AxisUnits;
-                }
-                if (labels.ConstantAxes.Length > 1)
-                {
-                    AdditionalPlotValue += "\r" + labels.ConstantAxes[1].AxisLabel + " = " + labels.ConstantAxes[1].AxisValue + " " +
-                                            labels.ConstantAxes[1].AxisUnits;
-                }
+            if (labels.ConstantAxes.Length > 0)
+            {
+                AdditionalPlotValue = labels.ConstantAxes[0].AxisLabel + " = " + labels.ConstantAxes[0].AxisValue + " " +
+                                      labels.ConstantAxes[0].AxisUnits;
+            }
+            if (labels.ConstantAxes.Length > 1)
+            {
+                AdditionalPlotValue += "\r" + labels.ConstantAxes[1].AxisLabel + " = " + labels.ConstantAxes[1].AxisValue + " " +
+                                       labels.ConstantAxes[1].AxisUnits;
             }
         }
 
@@ -609,9 +601,7 @@ namespace Vts.Gui.Wpf.ViewModel
         /// <summary>
         ///     Writes tab-delimited
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Plot_ExportDataToText_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void Plot_ExportDataToText_Executed()
         {
             // check if list of labels or list of data have any elements
             if (_labels is not { Count: > 0 } || DataSeriesCollection is not { Count: > 0 }) return;
@@ -667,13 +657,13 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        private void Plot_Cleared(object sender, ExecutedRoutedEventArgs e)
+        private void Plot_Cleared()
         {
             ClearPlot();
             UpdatePlotSeries();
         }
 
-        private void Plot_ClearedSingle(object sender, ExecutedRoutedEventArgs e)
+        private void Plot_ClearedSingle()
         {
             ClearPlotSingle();
             UpdatePlotSeries();
@@ -728,15 +718,13 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void ClearPlotSingle()
         {
-            if (DataSeriesCollection.Any())
-            {
-                DataSeriesCollection.RemoveAt(DataSeriesCollection.Count - 1);
-                //Clear the PlotSeriesCollection, it will be recreated with the plot
-                PlotSeriesCollection.Clear();
-                Labels.RemoveAt(Labels.Count - 1);
-                PlotTitles.RemoveAt(PlotTitles.Count - 1);
-                PlotModel.Title = "";
-            }
+            if (!DataSeriesCollection.Any()) return;
+            DataSeriesCollection.RemoveAt(DataSeriesCollection.Count - 1);
+            //Clear the PlotSeriesCollection, it will be recreated with the plot
+            PlotSeriesCollection.Clear();
+            Labels.RemoveAt(Labels.Count - 1);
+            PlotTitles.RemoveAt(PlotTitles.Count - 1);
+            PlotModel.Title = "";
         }
 
         private void CalculateMinMax()
@@ -920,7 +908,7 @@ namespace Vts.Gui.Wpf.ViewModel
                             tempPointArrayB.Add(new Point(x, y));
                         }
                         y = dp.Y.Imaginary;
-                        //break; // handle imag within switch
+                        // handle imaginary within switch
                         switch (PlotNormalizationTypeOptionVm.SelectedValue)
                         {
                             case PlotNormalizationType.RelativeToCurve:
@@ -1066,7 +1054,7 @@ namespace Vts.Gui.Wpf.ViewModel
                             tempPointArrayB.Add(new Point(x, y));
                         }
                         y = dp.Dy.Imaginary;
-                        //break; // handle imag within switch
+                        // handle imaginary within switch
                         switch (PlotNormalizationTypeOptionVm.SelectedValue)
                         {
                             case PlotNormalizationType.RelativeToCurve:
