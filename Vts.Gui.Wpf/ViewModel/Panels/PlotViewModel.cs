@@ -561,8 +561,6 @@ namespace Vts.Gui.Wpf.ViewModel
         {
             if (sender is not PlotAxesLabels labels) return;
             _clearPlot = CurrentIndependentVariableAxis != labels.IndependentAxis.AxisType;
-            // set CurrentIndependentVariableAxis prior to setting Title because property
-            // might ClearPlot including Title
 
             if (_isComplexPlot != labels.IsComplexPlot)
             {
@@ -954,6 +952,7 @@ namespace Vts.Gui.Wpf.ViewModel
             PlotModel.Title = PlotTitles[^1];
             PlotSeriesCollection.Add(tempPointArrayA.ToArray());
         }
+
         private void GenerateComplexDerivativePlot(DataPointCollection dataPointCollection, bool normToMax, bool normToCurve)
         {
             var tempPointArrayA = new List<Point>();
