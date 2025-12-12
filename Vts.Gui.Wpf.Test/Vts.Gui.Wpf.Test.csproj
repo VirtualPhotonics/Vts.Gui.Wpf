@@ -5,11 +5,11 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageReference Include="NSubstitute" Version="5.3.0" />
     <PackageReference Include="NUnit" Version="4.4.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.20" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.22" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Vts.Gui.Wpf\Vts.Gui.Wpf.csproj" />
