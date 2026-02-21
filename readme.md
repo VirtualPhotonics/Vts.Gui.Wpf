@@ -14,11 +14,23 @@ In addition, for any work that utilizes the Virtual Photonics Monte Carlo softwa
 
 __Carole K. Hayakawa, Lisa Malenfant, Janaka C. Ranasinghesagara, David J. Cuccia, Jerome Spanier, Vasan Venugopalan, "MCCL: an open-source software application for Monte Carlo simulations of radiative transport," J. Biomed. Opt. 27(8) 083005 (12 April 2022) https://doi.org/10.1117/1.JBO.27.8.083005__
 
+<pre><code>@article{Hayakawa2022,
+  author  = {Hayakawa, Carole K. and Malenfant, Lisa and Ranasinghesagara, Janaka C. and Cuccia, David J. and Spanier, Jerome and Venugopalan, Vasan},
+  title   = {{MCCL}: an open-source software application for Monte Carlo simulations of radiative transport},
+  journal = {Journal of Biomedical Optics},
+  year    = {2022},
+  volume  = {27},
+  number  = {8},
+  pages   = {083005},
+  doi     = {10.1117/1.JBO.27.8.083005}
+}</code></pre>
+
+
 ## Software
 
 For detailed instructions on software, click [here](https://github.com/VirtualPhotonics/Vts.Gui.Wpf/wiki/Software). 
 
-In Visual Studio 2010, 2013, 2015 or 2017 open the file /Vts.Gui.Wpf/Vts.Gui.Wpf.sln. Rebuild the application to bring in the nuget packages and run the application.
+In Visual Studio 2022 or 2026 open the file /Vts.Gui.Wpf/Vts.Gui.Wpf.sln. Rebuild the application to bring in the nuget packages and run the application.
 
 _Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:_
 
@@ -29,4 +41,4 @@ _THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPL
 ## Copyright
 Virtual Tissue Simulator (VTS) Project.
 
-Copyright ©2025 [Virtual Photonics Technology Initiative](https://virtualphotonics.org/).
+Copyright ©2026 [Virtual Photonics Technology Initiative](https://virtualphotonics.org/).

@@ -2,23 +2,24 @@
   <PropertyGroup>
     <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
     <OutputType>winexe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <OutputTypeEx>winexe</OutputTypeEx>
     <StartupObject />
     <Description>The WPF GUI provides a simple interface to access some basic functionality of the Virtual Tissue Simulator.</Description>
-    <Copyright>Copyright ©  2025</Copyright>
+    <Copyright>Copyright ©  2026</Copyright>
     <PackageIcon>logo.ico</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/VirtualPhotonics/Vts.Gui.Wpf</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>5.2.0.0</AssemblyVersion>
-    <FileVersion>5.2.0.0</FileVersion>
+    <AssemblyVersion>6.0.0.0</AssemblyVersion>
+    <FileVersion>6.0.0.0</FileVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Configurations>Debug;Release;WhiteList</Configurations>
     <UseWPF>True</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
     <EnableDefaultPageItems>False</EnableDefaultPageItems>
+    <Authors>David J. Cuccia; Carole K. Hayakawa; Lisa M. Glover</Authors>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
@@ -66,11 +67,11 @@
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="5.0.0" />
-    <PackageReference Include="NLog" Version="6.0.7" />
+    <PackageReference Include="NLog" Version="6.1.0" />
     <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
-    <PackageReference Include="VirtualPhotonics.Vts" Version="12.2.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.22" />
+    <PackageReference Include="VirtualPhotonics.Vts" Version="13.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.3" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Runtime.Caching" />
