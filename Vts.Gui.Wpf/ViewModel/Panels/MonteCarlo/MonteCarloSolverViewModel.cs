@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -321,22 +322,16 @@ namespace Vts.Gui.Wpf.ViewModel
         /// <param name="input">Simulation input</param>
         private bool MC_InfileIsValidForGUI(SimulationInput input)
         {
-            var infileIsValid = true;
-            if ((!(input.TissueInput is MultiLayerTissueInput)) && (!(input.TissueInput is SingleEllipsoidTissueInput)))
+            if ((input.TissueInput is not MultiLayerTissueInput && input.TissueInput is not SingleEllipsoidTissueInput) || (input.DetectorInputs.All(d => d.TallyType != TallyType.ROfRho) &&
+                input.DetectorInputs.All(d => d.TallyType != TallyType.FluenceOfRhoAndZ)))
             {
-                logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsDisplayedForTissue") + ".\r");
+                logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsUse_MCCL") + ".\r");
+                return false;
             }
-            if ((input.DetectorInputs.All(d => d.TallyType != TallyType.ROfRho)) &&
-                (input.DetectorInputs.All(d => d.TallyType != TallyType.FluenceOfRhoAndZ)))  
-            {
-                logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsDisplayedForDetector") + ".\r");
-            }
-            if (input.Options.Databases.Count != 0)
-            {
-                logger.Info(() => StringLookup.GetLocalizedString("Error_DatabaseOutputNotSupported") + ".\r");
-                infileIsValid = false;
-            }
-            return infileIsValid;
+
+            if (input.Options.Databases.Count == 0) return true;
+            logger.Info(() => StringLookup.GetLocalizedString("Error_DatabaseOutputNotSupported") + ".\r");
+            return false;
         }
 
         private void MC_CacheSimulationResults(SimulationInput input)
@@ -541,7 +536,28 @@ namespace Vts.Gui.Wpf.ViewModel
         private void MC_DownloadDefaultSimulationInputToFolder(string folder)
         {
             FileIO.CreateEmptyDirectory(folder);
-            var files = SimulationInputProvider.GenerateAllSimulationInputs().Select(input =>
+            var simulationInputs = new List<SimulationInput>
+            {
+                //infile_ellip_FluenceOfRhoAndZ.txt
+                SimulationInputProvider.PointSourceSingleEllipsoidTissueFluenceOfRhoAndZDetector(),
+                // infile_Flat_2D_Lambertian_source_one_layer_ROfRho_FluenceOfRhoAndZ.txt
+                SimulationInputProvider.Flat2DLambertianSourceOneLayerTissueROfRhoFluenceOfRhoAndZDetector(),
+                //infile_Flat_2D_source_one_layer_ROfRho.txt
+                SimulationInputProvider.Flat2DSourceOneLayerTissueROfRhoDetector(),
+                //infile_Gaussian_2D_source_one_layer_ROfRho.txt
+                SimulationInputProvider.Gaussian2DSourceOneLayerTissueROfRhoDetector(),
+                //infile_one_layer_all_detectors.txt
+                SimulationInputProvider.PointSourceOneLayerTissueAllDetectors(),
+                //infile_one_layer_FluenceOfRhoAndZ_RadianceOfRhoAndZAndAngle.txt
+                SimulationInputProvider.PointSourceOneLayerTissueRadianceOfRhoAndZAndAngleDetector(),
+                //infile_one_layer_ROfRho_FluenceOfRhoAndZ.txt
+                SimulationInputProvider.PointSourceOneLayerTissueROfRhoAndFluenceOfRhoAndZDetectors(),
+                //infile_two_layer_momentum_transfer_detectors.txt
+                SimulationInputProvider.PointSourceMultiLayerMomentumTransferDetectors(),
+                //infile_two_layer_ROfRho.txt
+                SimulationInputProvider.PointSourceTwoLayerTissueROfRhoDetector(),
+            };
+            var files = simulationInputs.Select(input =>
                 new
                 {
                     Name = "infile_" + input.OutputName + ".txt",

@@ -131,23 +131,14 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void UpdateTissueTypeVM(string tissueType)
         {
-            switch (tissueType)
+            _simulationInput.TissueInput = tissueType switch
             {
-                case "SemiInfinite":
-                    _simulationInput.TissueInput = new SemiInfiniteTissueInput();
-                    break;
-                case "MultiLayer":
-                    _simulationInput.TissueInput = new MultiLayerTissueInput();
-                    break;
-                case "SingleEllipsoid":
-                    _simulationInput.TissueInput = new SingleEllipsoidTissueInput();
-                    break;
-                case "SingleVoxel":
-                    _simulationInput.TissueInput = new SingleVoxelTissueInput();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+                "SemiInfinite" => new SemiInfiniteTissueInput(),
+                "MultiLayer" => new MultiLayerTissueInput(),
+                "SingleEllipsoid" => new SingleEllipsoidTissueInput(),
+                "SingleVoxel" => new SingleVoxelTissueInput(),
+                _ => _simulationInput.TissueInput
+            };
 
             _tissueInputVM = _simulationInput.TissueInput;
             TissueTypeVM.Options[tissueType].IsSelected = true;
@@ -155,20 +146,13 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private void UpdateTissueInputVM(ITissueInput tissueInput)
         {
-            switch (tissueInput.TissueType)
+            TissueInputVM = tissueInput.TissueType switch
             {
-                case "MultiLayer":
-                    TissueInputVM = new MultiRegionTissueViewModel((MultiLayerTissueInput) tissueInput);
-                    break;
-                case "SingleEllipsoid":
-                    TissueInputVM = new MultiRegionTissueViewModel((SingleEllipsoidTissueInput) tissueInput);
-                    break;
-                case "SingleVoxel":
-                    TissueInputVM = new MultiRegionTissueViewModel((SingleVoxelTissueInput)tissueInput);
-                    break;
-                default:
-                    throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoTissueTypeExists"));
-            }
+                "MultiLayer" => new MultiRegionTissueViewModel((MultiLayerTissueInput)tissueInput),
+                "SingleEllipsoid" => new MultiRegionTissueViewModel((SingleEllipsoidTissueInput)tissueInput),
+                "SingleVoxel" => new MultiRegionTissueViewModel((SingleVoxelTissueInput)tissueInput),
+                _ => TissueInputVM
+            };
         }
     }
 }

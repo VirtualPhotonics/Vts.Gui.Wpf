@@ -807,4 +807,7 @@
   <data name="Label_RealDerivative" xml:space="preserve">
     <value>(dreal)</value>
   </data>
+  <data name="Warning_NoPlotsUse_MCCL" xml:space="preserve">
+    <value>Warning: This infile will not display anything, we suggest using the MCCL application</value>
+  </data>
 </root>
