@@ -27,7 +27,7 @@ namespace Vts.Gui.Wpf.ViewModel
     /// </summary>
     public class MonteCarloSolverViewModel : BindableObject
     {
-        private static readonly ILogger logger =
+        private static readonly ILogger Logger =
             LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MonteCarloSolverViewModel));
 
         private CancellationTokenSource _currentCancellationTokenSource;
@@ -59,11 +59,11 @@ namespace Vts.Gui.Wpf.ViewModel
             _simulationInputVm = new SimulationInputViewModel(simulationInput);
             _outputName = simulationInput.OutputName;
 
-            ExecuteMonteCarloSolverCommand = new RelayCommand(() => MC_ExecuteMonteCarloSolver_Executed(null, null));
-            CancelMonteCarloSolverCommand = new RelayCommand(() => MC_CancelMonteCarloSolver_Executed(null, null));
-            LoadSimulationInputCommand = new RelayCommand(() => MC_LoadSimulationInput_Executed(null, null));
+            ExecuteMonteCarloSolverCommand = new RelayCommand(() => _ = MC_ExecuteMonteCarloSolver_Executed(null, null));
+            CancelMonteCarloSolverCommand = new RelayCommand(() => _ = MC_CancelMonteCarloSolver_Executed(null, null));
+            LoadSimulationInputCommand = new RelayCommand(() => _ = MC_LoadSimulationInput_Executed(null, null));
             DownloadDefaultSimulationInputCommand =
-                new RelayCommand(() => MC_DownloadDefaultSimulationInput_Executed(null, null));
+                new RelayCommand(() => _ = MC_DownloadDefaultSimulationInput_Executed(null, null));
             SaveSimulationResultsCommand = new RelayCommand(() => MC_SaveSimulationResults_Executed(null, null));
 
             _canDownloadInfiles = true;
@@ -87,7 +87,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _cancelButtonText = value;
-                OnPropertyChanged("CancelButtonText");
+                OnPropertyChanged(nameof(CancelButtonText));
             }
         }
 
@@ -97,7 +97,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _canDownloadInfiles = value;
-                OnPropertyChanged("CanDownloadInfiles");
+                OnPropertyChanged(nameof(CanDownloadInfiles));
             }
         }
 
@@ -107,7 +107,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _canRunSimulation = value;
-                OnPropertyChanged("CanRunSimulation");
+                OnPropertyChanged(nameof(CanRunSimulation));
             }
         }
 
@@ -117,7 +117,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _canCancelSimulation = value;
-                OnPropertyChanged("CanCancelSimulation");
+                OnPropertyChanged(nameof(CanCancelSimulation));
             }
         }
 
@@ -127,7 +127,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _canSaveResults = value;
-                OnPropertyChanged("CanSaveResults");
+                OnPropertyChanged(nameof(CanSaveResults));
             }
         }
 
@@ -137,7 +137,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _canLoadInputFile = value;
-                OnPropertyChanged("CanLoadInputFile");
+                OnPropertyChanged(nameof(CanLoadInputFile));
             }
         }
 
@@ -147,11 +147,11 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _simulationInputVm = value;
-                OnPropertyChanged("SimulationInputVM");
+                OnPropertyChanged(nameof(SimulationInputVM));
             }
         }
 
-        private async void MC_ExecuteMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async Task MC_ExecuteMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             _currentCancellationTokenSource = new CancellationTokenSource();
             CanRunSimulation = false;
@@ -179,7 +179,7 @@ namespace Vts.Gui.Wpf.ViewModel
                 var validationResult = SimulationInputValidation.ValidateInput(input);
                 if (!validationResult.IsValid)
                 {
-                    logger.Info(() => StringLookup.GetLocalizedString("Message_InvalidSimulationInput") +
+                    Logger.Info(() => StringLookup.GetLocalizedString("Message_InvalidSimulationInput") +
                                       "\r" + StringLookup.GetLocalizedString("Message_Rule") + validationResult.ValidationRule +
                                       (!string.IsNullOrEmpty(validationResult.Remarks)
                                           ? "\r" + StringLookup.GetLocalizedString("Message_Details") + validationResult.Remarks
@@ -200,11 +200,11 @@ namespace Vts.Gui.Wpf.ViewModel
                     _newResultsAvailable = _simulation.ResultsAvailable;
 
                     var rOfRhoDetectorInputs =
-                        _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho");
+                        _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho").ToList();
 
-                    if (rOfRhoDetectorInputs.Any())
+                    if (rOfRhoDetectorInputs.Count != 0)
                     {
-                        logger.Info(() => StringLookup.GetLocalizedString("Message_CreateROfRhoPlot"));
+                        Logger.Info(() => StringLookup.GetLocalizedString("Message_CreateROfRhoPlot"));
 
                         var detectorInput = (ROfRhoDetectorInput) rOfRhoDetectorInputs.First();
 
@@ -223,24 +223,24 @@ namespace Vts.Gui.Wpf.ViewModel
                         if (MainWindow.Current != null)
                             WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
                         plotView = true;
-                        logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+                        Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                     }
 
                     var fluenceDetectorInputs =
-                        _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "FluenceOfRhoAndZ");
+                        _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "FluenceOfRhoAndZ").ToList();
 
-                    if (fluenceDetectorInputs.Any())
+                    if (fluenceDetectorInputs.Count != 0)
                     {
-                        logger.Info(() => StringLookup.GetLocalizedString("Message_CreatingFluenceRhoZMap"));
+                        Logger.Info(() => StringLookup.GetLocalizedString("Message_CreatingFluenceRhoZMap"));
                         var detectorInput = (FluenceOfRhoAndZDetectorInput) fluenceDetectorInputs.First();
-                        var rhosMC = detectorInput.Rho.AsEnumerable().ToArray();
-                        var zsMC = detectorInput.Z.AsEnumerable().ToArray();
+                        var rhosMc = detectorInput.Rho.AsEnumerable().ToArray();
+                        var zsMc = detectorInput.Z.AsEnumerable().ToArray();
 
                         var rhos =
-                            rhosMC.Skip(1).Zip(rhosMC.Take(rhosMC.Length - 1),
+                            rhosMc.Skip(1).Zip(rhosMc.Take(rhosMc.Length - 1),
                                 (first, second) => (first + second) / 2).ToArray();
                         var zs =
-                            zsMC.Skip(1).Zip(rhosMC.Take(zsMC.Length - 1),
+                            zsMc.Skip(1).Zip(rhosMc.Take(zsMc.Length - 1),
                                 (first, second) => (first + second) / 2).ToArray();
 
                         var dRhos =
@@ -273,12 +273,12 @@ namespace Vts.Gui.Wpf.ViewModel
 
                         WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
                         mapView = true;
-                        logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+                        Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                     }
                     // put map view on top if no plot and plot view on top if no map otherwise stay on current view
                     if (!(plotView && mapView) && MainWindow.Current != null)
                     {
-                        MainWindow.Current.Main_SelectView_Executed(rOfRhoDetectorInputs.Any() ? 0 : 1);
+                        MainWindow.Current.Main_SelectView_Executed(rOfRhoDetectorInputs.Count != 0 ? 0 : 1);
                     }
                 }
 
@@ -320,85 +320,80 @@ namespace Vts.Gui.Wpf.ViewModel
         /// and if so, logs to the user to verify selection using TrackStatistics check box 
         /// </summary>
         /// <param name="input">Simulation input</param>
-        private bool MC_InfileIsValidForGUI(SimulationInput input)
+        internal bool MC_InfileIsValidForGUI(SimulationInput input)
         {
             if ((input.TissueInput is not MultiLayerTissueInput && input.TissueInput is not SingleEllipsoidTissueInput) || (input.DetectorInputs.All(d => d.TallyType != TallyType.ROfRho) &&
                 input.DetectorInputs.All(d => d.TallyType != TallyType.FluenceOfRhoAndZ)))
             {
-                logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsUse_MCCL") + ".\r");
+                Logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsUse_MCCL") + ".\r");
                 return false;
             }
 
             if (input.Options.Databases.Count == 0) return true;
-            logger.Info(() => StringLookup.GetLocalizedString("Error_DatabaseOutputNotSupported") + ".\r");
+            Logger.Info(() => StringLookup.GetLocalizedString("Error_DatabaseOutputNotSupported") + ".\r");
             return false;
         }
 
         private void MC_CacheSimulationResults(SimulationInput input)
         {
             // cache the simulation results
-            logger.Info(() => StringLookup.GetLocalizedString("Message_CachingSimulationResults"));
+            Logger.Info(() => StringLookup.GetLocalizedString("Message_CachingSimulationResults"));
 
-            CacheItemPolicy policy = new CacheItemPolicy
+            var policy = new CacheItemPolicy
             {
                 SlidingExpiration = TimeSpan.FromHours(2)
             };
 
-            _cache.Set("SimulationInput", input, policy);
-            _cache.Set("SimulationOutput", _output, policy);
-            logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+            _cache.Set(nameof(SimulationInput), input, policy);
+            _cache.Set(nameof(SimulationOutput), _output, policy);
+            Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
         }
 
         private async Task<bool> MC_SaveSimulationResultsFromCache()
         {
-            var input = _cache["SimulationInput"] as SimulationInput;
-            var output = _cache["SimulationOutput"] as SimulationOutput;
-            if (input == null || output == null) return false;
-            using (var dialog = new FolderBrowserDialog())
+            if (_cache[nameof(SimulationInput)] is not SimulationInput input || _cache[nameof(SimulationOutput)] is not SimulationOutput output) return false;
+            using var dialog = new FolderBrowserDialog();
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult != DialogResult.OK) return false;
+            // create the root directory
+            try
             {
-                var dialogResult = dialog.ShowDialog();
-                if (dialogResult == DialogResult.OK)
+                var folder = Path.Combine(dialog.SelectedPath, "results");
+                if (Directory.Exists(folder) && Directory.EnumerateFileSystemEntries(folder).Any())
                 {
-                    // create the root directory
-                    try
+                    // there are files in this directory, ok to delete them?
+                    var messageBoxResult =
+                        System.Windows.MessageBox.Show(
+                            StringLookup.GetLocalizedString("MessageBox_DeleteConfirmResults"),
+                            StringLookup.GetLocalizedString("MessageBoxTitle_DeleteConfirm"), MessageBoxButton.YesNo);
+                    if (messageBoxResult == MessageBoxResult.No)
                     {
-                        var folder = Path.Combine(dialog.SelectedPath, "results");
-                        if (Directory.Exists(folder) && Directory.EnumerateFileSystemEntries(folder).Any())
-                        {
-                            // there are files in this directory, ok to delete them?
-                            var messageBoxResult =
-                                System.Windows.MessageBox.Show(
-                                    StringLookup.GetLocalizedString("MessageBox_DeleteConfirmResults"),
-                                    StringLookup.GetLocalizedString("MessageBoxTitle_DeleteConfirm"), MessageBoxButton.YesNo);
-                            if (messageBoxResult == MessageBoxResult.No)
-                            {
-                                return false;
-                            }
-                        }
-                        logger.Info(() => StringLookup.GetLocalizedString("Message_SaveSimulationResults"));
-                        CanSaveResults = false;
-                        CanRunSimulation = false;
-                        CanLoadInputFile = false;
-                        CanCancelSimulation = true;
-                        CancelButtonText = StringLookup.GetLocalizedString("Button_CancelSave");
-                        await Task.Run(() => MC_SaveSimulationResultsToFolder(input, output, folder),
-                            _currentCancellationTokenSource.Token);
-                        CanSaveResults = true;
-                        CanRunSimulation = true;
-                        CanLoadInputFile = true;
-                        CancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
-                        CanCancelSimulation = false;
-
-                        logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
                         return false;
                     }
                 }
+                Logger.Info(() => StringLookup.GetLocalizedString("Message_SaveSimulationResults"));
+                CanSaveResults = false;
+                CanRunSimulation = false;
+                CanLoadInputFile = false;
+                CanCancelSimulation = true;
+                CancelButtonText = StringLookup.GetLocalizedString("Button_CancelSave");
+                await Task.Run(() => MC_SaveSimulationResultsToFolder(input, output, folder),
+                    _currentCancellationTokenSource.Token);
+                CanSaveResults = true;
+                CanRunSimulation = true;
+                CanLoadInputFile = true;
+                CancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
+                CanCancelSimulation = false;
+
+                Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+                return true;
             }
+            catch (Exception)
+            {
+                Logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
+                return false;
+            }
+
             return false;
         }
 
@@ -422,20 +417,20 @@ namespace Vts.Gui.Wpf.ViewModel
             FileIO.CopyFolderFromEmbeddedResources("Matlab", folder, currentAssembly.FullName, false); // put Matlab scripts in "results"
         }
 
-        private async void MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async Task MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             CanCancelSimulation = false;
             CanRunSimulation = true;
             CanLoadInputFile = true;
-            if (_simulation != null && _simulation.IsRunning)
+            if (_simulation is { IsRunning: true })
             {
                 await Task.Run(() => _simulation.Cancel());
             }
-            _currentCancellationTokenSource.Cancel();
-            logger.Info(() => StringLookup.GetLocalizedString("Message_Cancelled") + ".\n");
+            await _currentCancellationTokenSource.CancelAsync();
+            Logger.Info(() => StringLookup.GetLocalizedString("Message_Cancelled") + ".\n");
         }
 
-        private async void MC_LoadSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async Task MC_LoadSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             // Create OpenFileDialog 
             var dialog = new Microsoft.Win32.OpenFileDialog
@@ -473,74 +468,89 @@ namespace Vts.Gui.Wpf.ViewModel
             }
             else
             {
-                logger.Info(() => StringLookup.GetLocalizedString("Error_FileLoad") + ".\r");
+                Logger.Info(() => StringLookup.GetLocalizedString("Error_FileLoad") + ".\r");
             }
             CanRunSimulation = true;
             CanLoadInputFile = true;
         }
 
-        private SimulationInput MC_ReadSimulationInputFromFile(string filename)
-        {
-            using (var stream = new FileStream(filename, FileMode.Open))
-            {
-                var simulationInput = FileIO.ReadFromJsonStream<SimulationInput>(stream);
 
-                var validationResult = SimulationInputValidation.ValidateInput(simulationInput);
-                if (validationResult.IsValid && MC_InfileIsValidForGUI(simulationInput))
-                {
-                    logger.Info(() => StringLookup.GetLocalizedString("Message_SimulationInputLoaded") + "\r");
-                    return simulationInput;
-                }
-                logger.Info(() => StringLookup.GetLocalizedString("Error_SimulationInputNotLoaded") + "\r"); 
-                return null;
+        /// <summary>
+        /// Reads simulation input data from a specified JSON file and validates the input.
+        /// </summary>
+        /// <remarks>If the input data is invalid or the file cannot be read, an error message is logged.
+        /// Ensure that the file format matches the expected structure for successful loading.</remarks>
+        /// <param name="filename">The path to the JSON file containing the simulation input data. The file
+        /// must exist and be accessible for reading.</param>
+        /// <returns>A <see langword="SimulationInput"/> object containing the loaded simulation input data
+        /// if the input is valid; otherwise, returns null.</returns>
+        internal SimulationInput MC_ReadSimulationInputFromFile(string filename)
+        {
+            using var stream = new FileStream(filename, FileMode.Open);
+            var simulationInput = FileIO.ReadFromJsonStream<SimulationInput>(stream);
+
+            var validationResult = SimulationInputValidation.ValidateInput(simulationInput);
+            if (validationResult.IsValid && MC_InfileIsValidForGUI(simulationInput))
+            {
+                Logger.Info(() => StringLookup.GetLocalizedString("Message_SimulationInputLoaded") + "\r");
+                return simulationInput;
             }
+            Logger.Info(() => StringLookup.GetLocalizedString("Error_SimulationInputNotLoaded") + "\r"); 
+            return null;
         }
 
-        private async void MC_DownloadDefaultSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async Task MC_DownloadDefaultSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            using (var dialog = new FolderBrowserDialog())
+            using var dialog = new FolderBrowserDialog();
+            var dialogResult = dialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
             {
-                var dialogResult = dialog.ShowDialog();
-                if (dialogResult == DialogResult.OK)
+                // create the root directory
+                try
                 {
-                    // create the root directory
-                    try
+                    var folder = Path.Combine(dialog.SelectedPath, "infiles");
+                    if (Directory.Exists(folder) && Directory.EnumerateFileSystemEntries(folder).Any())
                     {
-                        var folder = Path.Combine(dialog.SelectedPath, "infiles");
-                        if (Directory.Exists(folder) && Directory.EnumerateFileSystemEntries(folder).Any())
+                        // there are files in this directory, ok to delete them?
+                        var messageBoxResult =
+                            System.Windows.MessageBox.Show(
+                                StringLookup.GetLocalizedString("MessageBox_DeleteConfirmInfiles"),
+                                StringLookup.GetLocalizedString("MessageBoxTitle_DeleteConfirm"), MessageBoxButton.YesNo);
+                        if (messageBoxResult == MessageBoxResult.No)
                         {
-                            // there are files in this directory, ok to delete them?
-                            var messageBoxResult =
-                                System.Windows.MessageBox.Show(
-                                    StringLookup.GetLocalizedString("MessageBox_DeleteConfirmInfiles"),
-                                    StringLookup.GetLocalizedString("MessageBoxTitle_DeleteConfirm"), MessageBoxButton.YesNo);
-                            if (messageBoxResult == MessageBoxResult.No)
-                            {
-                                return;
-                            }
+                            return;
                         }
-                        logger.Info(() => StringLookup.GetLocalizedString("Message_DownloadingInfiles"));
-                        CanDownloadInfiles = false;
-                        await Task.Run(() => MC_DownloadDefaultSimulationInputToFolder(folder));
-                        CanDownloadInfiles = true;
-                        logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                     }
-                    catch (Exception)
-                    {
-                        logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
-                    }
+                    Logger.Info(() => StringLookup.GetLocalizedString("Message_DownloadingInfiles"));
+                    CanDownloadInfiles = false;
+                    await Task.Run(() => MC_DownloadDefaultSimulationInputToFolder(folder));
+                    CanDownloadInfiles = true;
+                    Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+                }
+                catch (Exception)
+                {
+                    Logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
                 }
             }
         }
 
-        private void MC_DownloadDefaultSimulationInputToFolder(string folder)
+        /// <summary>
+        /// Downloads a set of default simulation input files to the specified folder.
+        /// </summary>
+        /// <remarks>This method generates and saves a collection of predefined simulation
+        /// input files, each representing different tissue models and detector configurations.
+        /// Ensure that the specified folder has appropriate write permissions before calling
+        /// this method.</remarks>
+        /// <param name="folder">The path to the folder where the simulation input files will be saved.
+        /// If the folder does not exist, it will be created.</param>
+        internal void MC_DownloadDefaultSimulationInputToFolder(string folder)
         {
             FileIO.CreateEmptyDirectory(folder);
             var simulationInputs = new List<SimulationInput>
             {
                 //infile_ellip_FluenceOfRhoAndZ.txt
                 SimulationInputProvider.PointSourceSingleEllipsoidTissueFluenceOfRhoAndZDetector(),
-                // infile_Flat_2D_Lambertian_source_one_layer_ROfRho_FluenceOfRhoAndZ.txt
+                //infile_Flat_2D_Lambertian_source_one_layer_ROfRho_FluenceOfRhoAndZ.txt
                 SimulationInputProvider.Flat2DLambertianSourceOneLayerTissueROfRhoFluenceOfRhoAndZDetector(),
                 //infile_Flat_2D_source_one_layer_ROfRho.txt
                 SimulationInputProvider.Flat2DSourceOneLayerTissueROfRhoDetector(),
@@ -570,14 +580,14 @@ namespace Vts.Gui.Wpf.ViewModel
             }
         }
 
-        private async void MC_SaveSimulationResults_Executed(object sender, ExecutedRoutedEventArgs e)
+        private async Task MC_SaveSimulationResults_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (_output != null && _newResultsAvailable)
             {
                 var result = await MC_SaveSimulationResultsFromCache();
                 if (!result)
                 {
-                    logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
+                    Logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
                 }
 
             }
@@ -585,14 +595,6 @@ namespace Vts.Gui.Wpf.ViewModel
 
         private PlotAxesLabels GetPlotLabels()
         {
-            //return new PlotAxesLabels(
-            //    IndependentVariableAxis.Rho.GetInternationalizedString(),
-            //    IndependentVariableAxisUnits.MM.GetInternationalizedString(),
-            //    IndependentVariableAxis.Rho,
-            //    SolutionDomainType.ROfRho.GetInternationalizedString(),
-            //    DependentVariableAxisUnits.PerMMSquared.GetInternationalizedString());
-
-            //var rhoRange = (ROfRhoDetectorInput) _simulationInputVM.SimulationInput.DetectorInputs.FirstOrDefault();
             var rOfRhoDetectorInputs =
                 _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho");
             var detectorInput = (ROfRhoDetectorInput)rOfRhoDetectorInputs.First();
