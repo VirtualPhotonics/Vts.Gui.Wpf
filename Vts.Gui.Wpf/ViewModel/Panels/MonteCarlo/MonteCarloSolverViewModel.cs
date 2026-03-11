@@ -20,619 +20,618 @@ using Vts.MonteCarlo.Detectors;
 using Vts.MonteCarlo.IO;
 using Vts.MonteCarlo.Tissues;
 
-namespace Vts.Gui.Wpf.ViewModel
+namespace Vts.Gui.Wpf.ViewModel;
+
+/// <summary>
+///     View model implementing the Monte Carlo panel functionality (experimental)
+/// </summary>
+public class MonteCarloSolverViewModel : BindableObject
 {
-    /// <summary>
-    ///     View model implementing the Monte Carlo panel functionality (experimental)
-    /// </summary>
-    public class MonteCarloSolverViewModel : BindableObject
+    private static readonly ILogger Logger =
+        LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MonteCarloSolverViewModel));
+
+    private CancellationTokenSource _currentCancellationTokenSource;
+
+    private double[] _mapArrayBuffer;
+
+    private string _outputName;
+
+    private bool _newResultsAvailable;
+    private bool _canRunSimulation;
+    private bool _canCancelSimulation;
+    private bool _canSaveResults;
+    private bool _canLoadInputFile;
+    private bool _canDownloadInfiles;
+
+    private string _cancelButtonText;
+
+    private SimulationOutput _output;
+    private readonly ObjectCache _cache = MemoryCache.Default;
+
+    private MonteCarloSimulation _simulation;
+
+    private SimulationInputViewModel _simulationInputVm;
+
+    public MonteCarloSolverViewModel()
     {
-        private static readonly ILogger Logger =
-            LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MonteCarloSolverViewModel));
+        var simulationInput = SimulationInputProvider.PointSourceTwoLayerTissueROfRhoDetector();
 
-        private CancellationTokenSource _currentCancellationTokenSource;
+        _simulationInputVm = new SimulationInputViewModel(simulationInput);
+        _outputName = simulationInput.OutputName;
 
-        private double[] _mapArrayBuffer;
+        ExecuteMonteCarloSolverCommand = new RelayCommand(() => _ = MC_ExecuteMonteCarloSolver_Executed(null, null));
+        CancelMonteCarloSolverCommand = new RelayCommand(() => _ = MC_CancelMonteCarloSolver_Executed(null, null));
+        LoadSimulationInputCommand = new RelayCommand(() => _ = MC_LoadSimulationInput_Executed(null, null));
+        DownloadDefaultSimulationInputCommand =
+            new RelayCommand(() => _ = MC_DownloadDefaultSimulationInput_Executed(null, null));
+        SaveSimulationResultsCommand = new RelayCommand(() => MC_SaveSimulationResults_Executed(null, null));
 
-        private string _outputName;
+        _canDownloadInfiles = true;
+        _canLoadInputFile = true;
+        _canRunSimulation = true;
+        _canCancelSimulation = false;
+        _canSaveResults = false;
+        _newResultsAvailable = false;
+        _cancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
+    }
 
-        private bool _newResultsAvailable;
-        private bool _canRunSimulation;
-        private bool _canCancelSimulation;
-        private bool _canSaveResults;
-        private bool _canLoadInputFile;
-        private bool _canDownloadInfiles;
+    public RelayCommand ExecuteMonteCarloSolverCommand { get; private set; }
+    public RelayCommand CancelMonteCarloSolverCommand { get; private set; }
+    public RelayCommand LoadSimulationInputCommand { get; private set; }
+    public RelayCommand DownloadDefaultSimulationInputCommand { get; private set; }
+    public RelayCommand SaveSimulationResultsCommand { get; private set; }
 
-        private string _cancelButtonText;
-
-        private SimulationOutput _output;
-        private readonly ObjectCache _cache = MemoryCache.Default;
-
-        private MonteCarloSimulation _simulation;
-
-        private SimulationInputViewModel _simulationInputVm;
-
-        public MonteCarloSolverViewModel()
+    public string CancelButtonText
+    {
+        get => _cancelButtonText;
+        set
         {
-            var simulationInput = SimulationInputProvider.PointSourceTwoLayerTissueROfRhoDetector();
+            _cancelButtonText = value;
+            OnPropertyChanged(nameof(CancelButtonText));
+        }
+    }
 
-            _simulationInputVm = new SimulationInputViewModel(simulationInput);
-            _outputName = simulationInput.OutputName;
+    public bool CanDownloadInfiles
+    {
+        get => _canDownloadInfiles;
+        set
+        {
+            _canDownloadInfiles = value;
+            OnPropertyChanged(nameof(CanDownloadInfiles));
+        }
+    }
 
-            ExecuteMonteCarloSolverCommand = new RelayCommand(() => _ = MC_ExecuteMonteCarloSolver_Executed(null, null));
-            CancelMonteCarloSolverCommand = new RelayCommand(() => _ = MC_CancelMonteCarloSolver_Executed(null, null));
-            LoadSimulationInputCommand = new RelayCommand(() => _ = MC_LoadSimulationInput_Executed(null, null));
-            DownloadDefaultSimulationInputCommand =
-                new RelayCommand(() => _ = MC_DownloadDefaultSimulationInput_Executed(null, null));
-            SaveSimulationResultsCommand = new RelayCommand(() => MC_SaveSimulationResults_Executed(null, null));
+    public bool CanRunSimulation
+    {
+        get => _canRunSimulation;
+        set
+        {
+            _canRunSimulation = value;
+            OnPropertyChanged(nameof(CanRunSimulation));
+        }
+    }
 
-            _canDownloadInfiles = true;
-            _canLoadInputFile = true;
-            _canRunSimulation = true;
-            _canCancelSimulation = false;
-            _canSaveResults = false;
+    public bool CanCancelSimulation
+    {
+        get => _canCancelSimulation;
+        set
+        {
+            _canCancelSimulation = value;
+            OnPropertyChanged(nameof(CanCancelSimulation));
+        }
+    }
+
+    public bool CanSaveResults
+    {
+        get => _canSaveResults;
+        set
+        {
+            _canSaveResults = value;
+            OnPropertyChanged(nameof(CanSaveResults));
+        }
+    }
+
+    public bool CanLoadInputFile
+    {
+        get => _canLoadInputFile;
+        set
+        {
+            _canLoadInputFile = value;
+            OnPropertyChanged(nameof(CanLoadInputFile));
+        }
+    }
+
+    public SimulationInputViewModel SimulationInputVM
+    {
+        get => _simulationInputVm;
+        set
+        {
+            _simulationInputVm = value;
+            OnPropertyChanged(nameof(SimulationInputVM));
+        }
+    }
+
+    private async Task MC_ExecuteMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        _currentCancellationTokenSource = new CancellationTokenSource();
+        CanRunSimulation = false;
+        CanLoadInputFile = false;
+        CanCancelSimulation = true;
+        CancelButtonText = StringLookup.GetLocalizedString("Button_CancelSimulation");
+        CanSaveResults = false;
+        var mapView = false;
+        var plotView = false;
+
+        //clear the map in case there is no new mapview
+        WindowViewModel.Current.MapVM.ClearMap.Execute(null);
+
+        try
+        {
+            var input = _simulationInputVm.SimulationInput;
+
+            if (MainWindow.Current != null)
+            {
+                MainWindow.Current.Wait.Visibility = Visibility.Visible;
+                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Begin();
+            }
             _newResultsAvailable = false;
-            _cancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
-        }
 
-        public RelayCommand ExecuteMonteCarloSolverCommand { get; private set; }
-        public RelayCommand CancelMonteCarloSolverCommand { get; private set; }
-        public RelayCommand LoadSimulationInputCommand { get; private set; }
-        public RelayCommand DownloadDefaultSimulationInputCommand { get; private set; }
-        public RelayCommand SaveSimulationResultsCommand { get; private set; }
-
-        public string CancelButtonText
-        {
-            get => _cancelButtonText;
-            set
+            var validationResult = SimulationInputValidation.ValidateInput(input);
+            if (!validationResult.IsValid)
             {
-                _cancelButtonText = value;
-                OnPropertyChanged(nameof(CancelButtonText));
+                Logger.Info(() => StringLookup.GetLocalizedString("Message_InvalidSimulationInput") +
+                                  "\r" + StringLookup.GetLocalizedString("Message_Rule") + validationResult.ValidationRule +
+                                  (!string.IsNullOrEmpty(validationResult.Remarks)
+                                      ? "\r" + StringLookup.GetLocalizedString("Message_Details") + validationResult.Remarks
+                                      : "") + ".\r");
+                return;
             }
-        }
 
-        public bool CanDownloadInfiles
-        {
-            get => _canDownloadInfiles;
-            set
+            if (!MC_InfileIsValidForGUI(input))
             {
-                _canDownloadInfiles = value;
-                OnPropertyChanged(nameof(CanDownloadInfiles));
+                return;
             }
-        }
 
-        public bool CanRunSimulation
-        {
-            get => _canRunSimulation;
-            set
+            _simulation = new MonteCarloSimulation(input);
+
+            _output = await Task.Run(() => _simulation.Run(), _currentCancellationTokenSource.Token);
+            if (_output != null)
             {
-                _canRunSimulation = value;
-                OnPropertyChanged(nameof(CanRunSimulation));
-            }
-        }
+                _newResultsAvailable = _simulation.ResultsAvailable;
 
-        public bool CanCancelSimulation
-        {
-            get => _canCancelSimulation;
-            set
-            {
-                _canCancelSimulation = value;
-                OnPropertyChanged(nameof(CanCancelSimulation));
-            }
-        }
+                var rOfRhoDetectorInputs =
+                    _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho").ToList();
 
-        public bool CanSaveResults
-        {
-            get => _canSaveResults;
-            set
-            {
-                _canSaveResults = value;
-                OnPropertyChanged(nameof(CanSaveResults));
-            }
-        }
-
-        public bool CanLoadInputFile
-        {
-            get => _canLoadInputFile;
-            set
-            {
-                _canLoadInputFile = value;
-                OnPropertyChanged(nameof(CanLoadInputFile));
-            }
-        }
-
-        public SimulationInputViewModel SimulationInputVM
-        {
-            get => _simulationInputVm;
-            set
-            {
-                _simulationInputVm = value;
-                OnPropertyChanged(nameof(SimulationInputVM));
-            }
-        }
-
-        private async Task MC_ExecuteMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            _currentCancellationTokenSource = new CancellationTokenSource();
-            CanRunSimulation = false;
-            CanLoadInputFile = false;
-            CanCancelSimulation = true;
-            CancelButtonText = StringLookup.GetLocalizedString("Button_CancelSimulation");
-            CanSaveResults = false;
-            var mapView = false;
-            var plotView = false;
-
-            //clear the map in case there is no new mapview
-            WindowViewModel.Current.MapVM.ClearMap.Execute(null);
-
-            try
-            {
-                var input = _simulationInputVm.SimulationInput;
-
-                if (MainWindow.Current != null)
+                if (rOfRhoDetectorInputs.Count != 0)
                 {
-                    MainWindow.Current.Wait.Visibility = Visibility.Visible;
-                    ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Begin();
-                }
-                _newResultsAvailable = false;
+                    Logger.Info(() => StringLookup.GetLocalizedString("Message_CreateROfRhoPlot"));
 
-                var validationResult = SimulationInputValidation.ValidateInput(input);
-                if (!validationResult.IsValid)
-                {
-                    Logger.Info(() => StringLookup.GetLocalizedString("Message_InvalidSimulationInput") +
-                                      "\r" + StringLookup.GetLocalizedString("Message_Rule") + validationResult.ValidationRule +
-                                      (!string.IsNullOrEmpty(validationResult.Remarks)
-                                          ? "\r" + StringLookup.GetLocalizedString("Message_Details") + validationResult.Remarks
-                                          : "") + ".\r");
-                    return;
+                    var detectorInput = (ROfRhoDetectorInput) rOfRhoDetectorInputs.First();
+
+                    var independentValues = detectorInput.Rho.AsEnumerable().ToArray();
+
+                    DoubleDataPoint[] points = null;
+
+                    points = independentValues.Zip(_output.R_r,
+                        (x, y) => new DoubleDataPoint(x, y)).ToArray();
+
+                    var axesLabels = GetPlotLabels();
+                    if (MainWindow.Current != null)
+                        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+
+                    var plotLabel = GetPlotLabel();
+                    if (MainWindow.Current != null)
+                        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
+                    plotView = true;
+                    Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                 }
 
-                if (!MC_InfileIsValidForGUI(input))
+                var fluenceDetectorInputs =
+                    _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "FluenceOfRhoAndZ").ToList();
+
+                if (fluenceDetectorInputs.Count != 0)
                 {
-                    return;
-                }
+                    Logger.Info(() => StringLookup.GetLocalizedString("Message_CreatingFluenceRhoZMap"));
+                    var detectorInput = (FluenceOfRhoAndZDetectorInput) fluenceDetectorInputs.First();
+                    var rhosMc = detectorInput.Rho.AsEnumerable().ToArray();
+                    var zsMc = detectorInput.Z.AsEnumerable().ToArray();
 
-                _simulation = new MonteCarloSimulation(input);
+                    var rhos =
+                        rhosMc.Skip(1).Zip(rhosMc.Take(rhosMc.Length - 1),
+                            (first, second) => (first + second) / 2).ToArray();
+                    var zs =
+                        zsMc.Skip(1).Zip(rhosMc.Take(zsMc.Length - 1),
+                            (first, second) => (first + second) / 2).ToArray();
 
-                _output = await Task.Run(() => _simulation.Run(), _currentCancellationTokenSource.Token);
-                if (_output != null)
-                {
-                    _newResultsAvailable = _simulation.ResultsAvailable;
+                    var dRhos =
+                        rhos.Select(rho => 2 * Math.PI * Math.Abs(rho) * detectorInput.Rho.Delta).ToArray();
+                    var dZs = zs.Select(z => detectorInput.Rho.Delta).ToArray();
 
-                    var rOfRhoDetectorInputs =
-                        _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho").ToList();
-
-                    if (rOfRhoDetectorInputs.Count != 0)
+                    if (_mapArrayBuffer == null || _mapArrayBuffer.Length != _output.Flu_rz.Length * 2)
                     {
-                        Logger.Info(() => StringLookup.GetLocalizedString("Message_CreateROfRhoPlot"));
-
-                        var detectorInput = (ROfRhoDetectorInput) rOfRhoDetectorInputs.First();
-
-                        var independentValues = detectorInput.Rho.AsEnumerable().ToArray();
-
-                        DoubleDataPoint[] points = null;
-
-                        points = independentValues.Zip(_output.R_r,
-                            (x, y) => new DoubleDataPoint(x, y)).ToArray();
-
-                        var axesLabels = GetPlotLabels();
-                        if (MainWindow.Current != null)
-                            WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
-
-                        var plotLabel = GetPlotLabel();
-                        if (MainWindow.Current != null)
-                            WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
-                        plotView = true;
-                        Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+                        _mapArrayBuffer = new double[_output.Flu_rz.Length * 2];
                     }
 
-                    var fluenceDetectorInputs =
-                        _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "FluenceOfRhoAndZ").ToList();
-
-                    if (fluenceDetectorInputs.Count != 0)
+                    // flip the array (since it goes over zs and then rhos, while map wants rhos and then zs
+                    for (var zi = 0; zi < zs.Length; zi++)
                     {
-                        Logger.Info(() => StringLookup.GetLocalizedString("Message_CreatingFluenceRhoZMap"));
-                        var detectorInput = (FluenceOfRhoAndZDetectorInput) fluenceDetectorInputs.First();
-                        var rhosMc = detectorInput.Rho.AsEnumerable().ToArray();
-                        var zsMc = detectorInput.Z.AsEnumerable().ToArray();
-
-                        var rhos =
-                            rhosMc.Skip(1).Zip(rhosMc.Take(rhosMc.Length - 1),
-                                (first, second) => (first + second) / 2).ToArray();
-                        var zs =
-                            zsMc.Skip(1).Zip(rhosMc.Take(zsMc.Length - 1),
-                                (first, second) => (first + second) / 2).ToArray();
-
-                        var dRhos =
-                            rhos.Select(rho => 2 * Math.PI * Math.Abs(rho) * detectorInput.Rho.Delta).ToArray();
-                        var dZs = zs.Select(z => detectorInput.Rho.Delta).ToArray();
-
-                        if (_mapArrayBuffer == null || _mapArrayBuffer.Length != _output.Flu_rz.Length * 2)
+                        for (var rhoi = 0; rhoi < rhos.Length; rhoi++)
                         {
-                            _mapArrayBuffer = new double[_output.Flu_rz.Length * 2];
+                            _mapArrayBuffer[rhoi + rhos.Length + rhos.Length * 2 * zi] = _output.Flu_rz[rhoi, zi];
                         }
-
-                        // flip the array (since it goes over zs and then rhos, while map wants rhos and then zs
-                        for (var zi = 0; zi < zs.Length; zi++)
+                        var localRhoiForReverse = 0;
+                        for (var rhoi = rhos.Length - 1; rhoi >= 0; rhoi--, localRhoiForReverse++)
                         {
-                            for (var rhoi = 0; rhoi < rhos.Length; rhoi++)
-                            {
-                                _mapArrayBuffer[rhoi + rhos.Length + rhos.Length * 2 * zi] = _output.Flu_rz[rhoi, zi];
-                            }
-                            var localRhoiForReverse = 0;
-                            for (var rhoi = rhos.Length - 1; rhoi >= 0; rhoi--, localRhoiForReverse++)
-                            {
-                                _mapArrayBuffer[localRhoiForReverse + rhos.Length * 2 * zi] = _output.Flu_rz[rhoi, zi];
-                            }
+                            _mapArrayBuffer[localRhoiForReverse + rhos.Length * 2 * zi] = _output.Flu_rz[rhoi, zi];
                         }
-
-                        var twoRhos = rhos.Reverse().Select(rho => -rho).Concat(rhos).ToArray();
-                        var twoDRhos = dRhos.Reverse().Concat(dRhos).ToArray();
-
-                        var mapData = new MapData(_mapArrayBuffer, twoRhos, zs, twoDRhos, dZs);
-
-                        WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
-                        mapView = true;
-                        Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                     }
-                    // put map view on top if no plot and plot view on top if no map otherwise stay on current view
-                    if (!(plotView && mapView) && MainWindow.Current != null)
-                    {
-                        MainWindow.Current.Main_SelectView_Executed(rOfRhoDetectorInputs.Count != 0 ? 0 : 1);
-                    }
-                }
 
-                if (MainWindow.Current != null)
-                {
-                    ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
-                    MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                    var twoRhos = rhos.Reverse().Select(rho => -rho).Concat(rhos).ToArray();
+                    var twoDRhos = dRhos.Reverse().Concat(dRhos).ToArray();
+
+                    var mapData = new MapData(_mapArrayBuffer, twoRhos, zs, twoDRhos, dZs);
+
+                    WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
+                    mapView = true;
+                    Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                 }
-                await Task.Run(() => MC_CacheSimulationResults(input), _currentCancellationTokenSource.Token);
-                CanRunSimulation = true;
-                CanLoadInputFile = true;
-                CancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
-                CanCancelSimulation = false;
-                CanSaveResults = true;
-            }
-            catch (OperationCanceledException)
-            {
-                if (MainWindow.Current != null)
+                // put map view on top if no plot and plot view on top if no map otherwise stay on current view
+                if (!(plotView && mapView) && MainWindow.Current != null)
                 {
-                    ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
-                    MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+                    MainWindow.Current.Main_SelectView_Executed(rOfRhoDetectorInputs.Count != 0 ? 0 : 1);
                 }
             }
-            finally
+
+            if (MainWindow.Current != null)
             {
-                if (MainWindow.Current != null)
-                {
-                    ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
-                    MainWindow.Current.Wait.Visibility = Visibility.Hidden;
-                }
+                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+            }
+            await Task.Run(() => MC_CacheSimulationResults(input), _currentCancellationTokenSource.Token);
+            CanRunSimulation = true;
+            CanLoadInputFile = true;
+            CancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
+            CanCancelSimulation = false;
+            CanSaveResults = true;
+        }
+        catch (OperationCanceledException)
+        {
+            if (MainWindow.Current != null)
+            {
+                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
             }
         }
-
-        /// <summary>
-        /// This method goes beyond the regular SimulationInput validation performed in SimulationInputValidation class.
-        /// The validation performed here checks that the input can be plotted, i.e., tissue and detectors have 
-        /// cylindrical symmetry.  It also checks if a database output is specified and specifies that a new infile
-        /// be specified because database files cannot be cached. Finally it checks if TrackStatistics is true
-        /// and if so, logs to the user to verify selection using TrackStatistics check box 
-        /// </summary>
-        /// <param name="input">Simulation input</param>
-        internal bool MC_InfileIsValidForGUI(SimulationInput input)
+        finally
         {
-            if ((input.TissueInput is not MultiLayerTissueInput && input.TissueInput is not SingleEllipsoidTissueInput) || (input.DetectorInputs.All(d => d.TallyType != TallyType.ROfRho) &&
+            if (MainWindow.Current != null)
+            {
+                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                MainWindow.Current.Wait.Visibility = Visibility.Hidden;
+            }
+        }
+    }
+
+    /// <summary>
+    /// This method goes beyond the regular SimulationInput validation performed in SimulationInputValidation class.
+    /// The validation performed here checks that the input can be plotted, i.e., tissue and detectors have 
+    /// cylindrical symmetry.  It also checks if a database output is specified and specifies that a new infile
+    /// be specified because database files cannot be cached. Finally it checks if TrackStatistics is true
+    /// and if so, logs to the user to verify selection using TrackStatistics check box 
+    /// </summary>
+    /// <param name="input">Simulation input</param>
+    internal bool MC_InfileIsValidForGUI(SimulationInput input)
+    {
+        if ((input.TissueInput is not MultiLayerTissueInput && input.TissueInput is not SingleEllipsoidTissueInput) || (input.DetectorInputs.All(d => d.TallyType != TallyType.ROfRho) &&
                 input.DetectorInputs.All(d => d.TallyType != TallyType.FluenceOfRhoAndZ)))
-            {
-                Logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsUse_MCCL") + ".\r");
-                return false;
-            }
-
-            if (input.Options.Databases.Count == 0) return true;
-            Logger.Info(() => StringLookup.GetLocalizedString("Error_DatabaseOutputNotSupported") + ".\r");
+        {
+            Logger.Info(() => StringLookup.GetLocalizedString("Warning_NoPlotsUse_MCCL") + ".\r");
             return false;
         }
 
-        private void MC_CacheSimulationResults(SimulationInput input)
+        if (input.Options.Databases.Count == 0) return true;
+        Logger.Info(() => StringLookup.GetLocalizedString("Error_DatabaseOutputNotSupported") + ".\r");
+        return false;
+    }
+
+    private void MC_CacheSimulationResults(SimulationInput input)
+    {
+        // cache the simulation results
+        Logger.Info(() => StringLookup.GetLocalizedString("Message_CachingSimulationResults"));
+
+        var policy = new CacheItemPolicy
         {
-            // cache the simulation results
-            Logger.Info(() => StringLookup.GetLocalizedString("Message_CachingSimulationResults"));
+            SlidingExpiration = TimeSpan.FromHours(2)
+        };
 
-            var policy = new CacheItemPolicy
+        _cache.Set(nameof(SimulationInput), input, policy);
+        _cache.Set(nameof(SimulationOutput), _output, policy);
+        Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+    }
+
+    private async Task<bool> MC_SaveSimulationResultsFromCache()
+    {
+        if (_cache[nameof(SimulationInput)] is not SimulationInput input || _cache[nameof(SimulationOutput)] is not SimulationOutput output) return false;
+        using var dialog = new FolderBrowserDialog();
+        var dialogResult = dialog.ShowDialog();
+        if (dialogResult != DialogResult.OK) return false;
+        // create the root directory
+        try
+        {
+            var folder = Path.Combine(dialog.SelectedPath, "results");
+            if (Directory.Exists(folder) && Directory.EnumerateFileSystemEntries(folder).Any())
             {
-                SlidingExpiration = TimeSpan.FromHours(2)
-            };
+                // there are files in this directory, ok to delete them?
+                var messageBoxResult =
+                    System.Windows.MessageBox.Show(
+                        StringLookup.GetLocalizedString("MessageBox_DeleteConfirmResults"),
+                        StringLookup.GetLocalizedString("MessageBoxTitle_DeleteConfirm"), MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.No)
+                {
+                    return false;
+                }
+            }
+            Logger.Info(() => StringLookup.GetLocalizedString("Message_SaveSimulationResults"));
+            CanSaveResults = false;
+            CanRunSimulation = false;
+            CanLoadInputFile = false;
+            CanCancelSimulation = true;
+            CancelButtonText = StringLookup.GetLocalizedString("Button_CancelSave");
+            await Task.Run(() => MC_SaveSimulationResultsToFolder(input, output, folder),
+                _currentCancellationTokenSource.Token);
+            CanSaveResults = true;
+            CanRunSimulation = true;
+            CanLoadInputFile = true;
+            CancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
+            CanCancelSimulation = false;
 
-            _cache.Set(nameof(SimulationInput), input, policy);
-            _cache.Set(nameof(SimulationOutput), _output, policy);
             Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+            return true;
+        }
+        catch (Exception)
+        {
+            Logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
+            return false;
         }
 
-        private async Task<bool> MC_SaveSimulationResultsFromCache()
+        return false;
+    }
+
+    private void MC_SaveSimulationResultsToFolder(SimulationInput input, SimulationOutput output, string folder)
+    {
+        // the saving of files to a "results" folder is organized so that the user would just have to edit load_results_script
+        // with their particular OutputName and run it
+        FileIO.CreateEmptyDirectory(folder);  // create "results" folder for all saved files
+        var resultsSubfolder = Path.Combine(folder, _outputName); // create "results" subfolder that will hold detector results
+        FileIO.CreateEmptyDirectory(resultsSubfolder); 
+
+        // write detector results and infile to file
+        input.ToFile(Path.Combine(resultsSubfolder, _outputName + ".txt"));  // write infile with infile.OutputName
+        foreach (var result in output.ResultsDictionary.Values)
         {
-            if (_cache[nameof(SimulationInput)] is not SimulationInput input || _cache[nameof(SimulationOutput)] is not SimulationOutput output) return false;
-            using var dialog = new FolderBrowserDialog();
-            var dialogResult = dialog.ShowDialog();
-            if (dialogResult != DialogResult.OK) return false;
+            // save all detector data to the specified folder
+            DetectorIO.WriteDetectorToFile(result, resultsSubfolder);
+        }
+        // copy the MATLAB files to the "results" folder also
+        var currentAssembly = Assembly.GetExecutingAssembly();
+        FileIO.CopyFolderFromEmbeddedResources("Matlab", folder, currentAssembly.FullName, false); // put Matlab scripts in "results"
+    }
+
+    private async Task MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        CanCancelSimulation = false;
+        CanRunSimulation = true;
+        CanLoadInputFile = true;
+        if (_simulation is { IsRunning: true })
+        {
+            await Task.Run(() => _simulation.Cancel());
+        }
+        await _currentCancellationTokenSource.CancelAsync();
+        Logger.Info(() => StringLookup.GetLocalizedString("Message_Cancelled") + ".\n");
+    }
+
+    private async Task MC_LoadSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        // Create OpenFileDialog 
+        var dialog = new Microsoft.Win32.OpenFileDialog
+        {
+            DefaultExt = ".txt",
+            Filter = "TXT Files (*.txt)|*.txt"
+        };
+
+        CanRunSimulation = false;
+        CanLoadInputFile = false;
+        // Display OpenFileDialog by calling ShowDialog method 
+        var result = dialog.ShowDialog();
+
+        // if the file dialog returns true - file was selected 
+        var filename = "";
+        if (result == true)
+        {
+            // Get the filename from the dialog 
+            filename = dialog.FileName;
+        }
+        if (filename != "")
+        {
+            var simulationInput = await Task.Run(() => MC_ReadSimulationInputFromFile(filename));
+            if (simulationInput != null)
+            {
+                _outputName = simulationInput.OutputName;
+                SimulationInputVM.SimulationInput = simulationInput;
+                CanRunSimulation = true;
+                CanLoadInputFile = true;
+                if (simulationInput.Options.TrackStatistics)
+                {
+                    _simulationInputVm.SimulationOptionsVM.SetStatisticsFolderCommand.Execute(null);
+                }
+            }
+        }
+        else
+        {
+            Logger.Info(() => StringLookup.GetLocalizedString("Error_FileLoad") + ".\r");
+        }
+        CanRunSimulation = true;
+        CanLoadInputFile = true;
+    }
+
+
+    /// <summary>
+    /// Reads simulation input data from a specified JSON file and validates the input.
+    /// </summary>
+    /// <remarks>If the input data is invalid or the file cannot be read, an error message is logged.
+    /// Ensure that the file format matches the expected structure for successful loading.</remarks>
+    /// <param name="filename">The path to the JSON file containing the simulation input data. The file
+    /// must exist and be accessible for reading.</param>
+    /// <returns>A <see langword="SimulationInput"/> object containing the loaded simulation input data
+    /// if the input is valid; otherwise, returns null.</returns>
+    internal SimulationInput MC_ReadSimulationInputFromFile(string filename)
+    {
+        using var stream = new FileStream(filename, FileMode.Open);
+        var simulationInput = FileIO.ReadFromJsonStream<SimulationInput>(stream);
+
+        var validationResult = SimulationInputValidation.ValidateInput(simulationInput);
+        if (validationResult.IsValid && MC_InfileIsValidForGUI(simulationInput))
+        {
+            Logger.Info(() => StringLookup.GetLocalizedString("Message_SimulationInputLoaded") + "\r");
+            return simulationInput;
+        }
+        Logger.Info(() => StringLookup.GetLocalizedString("Error_SimulationInputNotLoaded") + "\r"); 
+        return null;
+    }
+
+    private async Task MC_DownloadDefaultSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        using var dialog = new FolderBrowserDialog();
+        var dialogResult = dialog.ShowDialog();
+        if (dialogResult == DialogResult.OK)
+        {
             // create the root directory
             try
             {
-                var folder = Path.Combine(dialog.SelectedPath, "results");
+                var folder = Path.Combine(dialog.SelectedPath, "infiles");
                 if (Directory.Exists(folder) && Directory.EnumerateFileSystemEntries(folder).Any())
                 {
                     // there are files in this directory, ok to delete them?
                     var messageBoxResult =
                         System.Windows.MessageBox.Show(
-                            StringLookup.GetLocalizedString("MessageBox_DeleteConfirmResults"),
+                            StringLookup.GetLocalizedString("MessageBox_DeleteConfirmInfiles"),
                             StringLookup.GetLocalizedString("MessageBoxTitle_DeleteConfirm"), MessageBoxButton.YesNo);
                     if (messageBoxResult == MessageBoxResult.No)
                     {
-                        return false;
+                        return;
                     }
                 }
-                Logger.Info(() => StringLookup.GetLocalizedString("Message_SaveSimulationResults"));
-                CanSaveResults = false;
-                CanRunSimulation = false;
-                CanLoadInputFile = false;
-                CanCancelSimulation = true;
-                CancelButtonText = StringLookup.GetLocalizedString("Button_CancelSave");
-                await Task.Run(() => MC_SaveSimulationResultsToFolder(input, output, folder),
-                    _currentCancellationTokenSource.Token);
-                CanSaveResults = true;
-                CanRunSimulation = true;
-                CanLoadInputFile = true;
-                CancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
-                CanCancelSimulation = false;
-
+                Logger.Info(() => StringLookup.GetLocalizedString("Message_DownloadingInfiles"));
+                CanDownloadInfiles = false;
+                await Task.Run(() => MC_DownloadDefaultSimulationInputToFolder(folder));
+                CanDownloadInfiles = true;
                 Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
-                return true;
             }
             catch (Exception)
             {
                 Logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
-                return false;
             }
-
-            return false;
         }
+    }
 
-        private void MC_SaveSimulationResultsToFolder(SimulationInput input, SimulationOutput output, string folder)
+    /// <summary>
+    /// Downloads a set of default simulation input files to the specified folder.
+    /// </summary>
+    /// <remarks>This method generates and saves a collection of predefined simulation
+    /// input files, each representing different tissue models and detector configurations.
+    /// Ensure that the specified folder has appropriate write permissions before calling
+    /// this method.</remarks>
+    /// <param name="folder">The path to the folder where the simulation input files will be saved.
+    /// If the folder does not exist, it will be created.</param>
+    internal void MC_DownloadDefaultSimulationInputToFolder(string folder)
+    {
+        FileIO.CreateEmptyDirectory(folder);
+        var simulationInputs = new List<SimulationInput>
         {
-            // the saving of files to a "results" folder is organized so that the user would just have to edit load_results_script
-            // with their particular OutputName and run it
-            FileIO.CreateEmptyDirectory(folder);  // create "results" folder for all saved files
-            var resultsSubfolder = Path.Combine(folder, _outputName); // create "results" subfolder that will hold detector results
-            FileIO.CreateEmptyDirectory(resultsSubfolder); 
-
-            // write detector results and infile to file
-            input.ToFile(Path.Combine(resultsSubfolder, _outputName + ".txt"));  // write infile with infile.OutputName
-            foreach (var result in output.ResultsDictionary.Values)
+            //infile_ellip_FluenceOfRhoAndZ.txt
+            SimulationInputProvider.PointSourceSingleEllipsoidTissueFluenceOfRhoAndZDetector(),
+            //infile_Flat_2D_Lambertian_source_one_layer_ROfRho_FluenceOfRhoAndZ.txt
+            SimulationInputProvider.Flat2DLambertianSourceOneLayerTissueROfRhoFluenceOfRhoAndZDetector(),
+            //infile_Flat_2D_source_one_layer_ROfRho.txt
+            SimulationInputProvider.Flat2DSourceOneLayerTissueROfRhoDetector(),
+            //infile_Gaussian_2D_source_one_layer_ROfRho.txt
+            SimulationInputProvider.Gaussian2DSourceOneLayerTissueROfRhoDetector(),
+            //infile_one_layer_all_detectors.txt
+            SimulationInputProvider.PointSourceOneLayerTissueAllDetectors(),
+            //infile_one_layer_FluenceOfRhoAndZ_RadianceOfRhoAndZAndAngle.txt
+            SimulationInputProvider.PointSourceOneLayerTissueRadianceOfRhoAndZAndAngleDetector(),
+            //infile_one_layer_ROfRho_FluenceOfRhoAndZ.txt
+            SimulationInputProvider.PointSourceOneLayerTissueROfRhoAndFluenceOfRhoAndZDetectors(),
+            //infile_two_layer_momentum_transfer_detectors.txt
+            SimulationInputProvider.PointSourceMultiLayerMomentumTransferDetectors(),
+            //infile_two_layer_ROfRho.txt
+            SimulationInputProvider.PointSourceTwoLayerTissueROfRhoDetector(),
+        };
+        var files = simulationInputs.Select(input =>
+            new
             {
-                // save all detector data to the specified folder
-                DetectorIO.WriteDetectorToFile(result, resultsSubfolder);
-            }
-            // copy the MATLAB files to the "results" folder also
-            var currentAssembly = Assembly.GetExecutingAssembly();
-            FileIO.CopyFolderFromEmbeddedResources("Matlab", folder, currentAssembly.FullName, false); // put Matlab scripts in "results"
-        }
+                Name = "infile_" + input.OutputName + ".txt",
+                Input = input
+            });
 
-        private async Task MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+        foreach (var file in files)
         {
-            CanCancelSimulation = false;
-            CanRunSimulation = true;
-            CanLoadInputFile = true;
-            if (_simulation is { IsRunning: true })
-            {
-                await Task.Run(() => _simulation.Cancel());
-            }
-            await _currentCancellationTokenSource.CancelAsync();
-            Logger.Info(() => StringLookup.GetLocalizedString("Message_Cancelled") + ".\n");
+            file.Input.ToFile(Path.Combine(folder, file.Name));
         }
+    }
 
-        private async Task MC_LoadSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
+    private async Task MC_SaveSimulationResults_Executed(object sender, ExecutedRoutedEventArgs e)
+    {
+        if (_output != null && _newResultsAvailable)
         {
-            // Create OpenFileDialog 
-            var dialog = new Microsoft.Win32.OpenFileDialog
+            var result = await MC_SaveSimulationResultsFromCache();
+            if (!result)
             {
-                DefaultExt = ".txt",
-                Filter = "TXT Files (*.txt)|*.txt"
-            };
+                Logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
+            }
 
-            CanRunSimulation = false;
-            CanLoadInputFile = false;
-            // Display OpenFileDialog by calling ShowDialog method 
-            var result = dialog.ShowDialog();
-
-            // if the file dialog returns true - file was selected 
-            var filename = "";
-            if (result == true)
-            {
-                // Get the filename from the dialog 
-                filename = dialog.FileName;
-            }
-            if (filename != "")
-            {
-                var simulationInput = await Task.Run(() => MC_ReadSimulationInputFromFile(filename));
-                if (simulationInput != null)
-                {
-                    _outputName = simulationInput.OutputName;
-                    SimulationInputVM.SimulationInput = simulationInput;
-                    CanRunSimulation = true;
-                    CanLoadInputFile = true;
-                    if (simulationInput.Options.TrackStatistics)
-                    {
-                        _simulationInputVm.SimulationOptionsVM.SetStatisticsFolderCommand.Execute(null);
-                    }
-                }
-            }
-            else
-            {
-                Logger.Info(() => StringLookup.GetLocalizedString("Error_FileLoad") + ".\r");
-            }
-            CanRunSimulation = true;
-            CanLoadInputFile = true;
         }
+    }
 
+    private PlotAxesLabels GetPlotLabels()
+    {
+        var rOfRhoDetectorInputs =
+            _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho");
+        var detectorInput = (ROfRhoDetectorInput)rOfRhoDetectorInputs.First();
+        var rhoRange = detectorInput.Rho;
 
-        /// <summary>
-        /// Reads simulation input data from a specified JSON file and validates the input.
-        /// </summary>
-        /// <remarks>If the input data is invalid or the file cannot be read, an error message is logged.
-        /// Ensure that the file format matches the expected structure for successful loading.</remarks>
-        /// <param name="filename">The path to the JSON file containing the simulation input data. The file
-        /// must exist and be accessible for reading.</param>
-        /// <returns>A <see langword="SimulationInput"/> object containing the loaded simulation input data
-        /// if the input is valid; otherwise, returns null.</returns>
-        internal SimulationInput MC_ReadSimulationInputFromFile(string filename)
+        var axisType = IndependentVariableAxis.Rho;
+        var axisUnits = IndependentVariableAxisUnits.MM;
+        return new PlotAxesLabels(
+            SolutionDomainType.ROfRho.GetInternationalizedString(),
+            DependentVariableAxisUnits.PerMMSquared.GetInternationalizedString(),
+            new IndependentAxisViewModel
+            {
+                AxisType = axisType,
+                AxisLabel = axisType.GetInternationalizedString(),
+                AxisUnits = axisUnits.GetInternationalizedString(),
+                AxisRangeVM =
+                    new RangeViewModel(rhoRange, axisUnits.GetInternationalizedString(), axisType, "ROfRho")
+            });
+    }
+
+    private string GetPlotLabel()
+    {
+        var nString = StringLookup.GetLocalizedString("PlotLabel_N") + _simulationInputVm.SimulationInput.N;
+        var awtString = StringLookup.GetLocalizedString("PlotLabel_AWT");
+        switch (_simulationInputVm.SimulationInput.Options.AbsorptionWeightingType)
         {
-            using var stream = new FileStream(filename, FileMode.Open);
-            var simulationInput = FileIO.ReadFromJsonStream<SimulationInput>(stream);
-
-            var validationResult = SimulationInputValidation.ValidateInput(simulationInput);
-            if (validationResult.IsValid && MC_InfileIsValidForGUI(simulationInput))
-            {
-                Logger.Info(() => StringLookup.GetLocalizedString("Message_SimulationInputLoaded") + "\r");
-                return simulationInput;
-            }
-            Logger.Info(() => StringLookup.GetLocalizedString("Error_SimulationInputNotLoaded") + "\r"); 
-            return null;
+            case AbsorptionWeightingType.Analog:
+                awtString += StringLookup.GetLocalizedString("Label_Analog");
+                break;
+            case AbsorptionWeightingType.Discrete:
+                awtString += StringLookup.GetLocalizedString("Label_Discrete");
+                break;
+            case AbsorptionWeightingType.Continuous:
+                awtString += StringLookup.GetLocalizedString("Label_Continuous");
+                break;
         }
 
-        private async Task MC_DownloadDefaultSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            using var dialog = new FolderBrowserDialog();
-            var dialogResult = dialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
-            {
-                // create the root directory
-                try
-                {
-                    var folder = Path.Combine(dialog.SelectedPath, "infiles");
-                    if (Directory.Exists(folder) && Directory.EnumerateFileSystemEntries(folder).Any())
-                    {
-                        // there are files in this directory, ok to delete them?
-                        var messageBoxResult =
-                            System.Windows.MessageBox.Show(
-                                StringLookup.GetLocalizedString("MessageBox_DeleteConfirmInfiles"),
-                                StringLookup.GetLocalizedString("MessageBoxTitle_DeleteConfirm"), MessageBoxButton.YesNo);
-                        if (messageBoxResult == MessageBoxResult.No)
-                        {
-                            return;
-                        }
-                    }
-                    Logger.Info(() => StringLookup.GetLocalizedString("Message_DownloadingInfiles"));
-                    CanDownloadInfiles = false;
-                    await Task.Run(() => MC_DownloadDefaultSimulationInputToFolder(folder));
-                    CanDownloadInfiles = true;
-                    Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
-                }
-                catch (Exception)
-                {
-                    Logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
-                }
-            }
-        }
-
-        /// <summary>
-        /// Downloads a set of default simulation input files to the specified folder.
-        /// </summary>
-        /// <remarks>This method generates and saves a collection of predefined simulation
-        /// input files, each representing different tissue models and detector configurations.
-        /// Ensure that the specified folder has appropriate write permissions before calling
-        /// this method.</remarks>
-        /// <param name="folder">The path to the folder where the simulation input files will be saved.
-        /// If the folder does not exist, it will be created.</param>
-        internal void MC_DownloadDefaultSimulationInputToFolder(string folder)
-        {
-            FileIO.CreateEmptyDirectory(folder);
-            var simulationInputs = new List<SimulationInput>
-            {
-                //infile_ellip_FluenceOfRhoAndZ.txt
-                SimulationInputProvider.PointSourceSingleEllipsoidTissueFluenceOfRhoAndZDetector(),
-                //infile_Flat_2D_Lambertian_source_one_layer_ROfRho_FluenceOfRhoAndZ.txt
-                SimulationInputProvider.Flat2DLambertianSourceOneLayerTissueROfRhoFluenceOfRhoAndZDetector(),
-                //infile_Flat_2D_source_one_layer_ROfRho.txt
-                SimulationInputProvider.Flat2DSourceOneLayerTissueROfRhoDetector(),
-                //infile_Gaussian_2D_source_one_layer_ROfRho.txt
-                SimulationInputProvider.Gaussian2DSourceOneLayerTissueROfRhoDetector(),
-                //infile_one_layer_all_detectors.txt
-                SimulationInputProvider.PointSourceOneLayerTissueAllDetectors(),
-                //infile_one_layer_FluenceOfRhoAndZ_RadianceOfRhoAndZAndAngle.txt
-                SimulationInputProvider.PointSourceOneLayerTissueRadianceOfRhoAndZAndAngleDetector(),
-                //infile_one_layer_ROfRho_FluenceOfRhoAndZ.txt
-                SimulationInputProvider.PointSourceOneLayerTissueROfRhoAndFluenceOfRhoAndZDetectors(),
-                //infile_two_layer_momentum_transfer_detectors.txt
-                SimulationInputProvider.PointSourceMultiLayerMomentumTransferDetectors(),
-                //infile_two_layer_ROfRho.txt
-                SimulationInputProvider.PointSourceTwoLayerTissueROfRhoDetector(),
-            };
-            var files = simulationInputs.Select(input =>
-                new
-                {
-                    Name = "infile_" + input.OutputName + ".txt",
-                    Input = input
-                });
-
-            foreach (var file in files)
-            {
-                file.Input.ToFile(Path.Combine(folder, file.Name));
-            }
-        }
-
-        private async Task MC_SaveSimulationResults_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (_output != null && _newResultsAvailable)
-            {
-                var result = await MC_SaveSimulationResultsFromCache();
-                if (!result)
-                {
-                    Logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
-                }
-
-            }
-        }
-
-        private PlotAxesLabels GetPlotLabels()
-        {
-            var rOfRhoDetectorInputs =
-                _simulationInputVm.SimulationInput.DetectorInputs.Where(di => di.Name == "ROfRho");
-            var detectorInput = (ROfRhoDetectorInput)rOfRhoDetectorInputs.First();
-            var rhoRange = detectorInput.Rho;
-
-            var axisType = IndependentVariableAxis.Rho;
-            var axisUnits = IndependentVariableAxisUnits.MM;
-            return new PlotAxesLabels(
-                SolutionDomainType.ROfRho.GetInternationalizedString(),
-                DependentVariableAxisUnits.PerMMSquared.GetInternationalizedString(),
-                new IndependentAxisViewModel
-                {
-                    AxisType = axisType,
-                    AxisLabel = axisType.GetInternationalizedString(),
-                    AxisUnits = axisUnits.GetInternationalizedString(),
-                    AxisRangeVM =
-                        new RangeViewModel(rhoRange, axisUnits.GetInternationalizedString(), axisType, "ROfRho")
-                });
-        }
-
-        private string GetPlotLabel()
-        {
-            var nString = StringLookup.GetLocalizedString("PlotLabel_N") + _simulationInputVm.SimulationInput.N;
-            var awtString = StringLookup.GetLocalizedString("PlotLabel_AWT");
-            switch (_simulationInputVm.SimulationInput.Options.AbsorptionWeightingType)
-            {
-                case AbsorptionWeightingType.Analog:
-                    awtString += StringLookup.GetLocalizedString("Label_Analog");
-                    break;
-                case AbsorptionWeightingType.Discrete:
-                    awtString += StringLookup.GetLocalizedString("Label_Discrete");
-                    break;
-                case AbsorptionWeightingType.Continuous:
-                    awtString += StringLookup.GetLocalizedString("Label_Continuous");
-                    break;
-            }
-
-            return StringLookup.GetLocalizedString("Label_ModelMC") + "\r" + nString + "\r" + awtString + "";
-        }
+        return StringLookup.GetLocalizedString("Label_ModelMC") + "\r" + nString + "\r" + awtString + "";
     }
 }

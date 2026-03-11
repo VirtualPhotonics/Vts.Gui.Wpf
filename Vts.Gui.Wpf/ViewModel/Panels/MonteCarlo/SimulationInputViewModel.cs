@@ -32,12 +32,11 @@ namespace Vts.Gui.Wpf.ViewModel
             TissueTypeVM = new OptionViewModel<string>("Tissue Type:", true, _simulationInput.TissueInput.TissueType, WhiteList.TissueTypes);
 #else
             TissueTypeVM = new OptionViewModel<string>("Tissue Type:", true, _simulationInput.TissueInput.TissueType,
-                new[]
-                {
-                    "MultiLayer",
-                    "SingleEllipsoid",
-                    "SingleVoxel"
-                });
+            [
+                "MultiLayer",
+                "SingleEllipsoid",
+                "SingleVoxel"
+                ]);
 #endif
             UpdateTissueTypeVM(_simulationInput.TissueInput.TissueType);
             _simulationOptionsVM.PropertyChanged += (sender, args) =>
@@ -49,20 +48,14 @@ namespace Vts.Gui.Wpf.ViewModel
             };
             _tissueTypeVM.PropertyChanged += (sender, args) =>
             {
-                switch (_tissueTypeVM.SelectedValue)
+                _simulationInput.TissueInput = _tissueTypeVM.SelectedValue switch
                 {
-                    case "MultiLayer":
-                        _simulationInput.TissueInput = new MultiLayerTissueInput();
-                        break;
-                    case "SingleEllipsoid":
-                        _simulationInput.TissueInput = new SingleEllipsoidTissueInput();
-                        break;
-                    case "SingleVoxel":
-                        _simulationInput.TissueInput = new SingleVoxelTissueInput();
-                        break;
-                    default:
-                        throw new InvalidEnumArgumentException(StringLookup.GetLocalizedString("Error_NoTissueTypeExists"));
-                }
+                    "MultiLayer" => new MultiLayerTissueInput(),
+                    "SingleEllipsoid" => new SingleEllipsoidTissueInput(),
+                    "SingleVoxel" => new SingleVoxelTissueInput(),
+                    _ => throw new InvalidEnumArgumentException(
+                        StringLookup.GetLocalizedString("Error_NoTissueTypeExists"))
+                };
                 UpdateTissueTypeVM(_simulationInput.TissueInput.TissueType);
             };
 
@@ -81,7 +74,7 @@ namespace Vts.Gui.Wpf.ViewModel
             {
                 _simulationInput = value;
                 // OnPropertyChanged("SimulationInput");  // nobody binds to this
-                OnPropertyChanged("N");
+                OnPropertyChanged(nameof(N));
                 _simulationOptionsVM.SimulationOptions = _simulationInput.Options;
                 UpdateTissueInputVM(_simulationInput.TissueInput);
                 _outputName = _simulationInput.OutputName;
@@ -94,7 +87,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _simulationInput.N = value;
-                OnPropertyChanged("N");
+                OnPropertyChanged(nameof(N));
             }
         }
 
@@ -105,7 +98,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _simulationOptionsVM = value;
-                OnPropertyChanged("SimulationOptionsVM");
+                OnPropertyChanged(nameof(SimulationOptionsVM));
             }
         }
 
@@ -115,7 +108,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _tissueTypeVM = value;
-                OnPropertyChanged("TissueTypeVM");
+                OnPropertyChanged(nameof(TissueTypeVM));
             }
         }
 
@@ -125,7 +118,7 @@ namespace Vts.Gui.Wpf.ViewModel
             set
             {
                 _tissueInputVM = value;
-                OnPropertyChanged("TissueInputVM");
+                OnPropertyChanged(nameof(TissueInputVM));
             }
         }
 
