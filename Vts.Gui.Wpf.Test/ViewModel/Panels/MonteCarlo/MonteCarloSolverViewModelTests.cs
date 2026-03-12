@@ -1,8 +1,10 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.ViewModel;
+using Vts.MonteCarlo;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
 {
@@ -12,8 +14,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
     [TestFixture]
     public class MonteCarloSolverViewModelTests
     {
-        readonly List<string> listOfInfileFolders = new List<string>()
-        {
+        private readonly List<string> _listOfInfileFolders =
+        [
             "ellip_FluenceOfRhoAndZ",
             "embeddedDirectionalCircularSourceEllipTissue",
             "Flat_source_one_layer_ROfRho",
@@ -27,18 +29,27 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             "two_layer_ROfRho",
             "two_layer_ROfRho_with_db",
             "voxel_ROfXAndY_FluenceOfXAndYAndZ",
-        };
+            "test_infiles"
+        ];
 
-        public MonteCarloSolverViewModelTests()
-        {
-            // constructor logic if needed goes here
-        }
+        private readonly List<string> _expectedFileNames =
+        [
+            "infile_ellip_FluenceOfRhoAndZ.txt",
+            "infile_Flat_2D_Lambertian_source_one_layer_ROfRho_FluenceOfRhoAndZ.txt",
+            "infile_Flat_2D_source_one_layer_ROfRho.txt",
+            "infile_Gaussian_2D_source_one_layer_ROfRho.txt",
+            "infile_one_layer_all_detectors.txt",
+            "infile_one_layer_FluenceOfRhoAndZ_RadianceOfRhoAndZAndAngle.txt",
+            "infile_one_layer_ROfRho_FluenceOfRhoAndZ.txt",
+            "infile_two_layer_momentum_transfer_detectors.txt",
+            "infile_two_layer_ROfRho.txt"
+        ];
 
         /// <summary>
         /// setup and tear down
         /// </summary>
         [OneTimeSetUp]
-        public void setup()
+        public void Setup()
         {
             clear_folders_and_files();
 
@@ -47,23 +58,20 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         [OneTimeTearDown]
         public void clear_folders_and_files()
         {
-            foreach (var folder in listOfInfileFolders)
+            foreach (var folder in _listOfInfileFolders.Where(Directory.Exists))
             {
-                if (Directory.Exists(folder))
-                {
-                    Directory.Delete(folder);
-                }
+                Directory.GetFiles(folder).ToList().ForEach(File.Delete);
+                Directory.Delete(folder);
             }
-
         }
 
         /// <summary>
         /// Verifies that MonteCarloSolverViewModel default constructor sets properties correctly
         /// </summary>
         [Test]
-        public void verify_default_constructor_sets_properties_correctly()
+        public void Verify_default_constructor_sets_properties_correctly()
         {
-            MonteCarloSolverViewModel viewModel = new MonteCarloSolverViewModel();
+            var viewModel = new MonteCarloSolverViewModel();
             Assert.That(viewModel.CanDownloadInfiles, Is.True);
             Assert.That(viewModel.CanLoadInputFile, Is.True);
             Assert.That(viewModel.CanRunSimulation, Is.True);
@@ -81,11 +89,92 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
         /// SaveSimulationResultsCommand brings up Dialog window so not tested
         /// </summary>
 
+        [Test]
+        public void Verify_MC_DownloadDefaultSimulationInputToFolder_executes_successfully()
+        {
+            var viewModel = new MonteCarloSolverViewModel();
+            const string folder = "test_infiles";
+            if (!Directory.Exists(folder))
+            {
+                viewModel.MC_DownloadDefaultSimulationInputToFolder(folder);
+                Assert.That(Directory.Exists(folder), Is.True);
+            }
+            foreach (var filePath in _expectedFileNames.Select(fileName => Path.Combine(folder, fileName)))
+            {
+                Assert.That(File.Exists(filePath), Is.True, $"Expected file not found: {filePath}");
+            }
+        }
+
+        [Test]
+        public void Verify_MC_ReadSimulationInputFromFile_executes_successfully()
+        {
+            var viewModel = new MonteCarloSolverViewModel();
+            const string folder = "test_infiles";
+            if (!Directory.Exists(folder))
+            {
+                viewModel.MC_DownloadDefaultSimulationInputToFolder(folder);
+                Assert.That(Directory.Exists(folder), Is.True);
+            }
+            foreach (var filePath in _expectedFileNames.Select(fileName => Path.Combine(folder, fileName)))
+            {
+                Assert.That(File.Exists(filePath), Is.True, $"Expected file not found: {filePath}");
+                var simulationInput = viewModel.MC_ReadSimulationInputFromFile(filePath);
+                Assert.That(simulationInput, Is.Not.Null, $"Failed to read simulation input from file: {filePath}");
+            }
+        }
+
+        [Test]
+        public void Verify_MC_ReadSimulationInputFromFile_returns_null_SimulationInput()
+        {
+            var simulationInputs = new List<SimulationInput>
+            {
+                SimulationInputProvider.Flat2DSourceTwoLayerBoundedTissueAOfRhoAndZDetector()
+            };
+            var files = simulationInputs.Select(input =>
+                new
+                {
+                    Name = "invalid_file.txt",
+                    Input = input
+                });
+
+            foreach (var file in files)
+            {
+                file.Input.ToFile(file.Name);
+            }
+
+            var viewModel = new MonteCarloSolverViewModel();
+            const string noFile = "invalid_file.txt";
+            var simulationInput = viewModel.MC_ReadSimulationInputFromFile(noFile);
+            Assert.That(simulationInput, Is.Null);
+            if (File.Exists(noFile))
+            {
+                File.Delete(noFile);
+            }
+        }
+
+        [Test]
+        public void Verify_MC_InfileIsValidForGUI_returns_true()
+        {
+            var viewModel = new MonteCarloSolverViewModel();
+            var input = SimulationInputProvider.PointSourceOneLayerTissueAllDetectors();
+            var isValid = viewModel.MC_InfileIsValidForGUI(input);
+            Assert.That(isValid, Is.True);
+        }
+
+        [Test]
+        public void Verify_MC_InfileIsValidForGUI_returns_false()
+        {
+            var viewModel = new MonteCarloSolverViewModel();
+            var input = SimulationInputProvider.Flat2DSourceTwoLayerBoundedTissueAOfRhoAndZDetector();
+            var isValid = viewModel.MC_InfileIsValidForGUI(input);
+            Assert.That(isValid, Is.False);
+        }
+
         /// <summary>
         /// Execute Monte Carlo Solver command that fails and verify properties are set correctly
         /// </summary>
         [Test]
-        public void validate_ExecuteMonteCarloSolverCommand_failure_sets_properties_correctly()
+        public void Validate_ExecuteMonteCarloSolverCommand_failure_sets_properties_correctly()
         {
             var viewModel = new MonteCarloSolverViewModel();
             // this execution of ExecuteMonteCarloSolverCommand errors in "try"
@@ -97,6 +186,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo
             Assert.That(viewModel.CanSaveResults, Is.False);
             Assert.That(viewModel.CancelButtonText == StringLookup.GetLocalizedString("Button_CancelSimulation"), Is.True);
         }
+
         ///// <summary>
         ///// Execute Monte Carlo Solver command that runs and verify properties are set correctly
         ///// This commented out because threading setup not working yet

@@ -19,7 +19,7 @@ namespace Vts.Gui.Wpf.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -2127,6 +2127,15 @@ namespace Vts.Gui.Wpf.Resources {
         public static string Warning_NoPlotsDisplayedForTissue {
             get {
                 return ResourceManager.GetString("Warning_NoPlotsDisplayedForTissue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning: This infile will not display anything, we suggest using the MCCL application.
+        /// </summary>
+        public static string Warning_NoPlotsUse_MCCL {
+            get {
+                return ResourceManager.GetString("Warning_NoPlotsUse_MCCL", resourceCulture);
             }
         }
     }
