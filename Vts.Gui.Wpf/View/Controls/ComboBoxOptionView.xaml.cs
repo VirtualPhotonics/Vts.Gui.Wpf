@@ -1,12 +1,11 @@
 ﻿using System.Windows.Controls;
 
-namespace Vts.Gui.Wpf.View
+namespace Vts.Gui.Wpf.View;
+
+public partial class ComboBoxOptionView : UserControl
 {
-    public partial class ComboBoxOptionView : UserControl
+    public ComboBoxOptionView()
     {
-        public ComboBoxOptionView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

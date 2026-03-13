@@ -2,49 +2,48 @@
 using NUnit.Framework;
 using Vts.Gui.Wpf.Converters;
 
-namespace Vts.Gui.Wpf.Test.Converters
+namespace Vts.Gui.Wpf.Test.Converters;
+
+/// <summary>
+/// Tests BooleanToVisibilityConverter class
+/// </summary>
+[TestFixture]
+public class BooleanToVisibilityConverterTests
 {
     /// <summary>
-    /// Tests BooleanToVisibilityConverter classe
+    /// Verifies method Convert returns correct value
     /// </summary>
-    [TestFixture]
-    public class BooleanToVisibilityConverterTests
+    [Test]
+    public void verify_method_Convert_returns_correct_value()
     {
-        /// <summary>
-        /// Verifies method Convert returns correct value
-        /// </summary>
-        [Test]
-        public void verify_method_Convert_returns_correct_value()
-        {
-            var btvConverter = new BooleanToVisibilityConverter();
-            Assert.That(btvConverter.Convert(
-                true,  // boolean to convert
-                typeof(Visibility),
-                null, // no parameters
-                System.Globalization.CultureInfo.CurrentCulture).Equals(Visibility.Visible));
-            Assert.That(btvConverter.Convert(
-                false, // boolean to convert
-                typeof(Visibility),
-                null, // no parameters
-                System.Globalization.CultureInfo.CurrentCulture).Equals(Visibility.Collapsed));
-        }
-        /// <summary>
-        /// Verifies method ConvertBack returns correct value
-        /// </summary>
-        [Test]
-        public void verify_method_ConvertBack_returns_correct_value()
-        {
-            var btvConverter = new BooleanToVisibilityConverter();
-            Assert.That(btvConverter.ConvertBack(
-                Visibility.Visible,  // Visibility to convert
-                typeof(Visibility),
-                null, // no parameters
-                System.Globalization.CultureInfo.CurrentCulture).Equals(true));
-            Assert.That(btvConverter.ConvertBack(
-                Visibility.Collapsed, // Visibility to convert
-                typeof(Visibility),
-                null, // no parameters
-                System.Globalization.CultureInfo.CurrentCulture).Equals(false));
-        }
+        var btvConverter = new BooleanToVisibilityConverter();
+        Assert.That(btvConverter.Convert(
+            true,  // boolean to convert
+            typeof(Visibility),
+            null, // no parameters
+            System.Globalization.CultureInfo.CurrentCulture).Equals(Visibility.Visible));
+        Assert.That(btvConverter.Convert(
+            false, // boolean to convert
+            typeof(Visibility),
+            null, // no parameters
+            System.Globalization.CultureInfo.CurrentCulture).Equals(Visibility.Collapsed));
+    }
+    /// <summary>
+    /// Verifies method ConvertBack returns correct value
+    /// </summary>
+    [Test]
+    public void verify_method_ConvertBack_returns_correct_value()
+    {
+        var btvConverter = new BooleanToVisibilityConverter();
+        Assert.That(btvConverter.ConvertBack(
+            Visibility.Visible,  // Visibility to convert
+            typeof(Visibility),
+            null, // no parameters
+            System.Globalization.CultureInfo.CurrentCulture).Equals(true));
+        Assert.That(btvConverter.ConvertBack(
+            Visibility.Collapsed, // Visibility to convert
+            typeof(Visibility),
+            null, // no parameters
+            System.Globalization.CultureInfo.CurrentCulture).Equals(false));
     }
 }
