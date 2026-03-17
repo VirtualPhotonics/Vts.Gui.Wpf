@@ -1,10 +1,9 @@
-﻿namespace Vts.Gui.Wpf.FileSystem
+﻿namespace Vts.Gui.Wpf.FileSystem;
+
+public interface ISaveFileDialog
 {
-    public interface ISaveFileDialog
-    {
-        string Filter { get; set; }
-        bool? ShowDialog();
-        string FileName { get; set; }
-        string DefaultExtension { get; set; }
-    }
+    string Filter { get; set; }
+    bool? ShowDialog();
+    string FileName { get; set; }
+    string DefaultExtension { get; set; }
 }

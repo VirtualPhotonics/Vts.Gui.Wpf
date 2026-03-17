@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 using Vts.Gui.Wpf.Extensions;
 using Vts.MonteCarlo;
@@ -9,143 +8,142 @@ using Vts.MonteCarlo.Tissues;
 using Vts.Gui.Wpf.ViewModel.Application;
 #endif
 
-namespace Vts.Gui.Wpf.ViewModel
+namespace Vts.Gui.Wpf.ViewModel;
+
+public class SimulationInputViewModel : BindableObject
 {
-    public class SimulationInputViewModel : BindableObject
+    private SimulationInput _simulationInput;
+    private SimulationOptionsViewModel _simulationOptionsVM;
+
+    private object _tissueInputVM;
+    private OptionViewModel<string> _tissueTypeVM;
+
+    private string _outputName;
+
+    public SimulationInputViewModel(SimulationInput input)
     {
-        private SimulationInput _simulationInput;
-        private SimulationOptionsViewModel _simulationOptionsVM;
+        _simulationInput = input; // use the property to invoke the appropriate change notification
 
-        private object _tissueInputVM;
-        private OptionViewModel<string> _tissueTypeVM;
-
-        private string _outputName;
-
-        public SimulationInputViewModel(SimulationInput input)
-        {
-            _simulationInput = input; // use the property to invoke the appropriate change notification
-
-            _simulationOptionsVM = new SimulationOptionsViewModel(_simulationInput.Options);
-            _outputName = input.OutputName;
+        _simulationOptionsVM = new SimulationOptionsViewModel(_simulationInput.Options);
+        _outputName = input.OutputName;
 
 #if WHITELIST 
-            TissueTypeVM = new OptionViewModel<string>("Tissue Type:", true, _simulationInput.TissueInput.TissueType, WhiteList.TissueTypes);
+        TissueTypeVM = new OptionViewModel<string>("Tissue Type:", true, _simulationInput.TissueInput.TissueType, WhiteList.TissueTypes);
 #else
-            TissueTypeVM = new OptionViewModel<string>("Tissue Type:", true, _simulationInput.TissueInput.TissueType,
-            [
-                "MultiLayer",
-                "SingleEllipsoid",
-                "SingleVoxel"
-                ]);
+        TissueTypeVM = new OptionViewModel<string>("Tissue Type:", true, _simulationInput.TissueInput.TissueType,
+        [
+            "MultiLayer",
+            "SingleEllipsoid",
+            "SingleVoxel"
+            ]);
 #endif
-            UpdateTissueTypeVM(_simulationInput.TissueInput.TissueType);
-            _simulationOptionsVM.PropertyChanged += (sender, args) =>
-            {
-                if (_simulationOptionsVM.TrackStatistics && _simulationOptionsVM.OutputFolder != null)
-                {
-                    _simulationInput.OutputName = Path.Combine(_simulationOptionsVM.OutputFolder, _outputName) ;
-                }
-            };
-            _tissueTypeVM.PropertyChanged += (sender, args) =>
-            {
-                _simulationInput.TissueInput = _tissueTypeVM.SelectedValue switch
-                {
-                    "MultiLayer" => new MultiLayerTissueInput(),
-                    "SingleEllipsoid" => new SingleEllipsoidTissueInput(),
-                    "SingleVoxel" => new SingleVoxelTissueInput(),
-                    _ => throw new InvalidEnumArgumentException(
-                        StringLookup.GetLocalizedString("Error_NoTissueTypeExists"))
-                };
-                UpdateTissueTypeVM(_simulationInput.TissueInput.TissueType);
-            };
-
-            UpdateTissueInputVM(_simulationInput.TissueInput);
-        }
-
-        public SimulationInputViewModel()
-            : this(new SimulationInput())
+        UpdateTissueTypeVM(_simulationInput.TissueInput.TissueType);
+        _simulationOptionsVM.PropertyChanged += (sender, args) =>
         {
-        }
-
-        public SimulationInput SimulationInput
-        {
-            get => _simulationInput;
-            set
+            if (_simulationOptionsVM.TrackStatistics && _simulationOptionsVM.OutputFolder != null)
             {
-                _simulationInput = value;
-                // OnPropertyChanged("SimulationInput");  // nobody binds to this
-                OnPropertyChanged(nameof(N));
-                _simulationOptionsVM.SimulationOptions = _simulationInput.Options;
-                UpdateTissueInputVM(_simulationInput.TissueInput);
-                _outputName = _simulationInput.OutputName;
+                _simulationInput.OutputName = Path.Combine(_simulationOptionsVM.OutputFolder, _outputName) ;
             }
-        }
-
-        public long N
+        };
+        _tissueTypeVM.PropertyChanged += (sender, args) =>
         {
-            get => _simulationInput.N;
-            set
+            _simulationInput.TissueInput = _tissueTypeVM.SelectedValue switch
             {
-                _simulationInput.N = value;
-                OnPropertyChanged(nameof(N));
-            }
-        }
-
-
-        public SimulationOptionsViewModel SimulationOptionsVM
-        {
-            get => _simulationOptionsVM;
-            set
-            {
-                _simulationOptionsVM = value;
-                OnPropertyChanged(nameof(SimulationOptionsVM));
-            }
-        }
-
-        public OptionViewModel<string> TissueTypeVM
-        {
-            get => _tissueTypeVM;
-            set
-            {
-                _tissueTypeVM = value;
-                OnPropertyChanged(nameof(TissueTypeVM));
-            }
-        }
-
-        public object TissueInputVM
-        {
-            get => _tissueInputVM;
-            set
-            {
-                _tissueInputVM = value;
-                OnPropertyChanged(nameof(TissueInputVM));
-            }
-        }
-
-        private void UpdateTissueTypeVM(string tissueType)
-        {
-            _simulationInput.TissueInput = tissueType switch
-            {
-                "SemiInfinite" => new SemiInfiniteTissueInput(),
                 "MultiLayer" => new MultiLayerTissueInput(),
                 "SingleEllipsoid" => new SingleEllipsoidTissueInput(),
                 "SingleVoxel" => new SingleVoxelTissueInput(),
-                _ => _simulationInput.TissueInput
+                _ => throw new InvalidEnumArgumentException(
+                    StringLookup.GetLocalizedString("Error_NoTissueTypeExists"))
             };
+            UpdateTissueTypeVM(_simulationInput.TissueInput.TissueType);
+        };
 
-            _tissueInputVM = _simulationInput.TissueInput;
-            TissueTypeVM.Options[tissueType].IsSelected = true;
-        }
+        UpdateTissueInputVM(_simulationInput.TissueInput);
+    }
 
-        private void UpdateTissueInputVM(ITissueInput tissueInput)
+    public SimulationInputViewModel()
+        : this(new SimulationInput())
+    {
+    }
+
+    public SimulationInput SimulationInput
+    {
+        get => _simulationInput;
+        set
         {
-            TissueInputVM = tissueInput.TissueType switch
-            {
-                "MultiLayer" => new MultiRegionTissueViewModel((MultiLayerTissueInput)tissueInput),
-                "SingleEllipsoid" => new MultiRegionTissueViewModel((SingleEllipsoidTissueInput)tissueInput),
-                "SingleVoxel" => new MultiRegionTissueViewModel((SingleVoxelTissueInput)tissueInput),
-                _ => TissueInputVM
-            };
+            _simulationInput = value;
+            // OnPropertyChanged("SimulationInput");  // nobody binds to this
+            OnPropertyChanged(nameof(N));
+            _simulationOptionsVM.SimulationOptions = _simulationInput.Options;
+            UpdateTissueInputVM(_simulationInput.TissueInput);
+            _outputName = _simulationInput.OutputName;
         }
+    }
+
+    public long N
+    {
+        get => _simulationInput.N;
+        set
+        {
+            _simulationInput.N = value;
+            OnPropertyChanged(nameof(N));
+        }
+    }
+
+
+    public SimulationOptionsViewModel SimulationOptionsVM
+    {
+        get => _simulationOptionsVM;
+        set
+        {
+            _simulationOptionsVM = value;
+            OnPropertyChanged(nameof(SimulationOptionsVM));
+        }
+    }
+
+    public OptionViewModel<string> TissueTypeVM
+    {
+        get => _tissueTypeVM;
+        set
+        {
+            _tissueTypeVM = value;
+            OnPropertyChanged(nameof(TissueTypeVM));
+        }
+    }
+
+    public object TissueInputVM
+    {
+        get => _tissueInputVM;
+        set
+        {
+            _tissueInputVM = value;
+            OnPropertyChanged(nameof(TissueInputVM));
+        }
+    }
+
+    private void UpdateTissueTypeVM(string tissueType)
+    {
+        _simulationInput.TissueInput = tissueType switch
+        {
+            "SemiInfinite" => new SemiInfiniteTissueInput(),
+            "MultiLayer" => new MultiLayerTissueInput(),
+            "SingleEllipsoid" => new SingleEllipsoidTissueInput(),
+            "SingleVoxel" => new SingleVoxelTissueInput(),
+            _ => _simulationInput.TissueInput
+        };
+
+        _tissueInputVM = _simulationInput.TissueInput;
+        TissueTypeVM.Options[tissueType].IsSelected = true;
+    }
+
+    private void UpdateTissueInputVM(ITissueInput tissueInput)
+    {
+        TissueInputVM = tissueInput.TissueType switch
+        {
+            "MultiLayer" => new MultiRegionTissueViewModel((MultiLayerTissueInput)tissueInput),
+            "SingleEllipsoid" => new MultiRegionTissueViewModel((SingleEllipsoidTissueInput)tissueInput),
+            "SingleVoxel" => new MultiRegionTissueViewModel((SingleVoxelTissueInput)tissueInput),
+            _ => TissueInputVM
+        };
     }
 }

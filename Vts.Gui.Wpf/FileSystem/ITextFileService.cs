@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace Vts.Gui.Wpf.FileSystem
+namespace Vts.Gui.Wpf.FileSystem;
+
+public interface ITextFileService
 {
-    public interface ITextFileService
-    {
-        public Tuple<FileStream, string> OpenTextFile();
-    }
+    public Tuple<FileStream, string> OpenTextFile();
 }
