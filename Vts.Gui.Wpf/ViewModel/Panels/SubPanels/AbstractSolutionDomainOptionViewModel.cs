@@ -3,162 +3,151 @@ using System.Linq;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
 
-namespace Vts.Gui.Wpf.ViewModel
+namespace Vts.Gui.Wpf.ViewModel;
+
+/// <summary>
+///     View model implementing domain sub-panel functionality (abstract - implemented for reflectance and fluence)
+/// </summary>
+public class AbstractSolutionDomainOptionViewModel<TDomainType> : OptionViewModel<TDomainType>
 {
-    /// <summary>
-    ///     View model implementing domain sub-panel functionality (abstract - implemented for reflectance and fluence)
-    /// </summary>
-    public class AbstractSolutionDomainOptionViewModel<TDomainType> : OptionViewModel<TDomainType>
+    private bool _allowMultiAxis;
+
+    private bool _showIndependentAxisChoice;
+
+    private bool _useSpectralInputs;
+
+    public AbstractSolutionDomainOptionViewModel(string groupName, TDomainType defaultType)
+        : base(groupName)
     {
-        private bool _allowMultiAxis;
-        private ConstantAxisViewModel[] _constantAxesVMs;
+        _useSpectralInputs = false;
+        _allowMultiAxis = false;
+        _showIndependentAxisChoice = false;
+    }
 
-        private double _ConstantAxisValueImageHeight;
-        private double _ConstantAxisValueTwoImageHeight;
+    public AbstractSolutionDomainOptionViewModel()
+        : this("", default(TDomainType))
+    {
+    }
 
-        private IndependentAxisViewModel[] _independentAxesVMs;
-        private OptionViewModel<IndependentVariableAxis> _IndependentVariableAxisOptionVM;
-
-        private bool _showIndependentAxisChoice;
-
-        private bool _useSpectralInputs;
-
-        public AbstractSolutionDomainOptionViewModel(string groupName, TDomainType defaultType)
-            : base(groupName)
+    public OptionViewModel<IndependentVariableAxis> IndependentVariableAxisOptionVM
+    {
+        get;
+        set
         {
-            _useSpectralInputs = false;
-            _allowMultiAxis = false;
-            _showIndependentAxisChoice = false;
+            field = value;
+            OnPropertyChanged(nameof(IndependentVariableAxisOptionVM));
         }
+    }
 
-        public AbstractSolutionDomainOptionViewModel()
-            : this("", default(TDomainType))
+    public IndependentAxisViewModel[] IndependentAxesVMs
+    {
+        get;
+        set
         {
+            field = value;
+            OnPropertyChanged(nameof(IndependentAxesVMs));
         }
+    }
 
-        public OptionViewModel<IndependentVariableAxis> IndependentVariableAxisOptionVM
+    public ConstantAxisViewModel[] ConstantAxesVMs
+    {
+        get;
+        set
         {
-            get { return _IndependentVariableAxisOptionVM; }
-            set
+            field = value;
+            OnPropertyChanged(nameof(ConstantAxesVMs));
+        }
+    }
+
+    public double ConstantAxisValueImageHeight
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged(nameof(ConstantAxisValueImageHeight));
+        }
+    }
+
+    public double ConstantAxisValueTwoImageHeight
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged(nameof(ConstantAxisValueTwoImageHeight));
+        }
+    }
+
+    public bool UseSpectralInputs
+    {
+        get => _useSpectralInputs;
+        set
+        {
+            _useSpectralInputs = value;
+            OnPropertyChanged(nameof(UseSpectralInputs));
+        }
+    }
+
+    public bool AllowMultiAxis
+    {
+        get => _allowMultiAxis;
+        set
+        {
+            _allowMultiAxis = value;
+            OnPropertyChanged(nameof(AllowMultiAxis));
+        }
+    }
+
+    public bool ShowIndependentAxisChoice
+    {
+        get => _showIndependentAxisChoice;
+        set
+        {
+            _showIndependentAxisChoice = value;
+            OnPropertyChanged(nameof(ShowIndependentAxisChoice));
+        }
+    }
+
+    public virtual int NativeAxesCount => 1;
+
+    public event EventHandler SettingsLoaded = delegate { };
+
+    protected virtual void UpdateAxes()
+    {
+        var numAxes = IndependentVariableAxisOptionVM.SelectedValues.Length;
+        var numConstants = IndependentVariableAxisOptionVM.UnSelectedValues.Length;
+
+        // create new local VMs for independent and constant axes
+        var independentAxesVMs = Enumerable.Range(0, numAxes).Select(i =>
+            new IndependentAxisViewModel
             {
-                _IndependentVariableAxisOptionVM = value;
-                OnPropertyChanged("IndependentVariableAxisOptionVM");
-            }
-        }
-
-        public IndependentAxisViewModel[] IndependentAxesVMs
-        {
-            get { return _independentAxesVMs; }
-            set
+                AxisType = IndependentVariableAxisOptionVM.SelectedValues[i],
+                AxisLabel = IndependentVariableAxisOptionVM.SelectedDisplayNames[i],
+                AxisUnits = IndependentVariableAxisOptionVM.SelectedValues[i].GetUnits(),
+                AxisRangeVM = new RangeViewModel(
+                    IndependentVariableAxisOptionVM.SelectedValues[i].GetDefaultRange(),
+                    IndependentVariableAxisOptionVM.SelectedValues[i].GetUnits(),
+                    IndependentVariableAxisOptionVM.SelectedValues[i],
+                    IndependentVariableAxisOptionVM.SelectedValues[i].GetTitle())
+            }).ToArray();
+        var constantAxesVMs = Enumerable.Range(0, numConstants).Select(i =>
+            new ConstantAxisViewModel
             {
-                _independentAxesVMs = value;
-                OnPropertyChanged("IndependentAxesVMs");
-            }
-        }
+                AxisType = IndependentVariableAxisOptionVM.UnSelectedValues[i],
+                AxisLabel = IndependentVariableAxisOptionVM.UnSelectedDisplayNames[i],
+                AxisUnits = IndependentVariableAxisOptionVM.UnSelectedValues[i].GetUnits(),
+                AxisValue = IndependentVariableAxisOptionVM.UnSelectedValues[i].GetDefaultConstantAxisValue()
+            }).ToArray();
 
-        public ConstantAxisViewModel[] ConstantAxesVMs
-        {
-            get { return _constantAxesVMs; }
-            set
-            {
-                _constantAxesVMs = value;
-                OnPropertyChanged("ConstantAxesVMs");
-            }
-        }
+        // assign callbacks
+        independentAxesVMs.ForEach(vm => vm.PropertyChanged += (s, a) => OnPropertyChanged(nameof(IndependentAxesVMs)));
+        constantAxesVMs.ForEach(vm => vm.PropertyChanged += (s, a) => OnPropertyChanged(nameof(ConstantAxesVMs)));
 
-        public double ConstantAxisValueImageHeight
-        {
-            get { return _ConstantAxisValueImageHeight; }
-            set
-            {
-                _ConstantAxisValueImageHeight = value;
-                OnPropertyChanged("ConstantAxisValueImageHeight");
-            }
-        }
+        // and then set them, fully formed, to the member variable, firing change notification
+        IndependentAxesVMs = independentAxesVMs;
+        ConstantAxesVMs = constantAxesVMs;
 
-        public double ConstantAxisValueTwoImageHeight
-        {
-            get { return _ConstantAxisValueTwoImageHeight; }
-            set
-            {
-                _ConstantAxisValueTwoImageHeight = value;
-                OnPropertyChanged("ConstantAxisValueTwoImageHeight");
-            }
-        }
-
-        public bool UseSpectralInputs
-        {
-            get { return _useSpectralInputs; }
-            set
-            {
-                _useSpectralInputs = value;
-                OnPropertyChanged("UseSpectralInputs");
-            }
-        }
-
-        public bool AllowMultiAxis
-        {
-            get { return _allowMultiAxis; }
-            set
-            {
-                _allowMultiAxis = value;
-                OnPropertyChanged("AllowMultiAxis");
-            }
-        }
-
-        public bool ShowIndependentAxisChoice
-        {
-            get { return _showIndependentAxisChoice; }
-            set
-            {
-                _showIndependentAxisChoice = value;
-                OnPropertyChanged("ShowIndependentAxisChoice");
-            }
-        }
-
-        public virtual int NativeAxesCount
-        {
-            get { return 1; }
-        }
-
-        public event EventHandler SettingsLoaded = delegate { };
-
-        protected virtual void UpdateAxes()
-        {
-            var numAxes = IndependentVariableAxisOptionVM.SelectedValues.Length;
-            var numConstants = IndependentVariableAxisOptionVM.UnSelectedValues.Length;
-
-            // create new local VMs for independent and constant axes
-            var independentAxesVMs = Enumerable.Range(0, numAxes).Select(i =>
-                new IndependentAxisViewModel
-                {
-                    AxisType = IndependentVariableAxisOptionVM.SelectedValues[i],
-                    AxisLabel = IndependentVariableAxisOptionVM.SelectedDisplayNames[i],
-                    AxisUnits = IndependentVariableAxisOptionVM.SelectedValues[i].GetUnits(),
-                    AxisRangeVM = new RangeViewModel(
-                        IndependentVariableAxisOptionVM.SelectedValues[i].GetDefaultRange(),
-                        IndependentVariableAxisOptionVM.SelectedValues[i].GetUnits(),
-                        IndependentVariableAxisOptionVM.SelectedValues[i],
-                        IndependentVariableAxisOptionVM.SelectedValues[i].GetTitle())
-                }).ToArray();
-            var constantAxesVMs = Enumerable.Range(0, numConstants).Select(i =>
-                new ConstantAxisViewModel
-                {
-                    AxisType = IndependentVariableAxisOptionVM.UnSelectedValues[i],
-                    AxisLabel = IndependentVariableAxisOptionVM.UnSelectedDisplayNames[i],
-                    AxisUnits = IndependentVariableAxisOptionVM.UnSelectedValues[i].GetUnits(),
-                    AxisValue = IndependentVariableAxisOptionVM.UnSelectedValues[i].GetDefaultConstantAxisValue()
-                }).ToArray();
-
-            // assign callbacks
-            independentAxesVMs.ForEach(vm => vm.PropertyChanged += (s, a) => OnPropertyChanged("IndependentAxesVMs"));
-            constantAxesVMs.ForEach(vm => vm.PropertyChanged += (s, a) => OnPropertyChanged("ConstantAxesVMs"));
-
-            // and then set them, fully formed, to the member variable, firing change notification
-            IndependentAxesVMs = independentAxesVMs;
-            ConstantAxesVMs = constantAxesVMs;
-
-            ShowIndependentAxisChoice = numAxes + numConstants > NativeAxesCount;
-        }
+        ShowIndependentAxisChoice = numAxes + numConstants > NativeAxesCount;
     }
 }

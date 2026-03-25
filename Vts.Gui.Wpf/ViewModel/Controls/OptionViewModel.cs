@@ -4,182 +4,177 @@ using System.Linq;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Model;
 
-namespace Vts.Gui.Wpf.ViewModel
+namespace Vts.Gui.Wpf.ViewModel;
+
+// todo: consider refactoring to derive from ObservableCollection:
+// http://www.thejoyofcode.com/ViewModels_and_CheckListBoxes.aspx
+
+/// <summary>
+///     View model exposing Enum choices with change notification
+/// </summary>
+public class OptionViewModel<TValue> : BindableObject
 {
-    // todo: consider refactoring to derive from ObservableCollection:
-    // http://www.thejoyofcode.com/ViewModels_and_CheckListBoxes.aspx
+    private bool _enableMultiSelect;
+    private Dictionary<TValue, OptionModel<TValue>> _Options;
 
-    /// <summary>
-    ///     View model exposing Enum choices with change notification
-    /// </summary>
-    public class OptionViewModel<TValue> : BindableObject
+
+    public OptionViewModel(string groupName, bool showTitle, TValue initialValue, TValue[] allValues,
+        bool enableMultiSelect = false)
     {
-        private bool _enableMultiSelect;
-        private string _GroupName;
-        private Dictionary<TValue, OptionModel<TValue>> _Options;
-        private string _SelectedDisplayName;
-        private TValue _SelectedValue;
-        private bool _ShowTitle;
+        ShowTitle = showTitle;
+        GroupName = groupName;
+        _enableMultiSelect = enableMultiSelect;
 
+        // todo: CreateAvailableOptions should be owned by either this class or an OptionModelService class
+        Options = OptionModel<TValue>.CreateAvailableOptions(OnOptionPropertyChanged, groupName, initialValue,
+            allValues, _enableMultiSelect);
 
-        public OptionViewModel(string groupName, bool showTitle, TValue initialValue, TValue[] allValues,
-            bool enableMultiSelect = false)
+        SelectedValue = initialValue;
+
+        UpdateOptionsNamesAndValues();
+    }
+
+    public OptionViewModel(string groupName, bool showTitle, TValue[] allValues)
+        : this(groupName, showTitle, default(TValue), allValues)
+    {
+    }
+
+    public OptionViewModel(string groupName, bool showTitle, TValue initialValue)
+        : this(groupName, showTitle, initialValue, null)
+    {
+    }
+
+    public OptionViewModel(string groupName, TValue initialValue)
+        : this(groupName, true, initialValue, null)
+    {
+    }
+
+    public OptionViewModel(string groupName, TValue[] allValues)
+        : this(groupName, true, default(TValue), allValues)
+    {
+    }
+
+    public OptionViewModel(string groupName, bool showTitle)
+        : this(groupName, showTitle, default(TValue), null)
+    {
+    }
+
+    public OptionViewModel(string groupName)
+        : this(groupName, true, default(TValue), null)
+    {
+    }
+
+    public TValue SelectedValue
+    {
+        get;
+        set
         {
-            ShowTitle = showTitle;
-            GroupName = groupName;
-            _enableMultiSelect = enableMultiSelect;
+            field = value;
+            OnPropertyChanged(nameof(SelectedValue));
+        }
+    }
 
-            // todo: CreateAvailableOptions should be owned by either this class or an OptionModelService class
-            Options = OptionModel<TValue>.CreateAvailableOptions(OnOptionPropertyChanged, groupName, initialValue,
-                allValues, _enableMultiSelect);
+    public string SelectedDisplayName
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged(nameof(SelectedDisplayName));
+        }
+    }
 
-            SelectedValue = initialValue;
+    public bool ShowTitle
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged(nameof(ShowTitle));
+        }
+    }
 
-            UpdateOptionsNamesAndValues();
+    public string GroupName
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged(nameof(GroupName));
+        }
+    }
+
+    public bool EnableMultiSelect
+    {
+        get => _enableMultiSelect;
+        set
+        {
+            _enableMultiSelect = value;
+            OnPropertyChanged(nameof(EnableMultiSelect));
+        }
+    }
+
+    // todo: created this in parallel with SelectedValue, so as not to break other code. need to merge functionality across codebase to use this version
+    public TValue[] SelectedValues { get; private set; }
+
+    public string[] SelectedDisplayNames { get; private set; }
+
+    public TValue[] UnSelectedValues { get; private set; }
+
+    public string[] UnSelectedDisplayNames { get; private set; }
+
+    public Dictionary<TValue, OptionModel<TValue>> Options
+    {
+        get => _Options;
+        set
+        {
+            _Options = value;
+            OnPropertyChanged(nameof(Options));
+        }
+    }
+
+    private void OnOptionPropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        var option = sender as OptionModel<TValue>;
+        if (option.IsSelected)
+        {
+            SelectedValue = option.Value;
+            SelectedDisplayName = option.DisplayName;
         }
 
-        public OptionViewModel(string groupName, bool showTitle, TValue[] allValues)
-            : this(groupName, showTitle, default(TValue), allValues)
+        UpdateOptionsNamesAndValues();
+
+        if (e.PropertyName != "IsEnabled" && EnableMultiSelect && Options != null)
         {
+            var MIN_CHOICES = 1;
+            var MAX_CHOICES = 2;
+            var numSelected = (from o in _Options where o.Value.IsSelected select o).Count();
+
+            // disable the unselected choices beyond a MAX_CHOICES number of concurrent multi-select options
+            Options.Where(o => !o.Value.IsSelected).ForEach(o => o.Value.IsEnabled = numSelected < MAX_CHOICES);
+
+            // if there is only MIN_CHOICES selected choice in multi-select mode, disable others from being further unselected
+            Options.Where(o => o.Value.IsSelected).ForEach(o => o.Value.IsEnabled = numSelected > MIN_CHOICES);
         }
+    }
 
-        public OptionViewModel(string groupName, bool showTitle, TValue initialValue)
-            : this(groupName, showTitle, initialValue, null)
-        {
-        }
+    private void UpdateOptionsNamesAndValues()
+    {
+        if (_Options == null)
+            return;
 
-        public OptionViewModel(string groupName, TValue initialValue)
-            : this(groupName, true, initialValue, null)
-        {
-        }
+        // todo: created these in parallel with SelectedValue, so as not to break other code. need to merge functionality across codebase to use SelectedValues
+        var selectedOptions = (from o in _Options where o.Value.IsSelected select o).ToArray();
+        var unSelectedOptions = (from o in _Options where !o.Value.IsSelected select o).ToArray();
 
-        public OptionViewModel(string groupName, TValue[] allValues)
-            : this(groupName, true, default(TValue), allValues)
-        {
-        }
-
-        public OptionViewModel(string groupName, bool showTitle)
-            : this(groupName, showTitle, default(TValue), null)
-        {
-        }
-
-        public OptionViewModel(string groupName)
-            : this(groupName, true, default(TValue), null)
-        {
-        }
-
-        public TValue SelectedValue
-        {
-            get { return _SelectedValue; }
-            set
-            {
-                _SelectedValue = value;
-                OnPropertyChanged("SelectedValue");
-            }
-        }
-
-        public string SelectedDisplayName
-        {
-            get { return _SelectedDisplayName; }
-            set
-            {
-                _SelectedDisplayName = value;
-                OnPropertyChanged("SelectedDisplayName");
-            }
-        }
-
-        public bool ShowTitle
-        {
-            get { return _ShowTitle; }
-            set
-            {
-                _ShowTitle = value;
-                OnPropertyChanged("ShowTitle");
-            }
-        }
-
-        public string GroupName
-        {
-            get { return _GroupName; }
-            set
-            {
-                _GroupName = value;
-                OnPropertyChanged("GroupName");
-            }
-        }
-
-        public bool EnableMultiSelect
-        {
-            get { return _enableMultiSelect; }
-            set
-            {
-                _enableMultiSelect = value;
-                OnPropertyChanged("EnableMultiSelect");
-            }
-        }
-
-        // todo: created this in parallel with SelectedValue, so as not to break other code. need to merge functionality across codebase to use this version
-        public TValue[] SelectedValues { get; private set; }
-
-        public string[] SelectedDisplayNames { get; private set; }
-
-        public TValue[] UnSelectedValues { get; private set; }
-
-        public string[] UnSelectedDisplayNames { get; private set; }
-
-        public Dictionary<TValue, OptionModel<TValue>> Options
-        {
-            get { return _Options; }
-            set
-            {
-                _Options = value;
-                OnPropertyChanged("Options");
-            }
-        }
-
-        private void OnOptionPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var option = sender as OptionModel<TValue>;
-            if (option.IsSelected)
-            {
-                SelectedValue = option.Value;
-                SelectedDisplayName = option.DisplayName;
-            }
-
-            UpdateOptionsNamesAndValues();
-
-            if (e.PropertyName != "IsEnabled" && EnableMultiSelect && Options != null)
-            {
-                var MIN_CHOICES = 1;
-                var MAX_CHOICES = 2;
-                var numSelected = (from o in _Options where o.Value.IsSelected select o).Count();
-
-                // disable the unselected choices beyond a MAX_CHOICES number of concurrent multi-select options
-                Options.Where(o => !o.Value.IsSelected).ForEach(o => o.Value.IsEnabled = numSelected < MAX_CHOICES);
-
-                // if there is only MIN_CHOICES selected choice in multi-select mode, disable others from being further unselected
-                Options.Where(o => o.Value.IsSelected).ForEach(o => o.Value.IsEnabled = numSelected > MIN_CHOICES);
-            }
-        }
-
-        private void UpdateOptionsNamesAndValues()
-        {
-            if (_Options == null)
-                return;
-
-            // todo: created these in parallel with SelectedValue, so as not to break other code. need to merge functionality across codebase to use SelectedValues
-            var selectedOptions = (from o in _Options where o.Value.IsSelected select o).ToArray();
-            var unSelectedOptions = (from o in _Options where !o.Value.IsSelected select o).ToArray();
-
-            // update arrays and explicitly fire property changed, so we don't trip on intermediate changes 
-            SelectedValues = selectedOptions.Select(item => item.Value.Value).ToArray();
-            SelectedDisplayNames = selectedOptions.Select(item => item.Value.DisplayName).ToArray();
-            UnSelectedValues = unSelectedOptions.Select(item => item.Value.Value).ToArray();
-            UnSelectedDisplayNames = unSelectedOptions.Select(item => item.Value.DisplayName).ToArray();
-            OnPropertyChanged("SelectedValues");
-            OnPropertyChanged("SelectedDisplayNames");
-            OnPropertyChanged("UnSelectedValues");
-            OnPropertyChanged("UnSelectedDisplayNames");
-        }
+        // update arrays and explicitly fire property changed, so we don't trip on intermediate changes 
+        SelectedValues = selectedOptions.Select(item => item.Value.Value).ToArray();
+        SelectedDisplayNames = selectedOptions.Select(item => item.Value.DisplayName).ToArray();
+        UnSelectedValues = unSelectedOptions.Select(item => item.Value.Value).ToArray();
+        UnSelectedDisplayNames = unSelectedOptions.Select(item => item.Value.DisplayName).ToArray();
+        OnPropertyChanged(nameof(SelectedValues));
+        OnPropertyChanged(nameof(SelectedDisplayNames));
+        OnPropertyChanged(nameof(UnSelectedValues));
+        OnPropertyChanged(nameof(UnSelectedDisplayNames));
     }
 }

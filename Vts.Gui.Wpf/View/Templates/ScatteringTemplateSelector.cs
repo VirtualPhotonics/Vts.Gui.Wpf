@@ -2,48 +2,45 @@
 using System.Windows.Controls;
 using Vts.SpectralMapping;
 
-namespace Vts.Gui.Wpf.View.Templates
+namespace Vts.Gui.Wpf.View.Templates;
+
+public class ScatteringTemplateSelector : UserControl
 {
-    public class ScatteringTemplateSelector : UserControl
+    public static readonly DependencyProperty ScatteringTypeProperty = DependencyProperty.Register(
+        "ScatteringType",
+        typeof(string),
+        typeof(ScatteringTemplateSelector),
+        new PropertyMetadata(string.Empty, UpdateScatteringType));
+
+    public ScatteringTemplateSelector()
     {
-        public static readonly DependencyProperty ScatteringTypeProperty = DependencyProperty.Register(
-            "ScatteringType",
-            typeof(string),
-            typeof(ScatteringTemplateSelector),
-            new PropertyMetadata(string.Empty, UpdateScatteringType));
+        Loaded += (s, a) => ScatteringType = "Vts.SpectralMapping.PowerLawScatterer";
+    }
 
-        public ScatteringTemplateSelector()
+    public DataTemplate MieScatteringTemplate { get; set; }
+    public DataTemplate PowerLawScatteringTemplate { get; set; }
+    public DataTemplate IntralipidScatteringTemplate { get; set; }
+
+    public string ScatteringType
+    { get => (string)GetValue(ScatteringTypeProperty); set => SetValue(ScatteringTypeProperty, value);
+    }
+
+    private static void UpdateScatteringType(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+    {
+        var selector = obj as ScatteringTemplateSelector;
+
+        var scattType = e.NewValue as string;
+        if (scattType == typeof(MieScatterer).FullName)
         {
-            Loaded += (s, a) => ScatteringType = "Vts.SpectralMapping.PowerLawScatterer";
+            selector.Content = selector.MieScatteringTemplate.LoadContent() as UIElement;
         }
-
-        public DataTemplate MieScatteringTemplate { get; set; }
-        public DataTemplate PowerLawScatteringTemplate { get; set; }
-        public DataTemplate IntralipidScatteringTemplate { get; set; }
-
-        public string ScatteringType
+        else if (scattType == typeof(PowerLawScatterer).FullName)
         {
-            get { return (string) GetValue(ScatteringTypeProperty); }
-            set { SetValue(ScatteringTypeProperty, value); }
+            selector.Content = selector.PowerLawScatteringTemplate.LoadContent() as UIElement;
         }
-
-        private static void UpdateScatteringType(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        else if (scattType == typeof(IntralipidScatterer).FullName)
         {
-            var selector = obj as ScatteringTemplateSelector;
-
-            var scattType = e.NewValue as string;
-            if (scattType == typeof(MieScatterer).FullName)
-            {
-                selector.Content = selector.MieScatteringTemplate.LoadContent() as UIElement;
-            }
-            else if (scattType == typeof(PowerLawScatterer).FullName)
-            {
-                selector.Content = selector.PowerLawScatteringTemplate.LoadContent() as UIElement;
-            }
-            else if (scattType == typeof(IntralipidScatterer).FullName)
-            {
-                selector.Content = selector.IntralipidScatteringTemplate.LoadContent() as UIElement;
-            }
+            selector.Content = selector.IntralipidScatteringTemplate.LoadContent() as UIElement;
         }
     }
 }

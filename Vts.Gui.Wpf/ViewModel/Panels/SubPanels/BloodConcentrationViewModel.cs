@@ -1,176 +1,172 @@
 using System;
 using Vts.SpectralMapping;
 
-namespace Vts.Gui.Wpf.ViewModel
+namespace Vts.Gui.Wpf.ViewModel;
+
+/// <summary>
+///     View model implementing Blood Concentration sub-panel functionality
+/// </summary>
+public class BloodConcentrationViewModel : BindableObject
 {
-    /// <summary>
-    ///     View model implementing Blood Concentration sub-panel functionality
-    /// </summary>
-    public class BloodConcentrationViewModel : BindableObject
+    // Backing-fields for chromophores. For consistency, all other properties are
+    // designed to set these values, and do not have a backing store of their own
+
+    public BloodConcentrationViewModel()
+        : this(
+            new ChromophoreAbsorber(ChromophoreType.Hb, 10.0),
+            new ChromophoreAbsorber(ChromophoreType.HbO2, 30.0))
     {
-        private bool _DisplayBloodVM = true;
-        // Backing-fields for chromophores. For consistency, all other properties are
-        // designed to set these values, and do not have a backing store of their own
-        private IChromophoreAbsorber _Hb;
-        private IChromophoreAbsorber _HbO2;
+    }
 
-        public BloodConcentrationViewModel()
-            : this(
-                new ChromophoreAbsorber(ChromophoreType.Hb, 10.0),
-                new ChromophoreAbsorber(ChromophoreType.HbO2, 30.0))
+    public BloodConcentrationViewModel(IChromophoreAbsorber hb, IChromophoreAbsorber hbO2)
+    {
+        HbO2 = hbO2;
+        Hb = hb;
+    }
+
+    /// <summary>
+    ///     ChromophoreAbsorber representing the concentration of oxy-hemoglobin (uM)
+    /// </summary>
+    public bool DisplayBloodVM
+    {
+        get;
+        set
         {
+            field = value;
+            OnPropertyChanged(nameof(DisplayBloodVM));
         }
+    } = true;
 
-        public BloodConcentrationViewModel(IChromophoreAbsorber hb, IChromophoreAbsorber hbO2)
+    public IChromophoreAbsorber HbO2
+    {
+        get;
+        set
         {
-            HbO2 = hbO2;
-            Hb = hb;
-        }
-
-        /// <summary>
-        ///     ChromophoreAbsorber representing the concentration of oxy-hemoglobin (uM)
-        /// </summary>
-        public bool DisplayBloodVM
-        {
-            get { return _DisplayBloodVM; }
-            set
+            if (field != null) // unsubscribe any existing property changed event
             {
-                _DisplayBloodVM = value;
-                OnPropertyChanged("DisplayBloodVM");
+                // first define delegate, then unsubscribe
+                void Func(object s, EventArgs a) => UpdateStO2AndTotalHb();
+                field.PropertyChanged -= Func;
+            }
+
+            if (value != null)
+            {
+                field = value;
+                OnPropertyChanged(nameof(HbO2));
+                // subscribe to the new property changed event
+                field.PropertyChanged += (s, a) => UpdateStO2AndTotalHb();
+                // make sure that whatever's bound to StO2 and TotalHb will update
+                UpdateStO2AndTotalHb();
             }
         }
+    }
 
-        public IChromophoreAbsorber HbO2
+    /// <summary>
+    ///     ChromophoreAbsorber representing the concentration of deoxy-hemoglobin (uM)
+    /// </summary>
+    public IChromophoreAbsorber Hb
+    {
+        get;
+        set
         {
-            get { return _HbO2; }
-            set
+            if (field != null) // unsubscribe any existing property changed event
             {
-                if (_HbO2 != null) // unsubscribe any existing property changed event
-                {
-                    // first define delegate, then unsubscribe
-                    void Func(object s, EventArgs a) => UpdateStO2AndTotalHb();
-                    _HbO2.PropertyChanged -=  Func;
-                }
+                // first define delegate, then unsubscribe
+                void Func(object s, EventArgs a) => UpdateStO2AndTotalHb();
+                field.PropertyChanged -= Func;
+            }
 
-                if (value != null)
-                {
-                    _HbO2 = value;
-                    OnPropertyChanged("HbO2");
-                    // subscribe to the new property changed event
-                    _HbO2.PropertyChanged += (s, a) => UpdateStO2AndTotalHb();
-                    // make sure that whatever's bound to StO2 and TotalHb will update
-                    UpdateStO2AndTotalHb();
-                }
+            if (value != null)
+            {
+                field = value;
+                //_Hb.Concentration = FormatOutput(_Hb.Concentration);
+                OnPropertyChanged(nameof(Hb));
+                // subscribe to the new property changed event
+                field.PropertyChanged += (s, a) => UpdateStO2AndTotalHb();
+                // make sure that whatever's bound to StO2 and TotalHb will update
+                UpdateStO2AndTotalHb();
             }
         }
+    }
 
-        /// <summary>
-        ///     ChromophoreAbsorber representing the concentration of deoxy-hemoglobin (uM)
-        /// </summary>
-        public IChromophoreAbsorber Hb
+    /// <summary>
+    ///     Property to specify tissue oxygen saturation (unitless)
+    /// </summary>
+    /// <remarks>
+    ///     This is just a pass-through to Hb and HbO2, based on the existing TotalHb value
+    /// </remarks>
+    public double StO2
+    {
+        get => HbO2.Concentration / (Hb.Concentration + HbO2.Concentration);
+        set
         {
-            get { return _Hb; }
-            set
-            {
-                if (_Hb != null) // unsubscribe any existing property changed event
-                {
-                    // first define delegate, then unsubscribe
-                    void Func(object s, EventArgs a) => UpdateStO2AndTotalHb();
-                    _Hb.PropertyChanged -= Func;
-                }
+            // calculate the new Hb and HbO2 values based on the existing TotalHb
+            // storing them in temporary local fields (to break the circular reference)
+            var hb = (1 - value) * TotalHb;
+            var hbO2 = value * TotalHb;
 
-                if (value != null)
-                {
-                    _Hb = value;
-                    //_Hb.Concentration = FormatOutput(_Hb.Concentration);
-                    OnPropertyChanged("Hb");
-                    // subscribe to the new property changed event
-                    _Hb.PropertyChanged += (s, a) => UpdateStO2AndTotalHb();
-                    // make sure that whatever's bound to StO2 and TotalHb will update
-                    UpdateStO2AndTotalHb();
-                }
-            }
+            // after calculated, assign them to the concentration properties of 
+            // the ChromphoreAbsorber instances
+            Hb.Concentration = hb;
+            HbO2.Concentration = hbO2;
+
+            OnPropertyChanged(nameof(StO2));
         }
+    }
 
-        /// <summary>
-        ///     Property to specify tissue oxygen saturation (unitless)
-        /// </summary>
-        /// <remarks>
-        ///     This is just a pass-through to Hb and HbO2, based on the existing TotalHb value
-        /// </remarks>
-        public double StO2
+    /// <summary>
+    ///     Property to specify total hemoglobin concentration, HbT (uM)
+    /// </summary>
+    /// <remarks>
+    ///     This is just a pass-through to Hb and HbO2, based on the existing StO2 value
+    /// </remarks>
+    public double TotalHb
+    {
+        get => Hb.Concentration + HbO2.Concentration;
+        set
         {
-            get { return HbO2.Concentration/(Hb.Concentration + HbO2.Concentration); }
-            set
-            {
-                // calculate the new Hb and HbO2 values based on the existing TotalHb
-                // storing them in temporary local fields (to break the circular reference)
-                var hb = (1 - value)*TotalHb;
-                var hbO2 = value*TotalHb;
+            // calculate the new Hb and HbO2 values based on the existing StO2
+            // storing them in temporary local fields (to break the circular reference)
+            var hbO2 = value * StO2;
+            var hb = value * (1 - StO2);
 
-                // after calculated, assign them to the concentration properties of 
-                // the ChromphoreAbsorber instances
-                Hb.Concentration = hb;
-                HbO2.Concentration = hbO2;
+            // after calculated, assign them to the concentration properties of 
+            // the ChromphoreAbsorber instances
+            Hb.Concentration = hb;
+            HbO2.Concentration = hbO2;
 
-                OnPropertyChanged("StO2");
-            }
+            OnPropertyChanged(nameof(TotalHb));
+
+            // call this last, because BloodVolumeFraction depends on TotalHb being updated
+            OnPropertyChanged(nameof(BloodVolumeFraction));
         }
+    }
 
-        /// <summary>
-        ///     Property to specify total hemoglobin concentration, HbT (uM)
-        /// </summary>
-        /// <remarks>
-        ///     This is just a pass-through to Hb and HbO2, based on the existing StO2 value
-        /// </remarks>
-        public double TotalHb
+    /// <summary>
+    ///     Property to specify blood volume fraction (vb) as an alternative to TotalHb
+    /// </summary>
+    /// <remarks>
+    ///     This is just a pass-through to TotalHb, assuming 150gHb/L for whole blood
+    ///     todo: verify that the 150g/L value is for *whole blood* not RBCs
+    ///     (otherwise, need to account for Hct)
+    /// </remarks>
+    public double BloodVolumeFraction
+    {
+        get => TotalHb / 1E6 * 64500 / 150;
+        set
         {
-            get { return Hb.Concentration + HbO2.Concentration; }
-            set
-            {
-                // calculate the new Hb and HbO2 values based on the existing StO2
-                // storing them in temporary local fields (to break the circular reference)
-                var hbO2 = value*StO2;
-                var hb = value*(1 - StO2);
+            //BloodVolumeFraction = value * 1E6 / 64500 * 150;
+            TotalHb = value * 1E6 / 64500 * 150; // TotalHb will internally fire OnPropertyChanged() here
 
-                // after calculated, assign them to the concentration properties of 
-                // the ChromphoreAbsorber instances
-                Hb.Concentration = hb;
-                HbO2.Concentration = hbO2;
-
-                OnPropertyChanged("TotalHb");
-
-                // call this last, because BloodVolumeFraction depends on TotalHb being updated
-                OnPropertyChanged("BloodVolumeFraction");
-            }
+            OnPropertyChanged(nameof(BloodVolumeFraction));
+            OnPropertyChanged(nameof(TotalHb));
         }
+    }
 
-        /// <summary>
-        ///     Property to specify blood volume fraction (vb) as an alternative to TotalHb
-        /// </summary>
-        /// <remarks>
-        ///     This is just a pass-through to TotalHb, assuming 150gHb/L for whole blood
-        ///     todo: verify that the 150g/L value is for *whole blood* not RBCs
-        ///     (otherwise, need to account for Hct)
-        /// </remarks>
-        public double BloodVolumeFraction
-        {
-            get { return TotalHb/1E6*64500/150; }
-            set
-            {
-                //BloodVolumeFraction = value * 1E6 / 64500 * 150;
-                TotalHb = value*1E6/64500*150; // TotalHb will internally fire OnPropertyChanged() here
-
-                OnPropertyChanged("BloodVolumeFraction");
-                OnPropertyChanged("TotalHb");
-            }
-        }
-
-        private void UpdateStO2AndTotalHb()
-        {
-            OnPropertyChanged("StO2");
-            OnPropertyChanged("TotalHb");
-            OnPropertyChanged("BloodVolumeFraction");
-        }
+    private void UpdateStO2AndTotalHb()
+    {
+        OnPropertyChanged(nameof(StO2));
+        OnPropertyChanged(nameof(TotalHb));
+        OnPropertyChanged(nameof(BloodVolumeFraction));
     }
 }

@@ -1,50 +1,44 @@
-﻿namespace Vts.Gui.Wpf.ViewModel
+﻿namespace Vts.Gui.Wpf.ViewModel;
+
+public class IndependentAxisViewModel : BindableObject
 {
-    public class IndependentAxisViewModel : BindableObject
+    public IndependentVariableAxis AxisType
     {
-        private string _axisLabel;
-        private RangeViewModel _axisRangeVM;
-        private IndependentVariableAxis _axisType;
-        private string _axisUnits;
-
-        public IndependentVariableAxis AxisType
+        get;
+        set
         {
-            get { return _axisType; }
-            set
-            {
-                _axisType = value;
-                OnPropertyChanged("AxisType");
-            }
+            field = value;
+            OnPropertyChanged(nameof(AxisType));
         }
+    }
 
-        public string AxisLabel
+    public string AxisLabel
+    {
+        get;
+        set
         {
-            get { return _axisLabel; }
-            set
-            {
-                _axisLabel = value;
-                OnPropertyChanged("AxisLabel");
-            }
+            field = value;
+            OnPropertyChanged(nameof(AxisLabel));
         }
+    }
 
-        public string AxisUnits
+    public string AxisUnits
+    {
+        get;
+        set
         {
-            get { return _axisUnits; }
-            set
-            {
-                _axisUnits = value;
-                OnPropertyChanged("AxisUnits");
-            }
+            field = value;
+            OnPropertyChanged(nameof(AxisUnits));
         }
+    }
 
-        public RangeViewModel AxisRangeVM
+    public RangeViewModel AxisRangeVM
+    {
+        get;
+        set
         {
-            get { return _axisRangeVM; }
-            set
-            {
-                _axisRangeVM = value;
-                OnPropertyChanged("AxisRangeVM");
-            }
+            field = value;
+            OnPropertyChanged(nameof(AxisRangeVM));
         }
     }
 }

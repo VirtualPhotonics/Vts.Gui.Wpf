@@ -64,7 +64,7 @@ public class MonteCarloSolverViewModel : BindableObject
         LoadSimulationInputCommand = new RelayCommand(() => _ = MC_LoadSimulationInput_Executed(null, null));
         DownloadDefaultSimulationInputCommand =
             new RelayCommand(() => _ = MC_DownloadDefaultSimulationInput_Executed(null, null));
-        SaveSimulationResultsCommand = new RelayCommand(() => MC_SaveSimulationResults_Executed(null, null));
+        SaveSimulationResultsCommand = new RelayCommand(() => _ = MC_SaveSimulationResults_Executed(null, null));
 
         _canDownloadInfiles = true;
         _canLoadInputFile = true;
@@ -210,7 +210,7 @@ public class MonteCarloSolverViewModel : BindableObject
 
                     var independentValues = detectorInput.Rho.AsEnumerable().ToArray();
 
-                    DoubleDataPoint[] points = null;
+                    DoubleDataPoint[] points;
 
                     points = independentValues.Zip(_output.R_r,
                         (x, y) => new DoubleDataPoint(x, y)).ToArray();
@@ -393,8 +393,6 @@ public class MonteCarloSolverViewModel : BindableObject
             Logger.Info(() => StringLookup.GetLocalizedString("Error_FileSave"));
             return false;
         }
-
-        return false;
     }
 
     private void MC_SaveSimulationResultsToFolder(SimulationInput input, SimulationOutput output, string folder)

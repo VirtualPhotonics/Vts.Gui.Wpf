@@ -1,96 +1,90 @@
 using Vts.Common;
 
-namespace Vts.Gui.Wpf.ViewModel
+namespace Vts.Gui.Wpf.ViewModel;
+
+/// <summary>
+///     View model exposing the Position model class with change notification
+/// </summary>
+public class PositionViewModel : BindableObject
 {
-    /// <summary>
-    ///     View model exposing the Position model class with change notification
-    /// </summary>
-    public class PositionViewModel : BindableObject
+    // Position model - backing store for public properties
+    private readonly Position _position;
+
+    public PositionViewModel() : this(new Position(0, 0, 0), "mm", "Position:")
     {
-        // Position model - backing store for public properties
-        private readonly Position _position;
-        private string _title;
-        private string _units;
+    }
 
-        public PositionViewModel() : this(new Position(0, 0, 0), "mm", "Position:")
-        {
-        }
+    public PositionViewModel(Position position, string units, string title)
+    {
+        _position = position;
+        Units = units;
+        Title = title;
+    }
 
-        public PositionViewModel(Position position, string units, string title)
+    /// <summary>
+    ///     A double representing the x-component of the position
+    /// </summary>
+    public double X
+    {
+        get => _position.X;
+        set
         {
-            _position = position;
-            Units = units;
-            Title = title;
+            _position.X = value;
+            OnPropertyChanged(nameof(X));
         }
+    }
 
-        /// <summary>
-        ///     A double representing the x-component of the position
-        /// </summary>
-        public double X
+    /// <summary>
+    ///     A double representing the y-component of the position
+    /// </summary>
+    public double Y
+    {
+        get => _position.Y;
+        set
         {
-            get { return _position.X; }
-            set
-            {
-                _position.X = value;
-                OnPropertyChanged("X");
-            }
+            _position.Y = value;
+            OnPropertyChanged(nameof(Y));
         }
+    }
 
-        /// <summary>
-        ///     A double representing the y-component of the position
-        /// </summary>
-        public double Y
+    /// <summary>
+    ///     A double representing the z-component of the position
+    /// </summary>
+    public double Z
+    {
+        get => _position.Z;
+        set
         {
-            get { return _position.Y; }
-            set
-            {
-                _position.Y = value;
-                OnPropertyChanged("Y");
-            }
+            _position.Z = value;
+            OnPropertyChanged(nameof(Z));
         }
+    }
 
-        /// <summary>
-        ///     A double representing the z-component of the position
-        /// </summary>
-        public double Z
+    public string Units
+    {
+        get;
+        set
         {
-            get { return _position.Z; }
-            set
-            {
-                _position.Z = value;
-                OnPropertyChanged("Z");
-            }
+            field = value;
+            OnPropertyChanged(nameof(Units));
         }
+    }
 
-        public string Units
+    public string Title
+    {
+        get;
+        set
         {
-            get { return _units; }
-            set
-            {
-                _units = value;
-                OnPropertyChanged("Units");
-            }
+            field = value;
+            OnPropertyChanged(nameof(Title));
+            OnPropertyChanged(nameof(ShowTitle));
         }
+    }
 
-        public string Title
-        {
-            get { return _title; }
-            set
-            {
-                _title = value;
-                OnPropertyChanged("Title");
-                OnPropertyChanged("ShowTitle");
-            }
-        }
+    public bool ShowTitle => Title.Length > 0;
 
-        public bool ShowTitle
-        {
-            get { return Title.Length > 0; }
-        }
-
-        public Position GetPosition()
-        {
-            return _position;
-        }
+    public Position GetPosition()
+    {
+        return _position;
     }
 }

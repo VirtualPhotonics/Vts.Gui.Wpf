@@ -1,38 +1,35 @@
 using CommunityToolkit.Mvvm.Input;
 
-namespace Vts.Gui.Wpf.ViewModel
+namespace Vts.Gui.Wpf.ViewModel;
+
+public class TextOutputViewModel : BindableObject
 {
-    public class TextOutputViewModel : BindableObject
+    public TextOutputViewModel()
     {
-        private string _Text;
+        TextOutput_PostMessage = new RelayCommand<object>(PostMessage_Executed);
+    }
 
-        public TextOutputViewModel()
+    public RelayCommand<object> TextOutput_PostMessage { get; set; }
+
+    public string Text
+    {
+        get;
+        set
         {
-            TextOutput_PostMessage = new RelayCommand<object>(PostMessage_Executed);
+            field = value;
+            OnPropertyChanged(nameof(Text));
         }
+    }
 
-        public RelayCommand<object> TextOutput_PostMessage { get; set; }
-
-        public string Text
-        {
-            get { return _Text; }
-            set
-            {
-                _Text = value;
-                OnPropertyChanged("Text");
-            }
-        }
-
-        private void PostMessage_Executed(object sender)
-        {
-            var s = sender as string;
-            if (s != null)
-                Text += s;
-        }
-
-        public void AppendText(string s)
-        {
+    private void PostMessage_Executed(object sender)
+    {
+        var s = sender as string;
+        if (s != null)
             Text += s;
-        }
+    }
+
+    public void AppendText(string s)
+    {
+        Text += s;
     }
 }
