@@ -5,241 +5,170 @@ namespace Vts.Gui.Wpf.Extensions;
 
 public static class EnumExtensions
 {
-    public static bool IsGaussianForwardModel(this ForwardSolverType forwardSolverType)
+    extension(ForwardSolverType forwardSolverType)
     {
-        switch (forwardSolverType)
+        public bool IsGaussianForwardModel()
         {
-            case ForwardSolverType.PointSourceSDA:
-            case ForwardSolverType.DistributedPointSourceSDA:
-            case ForwardSolverType.DeltaPOne:
-            case ForwardSolverType.MonteCarlo:
-            default:
-                return false;
-            case ForwardSolverType.DistributedGaussianSourceSDA:
-                return true;
+            return forwardSolverType switch
+            {
+                ForwardSolverType.DistributedGaussianSourceSDA => true,
+                _ => false,
+            };
+        }
+
+        public bool IsMultiRegionForwardModel()
+        {
+            return forwardSolverType switch
+            {
+                ForwardSolverType.TwoLayerSDA => true,
+                _ => false,
+            };
         }
     }
 
-    public static bool IsMultiRegionForwardModel(this ForwardSolverType forwardSolverType)
+    extension(IndependentVariableAxis axis)
     {
-        switch (forwardSolverType)
+        public int GetMaxArgumentLocation()
         {
-            case ForwardSolverType.PointSourceSDA:
-            case ForwardSolverType.DistributedPointSourceSDA:
-            case ForwardSolverType.DistributedGaussianSourceSDA:
-            case ForwardSolverType.DeltaPOne:
-            case ForwardSolverType.MonteCarlo:
-            default:
-                return false;
-            case ForwardSolverType.TwoLayerSDA:
-                return true;
+            return axis switch
+            {
+                IndependentVariableAxis.Rho => 0,
+                IndependentVariableAxis.Time => 2,
+                IndependentVariableAxis.Fx => 0,
+                IndependentVariableAxis.Ft => 2,
+                IndependentVariableAxis.Z => 1,
+                IndependentVariableAxis.Wavelength => 2,
+                _ => throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") +
+                                                       axis + StringLookup.GetLocalizedString(
+                                                           "Exception_CustomNotImplemented"))
+            };
         }
-    }
 
-    public static int GetMaxArgumentLocation(this IndependentVariableAxis axis)
-    {
-        switch (axis)
+        public bool IsSpatialAxis()
         {
-            case IndependentVariableAxis.Rho:
-                return 0;
-            case IndependentVariableAxis.Time:
-                return 2;
-            case IndependentVariableAxis.Fx:
-                return 0;
-            case IndependentVariableAxis.Ft:
-                return 2;
-            case IndependentVariableAxis.Z:
-                return 1;
-            case IndependentVariableAxis.Wavelength:
-                return 2;
-            default:
-                throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
-                                                  StringLookup.GetLocalizedString("Exception_CustomNotImplemented"));
+            return axis switch
+            {
+                IndependentVariableAxis.Rho or IndependentVariableAxis.Fx => true,
+                IndependentVariableAxis.Time or IndependentVariableAxis.Ft or IndependentVariableAxis.Z
+                    or IndependentVariableAxis.Wavelength => false,
+                _ => throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") +
+                                                       axis + StringLookup.GetLocalizedString(
+                                                           "Exception_CustomNotImplemented"))
+            };
         }
-    }
 
-    public static bool IsSpatialAxis(this IndependentVariableAxis axis)
-    {
-        switch (axis)
+        public bool IsTemporalAxis()
         {
-            case IndependentVariableAxis.Rho:
-            case IndependentVariableAxis.Fx:
-                return true;
-            case IndependentVariableAxis.Time:
-            case IndependentVariableAxis.Ft:
-            case IndependentVariableAxis.Z:
-            case IndependentVariableAxis.Wavelength:
-                return false;
-            default:
-                throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
-                                                  StringLookup.GetLocalizedString("Exception_CustomNotImplemented"));
+            return axis switch
+            {
+                IndependentVariableAxis.Time or IndependentVariableAxis.Ft => true,
+                IndependentVariableAxis.Rho or IndependentVariableAxis.Fx or IndependentVariableAxis.Z
+                    or IndependentVariableAxis.Wavelength => false,
+                _ => throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") +
+                                                       axis + StringLookup.GetLocalizedString(
+                                                           "Exception_CustomNotImplemented"))
+            };
         }
-    }
 
-    public static bool IsTemporalAxis(this IndependentVariableAxis axis)
-    {
-        switch (axis)
+        public bool IsDepthAxis()
         {
-            case IndependentVariableAxis.Time:
-            case IndependentVariableAxis.Ft:
-                return true;
-            case IndependentVariableAxis.Rho:
-            case IndependentVariableAxis.Fx:
-            case IndependentVariableAxis.Z:
-            case IndependentVariableAxis.Wavelength:
-                return false;
-            default:
-                throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
-                                                  StringLookup.GetLocalizedString("Exception_CustomNotImplemented"));
+            return axis switch
+            {
+                IndependentVariableAxis.Z => true,
+                IndependentVariableAxis.Time or IndependentVariableAxis.Ft or IndependentVariableAxis.Rho
+                    or IndependentVariableAxis.Fx or IndependentVariableAxis.Wavelength => false,
+                _ => throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") +
+                                                       axis + StringLookup.GetLocalizedString(
+                                                           "Exception_CustomNotImplemented"))
+            };
         }
-    }
 
-    public static bool IsDepthAxis(this IndependentVariableAxis axis)
-    {
-        switch (axis)
+        public bool IsWavelengthAxis()
         {
-            case IndependentVariableAxis.Z:
-                return true;
-            case IndependentVariableAxis.Time:
-            case IndependentVariableAxis.Ft:
-            case IndependentVariableAxis.Rho:
-            case IndependentVariableAxis.Fx:
-            case IndependentVariableAxis.Wavelength:
-                return false;
-            default:
-                throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
-                                                  StringLookup.GetLocalizedString("Exception_CustomNotImplemented"));
+            return axis switch
+            {
+                IndependentVariableAxis.Wavelength => true,
+                IndependentVariableAxis.Time or IndependentVariableAxis.Ft or IndependentVariableAxis.Rho or IndependentVariableAxis.Fx or IndependentVariableAxis.Z => false,
+                _ => throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
+                                                                      StringLookup.GetLocalizedString("Exception_CustomNotImplemented")),
+            };
         }
-    }
 
-    public static bool IsWavelengthAxis(this IndependentVariableAxis axis)
-    {
-        switch (axis)
+        public string GetTitle()
         {
-            case IndependentVariableAxis.Wavelength:
-                return true;
-            case IndependentVariableAxis.Time:
-            case IndependentVariableAxis.Ft:
-            case IndependentVariableAxis.Rho:
-            case IndependentVariableAxis.Fx:
-            case IndependentVariableAxis.Z:
-                return false;
-            default:
-                throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
-                                                  StringLookup.GetLocalizedString("Exception_CustomNotImplemented"));
+            return axis switch
+            {
+                IndependentVariableAxis.Time => IndependentVariableAxis.Time.GetLocalizedString(),
+                IndependentVariableAxis.Fx => IndependentVariableAxis.Fx.GetLocalizedString(),
+                IndependentVariableAxis.Ft => IndependentVariableAxis.Ft.GetLocalizedString(),
+                IndependentVariableAxis.Wavelength => IndependentVariableAxis.Wavelength.GetLocalizedString(),
+                _ => IndependentVariableAxis.Rho.GetLocalizedString(),
+            };
         }
-    }
 
-    public static string GetTitle(this IndependentVariableAxis axis)
-    {
-        switch (axis)
+        public string GetUnits()
         {
-            case IndependentVariableAxis.Rho:
-            default:
-                return IndependentVariableAxis.Rho.GetLocalizedString();
-            case IndependentVariableAxis.Time:
-                return IndependentVariableAxis.Time.GetLocalizedString();
-            case IndependentVariableAxis.Fx:
-                return IndependentVariableAxis.Fx.GetLocalizedString();
-            case IndependentVariableAxis.Ft:
-                return IndependentVariableAxis.Ft.GetLocalizedString();
-            case IndependentVariableAxis.Wavelength:
-                return IndependentVariableAxis.Wavelength.GetLocalizedString();
-        }
-    }
-
-    public static string GetUnits(this IndependentVariableAxis axis)
-    {
-        switch (axis)
-        {
-            case IndependentVariableAxis.Rho:
-            default:
-                return IndependentVariableAxisUnits.MM.GetInternationalizedString();
-            case IndependentVariableAxis.Time:
-                return IndependentVariableAxisUnits.NS.GetInternationalizedString();
-            case IndependentVariableAxis.Fx:
-                return IndependentVariableAxisUnits.InverseMM.GetInternationalizedString();
-            case IndependentVariableAxis.Ft:
-                return IndependentVariableAxisUnits.GHz.GetInternationalizedString();
-            case IndependentVariableAxis.Wavelength:
-                return IndependentVariableAxisUnits.NM.GetInternationalizedString();
+            return axis switch
+            {
+                IndependentVariableAxis.Time => IndependentVariableAxisUnits.NS.GetInternationalizedString(),
+                IndependentVariableAxis.Fx => IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
+                IndependentVariableAxis.Ft => IndependentVariableAxisUnits.GHz.GetInternationalizedString(),
+                IndependentVariableAxis.Wavelength => IndependentVariableAxisUnits.NM.GetInternationalizedString(),
+                _ => IndependentVariableAxisUnits.MM.GetInternationalizedString(),
+            };
         }
     }
 
     public static string GetUnits(this SolutionDomainType sdType)
     {
-        switch (sdType)
+        return sdType switch
         {
-            case SolutionDomainType.ROfRho:
-            default:
-                return DependentVariableAxisUnits.PerMMSquared.GetInternationalizedString();
-            case SolutionDomainType.ROfFx:
-                return DependentVariableAxisUnits.Unitless.GetInternationalizedString();
-            case SolutionDomainType.ROfRhoAndTime:
-                return DependentVariableAxisUnits.PerMMSquaredPerNS.GetInternationalizedString();
-            case SolutionDomainType.ROfFxAndTime:
-                return DependentVariableAxisUnits.PerNS.GetInternationalizedString();
-            case SolutionDomainType.ROfRhoAndFt:
-                return DependentVariableAxisUnits.PerMMSquaredPerGHz.GetInternationalizedString();
-            case SolutionDomainType.ROfFxAndFt:
-                return DependentVariableAxisUnits.PerGHz.GetInternationalizedString();
-        }
+            SolutionDomainType.ROfFx => DependentVariableAxisUnits.Unitless.GetInternationalizedString(),
+            SolutionDomainType.ROfRhoAndTime => DependentVariableAxisUnits.PerMMSquaredPerNS.GetInternationalizedString(),
+            SolutionDomainType.ROfFxAndTime => DependentVariableAxisUnits.PerNS.GetInternationalizedString(),
+            SolutionDomainType.ROfRhoAndFt => DependentVariableAxisUnits.PerMMSquaredPerGHz.GetInternationalizedString(),
+            SolutionDomainType.ROfFxAndFt => DependentVariableAxisUnits.PerGHz.GetInternationalizedString(),
+            _ => DependentVariableAxisUnits.PerMMSquared.GetInternationalizedString(),
+        };
     }
 
     public static string GetUnits(this FluenceSolutionDomainType sdType)
     {
-        switch (sdType)
+        return sdType switch
         {
-            case FluenceSolutionDomainType.FluenceOfRhoAndZ:
-            default:
-                return DependentVariableAxisUnits.PerMMCubed.GetInternationalizedString();
-            case FluenceSolutionDomainType.FluenceOfFxAndZ:
-                return DependentVariableAxisUnits.PerMM.GetInternationalizedString();
-            case FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
-                return DependentVariableAxisUnits.PerMMCubedPerNS.GetInternationalizedString();
-            case FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
-                return DependentVariableAxisUnits.PerMMPerNS.GetInternationalizedString();
-            case FluenceSolutionDomainType.FluenceOfRhoAndZAndFt:
-                return DependentVariableAxisUnits.PerMMCubedPerGHz.GetInternationalizedString();
-            case FluenceSolutionDomainType.FluenceOfFxAndZAndFt:
-                return DependentVariableAxisUnits.PerMMPerGHz.GetInternationalizedString();
-        }
+            FluenceSolutionDomainType.FluenceOfFxAndZ => DependentVariableAxisUnits.PerMM.GetInternationalizedString(),
+            FluenceSolutionDomainType.FluenceOfRhoAndZAndTime => DependentVariableAxisUnits.PerMMCubedPerNS.GetInternationalizedString(),
+            FluenceSolutionDomainType.FluenceOfFxAndZAndTime => DependentVariableAxisUnits.PerMMPerNS.GetInternationalizedString(),
+            FluenceSolutionDomainType.FluenceOfRhoAndZAndFt => DependentVariableAxisUnits.PerMMCubedPerGHz.GetInternationalizedString(),
+            FluenceSolutionDomainType.FluenceOfFxAndZAndFt => DependentVariableAxisUnits.PerMMPerGHz.GetInternationalizedString(),
+            _ => DependentVariableAxisUnits.PerMMCubed.GetInternationalizedString(),
+        };
     }
 
-    public static DoubleRange GetDefaultRange(this IndependentVariableAxis independentAxisType)
+    extension(IndependentVariableAxis independentAxisType)
     {
-        switch (independentAxisType)
+        public DoubleRange GetDefaultRange()
         {
-            case IndependentVariableAxis.Rho:
-            default:
-                return new DoubleRange(0.5D, 9.5D, 19); // units=mm
-            case IndependentVariableAxis.Time:
-                return new DoubleRange(0D, 0.05D, 51); // units=ns
-            case IndependentVariableAxis.Fx:
-                return new DoubleRange(0D, 0.5D, 51);
-            case IndependentVariableAxis.Ft:
-                return new DoubleRange(0D, 0.5D, 51); // units=GHz
-            case IndependentVariableAxis.Wavelength:
-                return new DoubleRange(650D, 1000D, 36); // units=nm
+            return independentAxisType switch
+            {
+                IndependentVariableAxis.Time => new DoubleRange(0D, 0.05D, 51),// units=ns
+                IndependentVariableAxis.Fx => new DoubleRange(0D, 0.5D, 51),
+                IndependentVariableAxis.Ft => new DoubleRange(0D, 0.5D, 51),// units=GHz
+                IndependentVariableAxis.Wavelength => new DoubleRange(650D, 1000D, 36),// units=nm
+                _ => new DoubleRange(0.5D, 9.5D, 19),// units=mm
+            };
+        }
+
+        public double GetDefaultConstantAxisValue()
+        {
+            return independentAxisType switch
+            {
+                IndependentVariableAxis.Time => 0.05,
+                IndependentVariableAxis.Fx => 0.0,
+                IndependentVariableAxis.Ft => 0.0,
+                IndependentVariableAxis.Wavelength => 650.0,
+                _ => 1.0,
+            };
         }
     }
-
-    public static double GetDefaultConstantAxisValue(this IndependentVariableAxis constantType)
-    {
-        switch (constantType)
-        {
-            case IndependentVariableAxis.Rho:
-            default:
-                return 1.0;
-            case IndependentVariableAxis.Time:
-                return 0.05;
-            case IndependentVariableAxis.Fx:
-                return 0.0;
-            case IndependentVariableAxis.Ft:
-                return 0.0;
-            case IndependentVariableAxis.Wavelength:
-                return 650.0;
-        }
-    }
-
-  }
+}

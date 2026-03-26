@@ -11,10 +11,8 @@ namespace Vts.Gui.Wpf.Extensions;
 /// </summary>
 public class LocalizedStrings
 {
-    private static readonly Strings _resource = new();
-
     /// <summary>
     ///     MainResource pulls the relevant string from resources
     /// </summary>
-    public Strings MainResource => _resource;
+    public static Strings MainResource { get; } = new();
 }

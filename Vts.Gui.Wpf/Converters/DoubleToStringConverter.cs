@@ -35,28 +35,23 @@ public class DoubleToStringConverter : IValueConverter
         if (!(value is double || value is int))
             throw new ArgumentException(StringLookup.GetLocalizedString("Exception_DoubleOrInt"));
 
-        if (value is int)
-            d1 = (int)value;
+        if (value is int i)
+            d1 = i;
         else
             d1 = (double)value;
 
-        if (parameter != null)
-        {
-            return d1.ToString((string) parameter, CultureInfo.CurrentCulture);
-        }
-        return d1.ToString(CultureInfo.CurrentCulture);
-
+        return parameter != null ? d1.ToString((string) parameter, CultureInfo.CurrentCulture) : d1.ToString(CultureInfo.CurrentCulture);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (!(value is string))
+        if (value is not string s)
+        {
             throw new ArgumentException(StringLookup.GetLocalizedString("Exception_String"));
-        double d;            
-        if (double.TryParse((string) value, NumberStyles.AllowDecimalPoint, CultureInfo.CurrentCulture, out d))            
-            return d;
-        else
-            return 0;
+        }
+
+        if (double.TryParse(s, NumberStyles.AllowDecimalPoint, CultureInfo.CurrentCulture, out var d)) return d;
+        return 0;
     }
 
     #endregion

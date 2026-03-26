@@ -20,17 +20,13 @@ public static class StringLookup
         var rm = new ResourceManager("Vts.Gui.Wpf.Resources.Strings", typeof(Strings).Assembly);
 
         var s = rm.GetString(stringName, Thread.CurrentThread.CurrentCulture);
-        if (s != null)
-        {
-            return s;
-        }
-        return "";
+        return s ?? "";
     }
 
     /// <summary>
     ///     Method to retrieve the correct language string for the VTS GUI
     /// </summary>
-    /// <param name="stringType">Type of string in the interface(Tooltip, label, title etc)</param>
+    /// <param name="stringType">Type of string in the interface(Tooltip, label, title etc.)</param>
     /// <param name="stringName">Name of the string</param>
     /// <returns>string in the correct language</returns>
     public static string GetLocalizedString(string stringType, string stringName)
@@ -49,14 +45,12 @@ public static class StringLookup
     public static string GetLocalizedString(this Enum enumType)
     {
         var baseString = enumType.GetType().ToString();
-        var type = baseString.Substring(baseString.IndexOf('.') + 1);
+        var type = baseString[(baseString.IndexOf('.') + 1)..];
         var name = enumType.ToString();
 
         var rm = new ResourceManager("Vts.Gui.Wpf.Resources.Strings", typeof(Strings).Assembly);
 
         var s = rm.GetString(type + "_" + name, Thread.CurrentThread.CurrentCulture);
-        if (s != null)
-            return s;
-        return "";
+        return s ?? "";
     }
 }
