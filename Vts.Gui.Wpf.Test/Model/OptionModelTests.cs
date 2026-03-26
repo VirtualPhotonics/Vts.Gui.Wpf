@@ -48,8 +48,7 @@ public class OptionModelTests
     [Test]
     public void Verify_CompareTo_null_object_returns_minus_1()
     {
-        OptionModel<ColormapType> optionModel = null;
-        var val = _optionModel.CompareTo(optionModel);
+        var val = _optionModel.CompareTo(null);
         Assert.That(val, Is.EqualTo(-1));
     }
 
@@ -96,8 +95,6 @@ public class OptionModelTests
     [Test]
     public void Verify_CreateAvailableOptions_throws_error()
     {
-        Assert.Throws<ArgumentException>(() => OptionModel<OpticalProperties>.CreateAvailableOptions(null,
-            "groupName", new OpticalProperties(),
-            new[] {new OpticalProperties()}, false));
+        Assert.Throws<ArgumentException>(() => OptionModel<OpticalProperties>.CreateAvailableOptions(null, "groupName", new OpticalProperties(), [new OpticalProperties()], false));
     }
 }

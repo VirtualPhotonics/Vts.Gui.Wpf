@@ -210,7 +210,6 @@ public class EnumExtensionsTests
         Assert.That(FluenceSolutionDomainType.FluenceOfFxAndZAndFt.GetUnits(), Is.EqualTo(DependentVariableAxisUnits.PerMMPerGHz.GetInternationalizedString()));
     }
 
-
     /// <summary>
     /// Verifies extension method GetDefaultRange returns correct value
     /// </summary>

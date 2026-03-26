@@ -18,11 +18,11 @@ public class MapDataTests
     [OneTimeSetUp]
     public void Setup()
     {
-        _rawData = new[] { 0.1, 0.2, 0.3, 0.4 };
-        _xValues = new[] { 0.5, 0.6 };
-        _yValues = new[] { 0.7, 0.8 };
-        _dxValues = new[] { 0.9, 1.0 };
-        _dyValues = new[] { 1.1, 1.2 };
+        _rawData = [0.1, 0.2, 0.3, 0.4];
+        _xValues = [0.5, 0.6];
+        _yValues = [0.7, 0.8];
+        _dxValues = [0.9, 1.0];
+        _dyValues = [1.1, 1.2];
     }
 
     /// <summary>
