@@ -5,6 +5,9 @@ namespace Vts.Gui.Wpf.Extensions;
 
 public static class EnumExtensions
 {
+    private const string CustomNotImplementedException = "Exception_CustomNotImplemented";
+    private const string IndependentAxisException = "Exception_IndependentAxis";
+
     extension(ForwardSolverType forwardSolverType)
     {
         public bool IsGaussianForwardModel()
@@ -38,9 +41,10 @@ public static class EnumExtensions
                 IndependentVariableAxis.Ft => 2,
                 IndependentVariableAxis.Z => 1,
                 IndependentVariableAxis.Wavelength => 2,
-                _ => throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") +
-                                                       axis + StringLookup.GetLocalizedString(
-                                                           "Exception_CustomNotImplemented"))
+                _ => throw new NotImplementedException(
+                    StringLookup.GetLocalizedString(IndependentAxisException) +
+                    axis + 
+                    StringLookup.GetLocalizedString(CustomNotImplementedException))
             };
         }
 
@@ -51,9 +55,10 @@ public static class EnumExtensions
                 IndependentVariableAxis.Rho or IndependentVariableAxis.Fx => true,
                 IndependentVariableAxis.Time or IndependentVariableAxis.Ft or IndependentVariableAxis.Z
                     or IndependentVariableAxis.Wavelength => false,
-                _ => throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") +
-                                                       axis + StringLookup.GetLocalizedString(
-                                                           "Exception_CustomNotImplemented"))
+                _ => throw new NotImplementedException(
+                    StringLookup.GetLocalizedString(IndependentAxisException) + 
+                    axis + 
+                    StringLookup.GetLocalizedString(CustomNotImplementedException))
             };
         }
 
@@ -64,9 +69,10 @@ public static class EnumExtensions
                 IndependentVariableAxis.Time or IndependentVariableAxis.Ft => true,
                 IndependentVariableAxis.Rho or IndependentVariableAxis.Fx or IndependentVariableAxis.Z
                     or IndependentVariableAxis.Wavelength => false,
-                _ => throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") +
-                                                       axis + StringLookup.GetLocalizedString(
-                                                           "Exception_CustomNotImplemented"))
+                _ => throw new NotImplementedException(
+                    StringLookup.GetLocalizedString(IndependentAxisException) +
+                    axis + 
+                    StringLookup.GetLocalizedString(CustomNotImplementedException))
             };
         }
 
@@ -77,9 +83,10 @@ public static class EnumExtensions
                 IndependentVariableAxis.Z => true,
                 IndependentVariableAxis.Time or IndependentVariableAxis.Ft or IndependentVariableAxis.Rho
                     or IndependentVariableAxis.Fx or IndependentVariableAxis.Wavelength => false,
-                _ => throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") +
-                                                       axis + StringLookup.GetLocalizedString(
-                                                           "Exception_CustomNotImplemented"))
+                _ => throw new NotImplementedException(
+                    StringLookup.GetLocalizedString(IndependentAxisException) +
+                    axis + 
+                    StringLookup.GetLocalizedString(CustomNotImplementedException))
             };
         }
 
@@ -89,8 +96,10 @@ public static class EnumExtensions
             {
                 IndependentVariableAxis.Wavelength => true,
                 IndependentVariableAxis.Time or IndependentVariableAxis.Ft or IndependentVariableAxis.Rho or IndependentVariableAxis.Fx or IndependentVariableAxis.Z => false,
-                _ => throw new NotImplementedException(StringLookup.GetLocalizedString("Exception_IndependentAxis") + axis +
-                                                                      StringLookup.GetLocalizedString("Exception_CustomNotImplemented")),
+                _ => throw new NotImplementedException(
+                    StringLookup.GetLocalizedString(IndependentAxisException) + 
+                    axis +
+                    StringLookup.GetLocalizedString(CustomNotImplementedException))
             };
         }
 

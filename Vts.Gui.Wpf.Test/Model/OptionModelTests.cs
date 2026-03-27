@@ -95,6 +95,10 @@ public class OptionModelTests
     [Test]
     public void Verify_CreateAvailableOptions_throws_error()
     {
-        Assert.Throws<ArgumentException>(() => OptionModel<OpticalProperties>.CreateAvailableOptions(null, "groupName", new OpticalProperties(), [new OpticalProperties()], false));
+        Assert.Throws<ArgumentException>(() => OptionModel<OpticalProperties>.CreateAvailableOptions(null, 
+            "groupName", 
+            new OpticalProperties(), 
+            [new OpticalProperties()], 
+            false));
     }
 }
