@@ -61,9 +61,6 @@ public class MapData : BindableObject
 
     public static MapData Create(double[] rawData, double[] x, double[] y, double[] dx, double[] dy)
     {
-        if (rawData.Length != x.Length*y.Length)
-            throw new ArgumentException(StringLookup.GetLocalizedString("Exception_MismatchedArrays"));
-
-        return new MapData(rawData.ToArray(), x, y, dx, dy);
+        return rawData.Length != x.Length*y.Length ? throw new ArgumentException(StringLookup.GetLocalizedString("Exception_MismatchedArrays")) : new MapData(rawData.ToArray(), x, y, dx, dy);
     }
 }

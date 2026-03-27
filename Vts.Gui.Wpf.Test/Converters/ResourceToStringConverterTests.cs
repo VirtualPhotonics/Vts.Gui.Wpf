@@ -18,12 +18,14 @@ public class ResourceToStringConverterTests
     public void verify_method_Convert_returns_correct_value()
     {
         var rtsConverter = new ResourceToStringConverter();
+        Assert.That(rtsConverter, Is.Not.Null);
         Assert.That(rtsConverter.Convert(
             null,  
-            typeof(String),
+            typeof(string),
             "Button_PlotMeasured", // resource is passed as a parameter
-            System.Globalization.CultureInfo.CurrentCulture).Equals(StringLookup.GetLocalizedString("Button_PlotMeasured")));
+            System.Globalization.CultureInfo.CurrentCulture)!.Equals(StringLookup.GetLocalizedString("Button_PlotMeasured")));
     }
+
     /// <summary>
     /// Verifies method ConvertBack returns correct value
     /// </summary>
@@ -31,12 +33,12 @@ public class ResourceToStringConverterTests
     public void verify_method_ConvertBack_returns_correct_value()
     {
         var rtsConverter = new ResourceToStringConverter();
+        Assert.That(rtsConverter, Is.Not.Null);
         var exception = Assert.Throws<NotSupportedException>(() => rtsConverter.ConvertBack(
             "Fwd Solver:", //
-            typeof(String),
+            typeof(string),
             null, // no parameters
             System.Globalization.CultureInfo.CurrentCulture));
-        Assert.That(exception.Message, Is.EqualTo(new NotSupportedException().Message));
+        Assert.That(exception?.Message, Is.EqualTo(new NotSupportedException().Message));
     }
-
 }

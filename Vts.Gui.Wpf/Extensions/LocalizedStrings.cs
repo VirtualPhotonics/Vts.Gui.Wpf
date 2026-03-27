@@ -9,12 +9,10 @@ namespace Vts.Gui.Wpf.Extensions;
 /// In XAML:
 /// {Binding Path=MainResource.LookupName, Source={StaticResource LocalizedStrings}}
 /// </summary>
-public class LocalizedStrings
+public static class LocalizedStrings
 {
-    private static readonly Strings _resource = new();
-
     /// <summary>
     ///     MainResource pulls the relevant string from resources
     /// </summary>
-    public Strings MainResource => _resource;
+    public static Strings MainResource { get; } = new();
 }

@@ -43,5 +43,4 @@ public class PlotDataTests
         Assert.That(plotData.Points[1], Is.EqualTo(dataPoints[1]));
         Assert.That(plotData.Title, Is.EqualTo("title"));
     }
-
 }

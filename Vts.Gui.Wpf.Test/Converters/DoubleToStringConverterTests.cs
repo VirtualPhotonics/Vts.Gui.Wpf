@@ -12,12 +12,11 @@ namespace Vts.Gui.Wpf.Test.Converters;
 [TestFixture]
 public class DoubleToStringConverterTests
 {
-    private static readonly double D1 = 12.3;
-    private readonly double _d2 = 12;
-    private static readonly int I1 = 12;
+    private const double D1 = 12.3;
+    private const double D2 = 12;
+    private const int I1 = 12;
     private readonly string _s1 = D1.ToString(System.Globalization.CultureInfo.CurrentCulture);
     private readonly string _s2 = I1.ToString(System.Globalization.CultureInfo.CurrentCulture);
-
 
     /// <summary>
     /// Verifies method Convert returns correct value
@@ -35,7 +34,7 @@ public class DoubleToStringConverterTests
             I1,  // int to convert - OK
             typeof(string),
             null, // no parameters
-            System.Globalization.CultureInfo.CurrentCulture), Is.EqualTo(_d2.ToString(System.Globalization.CultureInfo.CurrentCulture)));
+            System.Globalization.CultureInfo.CurrentCulture), Is.EqualTo(D2.ToString(System.Globalization.CultureInfo.CurrentCulture)));
         var exception = Assert.Throws<ArgumentException>(() => dtsConverter.Convert(
             "string", // string not a double
             typeof(string),
@@ -78,5 +77,4 @@ public class DoubleToStringConverterTests
             System.Globalization.CultureInfo.CurrentCulture));
         Assert.That(exception?.Message, Is.EqualTo(StringLookup.GetLocalizedString("Exception_String")));
     }
-
 }
