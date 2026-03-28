@@ -1,10 +1,10 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Vts.Extensions;
@@ -27,9 +27,9 @@ public class MapViewModel : BindableObject
     private double _minValue;
     private OptionViewModel<ScalingType> _scalingTypeOptionVm;
 
-    public MapViewModel(int MapViewId = 0)
+    public MapViewModel(int mapViewId = 0)
     {
-        _mapViewId = MapViewId;
+        _mapViewId = mapViewId;
         MinValue = 1E-9;
         MaxValue = 1.0;
         AutoScale = false;
@@ -37,11 +37,11 @@ public class MapViewModel : BindableObject
         ScalingTypeOptionVm =
             new OptionViewModel<ScalingType>(StringLookup.GetLocalizedString("Label_ScalingType") + _mapViewId,
                 false);
-        ScalingTypeOptionVm.PropertyChanged += (sender, args) => UpdateImages();
+        ScalingTypeOptionVm.PropertyChanged += (_, _) => UpdateImages();
 
         ColormapTypeOptionVm =
             new OptionViewModel<ColormapType>(StringLookup.GetLocalizedString("Label_ColormapType"));
-        ColormapTypeOptionVm.PropertyChanged += (sender, args) =>
+        ColormapTypeOptionVm.PropertyChanged += (_, _) =>
         {
             _colormap = new Colormap(ColormapTypeOptionVm.SelectedValue);
             UpdateImages();
@@ -52,8 +52,8 @@ public class MapViewModel : BindableObject
         PlotMap = new RelayCommand<object>(PlotMap_Executed);
         ClearMap = new RelayCommand<object>(ClearMap_Executed);
 
-        ExportDataToTextCommand = new RelayCommand(() => Maps_ExportDataToText_Executed(null, null));
-        DuplicateWindowCommand = new RelayCommand(() => Map_DuplicateWindow_Executed(null, null));
+        ExportDataToTextCommand = new RelayCommand(() => Maps_ExportDataToText_Executed());
+        DuplicateWindowCommand = new RelayCommand(() => Map_DuplicateWindow_Executed());
     }
 
     public RelayCommand<object> PlotMap { get; set; }
@@ -175,14 +175,15 @@ public class MapViewModel : BindableObject
 
     protected override void AfterPropertyChanged(string propertyName)
     {
-        if (propertyName == "MinValue" || propertyName == "MaxValue")
+        switch (propertyName)
         {
-            UpdateImages();
-        }
-        else if (propertyName == "AutoScale")
-        {
-            UpdateStats();
-            UpdateImages();
+            case "MinValue" or "MaxValue":
+                UpdateImages();
+                break;
+            case "AutoScale":
+                UpdateStats();
+                UpdateImages();
+                break;
         }
     }
 
@@ -195,73 +196,53 @@ public class MapViewModel : BindableObject
 
     private void PlotMap_Executed(object sender)
     {
-        if (sender is MapData mapData)
-        {
-            SetBitmapData(mapData);
-            UpdateImages(); // why is this called separately?
-        }
+        if (sender is not MapData mapData) return;
+        SetBitmapData(mapData);
+        UpdateImages(); // why is this called separately?
     }
 
-    private void Map_DuplicateWindow_Executed(object sender, ExecutedRoutedEventArgs e)
+    private void Map_DuplicateWindow_Executed()
     {
         var vm = Clone();
         MainWindow.Current.Main_DuplicateMapView_Executed(vm);
     }
 
-    private void Maps_ExportDataToText_Executed(object sender, ExecutedRoutedEventArgs e)
+    private void Maps_ExportDataToText_Executed()
     {
-        if (_mapData != null && _mapData.RawData != null && _mapData.XValues != null && _mapData.YValues != null)
+        if (_mapData is not { RawData: not null, XValues: not null, YValues: not null }) return;
+        // Create SaveFileDialog 
+        var dialog = new SaveFileDialog
         {
-            // Create SaveFileDialog 
-            var dialog = new SaveFileDialog
-            {
-                DefaultExt = ".txt",
-                Filter = "Text Files (*.txt)|*.txt"
-            };
+            DefaultExt = ".txt",
+            Filter = "Text Files (*.txt)|*.txt"
+        };
 
-            // Display OpenFileDialog by calling ShowDialog method 
-            var result = dialog.ShowDialog();
+        // Display OpenFileDialog by calling ShowDialog method 
+        var result = dialog.ShowDialog();
 
-            // if the file dialog returns true - file was selected 
-            var filename = "";
-            if (result == true)
-            {
-                // Get the filename from the dialog 
-                filename = dialog.FileName;
-            }
-            if (filename == "") return;
-            var stream = new FileStream(filename, FileMode.Create);
-            using (var sw = new StreamWriter(stream))
-            {
-                sw.Write("% X Values:\t");
-                _mapData.XValues.ForEach(x => sw.Write(x + "\t"));
-                sw.WriteLine();
-                sw.Write("% Y Values:\t");
-                _mapData.YValues.ForEach(y => sw.Write(y + "\t"));
-                sw.WriteLine();
-                sw.Write("% Map Values:\t");
-                _mapData.RawData.ForEach(val => sw.Write(val + "\t"));
-                sw.WriteLine();
-            }
-            //using (var stream = StreamFinder.GetLocalFilestreamFromSaveFileDialog("txt"))
-            //{
-            //    if (stream != null)
-            //    {
-            //        using (StreamWriter sw = new StreamWriter(stream))
-            //        {
-            //            sw.Write("% X Values:\t");
-            //            _mapData.XValues.ForEach(x => sw.Write(x + "\t"));
-            //            sw.WriteLine();
-            //            sw.Write("% Y Values:\t");
-            //            _mapData.YValues.ForEach(y => sw.Write(y + "\t"));
-            //            sw.WriteLine();
-            //            sw.Write("% Map Values:\t");
-            //            _mapData.RawData.ForEach(val => sw.Write(val + "\t"));
-            //            sw.WriteLine();
-            //        }
-            //    }
-            //}
+        // if the file dialog returns true - file was selected 
+        var filename = "";
+        if (result == true)
+        {
+            // Get the filename from the dialog 
+            filename = dialog.FileName;
         }
+        if (filename == "") return;
+        var stream = new FileStream(filename, FileMode.Create);
+        using var streamWriter = new StreamWriter(stream);
+        WriteDataToStream(streamWriter, "% X Values:\t", _mapData.XValues);
+        WriteDataToStream(streamWriter, "% Y Values:\t", _mapData.YValues);
+        WriteDataToStream(streamWriter, "% Map Values:\t", _mapData.RawData);
+    }
+
+    private static void WriteDataToStream(StreamWriter streamWriter, string label, IEnumerable<double> data)
+    {
+        streamWriter.Write(label);
+        foreach (var value in data)
+        {
+            streamWriter.Write($"{value}\t");
+        }
+        streamWriter.WriteLine();
     }
 
     public void SetBitmapData(MapData bitmapData)
@@ -272,11 +253,9 @@ public class MapViewModel : BindableObject
 
     private void UpdateStats()
     {
-        if (AutoScale)
-        {
-            MinValue = _mapData.Min; // this is slow, i know. will fix later. -dc
-            MaxValue = _mapData.Max; // this is slow, i know. will fix later. -dc
-        }
+        if (!AutoScale) return;
+        MinValue = _mapData.Min;
+        MaxValue = _mapData.Max;
     }
 
     public void UpdateImages()
@@ -288,7 +267,7 @@ public class MapViewModel : BindableObject
 
         ZMax = new Thickness(0, height, 0, 0);
 
-        var bytesPerPixel = 4;
+        const int bytesPerPixel = 4;
         var stride = width*bytesPerPixel;
         var imageData = new byte[width*height*bytesPerPixel];
         switch (ScalingTypeOptionVm.SelectedValue)
@@ -375,12 +354,12 @@ public class MapViewModel : BindableObject
 
         var value = (int) Math.Floor(factor*255);
 
-        var a = 255;
+        const int a = 255;
         var r = _colormap.RedByte[value];
         var g = _colormap.GreenByte[value];
         var b = _colormap.BlueByte[value];
 
-        return a << 24 | r << 16 | g << 8 | b;
+        return (a << 24) | (r << 16) | (g << 8) | b;
     }
 
     /// <summary>

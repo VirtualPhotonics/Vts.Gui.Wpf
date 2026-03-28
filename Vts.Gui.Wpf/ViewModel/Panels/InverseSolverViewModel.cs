@@ -550,7 +550,7 @@ public class InverseSolverViewModel : BindableObject
         //    dependentValues,
         //    dependentValues, // set standard deviation, sd, to measured (works w/ or w/o noise)
         //    InverseFitTypeOptionVM.SelectedValue,
-        //    initGuessParameters.Values.ToArray());
+        //    initGuessParameters.Values.ToArray())
 
         var fit = ComputationFactory.SolveInverse(
             InverseForwardSolverTypeOptionVm.SelectedValue,
