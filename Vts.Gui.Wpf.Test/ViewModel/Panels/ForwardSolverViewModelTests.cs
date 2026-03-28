@@ -12,7 +12,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels;
 public class ForwardSolverViewModelTests
 {
     /// <summary>
-    /// Verifies that ForwardSolverViewModel default constructor instantiates sub viewmodels
+    /// Verifies that ForwardSolverViewModel default constructor instantiates sub view models
     /// </summary>
     [Test]
     public void Verify_default_constructor_sets_properties_correctly()
@@ -160,7 +160,7 @@ public class ForwardSolverViewModelTests
     /// Verifies that ForwardSolverViewModel disallows spectral panel inputs for TwoLayerSDA selection
     /// </summary>
     [Test]
-    public void Verify_TwoLayerSDA_selection_does_not_display_usespectralpanelinputs_checkbox()
+    public void Verify_TwoLayerSDA_selection_does_not_display_UseSpectralInputs_checkbox()
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();

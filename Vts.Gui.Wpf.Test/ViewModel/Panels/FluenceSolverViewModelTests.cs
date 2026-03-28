@@ -12,7 +12,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels;
 public class FluenceSolverViewModelTests
 {
     /// <summary>
-    /// Verifies that FluenceSolverViewModel default constructor instantiates sub viewmodels
+    /// Verifies that FluenceSolverViewModel default constructor instantiates sub view models
     /// </summary>
     [Test]
     public void Verify_default_constructor_sets_properties_correctly()
@@ -29,11 +29,14 @@ public class FluenceSolverViewModelTests
         Assert.That(viewModel.RhoRangeVm != null, Is.True);
         Assert.That(viewModel.ZRangeVm != null, Is.True);
         // default settings
+        Assert.That(viewModel.FluenceSolutionDomainTypeOptionVm, Is.Not.Null);
         Assert.That(viewModel.FluenceSolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
         Assert.That(viewModel.FluenceSolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
         Assert.That(viewModel.FluenceSolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
+        Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVm, Is.Not.Null);
         Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
         Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
+        Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVm, Is.Not.Null);
         Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
         Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
     }

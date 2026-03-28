@@ -71,7 +71,7 @@ public class InverseSolverViewModel : BindableObject
                                 useSpectralPanelDataAndNotNull &&
                                 SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.SelectedValues[i] ==
                                 IndependentVariableAxis.Wavelength
-                                    ? WindowViewModel.Current.SpectralMappingVm.WavelengthRangeVM
+                                    ? WindowViewModel.Current.SpectralMappingVm.WavelengthRangeVm
                                     // bind to same instance, not a copy
                                     : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVM).ToArray();
 

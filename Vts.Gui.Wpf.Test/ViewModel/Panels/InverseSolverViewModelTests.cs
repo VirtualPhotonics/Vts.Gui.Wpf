@@ -13,7 +13,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels;
 public class InverseSolverViewModelTests
 {
     /// <summary>
-    /// Verifies that InverseSolverViewModel default constructor instantiates sub viewmodels
+    /// Verifies that InverseSolverViewModel default constructor instantiates sub view models
     /// </summary>
     [Test]
     public void Verify_default_constructor_sets_properties_correctly()
