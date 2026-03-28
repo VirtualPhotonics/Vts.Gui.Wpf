@@ -9,45 +9,34 @@ using Vts.Gui.Wpf.Extensions;
 
 namespace Vts.Gui.Wpf.Model;
 
-public class MapData : BindableObject
+/// <summary>
+///     Model object to represent 2D data for plotting
+/// </summary>
+/// <param name="rawData">1D row-major array of 2D data</param>
+/// <param name="xValues">The 1D horizontal axis independent values</param>
+/// <param name="yValues">The 1D vertical axis independent values</param>
+/// <param name="dxValues">
+///     Values representing the area or length of each horizontal independent value, for calculation of
+///     expectation
+/// </param>
+/// <param name="dyValues">
+///     Values representing the area or length of each vertical independent value, for calculation of
+///     expectation
+/// </param>
+/// <remarks>Example of dx, dy values for curvilinear coordinates: dx=(2*Pi*rho*drho), dy=dz</remarks>
+public class MapData(double[] rawData, double[] xValues, double[] yValues, double[] dxValues, double[] dyValues) : BindableObject
 {
-    /// <summary>
-    ///     Model object to represent 2D data for plotting
-    /// </summary>
-    /// <param name="rawData">1D row-major array of 2D data</param>
-    /// <param name="xValues">The 1D horizontal axis independent values</param>
-    /// <param name="yValues">The 1D vertical axis independent values</param>
-    /// <param name="dxValues">
-    ///     Values representing the area or length of each horizontal independent value, for calculation of
-    ///     expectation
-    /// </param>
-    /// <param name="dyValues">
-    ///     Values representing the area or length of each vertical independent value, for calculation of
-    ///     expectation
-    /// </param>
-    /// <remarks>Example of dx, dy values for curvilinear coordinates: dx=(2*Pi*rho*drho), dy=dz</remarks>
-    public MapData(double[] rawData, double[] xValues, double[] yValues, double[] dxValues, double[] dyValues)
-    {
-        XValues = xValues;
-        YValues = yValues;
-        DxValues = dxValues;
-        DyValues = dyValues;
-        RawData = rawData;
-        Min = rawData.Min();
-        Max = rawData.Max();
-    }
-
     public int Width => XValues.Length;
 
     public int Height => YValues.Length;
 
-    public double[] RawData { get; }
-    public double[] XValues { get; }
-    public double[] YValues { get; }
-    public double[] DxValues { get; }
-    public double[] DyValues { get; }
-    public double Min { get; private set; }
-    public double Max { get; private set; }
+    public double[] RawData { get; } = rawData;
+    public double[] XValues { get; } = xValues;
+    public double[] YValues { get; } = yValues;
+    public double[] DxValues { get; } = dxValues;
+    public double[] DyValues { get; } = dyValues;
+    public double Min { get; private set; } = rawData.Min();
+    public double Max { get; private set; } = rawData.Max();
 
     public double YExpectationValue => Statistics.MeanSamplingDepth(RawData, XValues, YValues, DxValues, DyValues);
 

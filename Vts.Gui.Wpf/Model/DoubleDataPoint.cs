@@ -3,29 +3,24 @@ using System.Collections.Generic;
 
 namespace Vts.Gui.Wpf.Model;
 
-public sealed class DoubleDataPoint : IDataPoint, IEquatable<DoubleDataPoint>, IEqualityComparer<DoubleDataPoint>
+/// <summary>
+/// The constructor for the DoubleDataPoint that initializes a DoubleDataPoint object
+/// with the specified x and y values.
+/// </summary>
+/// <param name="x">The x-coordinate value of the DoubleDataPoint</param>
+/// <param name="y">The y-coordinate value of the DoubleDataPoint</param>
+public sealed class DoubleDataPoint(double x, double y) : IDataPoint, IEquatable<DoubleDataPoint>, IEqualityComparer<DoubleDataPoint>
 {
-    /// <summary>
-    /// The constructor for the DoubleDataPoint that initializes a DoubleDataPoint object
-    /// with the specified x and y values.
-    /// </summary>
-    /// <param name="x">The x-coordinate value of the DoubleDataPoint</param>
-    /// <param name="y">The y-coordinate value of the DoubleDataPoint</param>
-    public DoubleDataPoint(double x, double y)
-    {
-        X = x;
-        Y = y;
-    }
 
     /// <summary>
     /// The X-coordinate value of this DoubleDataPoint
     /// </summary>
-    public double X { get; set; }
+    public double X { get; set; } = x;
 
     /// <summary>
     /// The Y-coordinate value of this DoubleDataPoint
     /// </summary>
-    public double Y { get; set; }
+    public double Y { get; set; } = y;
 
     /// <summary>
     /// Determines whether the specified object is a DoubleDataPoint and whether

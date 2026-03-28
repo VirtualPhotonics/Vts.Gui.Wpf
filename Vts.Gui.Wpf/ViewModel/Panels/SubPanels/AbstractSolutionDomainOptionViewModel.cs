@@ -8,21 +8,13 @@ namespace Vts.Gui.Wpf.ViewModel;
 /// <summary>
 ///     View model implementing domain sub-panel functionality (abstract - implemented for reflectance and fluence)
 /// </summary>
-public class AbstractSolutionDomainOptionViewModel<TDomainType> : OptionViewModel<TDomainType>
+public class AbstractSolutionDomainOptionViewModel<TDomainType>(string groupName, TDomainType defaultType) : OptionViewModel<TDomainType>(groupName)
 {
-    private bool _allowMultiAxis;
+    private bool _allowMultiAxis = false;
 
-    private bool _showIndependentAxisChoice;
+    private bool _showIndependentAxisChoice = false;
 
-    private bool _useSpectralInputs;
-
-    public AbstractSolutionDomainOptionViewModel(string groupName, TDomainType defaultType)
-        : base(groupName)
-    {
-        _useSpectralInputs = false;
-        _allowMultiAxis = false;
-        _showIndependentAxisChoice = false;
-    }
+    private bool _useSpectralInputs = false;
 
     public AbstractSolutionDomainOptionViewModel()
         : this("", default(TDomainType))

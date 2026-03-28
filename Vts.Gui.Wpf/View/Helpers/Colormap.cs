@@ -65,16 +65,10 @@ public class Colormap
 
     #region Nested ColormapLookUpTable Classes
 
-    internal abstract class ColormapLookUpTable
+    internal abstract class ColormapLookUpTable(double[] R, double[] G, double[] B)
     {
-        #region Constructor
 
-        protected ColormapLookUpTable(double[] R, double[] G, double[] B)
-        {
-            _Red = R;
-            _Green = G;
-            _Blue = B;
-        }
+        #region Constructor
 
         #endregion
 
@@ -82,15 +76,15 @@ public class Colormap
 
         public double[] Red => _Red;
 
-        protected readonly double[] _Red;
+        protected readonly double[] _Red = R;
 
         public double[] Green => _Green;
 
-        protected readonly double[] _Green;
+        protected readonly double[] _Green = G;
 
         public double[] Blue => _Blue;
 
-        protected readonly double[] _Blue;
+        protected readonly double[] _Blue = B;
 
         public int Length
         {
