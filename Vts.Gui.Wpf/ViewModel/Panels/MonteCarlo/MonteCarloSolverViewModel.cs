@@ -163,7 +163,7 @@ public class MonteCarloSolverViewModel : BindableObject
         var plotView = false;
 
         //clear the map in case there is no new mapview
-        WindowViewModel.Current.MapVM.ClearMap.Execute(null);
+        WindowViewModel.Current.MapVm.ClearMap.Execute(null);
 
         try
         {
@@ -217,11 +217,11 @@ public class MonteCarloSolverViewModel : BindableObject
 
                     var axesLabels = GetPlotLabels();
                     if (MainWindow.Current != null)
-                        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+                        WindowViewModel.Current.PlotVm.SetAxesLabels.Execute(axesLabels);
 
                     var plotLabel = GetPlotLabel();
                     if (MainWindow.Current != null)
-                        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
+                        WindowViewModel.Current.PlotVm.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
                     plotView = true;
                     Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                 }
@@ -271,7 +271,7 @@ public class MonteCarloSolverViewModel : BindableObject
 
                     var mapData = new MapData(_mapArrayBuffer, twoRhos, zs, twoDRhos, dZs);
 
-                    WindowViewModel.Current.MapVM.PlotMap.Execute(mapData);
+                    WindowViewModel.Current.MapVm.PlotMap.Execute(mapData);
                     mapView = true;
                     Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
                 }

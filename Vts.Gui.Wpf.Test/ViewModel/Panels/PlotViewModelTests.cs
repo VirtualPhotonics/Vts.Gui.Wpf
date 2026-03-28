@@ -411,7 +411,7 @@ public class PlotViewModelTests
     public void Verify_clear_plot_single()
     {
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(_plotData);
         plotViewModel.PlotValues.Execute(_plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
@@ -423,7 +423,7 @@ public class PlotViewModelTests
     public void Verify_clear_plot_all()
     {
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(_plotData);
         plotViewModel.PlotValues.Execute(_plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
@@ -435,7 +435,7 @@ public class PlotViewModelTests
     public void Verify_duplicate_window()
     {
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(_plotData);
         // there is not an instance of window so duplicate with throw an error
         Assert.Throws<NullReferenceException>(() => plotViewModel.DuplicateWindowCommand.Execute(plotViewModel));
@@ -513,7 +513,7 @@ public class PlotViewModelTests
     public void Verify_max_normalization()
     {
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(_plotData);
         plotViewModel.PlotValues.Execute(_plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
@@ -532,7 +532,7 @@ public class PlotViewModelTests
     public void Verify_curve_normalization()
     {
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(_plotData);
         plotViewModel.PlotValues.Execute(_plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
@@ -567,7 +567,7 @@ public class PlotViewModelTests
         };
         var plotData = new[] { new PlotData(points, "Complex plot") };
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotToggleTypeOptionVm.SelectedValue = toggleType;
         plotViewModel.PlotValues.Execute(plotData);
         plotViewModel.PlotValues.Execute(plotData);
@@ -600,7 +600,7 @@ public class PlotViewModelTests
         };
         var plotData = new[] { new PlotData(points, "Complex plot") };
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(plotData);
         plotViewModel.PlotValues.Execute(plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(4));
@@ -645,7 +645,7 @@ public class PlotViewModelTests
         };
         var plotData = new[] { new PlotData(points, "Complex derivative plot") };
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotToggleTypeOptionVm.SelectedValue = toggleType;
         plotViewModel.PlotValues.Execute(plotData);
         plotViewModel.PlotValues.Execute(plotData);
@@ -688,7 +688,7 @@ public class PlotViewModelTests
         };
         var plotData = new[] { new PlotData(points, "Complex derivative plot") };
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(plotData);
         plotViewModel.PlotValues.Execute(plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(4));

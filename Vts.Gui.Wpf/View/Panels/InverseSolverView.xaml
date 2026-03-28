@@ -44,7 +44,7 @@
         </Grid>
 
         <!-- Solution Domain -->
-        <view:SolutionDomainOptionView DataContext="{Binding SolutionDomainTypeOptionVM}" 
+        <view:SolutionDomainOptionView DataContext="{Binding SolutionDomainTypeOptionVm}" 
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top" 
                                        Margin="0,10,0,0" />

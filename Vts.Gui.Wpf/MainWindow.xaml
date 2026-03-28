@@ -34,31 +34,31 @@
                     SelectionChanged="InputTabControl_SelectionChanged">
             <TabItem Name="TabForward" Header="{Binding ConverterParameter=Tab_ForwardSolver, Converter={StaticResource MyResourceToStringConverter}}">
                 <view:ForwardSolverView
-                    DataContext="{Binding ForwardSolverVM}"
+                    DataContext="{Binding ForwardSolverVm}"
                     Background="White"
                     HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Name="TabInverse" Header="{Binding ConverterParameter=Tab_InverseSolver, Converter={StaticResource MyResourceToStringConverter}}">
                 <view:InverseSolverView
-                    DataContext="{Binding InverseSolverVM}"
+                    DataContext="{Binding InverseSolverVm}"
                     Background="White"
                     HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Name="TabSpectral" Header="{Binding ConverterParameter=Tab_Spectral, Converter={StaticResource MyResourceToStringConverter}}">
                 <view:SpectralMappingView
-                    DataContext="{Binding SpectralMappingVM}"
+                    DataContext="{Binding SpectralMappingVm}"
                     Background="White"
                     HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Name="TabFluence" Header="{Binding ConverterParameter=Tab_Fluence, Converter={StaticResource MyResourceToStringConverter}}">
                 <view:FluenceSolverView
-                    DataContext="{Binding FluenceSolverVM}"
+                    DataContext="{Binding FluenceSolverVm}"
                     Background="White"
                     HorizontalAlignment="Left" />
             </TabItem>
             <TabItem Name="TabMonteCarlo" Header="{Binding ConverterParameter=Tab_MonteCarlo, Converter={StaticResource MyResourceToStringConverter}}">
                 <view:MonteCarloSolverView
-                    DataContext="{Binding MonteCarloSolverVM}"
+                    DataContext="{Binding MonteCarloSolverVm}"
                     Background="White"
                     HorizontalAlignment="Left" />
             </TabItem>
@@ -70,7 +70,7 @@
                     Height="Auto" Margin="0,0,0,0">
             <TabItem Name="TabPlot">
                 <TabItem.Header>
-                    <ContentControl DataContext="{Binding PlotVM}">
+                    <ContentControl DataContext="{Binding PlotVm}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding ConverterParameter=Tab_PlotView, Converter={StaticResource MyResourceToStringConverter}}" />
                             <Button VerticalAlignment="Bottom" Command="{Binding DuplicateWindowCommand}" Margin="2">
@@ -80,13 +80,13 @@
                     </ContentControl>
                 </TabItem.Header>
                 <view:PlotView
-                    DataContext="{Binding PlotVM}"
+                    DataContext="{Binding PlotVm}"
                     VerticalAlignment="Stretch"
                     HorizontalAlignment="Stretch" />
             </TabItem>
             <TabItem Name="TabMap" Visibility="Collapsed">
                 <TabItem.Header>
-                    <ContentControl DataContext="{Binding MapVM}">
+                    <ContentControl DataContext="{Binding MapVm}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding ConverterParameter=Tab_MapView, Converter={StaticResource MyResourceToStringConverter}}" />
                             <Button VerticalAlignment="Bottom" Command="{Binding DuplicateWindowCommand}" Margin="2">
@@ -96,14 +96,14 @@
                     </ContentControl>
                 </TabItem.Header>
                 <view:MapView
-                    DataContext="{Binding MapVM}"
+                    DataContext="{Binding MapVm}"
                     VerticalAlignment="Stretch"
                     HorizontalAlignment="Stretch"
                     Margin="0,0,3,0" />
             </TabItem>
         </TabControl>
         <view:TextOutputView
-            DataContext="{Binding TextOutputVM}"
+            DataContext="{Binding TextOutputVm}"
             VerticalAlignment="Stretch"
             HorizontalAlignment="Stretch"
             Grid.Column="0"

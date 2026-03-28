@@ -249,7 +249,7 @@ public class SpectralMappingViewModel : BindableObject
         OnPropertyChanged(nameof(G));
         OnPropertyChanged(nameof(N));
         OnPropertyChanged(nameof(OpticalProperties));
-        WindowViewModel.Current.ForwardSolverVM.UpdateOpticalProperties_Executed();
+        WindowViewModel.Current.ForwardSolverVm.UpdateOpticalProperties_Executed();
     }
 
     private void ResetConcentrations_Executed(object obj)
@@ -274,7 +274,7 @@ public class SpectralMappingViewModel : BindableObject
                 AxisRangeVM = WavelengthRangeVM
             });
 
-        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+        WindowViewModel.Current.PlotVm.SetAxesLabels.Execute(axesLabels);
 
         var tissue = SelectedTissue;
         var wavelengths = WavelengthRangeVM.Values.ToArray();
@@ -284,11 +284,11 @@ public class SpectralMappingViewModel : BindableObject
             var wavelength = wavelengths[wvi];
             points[wvi] = new Point(wavelength, tissue.GetMua(wavelength));
         }
-        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, StringLookup.GetLocalizedString("Label_MuASpectra"))});
+        WindowViewModel.Current.PlotVm.PlotValues.Execute(new[] {new PlotData(points, StringLookup.GetLocalizedString("Label_MuASpectra"))});
 
         var minWavelength = WavelengthRangeVM.Values.Min();
         var maxWavelength = WavelengthRangeVM.Values.Max();
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
+        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(
             StringLookup.GetLocalizedString("Message_PlotMuASpectrum") + "[" + minWavelength + ", " + maxWavelength + "]\r");
     }
 
@@ -306,7 +306,7 @@ public class SpectralMappingViewModel : BindableObject
                 AxisUnits = axisUnits.GetInternationalizedString(),
                 AxisRangeVM = WavelengthRangeVM
             });
-        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+        WindowViewModel.Current.PlotVm.SetAxesLabels.Execute(axesLabels);
 
         var tissue = SelectedTissue;
         var wavelengths = WavelengthRangeVM.Values.ToArray();
@@ -317,11 +317,11 @@ public class SpectralMappingViewModel : BindableObject
             points[wvi] = new Point(wavelength, tissue.GetMusp(wavelength));
         }
 
-        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, StringLookup.GetLocalizedString("Label_MuSPrimeSpectra"))});
+        WindowViewModel.Current.PlotVm.PlotValues.Execute(new[] {new PlotData(points, StringLookup.GetLocalizedString("Label_MuSPrimeSpectra"))});
 
         var minWavelength = WavelengthRangeVM.Values.Min();
         var maxWavelength = WavelengthRangeVM.Values.Max();
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
+        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(
             StringLookup.GetLocalizedString("Message_PlotMuSPrimeSpectrum") + "[" + minWavelength + ", " + maxWavelength + "]\r");
     }
 

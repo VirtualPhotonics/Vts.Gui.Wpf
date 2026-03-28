@@ -19,7 +19,7 @@ public class SpectralMappingViewModelTests
     public void Setup()
     {
         windowViewModel = new WindowViewModel();
-        viewModel = windowViewModel.SpectralMappingVM;
+        viewModel = windowViewModel.SpectralMappingVm;
     }
     /// <summary>
     /// Verifies the SpectralMappingViewModel default constructor 
@@ -77,10 +77,10 @@ public class SpectralMappingViewModelTests
     public void Verify_PlotMuaSpectrumCommand_returns_correct_values()
     {
         viewModel.PlotMuaSpectrumCommand.Execute(null);
-        Assert.That(windowViewModel.PlotVM.Labels[0], Is.EqualTo("μa spectra"));
-        Assert.That(windowViewModel.PlotVM.Title, Is.EqualTo("μa [mm-1] versus λ [nm]"));
+        Assert.That(windowViewModel.PlotVm.Labels[0], Is.EqualTo("μa spectra"));
+        Assert.That(windowViewModel.PlotVm.Title, Is.EqualTo("μa [mm-1] versus λ [nm]"));
         // can't verify plotted data because inside private object
-        var textOutputViewModel = windowViewModel.TextOutputVM;
+        var textOutputViewModel = windowViewModel.TextOutputVm;
         Assert.That(textOutputViewModel.Text, Is.EqualTo("Plot View: plot cleared due to independent axis variable change\rPlotted μa spectrum; wavelength range [nm]: [650, 1000]\r"));
     }
 
@@ -91,9 +91,9 @@ public class SpectralMappingViewModelTests
     public void Verify_PlotMusSpectrumCommand_returns_correct_values()
     {
         viewModel.PlotMuspSpectrumCommand.Execute(null);
-        Assert.That(windowViewModel.PlotVM.Labels[0], Is.EqualTo("μs' spectra"));
-        Assert.That(windowViewModel.PlotVM.Title, Is.EqualTo("μs' [mm-1] versus λ [nm]"));
-        var textOutputViewModel = windowViewModel.TextOutputVM;
+        Assert.That(windowViewModel.PlotVm.Labels[0], Is.EqualTo("μs' spectra"));
+        Assert.That(windowViewModel.PlotVm.Title, Is.EqualTo("μs' [mm-1] versus λ [nm]"));
+        var textOutputViewModel = windowViewModel.TextOutputVm;
         Assert.That(textOutputViewModel.Text, Is.EqualTo("Plot View: plot cleared due to independent axis variable change\rPlotted μs' spectrum; wavelength range [nm]: [650, 1000]\r"));
     }
 

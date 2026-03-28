@@ -9,7 +9,7 @@
         <!-- Solver Engine -->
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding ConverterParameter=Label_FwdSolver, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" Width="75" />
-            <view:ComboBoxOptionView DataContext="{Binding ForwardSolverTypeOptionVM}" HorizontalAlignment="Left"
+            <view:ComboBoxOptionView DataContext="{Binding ForwardSolverTypeOptionVm}" HorizontalAlignment="Left"
                                      VerticalAlignment="Top" />
         </StackPanel>
         <!-- Gaussian Beam Diameter -->
@@ -29,7 +29,7 @@
                        VerticalAlignment="Center" />
         </StackPanel>
         <!-- Map Type -->
-        <view:RadioButtonOptionView DataContext="{Binding MapTypeOptionVM}" HorizontalAlignment="Left"
+        <view:RadioButtonOptionView DataContext="{Binding MapTypeOptionVm}" HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     Margin="0,10,0,0"/>
         <!-- Solution Domains (One for each map type) -->
@@ -37,7 +37,7 @@
         <StackPanel
             Visibility="{Binding IsFluence, Converter={StaticResource MyBooleanToVisibilityConverter}}">
             <view:FluenceSolutionDomainOptionView
-                DataContext="{Binding FluenceSolutionDomainTypeOptionVM}"
+                DataContext="{Binding FluenceSolutionDomainTypeOptionVm}"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
                 Margin="0,10,0,0" />
@@ -46,7 +46,7 @@
         <StackPanel
             Visibility="{Binding IsAbsorbedEnergy, Converter={StaticResource MyBooleanToVisibilityConverter}}">
             <view:AbsorbedEnergySolutionDomainOptionView
-                DataContext="{Binding AbsorbedEnergySolutionDomainTypeOptionVM}"
+                DataContext="{Binding AbsorbedEnergySolutionDomainTypeOptionVm}"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
                 Margin="0,10,0,0" />
@@ -55,7 +55,7 @@
         <StackPanel
             Visibility="{Binding IsPhotonHittingDensity, Converter={StaticResource MyBooleanToVisibilityConverter}}">
             <view:PhotonHittingDensitySolutionDomainOptionView
-                DataContext="{Binding PhotonHittingDensitySolutionDomainTypeOptionVM}"
+                DataContext="{Binding PhotonHittingDensitySolutionDomainTypeOptionVm}"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
                 Margin="0,10,0,0" />
@@ -101,7 +101,7 @@
                        Margin="3,7,0,0" 
                        FontWeight="DemiBold"
                        VerticalAlignment="Center" />
-            <view:RangeView DataContext="{Binding RhoRangeVM}" 
+            <view:RangeView DataContext="{Binding RhoRangeVm}" 
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Top" />
         </StackPanel>
@@ -112,7 +112,7 @@
                        Margin="3,7,0,0" 
                        FontWeight="DemiBold"
                        VerticalAlignment="Center" />
-            <view:RangeView DataContext="{Binding ZRangeVM}" 
+            <view:RangeView DataContext="{Binding ZRangeVm}" 
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Top" />
         </StackPanel>
@@ -121,7 +121,7 @@
             <StackPanel.Resources>
                 <DataTemplate x:Key="SemiInfinite">
                     <StackPanel>
-                        <view:OpticalPropertyView DataContext="{Binding TissueInputVM}" 
+                        <view:OpticalPropertyView DataContext="{Binding TissueInputVm}" 
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Top" 
                                                   Margin="0,3,0,0" />
@@ -129,7 +129,7 @@
                 </DataTemplate>
                 <DataTemplate x:Key="MultiRegion">
                     <StackPanel>
-                        <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVM}" 
+                        <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVm}" 
                                                              HorizontalAlignment="Left"
                                                              VerticalAlignment="Top" 
                                                              Margin="0,3,0,0" />

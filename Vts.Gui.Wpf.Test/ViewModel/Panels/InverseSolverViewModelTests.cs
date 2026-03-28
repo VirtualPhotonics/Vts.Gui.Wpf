@@ -20,7 +20,7 @@ public class InverseSolverViewModelTests
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
-        var viewModel = windowViewModel.InverseSolverVM;
+        var viewModel = windowViewModel.InverseSolverVm;
         Assert.That(viewModel.SolutionDomainTypeOptionVM, Is.InstanceOf<SolutionDomainOptionViewModel>());
         Assert.That(viewModel.MeasuredForwardSolverTypeOptionVM, Is.InstanceOf<OptionViewModel<ForwardSolverType>>());
         Assert.That(viewModel.InverseForwardSolverTypeOptionVM, Is.InstanceOf<OptionViewModel<ForwardSolverType>>());
@@ -49,7 +49,7 @@ public class InverseSolverViewModelTests
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
-        var viewModel = windowViewModel.InverseSolverVM;
+        var viewModel = windowViewModel.InverseSolverVm;
         viewModel.MeasuredForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.Nurbs;
         viewModel.InverseForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.PointSourceSDA;
         viewModel.SolutionDomainTypeOptionVM.SelectedValue = SolutionDomainType.ROfRho;
@@ -59,7 +59,7 @@ public class InverseSolverViewModelTests
         viewModel.PercentNoise = 0;
         // SimulateMeasuredDataCommand
         viewModel.SimulateMeasuredDataCommand.Execute(null);
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         const double d1 = 0.01;
         const int i1 = 1;
         const double g = 0.8;
@@ -117,7 +117,7 @@ public class InverseSolverViewModelTests
                  muspError.ToString(CultureInfo.CurrentCulture) + "% \r";
         Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
         Assert.That(plotViewModel.Title, Is.EqualTo(s2));
-        var textOutputViewModel = windowViewModel.TextOutputVM;
+        var textOutputViewModel = windowViewModel.TextOutputVm;
         Assert.That(textOutputViewModel.Text, Is.EqualTo(s6));
         // CalculateInitialGuessCommand
         viewModel.CalculateInitialGuessCommand.Execute(null);

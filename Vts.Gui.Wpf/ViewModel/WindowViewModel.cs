@@ -11,35 +11,34 @@ public class WindowViewModel : BindableObject
     {
         Current = this;
 
-        ForwardSolverVM = new ForwardSolverViewModel();
-        InverseSolverVM = new InverseSolverViewModel();
-        FluenceSolverVM = new FluenceSolverViewModel();
-        MonteCarloSolverVM = new MonteCarloSolverViewModel();
-        SpectralMappingVM = new SpectralMappingViewModel();
-        PlotVM = new PlotViewModel();
-        MapVM = new MapViewModel();
-        TextOutputVM = new TextOutputViewModel();
+        ForwardSolverVm = new ForwardSolverViewModel();
+        InverseSolverVm = new InverseSolverViewModel();
+        FluenceSolverVm = new FluenceSolverViewModel();
+        MonteCarloSolverVm = new MonteCarloSolverViewModel();
+        SpectralMappingVm = new SpectralMappingViewModel();
+        PlotVm = new PlotViewModel();
+        MapVm = new MapViewModel();
+        TextOutputVm = new TextOutputViewModel();
     }
 
     public static WindowViewModel Current { get; set; }
 
-    public ForwardSolverViewModel ForwardSolverVM { get; private set; }
-    public InverseSolverViewModel InverseSolverVM { get; private set; }
-    public FluenceSolverViewModel FluenceSolverVM { get; private set; }
-    public MonteCarloSolverViewModel MonteCarloSolverVM { get; private set; }
-    public SpectralMappingViewModel SpectralMappingVM { get; private set; }
-    public PlotViewModel PlotVM { get; private set; }
-    public MapViewModel MapVM { get; private set; }
-    public TextOutputViewModel TextOutputVM { get; private set; }
+    public ForwardSolverViewModel ForwardSolverVm { get; private set; }
+    public InverseSolverViewModel InverseSolverVm { get; private set; }
+    public FluenceSolverViewModel FluenceSolverVm { get; private set; }
+    public MonteCarloSolverViewModel MonteCarloSolverVm { get; private set; }
+    public SpectralMappingViewModel SpectralMappingVm { get; private set; }
+    public PlotViewModel PlotVm { get; private set; }
+    public MapViewModel MapVm { get; private set; }
+    public TextOutputViewModel TextOutputVm { get; private set; }
 
-    public string Version
+    public static string Version
     {
         get
         {
             var currentVersion = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
             return currentVersion.Version.Major + "." + currentVersion.Version.Minor + "." +
                    currentVersion.Version.Build;
-            //              return currentVersion.Version.ToString(); // This line returns all 4 version numbers Major.Minor.Build.Revision
         }
     }
 }

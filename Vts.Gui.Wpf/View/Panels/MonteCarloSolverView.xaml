@@ -73,7 +73,7 @@
                     <view:RadioButtonOptionView DataContext="{Binding PhaseFunctionTypeVM, Mode=TwoWay}" />
                 </StackPanel>
             </StackPanel>
-            <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVM, Mode=TwoWay}"
+            <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVm, Mode=TwoWay}"
                                                  Margin="0,10,0,0"/>
         </StackPanel>
         </ContentControl>

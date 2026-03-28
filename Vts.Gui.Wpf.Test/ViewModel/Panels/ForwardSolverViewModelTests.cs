@@ -19,10 +19,10 @@ public class ForwardSolverViewModelTests
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
-        var viewModel = windowViewModel.ForwardSolverVM;
-        Assert.That(viewModel.ForwardSolverTypeOptionVM != null, Is.True);
-        Assert.That(viewModel.SolutionDomainTypeOptionVM != null, Is.True);
-        Assert.That(viewModel.ForwardAnalysisTypeOptionVM != null, Is.True);
+        var viewModel = windowViewModel.ForwardSolverVm;
+        Assert.That(viewModel.ForwardSolverTypeOptionVm != null, Is.True);
+        Assert.That(viewModel.SolutionDomainTypeOptionVm != null, Is.True);
+        Assert.That(viewModel.ForwardAnalysisTypeOptionVm != null, Is.True);
     }
 
     // The following tests verify the Relay Commands
@@ -34,12 +34,12 @@ public class ForwardSolverViewModelTests
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
-        var viewModel = windowViewModel.ForwardSolverVM;
-        viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.PointSourceSDA;
-        viewModel.SolutionDomainTypeOptionVM.SelectedValue = SolutionDomainType.ROfRho;
+        var viewModel = windowViewModel.ForwardSolverVm;
+        viewModel.ForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.PointSourceSDA;
+        viewModel.SolutionDomainTypeOptionVm.SelectedValue = SolutionDomainType.ROfRho;
         viewModel.ExecuteForwardSolverCommand.Execute(null);
         // ExecuteForwardSolver default settings
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         const double d1 = 0.01;
         const int i1 = 1;
         const double g = 0.8;
@@ -63,7 +63,7 @@ public class ForwardSolverViewModelTests
                  d3.ToString("N4", CultureInfo.CurrentCulture);
         Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
         Assert.That(plotViewModel.Title, Is.EqualTo(s2));
-        var textOutputViewModel = windowViewModel.TextOutputVM;
+        var textOutputViewModel = windowViewModel.TextOutputVm;
         Assert.That(textOutputViewModel.Text, Is.EqualTo(s1));
     }
 
@@ -75,12 +75,12 @@ public class ForwardSolverViewModelTests
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
-        var viewModel = windowViewModel.ForwardSolverVM;
-        viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.TwoLayerSDA;
-        viewModel.SolutionDomainTypeOptionVM.SelectedValue = SolutionDomainType.ROfFx;
-        viewModel.ForwardAnalysisTypeOptionVM.SelectedValue = ForwardAnalysisType.R;
+        var viewModel = windowViewModel.ForwardSolverVm;
+        viewModel.ForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.TwoLayerSDA;
+        viewModel.SolutionDomainTypeOptionVm.SelectedValue = SolutionDomainType.ROfFx;
+        viewModel.ForwardAnalysisTypeOptionVm.SelectedValue = ForwardAnalysisType.R;
         viewModel.ExecuteForwardSolverCommand.Execute(null); 
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         const int i1 = 1;
         const double d2 = 0.0100;
         // s1 should be "Plot View: plot cleared due to independent axis variable change
@@ -103,7 +103,7 @@ public class ForwardSolverViewModelTests
                  i1.ToString("N4", CultureInfo.CurrentCulture);
         Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
         Assert.That(plotViewModel.Title, Is.EqualTo(s2));
-        var textOutputViewModel = windowViewModel.TextOutputVM;
+        var textOutputViewModel = windowViewModel.TextOutputVm;
         Assert.That(textOutputViewModel.Text, Is.EqualTo(s1));
     }
 
@@ -115,12 +115,12 @@ public class ForwardSolverViewModelTests
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
-        var viewModel = windowViewModel.ForwardSolverVM;
-        viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.MonteCarlo;
-        viewModel.SolutionDomainTypeOptionVM.SelectedValue = SolutionDomainType.ROfFxAndFt;
-        viewModel.ForwardAnalysisTypeOptionVM.SelectedValue = ForwardAnalysisType.dRdMua;
+        var viewModel = windowViewModel.ForwardSolverVm;
+        viewModel.ForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.MonteCarlo;
+        viewModel.SolutionDomainTypeOptionVm.SelectedValue = SolutionDomainType.ROfFxAndFt;
+        viewModel.ForwardAnalysisTypeOptionVm.SelectedValue = ForwardAnalysisType.dRdMua;
         viewModel.ExecuteForwardSolverCommand.Execute(null);
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         const double d1 = 0.01;
         const int i1 = 1;
         const double g = 0.8;
@@ -152,7 +152,7 @@ public class ForwardSolverViewModelTests
                  StringLookup.GetLocalizedString("Measurement_GHz");
         Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
         Assert.That(plotViewModel.Title, Is.EqualTo(s2));
-        var textOutputViewModel = windowViewModel.TextOutputVM;
+        var textOutputViewModel = windowViewModel.TextOutputVm;
         Assert.That(textOutputViewModel.Text, Is.EqualTo(s1));
     }
 
@@ -164,13 +164,13 @@ public class ForwardSolverViewModelTests
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
-        var viewModel = windowViewModel.ForwardSolverVM;
+        var viewModel = windowViewModel.ForwardSolverVm;
         // set forward solver to TwoLayerSDA
-        viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.TwoLayerSDA;
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.AllowMultiAxis, Is.False);
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.UseSpectralInputs, Is.False);
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.EnableMultiAxis, Is.False);
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.EnableSpectralPanelInputs, Is.False);
+        viewModel.ForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.TwoLayerSDA;
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.AllowMultiAxis, Is.False);
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.UseSpectralInputs, Is.False);
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.EnableMultiAxis, Is.False);
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.EnableSpectralPanelInputs, Is.False);
     }
 
     /// <summary>
@@ -182,14 +182,14 @@ public class ForwardSolverViewModelTests
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
-        var viewModel = windowViewModel.ForwardSolverVM;
+        var viewModel = windowViewModel.ForwardSolverVm;
         // set forward solver to DistributedGaussianSourceSDA
-        viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.DistributedGaussianSourceSDA;
+        viewModel.ForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.DistributedGaussianSourceSDA;
 
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndTimeEnabled, Is.False);
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.IsROfRhoAndFtEnabled, Is.False);
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndTimeEnabled, Is.False);
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.IsROfFxAndFtEnabled, Is.False);
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.IsROfRhoAndTimeEnabled, Is.False);
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.IsROfRhoAndFtEnabled, Is.False);
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.IsROfFxAndTimeEnabled, Is.False);
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.IsROfFxAndFtEnabled, Is.False);
     }
 
 

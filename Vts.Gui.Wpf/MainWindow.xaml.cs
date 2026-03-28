@@ -25,7 +25,7 @@ public partial class MainWindow
         var observableTarget =
             NLog.LogManager.Configuration.AllTargets.FirstOrDefault(target => target is ObservableTarget);
         ((IObservable<string>)observableTarget)?.Subscribe(
-            msg => WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(msg));
+            msg => WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(msg));
         InitializeComponent();
         _numViews = 0;
         Current = this;
@@ -37,7 +37,7 @@ public partial class MainWindow
         if (sender is not TabControl inputTab ||
             OutputTabControl == null || OutputTabControl.Items.Count <= 1) return;
         if (inputTab.SelectedItem is not TabItem tabItem) return;
-        WindowViewModel.Current.PlotVM?.SetCustomPlotLabel.Execute("");
+        WindowViewModel.Current.PlotVm?.SetCustomPlotLabel.Execute("");
         switch (tabItem.Name)
         {
             // default handles: "TabForward":
@@ -60,7 +60,7 @@ public partial class MainWindow
                 OutputTabControl.SelectedItem = OutputTabControl.Items[0];
                 ((TabItem)OutputTabControl.Items[0])!.Visibility = Visibility.Visible;
                 ((TabItem)OutputTabControl.Items[1])!.Visibility = Visibility.Collapsed;
-                WindowViewModel.Current.PlotVM?.SetCustomPlotLabel.Execute(WindowViewModel.Current.SpectralMappingVM.SelectedTissue.Name);
+                WindowViewModel.Current.PlotVm?.SetCustomPlotLabel.Execute(WindowViewModel.Current.SpectralMappingVm.SelectedTissue.Name);
                 break;
         }
     }

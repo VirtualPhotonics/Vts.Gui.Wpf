@@ -26,8 +26,8 @@ public class TextOutputViewModelTests
     public void Verify_relay_command_works_correctly()
     {
         var windowViewModel = new WindowViewModel();
-        var textOutputVm = windowViewModel.TextOutputVM;
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("UnitTest:");
+        var textOutputVm = windowViewModel.TextOutputVm;
+        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("UnitTest:");
         Assert.That(textOutputVm.Text, Is.EqualTo("UnitTest:"));
     }
 
@@ -35,7 +35,7 @@ public class TextOutputViewModelTests
     public void Verify_append_text_appends_text()
     {
         var windowViewModel = new WindowViewModel();
-        var textOutputVm = windowViewModel.TextOutputVM;
+        var textOutputVm = windowViewModel.TextOutputVm;
         textOutputVm.AppendText("Hello");
         Assert.That(textOutputVm.Text, Is.EqualTo("Hello"));
     }

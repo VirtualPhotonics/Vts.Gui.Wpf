@@ -11,7 +11,7 @@
         <!-- Solver Engine -->
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding ConverterParameter=Label_FwdSolver, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" Width="75" />
-            <view:ComboBoxOptionView DataContext="{Binding ForwardSolverTypeOptionVM}" HorizontalAlignment="Left"
+            <view:ComboBoxOptionView DataContext="{Binding ForwardSolverTypeOptionVm}" HorizontalAlignment="Left"
                                      VerticalAlignment="Top" />
         </StackPanel>
         <!-- Gaussian Beam Diameter -->
@@ -31,7 +31,7 @@
                        VerticalAlignment="Center" />
         </StackPanel>
         <!-- Solution Domain -->
-        <view:SolutionDomainOptionView DataContext="{Binding SolutionDomainTypeOptionVM}" 
+        <view:SolutionDomainOptionView DataContext="{Binding SolutionDomainTypeOptionVm}" 
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top" 
                                        Margin="0,15,0,0" />
@@ -54,7 +54,7 @@
             <StackPanel.Resources>
                 <DataTemplate x:Key="SemiInfinite">
                     <StackPanel>
-                        <view:OpticalPropertyView DataContext="{Binding TissueInputVM}" 
+                        <view:OpticalPropertyView DataContext="{Binding TissueInputVm}" 
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Top" 
                                                   Margin="0,3,0,0" />
@@ -62,7 +62,7 @@
                 </DataTemplate>
                 <DataTemplate x:Key="MultiRegion">
                     <StackPanel>
-                        <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVM}" 
+                        <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVm}" 
                                                              HorizontalAlignment="Left"
                                                              VerticalAlignment="Top" 
                                                              Margin="0,3,0,0" />
@@ -92,7 +92,7 @@
             </Grid.ColumnDefinitions>
             <!-- Model/Analysis Output -->
             <view:RadioButtonOptionView Grid.Column="0" 
-                                        DataContext="{Binding ForwardAnalysisTypeOptionVM}"
+                                        DataContext="{Binding ForwardAnalysisTypeOptionVm}"
                                         HorizontalAlignment="Left" 
                                         VerticalAlignment="Top" 
                                         Margin="0,3,0,0" />
