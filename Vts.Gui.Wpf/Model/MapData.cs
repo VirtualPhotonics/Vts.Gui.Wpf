@@ -45,11 +45,11 @@ public class MapData(double[] rawData, double[] xValues, double[] yValues, doubl
         if (rawData.GetLength(0) != x.Length || rawData.GetLength(1) != y.Length)
             throw new ArgumentException(StringLookup.GetLocalizedString("Exception_MismatchedArrays"));
 
-        return new MapData(rawData.ToEnumerable<double>().ToArray(), x, y, dx, dy);
+        return new MapData([.. rawData.ToEnumerable<double>()], x, y, dx, dy);
     }
 
     public static MapData Create(double[] rawData, double[] x, double[] y, double[] dx, double[] dy)
     {
-        return rawData.Length != x.Length*y.Length ? throw new ArgumentException(StringLookup.GetLocalizedString("Exception_MismatchedArrays")) : new MapData(rawData.ToArray(), x, y, dx, dy);
+        return rawData.Length != x.Length*y.Length ? throw new ArgumentException(StringLookup.GetLocalizedString("Exception_MismatchedArrays")) : new MapData([.. rawData], x, y, dx, dy);
     }
 }

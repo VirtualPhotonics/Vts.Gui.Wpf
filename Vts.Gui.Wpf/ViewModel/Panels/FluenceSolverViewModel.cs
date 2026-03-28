@@ -31,7 +31,7 @@ public class FluenceSolverViewModel : BindableObject
             var muaArray = new double[numBins];
             for (var i = 0; i < zs.Length; i++)
             {
-                var layerIndex = DetectorBinning.WhichBin(zs[i], regions.Select(r => r.ZRange.Stop).ToArray());
+                var layerIndex = DetectorBinning.WhichBin(zs[i], [.. regions.Select(r => r.ZRange.Stop)]);
                 for (var j = 0; j < rhos.Length; j++)
                 {
                     muaArray[i*rhos.Length + j] = regions[layerIndex].RegionOP.Mua;
@@ -546,25 +546,25 @@ public class FluenceSolverViewModel : BindableObject
             switch (MapTypeOptionVm.SelectedValue)
             {
                 case MapType.Fluence:
-                    results = fluence.Select(f => f.Magnitude).ToArray();
+                    results = [.. fluence.Select(f => f.Magnitude)];
                     break;
                 case MapType.AbsorbedEnergy:
                     results =
-                        ComputationFactory.GetAbsorbedEnergy(fluence,
-                            ((OpticalProperties[]) opticalProperties)[0].Mua).Select(a => a.Magnitude).ToArray();
+                        [.. ComputationFactory.GetAbsorbedEnergy(fluence,
+                            ((OpticalProperties[]) opticalProperties)[0].Mua).Select(a => a.Magnitude)];
                      break;
                 case MapType.PhotonHittingDensity:
                     switch (PhotonHittingDensitySolutionDomainTypeOptionVm.SelectedValue)
                     {
                         case FluenceSolutionDomainType.FluenceOfRhoAndZAndFt:
-                            results = ComputationFactory.GetPHD(
+                            results = [.. ComputationFactory.GetPHD(
                                 ForwardSolverTypeOptionVm.SelectedValue,
-                                fluence.ToArray(),
+                                [.. fluence],
                                 SourceDetectorSeparation,
                                 TimeModulationFrequency,
                                 (OpticalProperties[]) opticalProperties,
                                 independentValues[0],
-                                independentValues[1]).ToArray();
+                                independentValues[1])];
                             break;
                         case FluenceSolutionDomainType.FluenceOfRhoAndZ:
                         case FluenceSolutionDomainType.FluenceOfFxAndZ:
@@ -585,23 +585,23 @@ public class FluenceSolverViewModel : BindableObject
             double[] fluence;
             if (IsMultiRegion)
             {
-                fluence = ComputationFactory.ComputeFluence(
+                fluence = [.. ComputationFactory.ComputeFluence(
                     ForwardSolverTypeOptionVm.SelectedValue,
                     sd.SelectedValue,
                     independentAxes,
                     independentValues,
                     ((IOpticalPropertyRegion[][]) opticalProperties)[0],
-                    constantValues).ToArray();
+                    constantValues)];
             }
             else
             {
-                fluence = ComputationFactory.ComputeFluence(
+                fluence = [.. ComputationFactory.ComputeFluence(
                     ForwardSolverTypeOptionVm.SelectedValue,
                     sd.SelectedValue,
                     independentAxes,
                     independentValues,
                     (OpticalProperties[]) opticalProperties,
-                    constantValues).ToArray();
+                    constantValues)];
             }
 
             switch (MapTypeOptionVm.SelectedValue)
@@ -617,7 +617,7 @@ public class FluenceSolverViewModel : BindableObject
                             var regions = ((MultiRegionTissueViewModel) TissueInputVm).GetTissueInput().Regions
                                 .Select(region => (ILayerOpticalPropertyRegion) region).ToArray();
                             var muas = GetRhoZMuaArrayFromLayerRegions(regions, rhos, zs);
-                            results = ComputationFactory.GetAbsorbedEnergy(fluence, muas).ToArray();
+                            results = [.. ComputationFactory.GetAbsorbedEnergy(fluence, muas)];
                         }
                         else
                         {
@@ -629,8 +629,8 @@ public class FluenceSolverViewModel : BindableObject
                         // Note: the line below was originally overwriting the multi-region results.
                         // I think this was a bug (DJC 7/11/14)
                         results =
-                            ComputationFactory.GetAbsorbedEnergy(fluence,
-                                ((OpticalProperties[]) opticalProperties)[0].Mua).ToArray();
+                            [.. ComputationFactory.GetAbsorbedEnergy(fluence,
+                                ((OpticalProperties[]) opticalProperties)[0].Mua)];
                     }
                     break;
                 case MapType.PhotonHittingDensity:
@@ -640,23 +640,23 @@ public class FluenceSolverViewModel : BindableObject
                             if (IsMultiRegion)
                             {
                                 var nop = (IOpticalPropertyRegion[][]) opticalProperties;
-                                results = ComputationFactory.GetPHD(
+                                results = [.. ComputationFactory.GetPHD(
                                     ForwardSolverTypeOptionVm.SelectedValue,
                                     fluence,
                                     SourceDetectorSeparation,
-                                    (from LayerTissueRegion tissue in nop[0] select tissue.RegionOP).ToArray(),
+                                    [.. (from LayerTissueRegion tissue in nop[0] select tissue.RegionOP)],
                                     independentValues[0],
-                                    independentValues[1]).ToArray();
+                                    independentValues[1])];
                             }
                             else
                             {
-                                results = ComputationFactory.GetPHD(
+                                results = [.. ComputationFactory.GetPHD(
                                     ForwardSolverTypeOptionVm.SelectedValue,
                                     fluence,
                                     SourceDetectorSeparation,
                                     (OpticalProperties[]) opticalProperties,
                                     independentValues[0],
-                                    independentValues[1]).ToArray();
+                                    independentValues[1])];
                             }
                             break;
                         case FluenceSolutionDomainType.FluenceOfFxAndZ:

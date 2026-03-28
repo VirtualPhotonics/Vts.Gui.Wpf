@@ -212,8 +212,8 @@ public class MonteCarloSolverViewModel : BindableObject
 
                     DoubleDataPoint[] points;
 
-                    points = independentValues.Zip(_output.R_r,
-                        (x, y) => new DoubleDataPoint(x, y)).ToArray();
+                    points = [.. independentValues.Zip(_output.R_r,
+                        (x, y) => new DoubleDataPoint(x, y))];
 
                     var axesLabels = GetPlotLabels();
                     if (MainWindow.Current != null)

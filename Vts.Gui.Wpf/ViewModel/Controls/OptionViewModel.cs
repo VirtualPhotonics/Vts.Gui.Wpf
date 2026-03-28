@@ -168,10 +168,10 @@ public class OptionViewModel<TValue> : BindableObject
         var unSelectedOptions = (from o in _Options where !o.Value.IsSelected select o).ToArray();
 
         // update arrays and explicitly fire property changed, so we don't trip on intermediate changes 
-        SelectedValues = selectedOptions.Select(item => item.Value.Value).ToArray();
-        SelectedDisplayNames = selectedOptions.Select(item => item.Value.DisplayName).ToArray();
-        UnSelectedValues = unSelectedOptions.Select(item => item.Value.Value).ToArray();
-        UnSelectedDisplayNames = unSelectedOptions.Select(item => item.Value.DisplayName).ToArray();
+        SelectedValues = [.. selectedOptions.Select(item => item.Value.Value)];
+        SelectedDisplayNames = [.. selectedOptions.Select(item => item.Value.DisplayName)];
+        UnSelectedValues = [.. unSelectedOptions.Select(item => item.Value.Value)];
+        UnSelectedDisplayNames = [.. unSelectedOptions.Select(item => item.Value.DisplayName)];
         OnPropertyChanged(nameof(SelectedValues));
         OnPropertyChanged(nameof(SelectedDisplayNames));
         OnPropertyChanged(nameof(UnSelectedValues));

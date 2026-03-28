@@ -62,7 +62,7 @@ public class InverseSolverViewModel : BindableObject
                                                          WindowViewModel.Current.SpectralMappingVm != null;
 
                     AllRangeVMs =
-                        (from i in
+                        [.. (from i in
                                 Enumerable.Range(0,
                                     SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.SelectedValues.Length)
                             orderby i descending
@@ -73,7 +73,7 @@ public class InverseSolverViewModel : BindableObject
                                 IndependentVariableAxis.Wavelength
                                     ? WindowViewModel.Current.SpectralMappingVm.WavelengthRangeVm
                                     // bind to same instance, not a copy
-                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVM).ToArray();
+                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVM)];
 
                     // if the independent axis is wavelength, then hide optical properties (because they come from spectral panel)
                     ShowOpticalProperties =
@@ -369,9 +369,8 @@ public class InverseSolverViewModel : BindableObject
                         "\r" + secondaryRangeVm.AxisType.GetInternationalizedString() + " = " + value.ToString(CultureInfo.InvariantCulture))
                 .ToArray();
         return
-            secondaryAxesStrings.Select(
-                    sas => solverString + modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString))
-                .ToArray();
+            [.. secondaryAxesStrings.Select(
+                    sas => solverString + modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString))];
     }
 
     private PlotAxesLabels GetPlotLabels()
@@ -477,7 +476,7 @@ public class InverseSolverViewModel : BindableObject
             MeasuredForwardSolverTypeOptionVm.SelectedValue,
             SolutionDomainTypeOptionVm.SelectedValue,
             ForwardAnalysisType.R,
-            parameters.Values.ToArray());
+            [.. parameters.Values]);
 
         return measuredData.AddNoise(PercentNoise);
     }
@@ -499,7 +498,7 @@ public class InverseSolverViewModel : BindableObject
         if (!SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.SelectedValues.Contains(
                 IndependentVariableAxis.Wavelength)) return null;
         var wavelengths = GetParameterValues(IndependentVariableAxis.Wavelength);
-        return wavelengths.Select(_ => initialGuessOPs.Clone()).ToArray();
+        return [.. wavelengths.Select(_ => initialGuessOPs.Clone())];
     }
 
     private OpticalProperties[] GetOpticalPropertiesFromSpectralPanel()
@@ -526,7 +525,7 @@ public class InverseSolverViewModel : BindableObject
             InverseForwardSolverTypeOptionVm.SelectedValue,
             SolutionDomainTypeOptionVm.SelectedValue,
             ForwardAnalysisType.R,
-            parameters.Values.ToArray());
+            [.. parameters.Values]);
     }
 
     public InverseSolutionResult SolveInverse()
@@ -559,7 +558,7 @@ public class InverseSolverViewModel : BindableObject
             dependentValues,
             dependentValues, // set standard deviation, sd, to measured (works w/ or w/o noise)
             InverseFitTypeOptionVm.SelectedValue,
-            initGuessParameters.Values.ToArray(),
+            [.. initGuessParameters.Values],
             lowerBounds, upperBounds);
 
         var fitOpticalProperties = ComputationFactory.UnFlattenOpticalProperties(fit);
@@ -570,7 +569,7 @@ public class InverseSolverViewModel : BindableObject
             InverseForwardSolverTypeOptionVm.SelectedValue,
             SolutionDomainTypeOptionVm.SelectedValue,
             ForwardAnalysisType.R,
-            fitParameters.Values.ToArray());
+            [.. fitParameters.Values]);
 
         var resultDataPoints = GetDataPoints(resultDataValues);
 
@@ -691,16 +690,16 @@ public class InverseSolverViewModel : BindableObject
                 {
                     // add this back if hard-coding is removed
                     //1 => AllRangeVMs[0].Values.ToArray(),
-                    _ => AllRangeVMs[1].Values.ToArray()
+                    _ => [.. AllRangeVMs[1].Values]
                 },
                 3 => positionIndex switch
                 {
                     // add these back if hard-coding is removed
                     //1 => AllRangeVMs[1].Values.ToArray(),
                     //2 => AllRangeVMs[0].Values.ToArray(),
-                    _ => AllRangeVMs[2].Values.ToArray()
+                    _ => [.. AllRangeVMs[2].Values]
                 },
-                _ => AllRangeVMs[0].Values.ToArray()
+                _ => [.. AllRangeVMs[0].Values]
             };
         }
     }

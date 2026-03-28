@@ -86,7 +86,7 @@ public class ForwardSolverViewModel : BindableObject
                                                          WindowViewModel.Current.SpectralMappingVm != null;
 
                     AllRangeVMs =
-                        (from i in
+                        [.. (from i in
                                 Enumerable.Range(0,
                                     SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.SelectedValues.Length)
                             orderby i descending
@@ -97,7 +97,7 @@ public class ForwardSolverViewModel : BindableObject
                                 IndependentVariableAxis.Wavelength
                                     ? WindowViewModel.Current.SpectralMappingVm.WavelengthRangeVm
                                     // bind to same instance, not a copy
-                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVM).ToArray();
+                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVM)];
 
                     // if the independent axis is wavelength, then hide optical properties (because they come from spectral panel)
                     ShowOpticalProperties =
@@ -471,8 +471,8 @@ public class ForwardSolverViewModel : BindableObject
                         "\r" + secondaryRangeVm.AxisType.GetInternationalizedString() + " = " + value)
                 .ToArray();
         return
-            secondaryAxesStrings.Select(
-                sas => modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString)).ToArray();
+            [.. secondaryAxesStrings.Select(
+                sas => modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString))];
 
     }
 
@@ -486,7 +486,7 @@ public class ForwardSolverViewModel : BindableObject
             ForwardSolverTypeOptionVm.SelectedValue,
             SolutionDomainTypeOptionVm.SelectedValue,
             ForwardAnalysisTypeOptionVm.SelectedValue,
-            parameters.Values.ToArray());
+            [.. parameters.Values]);
 
         return GetDataPoints(reflectance);
     }
@@ -602,16 +602,16 @@ public class ForwardSolverViewModel : BindableObject
             {
                 2 => positionIndex switch
                 {
-                    1 => AllRangeVMs[0].Values.ToArray(),
-                    _ => AllRangeVMs[1].Values.ToArray()
+                    1 => [.. AllRangeVMs[0].Values],
+                    _ => [.. AllRangeVMs[1].Values]
                 },
                 3 => positionIndex switch
                 {
-                    1 => AllRangeVMs[1].Values.ToArray(),
-                    2 => AllRangeVMs[0].Values.ToArray(),
-                    _ => AllRangeVMs[2].Values.ToArray()
+                    1 => [.. AllRangeVMs[1].Values],
+                    2 => [.. AllRangeVMs[0].Values],
+                    _ => [.. AllRangeVMs[2].Values]
                 },
-                _ => AllRangeVMs[0].Values.ToArray()
+                _ => [.. AllRangeVMs[0].Values]
             };
         }
     }
