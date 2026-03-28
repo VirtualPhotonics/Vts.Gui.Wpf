@@ -21,18 +21,18 @@ public class InverseSolverViewModelTests
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
         var viewModel = windowViewModel.InverseSolverVm;
-        Assert.That(viewModel.SolutionDomainTypeOptionVM, Is.InstanceOf<SolutionDomainOptionViewModel>());
-        Assert.That(viewModel.MeasuredForwardSolverTypeOptionVM, Is.InstanceOf<OptionViewModel<ForwardSolverType>>());
-        Assert.That(viewModel.InverseForwardSolverTypeOptionVM, Is.InstanceOf<OptionViewModel<ForwardSolverType>>());
-        Assert.That(viewModel.InverseFitTypeOptionVM, Is.InstanceOf<OptionViewModel<InverseFitType>>());
-        Assert.That(viewModel.OptimizerTypeOptionVM, Is.InstanceOf<OptionViewModel<OptimizerType>>());
-        Assert.That(viewModel.MeasuredOpticalPropertyVM, Is.InstanceOf<OpticalPropertyViewModel>());
-        Assert.That(viewModel.InitialGuessOpticalPropertyVM, Is.InstanceOf<OpticalPropertyViewModel>());
-        Assert.That(viewModel.ResultOpticalPropertyVM, Is.InstanceOf<OpticalPropertyViewModel>());
+        Assert.That(viewModel.SolutionDomainTypeOptionVm, Is.InstanceOf<SolutionDomainOptionViewModel>());
+        Assert.That(viewModel.MeasuredForwardSolverTypeOptionVm, Is.InstanceOf<OptionViewModel<ForwardSolverType>>());
+        Assert.That(viewModel.InverseForwardSolverTypeOptionVm, Is.InstanceOf<OptionViewModel<ForwardSolverType>>());
+        Assert.That(viewModel.InverseFitTypeOptionVm, Is.InstanceOf<OptionViewModel<InverseFitType>>());
+        Assert.That(viewModel.OptimizerTypeOptionVm, Is.InstanceOf<OptionViewModel<OptimizerType>>());
+        Assert.That(viewModel.MeasuredOpticalPropertyVm, Is.InstanceOf<OpticalPropertyViewModel>());
+        Assert.That(viewModel.InitialGuessOpticalPropertyVm, Is.InstanceOf<OpticalPropertyViewModel>());
+        Assert.That(viewModel.ResultOpticalPropertyVm, Is.InstanceOf<OpticalPropertyViewModel>());
         Assert.That(viewModel.AllRangeVMs, Is.InstanceOf<RangeViewModel[]>());
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.EnableMultiAxis, Is.False);
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.AllowMultiAxis, Is.False);
-        Assert.That(viewModel.SolutionDomainTypeOptionVM.SelectedValue, Is.EqualTo(SolutionDomainType.ROfRho));
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.EnableMultiAxis, Is.False);
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.AllowMultiAxis, Is.False);
+        Assert.That(viewModel.SolutionDomainTypeOptionVm.SelectedValue, Is.EqualTo(SolutionDomainType.ROfRho));
         Assert.That(viewModel.AllRangeVMs.Length, Is.EqualTo(1));
         Assert.That(Math.Abs(viewModel.AllRangeVMs[0].Start - 1) < 1e-6, Is.True);
         Assert.That(Math.Abs(viewModel.AllRangeVMs[0].Stop - 6) < 1e-6, Is.True);
@@ -50,9 +50,9 @@ public class InverseSolverViewModelTests
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
         var viewModel = windowViewModel.InverseSolverVm;
-        viewModel.MeasuredForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.Nurbs;
-        viewModel.InverseForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.PointSourceSDA;
-        viewModel.SolutionDomainTypeOptionVM.SelectedValue = SolutionDomainType.ROfRho;
+        viewModel.MeasuredForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.Nurbs;
+        viewModel.InverseForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.PointSourceSDA;
+        viewModel.SolutionDomainTypeOptionVm.SelectedValue = SolutionDomainType.ROfRho;
         viewModel.AllRangeVMs[0].Start = 1.0;
         viewModel.AllRangeVMs[0].Stop = 10.0;
         viewModel.AllRangeVMs[0].Number = 10;
