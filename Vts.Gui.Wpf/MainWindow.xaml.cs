@@ -25,7 +25,7 @@ public partial class MainWindow
         var observableTarget =
             NLog.LogManager.Configuration.AllTargets.FirstOrDefault(target => target is ObservableTarget);
         ((IObservable<string>)observableTarget)?.Subscribe(
-            msg => WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(msg));
+            msg => WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(msg));
         InitializeComponent();
         _numViews = 0;
         Current = this;

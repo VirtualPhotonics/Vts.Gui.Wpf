@@ -15,7 +15,7 @@ namespace Vts.Gui.Wpf.ViewModel;
 public class OptionViewModel<TValue> : BindableObject
 {
     private bool _enableMultiSelect;
-    private Dictionary<TValue, OptionModel<TValue>> _Options;
+    private Dictionary<TValue, OptionModel<TValue>> _options;
 
 
     public OptionViewModel(string groupName, bool showTitle, TValue initialValue, TValue[] allValues,
@@ -35,7 +35,7 @@ public class OptionViewModel<TValue> : BindableObject
     }
 
     public OptionViewModel(string groupName, bool showTitle, TValue[] allValues)
-        : this(groupName, showTitle, default(TValue), allValues)
+        : this(groupName, showTitle, default, allValues)
     {
     }
 
@@ -50,17 +50,17 @@ public class OptionViewModel<TValue> : BindableObject
     }
 
     public OptionViewModel(string groupName, TValue[] allValues)
-        : this(groupName, true, default(TValue), allValues)
+        : this(groupName, true, default, allValues)
     {
     }
 
     public OptionViewModel(string groupName, bool showTitle)
-        : this(groupName, showTitle, default(TValue), null)
+        : this(groupName, showTitle, default, null)
     {
     }
 
     public OptionViewModel(string groupName)
-        : this(groupName, true, default(TValue), null)
+        : this(groupName, true, default, null)
     {
     }
 
@@ -125,10 +125,10 @@ public class OptionViewModel<TValue> : BindableObject
 
     public Dictionary<TValue, OptionModel<TValue>> Options
     {
-        get => _Options;
+        get => _options;
         set
         {
-            _Options = value;
+            _options = value;
             OnPropertyChanged(nameof(Options));
         }
     }
@@ -144,28 +144,26 @@ public class OptionViewModel<TValue> : BindableObject
 
         UpdateOptionsNamesAndValues();
 
-        if (e.PropertyName != "IsEnabled" && EnableMultiSelect && Options != null)
-        {
-            var MIN_CHOICES = 1;
-            var MAX_CHOICES = 2;
-            var numSelected = (from o in _Options where o.Value.IsSelected select o).Count();
+        if (e.PropertyName == "IsEnabled" || !EnableMultiSelect || Options == null) return;
+        const int minChoices = 1;
+        const int maxChoices = 2;
+        var numSelected = (from o in _options where o.Value.IsSelected select o).Count();
 
-            // disable the unselected choices beyond a MAX_CHOICES number of concurrent multi-select options
-            Options.Where(o => !o.Value.IsSelected).ForEach(o => o.Value.IsEnabled = numSelected < MAX_CHOICES);
+        // disable the unselected choices beyond a MAX_CHOICES number of concurrent multi-select options
+        Options.Where(o => !o.Value.IsSelected).ForEach(o => o.Value.IsEnabled = numSelected < maxChoices);
 
-            // if there is only MIN_CHOICES selected choice in multi-select mode, disable others from being further unselected
-            Options.Where(o => o.Value.IsSelected).ForEach(o => o.Value.IsEnabled = numSelected > MIN_CHOICES);
-        }
+        // if there is only MIN_CHOICES selected choice in multi-select mode, disable others from being further unselected
+        Options.Where(o => o.Value.IsSelected).ForEach(o => o.Value.IsEnabled = numSelected > minChoices);
     }
 
     private void UpdateOptionsNamesAndValues()
     {
-        if (_Options == null)
+        if (_options == null)
             return;
 
         // todo: created these in parallel with SelectedValue, so as not to break other code. need to merge functionality across codebase to use SelectedValues
-        var selectedOptions = (from o in _Options where o.Value.IsSelected select o).ToArray();
-        var unSelectedOptions = (from o in _Options where !o.Value.IsSelected select o).ToArray();
+        var selectedOptions = (from o in _options where o.Value.IsSelected select o).ToArray();
+        var unSelectedOptions = (from o in _options where !o.Value.IsSelected select o).ToArray();
 
         // update arrays and explicitly fire property changed, so we don't trip on intermediate changes 
         SelectedValues = [.. selectedOptions.Select(item => item.Value.Value)];

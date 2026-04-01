@@ -11,6 +11,6 @@ public class PlotAxesLabels(
     public string DependentAxisUnits { get; set; } = dependentAxisUnits;
     public string DependentAxisName { get; set; } = dependentAxisName;
     public IndependentAxisViewModel IndependentAxis { get; set; } = independentAxis;
-    public ConstantAxisViewModel[] ConstantAxes { get; set; } = constantAxes ?? new ConstantAxisViewModel[0];
+    public ConstantAxisViewModel[] ConstantAxes { get; set; } = constantAxes ?? [];
     public bool IsComplexPlot { get; set; }
 }

@@ -341,7 +341,7 @@ public class PlotViewModel : BindableObject, ITextFileService
             if (_clearPlot && ShowInPlotView)
             {
                 ClearPlot();
-                WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(
+                WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(
                     StringLookup.GetLocalizedString("Message_PlotViewCleared") + "\r");
             }
 

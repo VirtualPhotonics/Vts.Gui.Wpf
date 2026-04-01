@@ -304,7 +304,7 @@ public class InverseSolverViewModel : BindableObject
         var plotLabels = GetLegendLabels(PlotDataType.Simulated);
         var plotData = measuredDataPoints.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
         WindowViewModel.Current.PlotVm.PlotValues.Execute(plotData);
-        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_SimulatedMeasuredData") + MeasuredOpticalPropertyVm + " \r");
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(StringLookup.GetLocalizedString("Label_SimulatedMeasuredData") + MeasuredOpticalPropertyVm + " \r");
     }
 
     private string[] GetLegendLabels(PlotDataType datatype)
@@ -394,18 +394,18 @@ public class InverseSolverViewModel : BindableObject
         var plotLabels = GetLegendLabels(PlotDataType.Guess);
         var plotData = initialGuessDataPoints.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
         WindowViewModel.Current.PlotVm.PlotValues.Execute(plotData);
-        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_InitialGuess") +
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(StringLookup.GetLocalizedString("Label_InitialGuess") +
                                                                             InitialGuessOpticalPropertyVm + " \r");
     }
 
     private void SolveInverseCommand_Executed()
     {
         // Report inverse solver setup and results
-        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_InverseSolutionResults") + "\r");
-        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_OptimizationParameter") +
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(StringLookup.GetLocalizedString("Label_InverseSolutionResults") + "\r");
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_OptimizationParameter") +
                                                                             InverseFitTypeOptionVm.SelectedValue +
                                                                             " \r");
-        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_InitialGuess") +
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_InitialGuess") +
                                                                             InitialGuessOpticalPropertyVm + " \r");
 
         var inverseResult = SolveInverse();
@@ -433,13 +433,13 @@ public class InverseSolverViewModel : BindableObject
                 sb.Append("\t" + wavelengths[i] + "\t\t\t\t\t\t" + measuredOPs[i] + "\t\t\t" + fitOPs[i] + "\t\t\t" +
                           opUnitString + " \r");
             }
-            WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(sb.ToString());
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(sb.ToString());
         }
         else
         {
-            WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_Exact") + ": " +
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_Exact") + ": " +
                                                                                 MeasuredOpticalPropertyVm + " \r");
-            WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_ConvergedValues") + ": " +
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_ConvergedValues") + ": " +
                                                                                 ResultOpticalPropertyVm + " \r");
                             //Display Percent Error
             double muaError = 0.0;
@@ -454,7 +454,7 @@ public class InverseSolverViewModel : BindableObject
                 int tempMuspError = (int)(10000.0 * Math.Abs(ResultOpticalPropertyVm.Musp - MeasuredOpticalPropertyVm.Musp) / MeasuredOpticalPropertyVm.Musp);
                 muspError = tempMuspError / 100.0;
             }
-            WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_PercentError") + 
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_PercentError") + 
                                                                                 StringLookup.GetLocalizedString("Label_MuA") + " = " + muaError +
                                                                                 "%  " + StringLookup.GetLocalizedString("Label_MuSPrime") + " = " + muspError + "% \r");
         }

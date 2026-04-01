@@ -296,14 +296,14 @@ public class ForwardSolverViewModel : BindableObject
 
             var plotData = points.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
             WindowViewModel.Current.PlotVm.PlotValues.Execute(plotData);
-            WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(
                 StringLookup.GetLocalizedString("Label_ForwardSolver") + TissueInputVm + "\r");
         }
         catch (ArgumentException ex)
         {
-            WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(
                 StringLookup.GetLocalizedString("Label_ForwardSolver\r"));
-            WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("ERROR IN INPUT:" + ex.Message + "\r");
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("ERROR IN INPUT:" + ex.Message + "\r");
         }
     }
 

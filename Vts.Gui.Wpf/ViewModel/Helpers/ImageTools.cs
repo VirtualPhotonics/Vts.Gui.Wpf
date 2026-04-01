@@ -50,9 +50,7 @@ public static class ImageTools
 
         png.Frames.Add(BitmapFrame.Create(bitmap));
 
-        using (var stream = File.Create(filename))
-        {
-            png.Save(stream);
-        }
+        using var stream = File.Create(filename);
+        png.Save(stream);
     }
 }

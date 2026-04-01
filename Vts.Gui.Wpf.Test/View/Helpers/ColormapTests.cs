@@ -77,8 +77,8 @@ internal class ColormapTests
     [Test]
     public void Verify_Length()
     {
-        var colopMapLookUpTable = new Colormap.HotColormapLookUpTable();
-        Assert.That(colopMapLookUpTable.Length, Is.EqualTo(256));
+        var colorMapLookUpTable = new HotColormapLookUpTable();
+        Assert.That(colorMapLookUpTable.Length, Is.EqualTo(256));
     }
     [Test]
     public void Verify_Length_red_is_null()
@@ -88,9 +88,4 @@ internal class ColormapTests
     }
 }
 
-internal class TestColormapLookupTable : ColormapLookUpTable
-{
-    public TestColormapLookupTable(double[] R, double[] G, double[] B) : base(R, G, B)
-    {
-    }
-}
+internal class TestColormapLookupTable(double[] r, double[] g, double[] b) : ColormapLookUpTable(r, g, b);

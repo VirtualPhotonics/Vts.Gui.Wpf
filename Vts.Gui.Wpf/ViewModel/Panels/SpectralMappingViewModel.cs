@@ -26,7 +26,7 @@ public class SpectralMappingViewModel : BindableObject
     public SpectralMappingViewModel()
     {
 #if WHITELIST 
-        ScatteringTypeVM = new OptionViewModel<ScatteringType>(StringLookup.GetLocalizedString("Heading_ScattererType"), true, WhiteList.ScatteringTypes);
+        ScatteringTypeVm = new OptionViewModel<ScatteringType>(StringLookup.GetLocalizedString("Heading_ScattererType"), true, WhiteList.ScatteringTypes);
 #else
         ScatteringTypeVm = new OptionViewModel<ScatteringType>(StringLookup.GetLocalizedString("Heading_ScattererType"), true);
 #endif
@@ -288,7 +288,7 @@ public class SpectralMappingViewModel : BindableObject
 
         var minWavelength = WavelengthRangeVm.Values.Min();
         var maxWavelength = WavelengthRangeVm.Values.Max();
-        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(
             StringLookup.GetLocalizedString("Message_PlotMuASpectrum") + "[" + minWavelength + ", " + maxWavelength + "]\r");
     }
 
@@ -321,7 +321,7 @@ public class SpectralMappingViewModel : BindableObject
 
         var minWavelength = WavelengthRangeVm.Values.Min();
         var maxWavelength = WavelengthRangeVm.Values.Max();
-        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(
             StringLookup.GetLocalizedString("Message_PlotMuSPrimeSpectrum") + "[" + minWavelength + ", " + maxWavelength + "]\r");
     }
 

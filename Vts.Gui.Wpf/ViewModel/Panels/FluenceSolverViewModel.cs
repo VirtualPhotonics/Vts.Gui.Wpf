@@ -100,7 +100,7 @@ public class FluenceSolverViewModel : BindableObject
         {
             if (args.PropertyName == "IndependentAxisType")
             {
-                RhoRangeVm = ((FluenceSolutionDomainOptionViewModel) sender).IndependentAxesVMs[0].AxisRangeVM;
+                RhoRangeVm = ((FluenceSolutionDomainOptionViewModel) sender)?.IndependentAxesVMs[0].AxisRangeVM;
             }
             // todo: must this fire on ANY property, or is there a specific one we can listen to, as above?
             OnPropertyChanged(nameof(IsTimeFrequencyDomain));
@@ -139,7 +139,7 @@ public class FluenceSolverViewModel : BindableObject
         };
 
         ExecuteFluenceSolverCommand = new RelayCommand(() => _ = ExecuteFluenceSolver_Executed());
-        CancelFluenceSolverCommand = new RelayCommand(() => CancelFluenceSolver_Executed());
+        CancelFluenceSolverCommand = new RelayCommand(CancelFluenceSolver_Executed);
         _canRunSolver = true;
         _canCancelSolver = false;
     }
@@ -311,9 +311,9 @@ public class FluenceSolverViewModel : BindableObject
             }
             catch (ArgumentException ex)
             {
-                WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(
+                WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(
                     StringLookup.GetLocalizedString("Label_FluenceSolver\r"));
-                WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("ERROR IN INPUT:" + ex.Message + "\r");
+                WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("ERROR IN INPUT:" + ex.Message + "\r");
             }
         }
 
@@ -321,7 +321,7 @@ public class FluenceSolverViewModel : BindableObject
         {
             ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
             MainWindow.Current.Wait.Visibility = Visibility.Hidden;
-            WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("Operation Cancelled\r");
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("Operation Cancelled\r");
         }
         finally
         {
@@ -349,7 +349,7 @@ public class FluenceSolverViewModel : BindableObject
                        "Layer 1: μa=" + regions[1].RegionOP.Mua + " μs'=" + regions[1].RegionOP.Musp + " n=" + regions[0].RegionOP.N + "\r";
         }
             
-        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute(
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(
             StringLookup.GetLocalizedString("Label_FluenceSolver") + opString);
         return true;
     }
@@ -361,7 +361,7 @@ public class FluenceSolverViewModel : BindableObject
         _mapData = null;
         ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
         MainWindow.Current.Wait.Visibility = Visibility.Hidden;
-        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("Canceling... \r");
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("Canceling... \r");
 
     }
 
@@ -688,7 +688,7 @@ public class FluenceSolverViewModel : BindableObject
         const double dRho = 1D;
         const double dZ = 1D;
         var dRhos = rhos.Select(rho => 2*Math.PI*Math.Abs(rho)*dRho).ToArray();
-        var dZs = zs.Select(z => dZ).ToArray();
+        var dZs = zs.Select(_ => dZ).ToArray();
         //var twoRhos = Enumerable.Concat(rhos.Reverse(), rhos).ToArray();
         //var twoDRhos = Enumerable.Concat(dRhos.Reverse(), dRhos).ToArray();
 

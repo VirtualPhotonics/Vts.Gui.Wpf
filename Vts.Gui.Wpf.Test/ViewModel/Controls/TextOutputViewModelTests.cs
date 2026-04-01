@@ -16,7 +16,7 @@ public class TextOutputViewModelTests
     public void Verify_default_constructor_relay_command_correctly()
     {
         var textOutputVm = new TextOutputViewModel();
-        Assert.That(textOutputVm.TextOutput_PostMessage != null, Is.True);
+        Assert.That(textOutputVm.TextOutputPostMessage != null, Is.True);
     }
 
     /// <summary>
@@ -27,7 +27,7 @@ public class TextOutputViewModelTests
     {
         var windowViewModel = new WindowViewModel();
         var textOutputVm = windowViewModel.TextOutputVm;
-        WindowViewModel.Current.TextOutputVm.TextOutput_PostMessage.Execute("UnitTest:");
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("UnitTest:");
         Assert.That(textOutputVm.Text, Is.EqualTo("UnitTest:"));
     }
 
