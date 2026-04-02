@@ -64,14 +64,6 @@ public class ForwardSolverViewModel : BindableObject
         };
         ForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.PointSourceSDA; // force the model choice here?
 
-        Action<double> updateSolutionDomainWithWavelength = wv =>
-        {
-            var wvAxis =
-                SolutionDomainTypeOptionVm.ConstantAxesVMs.FirstOrDefault(
-                    axis => axis.AxisType == IndependentVariableAxis.Wavelength);
-            wvAxis?.AxisValue = wv;
-        };
-
         SolutionDomainTypeOptionVm.PropertyChanged += (_, args) =>
         {
             switch (args.PropertyName)
@@ -88,12 +80,12 @@ public class ForwardSolverViewModel : BindableObject
                     AllRangeVMs =
                         [.. (from i in
                                 Enumerable.Range(0,
-                                    SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.SelectedValues.Length)
+                                    SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Length)
                             orderby i descending
                             // descending so that wavelength takes highest priority, then time/time frequency, then space/spatial frequency
                             select
                                 useSpectralPanelDataAndNotNull &&
-                                SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.SelectedValues[i] ==
+                                SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues[i] ==
                                 IndependentVariableAxis.Wavelength
                                     ? WindowViewModel.Current.SpectralMappingVm.WavelengthRangeVm
                                     // bind to same instance, not a copy
@@ -109,7 +101,7 @@ public class ForwardSolverViewModel : BindableObject
                         SolutionDomainTypeOptionVm.ConstantAxesVMs.Any(
                             axis => axis.AxisType == IndependentVariableAxis.Wavelength))
                     {
-                        updateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
+                        UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
                     }
 
                     break;
@@ -117,7 +109,7 @@ public class ForwardSolverViewModel : BindableObject
             }
         };
 
-        ExecuteForwardSolverCommand = new RelayCommand(() => ExecuteForwardSolver_Executed());
+        ExecuteForwardSolverCommand = new RelayCommand(ExecuteForwardSolver_Executed);
 
         OpticalPropertyVm.PropertyChanged += (_, _) =>
         {
@@ -129,7 +121,7 @@ public class ForwardSolverViewModel : BindableObject
             if (UseSpectralPanelData && WindowViewModel.Current != null &&
                 WindowViewModel.Current.SpectralMappingVm != null)
             {
-                updateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
+                UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
             }
         };
 
@@ -147,7 +139,7 @@ public class ForwardSolverViewModel : BindableObject
                     if (UseSpectralPanelData && WindowViewModel.Current != null &&
                         WindowViewModel.Current.SpectralMappingVm != null)
                     {
-                        updateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
+                        UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
                     }
                 }
 
@@ -176,11 +168,17 @@ public class ForwardSolverViewModel : BindableObject
                 }
             };
         }
+
+        return;
+
+        void UpdateSolutionDomainWithWavelength(double wv)
+        {
+            var wvAxis = SolutionDomainTypeOptionVm.ConstantAxesVMs.FirstOrDefault(axis => axis.AxisType == IndependentVariableAxis.Wavelength);
+            wvAxis?.AxisValue = wv;
+        }
     }
 
     public RelayCommand ExecuteForwardSolverCommand { get; set; }
-
-    public IForwardSolver ForwardSolver => SolverFactory.GetForwardSolver(ForwardSolverTypeOptionVm.SelectedValue);
 
     public bool IsGaussianForwardModel => ForwardSolverTypeOptionVm.SelectedValue.IsGaussianForwardModel();
 
@@ -512,37 +510,32 @@ public class ForwardSolverViewModel : BindableObject
         var numCurves = numForwardValues/numPointsPerCurve;
 
         var points = new IDataPoint[numCurves][];
-        Func<int, int, IDataPoint> getReflectanceAtIndex = (i, j) =>
-        {
-            // man, this is getting hacky...
-            var index = plotIsVsWavelength
-                ? i * numCurves + j
-                : j * numPointsPerCurve + i;
-            if (!isComplexPlot)
-                return new DoubleDataPoint(primaryIndependentValues[i], reflectance[index]);
-            if (isDerivativePlot)
-            {
-                // derivatives should be appended to real,imag, i.e. real,imag,dreal,dimag
-                return new ComplexDerivativeDataPoint(primaryIndependentValues[i],
-                    new Complex(reflectance[index], reflectance[index + numForwardValues]),
-                    new Complex(reflectance[index + 2 * numForwardValues],
-                        reflectance[index + 3 * numForwardValues]), forwardAnalysisType);
-            }
-
-            return new ComplexDataPoint(
-                primaryIndependentValues[i],
-                new Complex(reflectance[index], reflectance[index + numForwardValues]));
-        };
 
         for (var j = 0; j < numCurves; j++)
         {
             points[j] = new IDataPoint[numPointsPerCurve];
             for (var i = 0; i < numPointsPerCurve; i++)
             {
-                points[j][i] = getReflectanceAtIndex(i, j);
+                points[j][i] = GetReflectanceAtIndex(i, j);
             }
         }
         return points;
+
+        IDataPoint GetReflectanceAtIndex(int i, int j)
+        {
+            // man, this is getting hacky...
+            var index = plotIsVsWavelength
+                ? i * numCurves + j
+                : j * numPointsPerCurve + i;
+            if (!isComplexPlot) return new DoubleDataPoint(primaryIndependentValues[i], reflectance[index]);
+            if (isDerivativePlot)
+            {
+                // derivatives should be appended to real,imag, i.e. real,imag,dreal,dimag
+                return new ComplexDerivativeDataPoint(primaryIndependentValues[i], new Complex(reflectance[index], reflectance[index + numForwardValues]), new Complex(reflectance[index + 2 * numForwardValues], reflectance[index + 3 * numForwardValues]), forwardAnalysisType);
+            }
+
+            return new ComplexDataPoint(primaryIndependentValues[i], new Complex(reflectance[index], reflectance[index + numForwardValues]));
+        }
     }
 
     /// <summary>
@@ -566,15 +559,15 @@ public class ForwardSolverViewModel : BindableObject
 
     private double[] GetParameterValues(IndependentVariableAxis axis)
     {
-        var isConstant = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.UnSelectedValues.Contains(axis);
+        var isConstant = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.UnSelectedValues.Contains(axis);
         if (isConstant)
         {
             var independentValues =
-                SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.UnSelectedValues.Length;
+                SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.UnSelectedValues.Length;
             var positionIndex = 0;
             for (var i = 0; i < independentValues; i++)
             {
-                if (SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.UnSelectedValues[i] == axis)
+                if (SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.UnSelectedValues[i] == axis)
                 {
                     positionIndex = i;
                 }
@@ -588,11 +581,11 @@ public class ForwardSolverViewModel : BindableObject
         }
         else
         {
-            var numAxes = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.SelectedValues.Length;
+            var numAxes = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Length;
             var positionIndex = 0;
             for (var i = 0; i < numAxes; i++)
             {
-                if (SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.SelectedValues[i] == axis)
+                if (SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues[i] == axis)
                 {
                     positionIndex = i;
                 }
@@ -623,8 +616,8 @@ public class ForwardSolverViewModel : BindableObject
         // then, call the appropriate parameter generator, defined above
         var allParameters =
             from iv in
-                SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.SelectedValues.Concat(
-                    SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.UnSelectedValues)
+                SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Concat(
+                    SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.UnSelectedValues)
             where iv != IndependentVariableAxis.Wavelength
             orderby GetParameterOrder(iv)
             select new KeyValuePair<IndependentVariableAxis, object>(iv, GetParameterValues(iv));
@@ -639,7 +632,7 @@ public class ForwardSolverViewModel : BindableObject
     private object GetOpticalProperties()
     {
         if (
-            SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVM.SelectedValues.Contains(
+            SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Contains(
                 IndependentVariableAxis.Wavelength) &&
             SolutionDomainTypeOptionVm.UseSpectralInputs &&
             WindowViewModel.Current != null &&

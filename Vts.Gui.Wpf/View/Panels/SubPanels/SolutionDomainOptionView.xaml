@@ -108,7 +108,7 @@
             <!-- Radio button options -->
             <StackPanel Orientation="Horizontal" Margin="3,1,0,0">
                 <view:RadioButtonOptionView
-                    DataContext="{Binding IndependentVariableAxisOptionVM}"
+                    DataContext="{Binding IndependentVariableAxisOptionVm}"
                     VerticalContentAlignment="Center"
                     VerticalAlignment="Center" HorizontalAlignment="Left" />
                 <ItemsControl ItemsSource="{Binding ConstantAxesVMs, Mode=OneWay}">

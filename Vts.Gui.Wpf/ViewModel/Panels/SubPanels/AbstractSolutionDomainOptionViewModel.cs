@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
 
@@ -8,26 +7,20 @@ namespace Vts.Gui.Wpf.ViewModel;
 /// <summary>
 ///     View model implementing domain sub-panel functionality (abstract - implemented for reflectance and fluence)
 /// </summary>
-public class AbstractSolutionDomainOptionViewModel<TDomainType>(string groupName, TDomainType defaultType) : OptionViewModel<TDomainType>(groupName)
+public class AbstractSolutionDomainOptionViewModel<TDomainType>(string groupName) : OptionViewModel<TDomainType>(groupName)
 {
-    private bool _allowMultiAxis = false;
-
-    private bool _showIndependentAxisChoice = false;
-
-    private bool _useSpectralInputs = false;
-
     public AbstractSolutionDomainOptionViewModel()
-        : this("", default(TDomainType))
+        : this("")
     {
     }
 
-    public OptionViewModel<IndependentVariableAxis> IndependentVariableAxisOptionVM
+    public OptionViewModel<IndependentVariableAxis> IndependentVariableAxisOptionVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(IndependentVariableAxisOptionVM));
+            OnPropertyChanged(nameof(IndependentVariableAxisOptionVm));
         }
     }
 
@@ -51,90 +44,68 @@ public class AbstractSolutionDomainOptionViewModel<TDomainType>(string groupName
         }
     }
 
-    public double ConstantAxisValueImageHeight
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged(nameof(ConstantAxisValueImageHeight));
-        }
-    }
-
-    public double ConstantAxisValueTwoImageHeight
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged(nameof(ConstantAxisValueTwoImageHeight));
-        }
-    }
-
     public bool UseSpectralInputs
     {
-        get => _useSpectralInputs;
+        get;
         set
         {
-            _useSpectralInputs = value;
+            field = value;
             OnPropertyChanged(nameof(UseSpectralInputs));
         }
-    }
+    } = false;
 
     public bool AllowMultiAxis
     {
-        get => _allowMultiAxis;
+        get;
         set
         {
-            _allowMultiAxis = value;
+            field = value;
             OnPropertyChanged(nameof(AllowMultiAxis));
         }
-    }
+    } = false;
 
     public bool ShowIndependentAxisChoice
     {
-        get => _showIndependentAxisChoice;
+        get;
         set
         {
-            _showIndependentAxisChoice = value;
+            field = value;
             OnPropertyChanged(nameof(ShowIndependentAxisChoice));
         }
-    }
+    } = false;
 
     public virtual int NativeAxesCount => 1;
 
-    public event EventHandler SettingsLoaded = delegate { };
-
     protected virtual void UpdateAxes()
     {
-        var numAxes = IndependentVariableAxisOptionVM.SelectedValues.Length;
-        var numConstants = IndependentVariableAxisOptionVM.UnSelectedValues.Length;
+        var numAxes = IndependentVariableAxisOptionVm.SelectedValues.Length;
+        var numConstants = IndependentVariableAxisOptionVm.UnSelectedValues.Length;
 
         // create new local VMs for independent and constant axes
         var independentAxesVMs = Enumerable.Range(0, numAxes).Select(i =>
             new IndependentAxisViewModel
             {
-                AxisType = IndependentVariableAxisOptionVM.SelectedValues[i],
-                AxisLabel = IndependentVariableAxisOptionVM.SelectedDisplayNames[i],
-                AxisUnits = IndependentVariableAxisOptionVM.SelectedValues[i].GetUnits(),
+                AxisType = IndependentVariableAxisOptionVm.SelectedValues[i],
+                AxisLabel = IndependentVariableAxisOptionVm.SelectedDisplayNames[i],
+                AxisUnits = IndependentVariableAxisOptionVm.SelectedValues[i].GetUnits(),
                 AxisRangeVM = new RangeViewModel(
-                    IndependentVariableAxisOptionVM.SelectedValues[i].GetDefaultRange(),
-                    IndependentVariableAxisOptionVM.SelectedValues[i].GetUnits(),
-                    IndependentVariableAxisOptionVM.SelectedValues[i],
-                    IndependentVariableAxisOptionVM.SelectedValues[i].GetTitle())
+                    IndependentVariableAxisOptionVm.SelectedValues[i].GetDefaultRange(),
+                    IndependentVariableAxisOptionVm.SelectedValues[i].GetUnits(),
+                    IndependentVariableAxisOptionVm.SelectedValues[i],
+                    IndependentVariableAxisOptionVm.SelectedValues[i].GetTitle())
             }).ToArray();
         var constantAxesVMs = Enumerable.Range(0, numConstants).Select(i =>
             new ConstantAxisViewModel
             {
-                AxisType = IndependentVariableAxisOptionVM.UnSelectedValues[i],
-                AxisLabel = IndependentVariableAxisOptionVM.UnSelectedDisplayNames[i],
-                AxisUnits = IndependentVariableAxisOptionVM.UnSelectedValues[i].GetUnits(),
-                AxisValue = IndependentVariableAxisOptionVM.UnSelectedValues[i].GetDefaultConstantAxisValue()
+                AxisType = IndependentVariableAxisOptionVm.UnSelectedValues[i],
+                AxisLabel = IndependentVariableAxisOptionVm.UnSelectedDisplayNames[i],
+                AxisUnits = IndependentVariableAxisOptionVm.UnSelectedValues[i].GetUnits(),
+                AxisValue = IndependentVariableAxisOptionVm.UnSelectedValues[i].GetDefaultConstantAxisValue()
             }).ToArray();
 
         // assign callbacks
-        independentAxesVMs.ForEach(vm => vm.PropertyChanged += (s, a) => OnPropertyChanged(nameof(IndependentAxesVMs)));
-        constantAxesVMs.ForEach(vm => vm.PropertyChanged += (s, a) => OnPropertyChanged(nameof(ConstantAxesVMs)));
+        independentAxesVMs.ForEach(vm => vm.PropertyChanged += (_, _) => OnPropertyChanged(nameof(IndependentAxesVMs)));
+        constantAxesVMs.ForEach(vm => vm.PropertyChanged += (_, _) => OnPropertyChanged(nameof(ConstantAxesVMs)));
 
         // and then set them, fully formed, to the member variable, firing change notification
         IndependentAxesVMs = independentAxesVMs;

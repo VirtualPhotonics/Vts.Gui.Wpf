@@ -8,8 +8,8 @@ namespace Vts.Gui.Wpf.ViewModel;
 /// </summary>
 public class FluenceSolutionDomainOptionViewModel : AbstractSolutionDomainOptionViewModel<FluenceSolutionDomainType>
 {
-    public FluenceSolutionDomainOptionViewModel(string groupName, FluenceSolutionDomainType defaultType)
-        : base(groupName, defaultType)
+    public FluenceSolutionDomainOptionViewModel(string groupName)
+        : base(groupName)
     {
         //InitializeControls
         FluenceOfRhoAndZOption = Options[FluenceSolutionDomainType.FluenceOfRhoAndZ];
@@ -30,7 +30,7 @@ public class FluenceSolutionDomainOptionViewModel : AbstractSolutionDomainOption
     }
 
     public FluenceSolutionDomainOptionViewModel()
-        : this("", FluenceSolutionDomainType.FluenceOfRhoAndZ)
+        : this("")
     {
     }
 
@@ -70,43 +70,43 @@ public class FluenceSolutionDomainOptionViewModel : AbstractSolutionDomainOption
         switch (SelectedValue)
         {
             case FluenceSolutionDomainType.FluenceOfRhoAndZ:
-                IndependentVariableAxisOptionVM =
+                IndependentVariableAxisOptionVm =
                     new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        new[] {IndependentVariableAxis.Rho});
+                        [IndependentVariableAxis.Rho]);
                 FluenceOfRhoAndZOption.IsSelected = true;
                     //added to force the radio button when it is changed programatically
                 break;
             case FluenceSolutionDomainType.FluenceOfFxAndZ:
-                IndependentVariableAxisOptionVM =
+                IndependentVariableAxisOptionVm =
                     new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        new[] {IndependentVariableAxis.Fx});
+                        [IndependentVariableAxis.Fx]);
                 break;
             case FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
-                IndependentVariableAxisOptionVM =
+                IndependentVariableAxisOptionVm =
                     new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        new[] {IndependentVariableAxis.Rho, IndependentVariableAxis.Time});
+                        [IndependentVariableAxis.Rho, IndependentVariableAxis.Time]);
                 break;
             case FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
-                IndependentVariableAxisOptionVM =
+                IndependentVariableAxisOptionVm =
                     new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        new[] {IndependentVariableAxis.Fx, IndependentVariableAxis.Time});
+                        [IndependentVariableAxis.Fx, IndependentVariableAxis.Time]);
                 break;
             case FluenceSolutionDomainType.FluenceOfRhoAndZAndFt:
-                IndependentVariableAxisOptionVM =
+                IndependentVariableAxisOptionVm =
                     new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        new[] {IndependentVariableAxis.Rho, IndependentVariableAxis.Ft});
+                        [IndependentVariableAxis.Rho, IndependentVariableAxis.Ft]);
                 break;
             case FluenceSolutionDomainType.FluenceOfFxAndZAndFt:
-                IndependentVariableAxisOptionVM =
+                IndependentVariableAxisOptionVm =
                     new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        new[] {IndependentVariableAxis.Fx, IndependentVariableAxis.Ft});
+                        [IndependentVariableAxis.Fx, IndependentVariableAxis.Ft]);
                 break;
             default:
                 throw new NotImplementedException("SelectedValue");
         }
 
         // create a new callback based on the new viewmodel
-        IndependentVariableAxisOptionVM.PropertyChanged += (s, a) => UpdateAxes();
+        IndependentVariableAxisOptionVm.PropertyChanged += (_, _) => UpdateAxes();
 
         UpdateAxes();
         //The independent axis should not be visible, this panel already has modulation frequency

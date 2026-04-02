@@ -49,10 +49,9 @@ public class FluenceSolverViewModel : BindableObject
     private object _tissueInputVm;
         // either an OpticalPropertyViewModel or a MultiRegionTissueViewModel is stored here, and dynamically displayed
 
-        private CancellationTokenSource _currentCancellationTokenSource;
+    private CancellationTokenSource _currentCancellationTokenSource;
     private bool _canRunSolver;
     private bool _canCancelSolver;
-    private MapData _mapData;
 
     public FluenceSolverViewModel()
     {
@@ -76,22 +75,19 @@ public class FluenceSolverViewModel : BindableObject
                 ForwardSolverType.TwoLayerSDA
             ]); // explicitly enabling these for the workshop
 
-        FluenceSolutionDomainTypeOptionVm = new FluenceSolutionDomainOptionViewModel(StringLookup.GetLocalizedString("Heading_FluenceSolutionDomain"),
-            FluenceSolutionDomainType.FluenceOfRhoAndZ)
+        FluenceSolutionDomainTypeOptionVm = new FluenceSolutionDomainOptionViewModel(StringLookup.GetLocalizedString("Heading_FluenceSolutionDomain"))
         {
             IsFluenceOfRhoAndZAndTimeEnabled = false,
             IsFluenceOfRhoAndZAndFtEnabled = true
         };
         AbsorbedEnergySolutionDomainTypeOptionVm =
-            new FluenceSolutionDomainOptionViewModel(StringLookup.GetLocalizedString("Heading_AbsorbedEnergySolutionDomain"),
-                FluenceSolutionDomainType.FluenceOfRhoAndZ)
+            new FluenceSolutionDomainOptionViewModel(StringLookup.GetLocalizedString("Heading_AbsorbedEnergySolutionDomain"))
             {
                 IsFluenceOfRhoAndZAndTimeEnabled = false,
                 IsFluenceOfRhoAndZAndFtEnabled = true
             };
         PhotonHittingDensitySolutionDomainTypeOptionVm =
-            new FluenceSolutionDomainOptionViewModel(StringLookup.GetLocalizedString("Heading_PHDSolutionDomain"),
-                FluenceSolutionDomainType.FluenceOfRhoAndZ)
+            new FluenceSolutionDomainOptionViewModel(StringLookup.GetLocalizedString("Heading_PHDSolutionDomain"))
             {
                 IsFluenceOfRhoAndZAndTimeEnabled = false,
                 IsFluenceOfRhoAndZAndFtEnabled = true
@@ -338,9 +334,9 @@ public class FluenceSolverViewModel : BindableObject
     {
         _currentCancellationTokenSource = new CancellationTokenSource();
 
-        _mapData = await Task.Run(() => ExecuteForwardSolver(_currentCancellationTokenSource.Token));
-        if (_mapData == null) return true;
-        WindowViewModel.Current.MapVm.PlotMap.Execute(_mapData);
+        var mapData = await Task.Run(() => ExecuteForwardSolver(_currentCancellationTokenSource.Token));
+        if (mapData == null) return true;
+        WindowViewModel.Current.MapVm.PlotMap.Execute(mapData);
         var opString = OpticalPropertyVm + "\r";
         if (IsMultiRegion && ForwardSolver is TwoLayerSDAForwardSolver)
         {
@@ -358,23 +354,10 @@ public class FluenceSolverViewModel : BindableObject
     {
         CanCancelSolver = false;
         _currentCancellationTokenSource?.Cancel();
-        _mapData = null;
         ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
         MainWindow.Current.Wait.Visibility = Visibility.Hidden;
         WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("Canceling... \r");
 
-    }
-
-    private PlotAxesLabels GetPlotLabels()
-    {
-        var sd = GetSelectedSolutionDomain();
-
-        var axesLabels = new PlotAxesLabels(
-            sd.SelectedDisplayName, sd.SelectedValue.GetUnits(),
-            sd.IndependentAxesVMs.First(),
-            sd.ConstantAxesVMs);
-
-        return axesLabels;
     }
 
     private void UpdateAvailableOptions()
@@ -513,7 +496,7 @@ public class FluenceSolverViewModel : BindableObject
 
         var independentAxes =
             GetIndependentVariableAxesInOrder(
-                sd.IndependentVariableAxisOptionVM.SelectedValue,
+                sd.IndependentVariableAxisOptionVm.SelectedValue,
                 IndependentVariableAxis.Z);
 
         double[] results;
