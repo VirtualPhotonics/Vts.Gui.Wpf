@@ -32,13 +32,13 @@ public class IndependentAxisViewModel : BindableObject
         }
     }
 
-    public RangeViewModel AxisRangeVM
+    public RangeViewModel AxisRangeVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(AxisRangeVM));
+            OnPropertyChanged(nameof(AxisRangeVm));
         }
     }
 }

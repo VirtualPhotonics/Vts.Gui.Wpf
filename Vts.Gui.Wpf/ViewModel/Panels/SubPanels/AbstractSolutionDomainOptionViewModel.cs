@@ -88,7 +88,7 @@ public class AbstractSolutionDomainOptionViewModel<TDomainType>(string groupName
                 AxisType = IndependentVariableAxisOptionVm.SelectedValues[i],
                 AxisLabel = IndependentVariableAxisOptionVm.SelectedDisplayNames[i],
                 AxisUnits = IndependentVariableAxisOptionVm.SelectedValues[i].GetUnits(),
-                AxisRangeVM = new RangeViewModel(
+                AxisRangeVm = new RangeViewModel(
                     IndependentVariableAxisOptionVm.SelectedValues[i].GetDefaultRange(),
                     IndependentVariableAxisOptionVm.SelectedValues[i].GetUnits(),
                     IndependentVariableAxisOptionVm.SelectedValues[i],

@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Windows.Forms;
-using System.Windows.Input;
 using Vts.Gui.Wpf.Extensions;
 using Vts.MonteCarlo;
 
@@ -13,12 +12,12 @@ namespace Vts.Gui.Wpf.ViewModel;
 
 public class SimulationOptionsViewModel : BindableObject
 {
-    private OptionViewModel<AbsorptionWeightingType> _absorptionWeightingTypeVM;
-    private OptionViewModel<PhaseFunctionType> _phaseFunctionTypeVM;
+    private OptionViewModel<AbsorptionWeightingType> _absorptionWeightingTypeVm;
+    private OptionViewModel<PhaseFunctionType> _phaseFunctionTypeVm;
 
     public RelayCommand SetStatisticsFolderCommand { get; private set; }
 
-    private OptionViewModel<RandomNumberGeneratorType> _randomNumberGeneratorTypeVM;
+    private OptionViewModel<RandomNumberGeneratorType> _randomNumberGeneratorTypeVm;
     private SimulationOptions _simulationOptions;
 
     public SimulationOptionsViewModel(SimulationOptions options)
@@ -26,55 +25,51 @@ public class SimulationOptionsViewModel : BindableObject
         _simulationOptions = options; // use the property to invoke the appropriate change notification
 
 #if WHITELIST 
-        _absorptionWeightingTypeVM = new OptionViewModel<AbsorptionWeightingType>("Absorption Weighting Type:", false, _simulationOptions.AbsorptionWeightingType, WhiteList.AbsorptionWeightingTypes);
-        _randomNumberGeneratorTypeVM = new OptionViewModel<RandomNumberGeneratorType>("Random Number Generator Type:", false, _simulationOptions.RandomNumberGeneratorType, WhiteList.RandomNumberGeneratorTypes);
-        _phaseFunctionTypeVM = new OptionViewModel<PhaseFunctionType>("Phase Function Type:", false, _simulationOptions.PhaseFunctionType, WhiteList.PhaseFunctionTypes);
+        _absorptionWeightingTypeVm = new OptionViewModel<AbsorptionWeightingType>("Absorption Weighting Type:", false, _simulationOptions.AbsorptionWeightingType, WhiteList.AbsorptionWeightingTypes);
+        _randomNumberGeneratorTypeVm = new OptionViewModel<RandomNumberGeneratorType>("Random Number Generator Type:", false, _simulationOptions.RandomNumberGeneratorType, WhiteList.RandomNumberGeneratorTypes);
+        _phaseFunctionTypeVm = new OptionViewModel<PhaseFunctionType>("Phase Function Type:", false, _simulationOptions.PhaseFunctionType, WhiteList.PhaseFunctionTypes);
 #else
-        _absorptionWeightingTypeVM = new OptionViewModel<AbsorptionWeightingType>("Absorption Weighting Type:",
+        _absorptionWeightingTypeVm = new OptionViewModel<AbsorptionWeightingType>("Absorption Weighting Type:",
             false, _simulationOptions.AbsorptionWeightingType);
-        _randomNumberGeneratorTypeVM = new OptionViewModel<RandomNumberGeneratorType>("Random Number Generator:",
+        _randomNumberGeneratorTypeVm = new OptionViewModel<RandomNumberGeneratorType>("Random Number Generator:",
             false, _simulationOptions.RandomNumberGeneratorType);
-        _phaseFunctionTypeVM = new OptionViewModel<PhaseFunctionType>("Phase Function Type:", false,
+        _phaseFunctionTypeVm = new OptionViewModel<PhaseFunctionType>("Phase Function Type:", false,
             _simulationOptions.PhaseFunctionType);
 #endif
-        SetStatisticsFolderCommand = new RelayCommand(() => MC_SetStatisticsFolder_Executed(null, null));
+        SetStatisticsFolderCommand = new RelayCommand(MC_SetStatisticsFolder_Executed);
 
-        _absorptionWeightingTypeVM.PropertyChanged += (sender, args) =>
-            _simulationOptions.AbsorptionWeightingType = _absorptionWeightingTypeVM.SelectedValue;
-        _randomNumberGeneratorTypeVM.PropertyChanged += (sender, args) =>
-            _simulationOptions.RandomNumberGeneratorType = _randomNumberGeneratorTypeVM.SelectedValue;
-        _phaseFunctionTypeVM.PropertyChanged += (sender, args) =>
-            _simulationOptions.PhaseFunctionType = _phaseFunctionTypeVM.SelectedValue;
+        _absorptionWeightingTypeVm.PropertyChanged += (_, _) =>
+            _simulationOptions.AbsorptionWeightingType = _absorptionWeightingTypeVm.SelectedValue;
+        _randomNumberGeneratorTypeVm.PropertyChanged += (_, _) =>
+            _simulationOptions.RandomNumberGeneratorType = _randomNumberGeneratorTypeVm.SelectedValue;
+        _phaseFunctionTypeVm.PropertyChanged += (_, _) =>
+            _simulationOptions.PhaseFunctionType = _phaseFunctionTypeVm.SelectedValue;
     }
     public SimulationOptionsViewModel() : this(new SimulationOptions())
     {
     }
 
-    private void MC_SetStatisticsFolder_Executed(object sender, ExecutedRoutedEventArgs e)
+    private void MC_SetStatisticsFolder_Executed()
     {
-        if (TrackStatistics)
+        if (!TrackStatistics) return;
+        using var dialog = new FolderBrowserDialog();
+        dialog.Description = StringLookup.GetLocalizedString("Message_TrackStatisticsFolder");
+        var dialogResult = dialog.ShowDialog();
+        if (dialogResult == DialogResult.OK)
         {
-            using (var dialog = new FolderBrowserDialog())
+            // create the root directory
+            try
             {
-                dialog.Description = StringLookup.GetLocalizedString("Message_TrackStatisticsFolder");
-                var dialogResult = dialog.ShowDialog();
-                if (dialogResult == DialogResult.OK)
-                {
-                    // create the root directory
-                    try
-                    {
-                        OutputFolder = dialog.SelectedPath;
-                    }
-                    catch (Exception)
-                    {
-                        TrackStatistics = false;
-                    }
-                }
-                else
-                {
-                    TrackStatistics = false;
-                }
+                OutputFolder = dialog.SelectedPath;
             }
+            catch (Exception)
+            {
+                TrackStatistics = false;
+            }
+        }
+        else
+        {
+            TrackStatistics = false;
         }
     }
 
@@ -85,9 +80,9 @@ public class SimulationOptionsViewModel : BindableObject
         {
             _simulationOptions = value;
 
-            _absorptionWeightingTypeVM.Options[_simulationOptions.AbsorptionWeightingType].IsSelected = true;
-            _randomNumberGeneratorTypeVM.Options[_simulationOptions.RandomNumberGeneratorType].IsSelected = true;
-            _phaseFunctionTypeVM.Options[_simulationOptions.PhaseFunctionType].IsSelected = true;
+            _absorptionWeightingTypeVm.Options[_simulationOptions.AbsorptionWeightingType].IsSelected = true;
+            _randomNumberGeneratorTypeVm.Options[_simulationOptions.RandomNumberGeneratorType].IsSelected = true;
+            _phaseFunctionTypeVm.Options[_simulationOptions.PhaseFunctionType].IsSelected = true;
 
             // note: the alternative to these below is to have SimulationOptions implement INotifyPropertyChanged (derive from BindableObject)
             OnPropertyChanged(nameof(Seed));
@@ -137,33 +132,33 @@ public class SimulationOptionsViewModel : BindableObject
         }
     }
 
-    public OptionViewModel<AbsorptionWeightingType> AbsorptionWeightingTypeVM
+    public OptionViewModel<AbsorptionWeightingType> AbsorptionWeightingTypeVm
     {
-        get => _absorptionWeightingTypeVM;
+        get => _absorptionWeightingTypeVm;
         set
         {
-            _absorptionWeightingTypeVM = value;
-            OnPropertyChanged(nameof(AbsorptionWeightingTypeVM));
+            _absorptionWeightingTypeVm = value;
+            OnPropertyChanged(nameof(AbsorptionWeightingTypeVm));
         }
     }
 
-    public OptionViewModel<RandomNumberGeneratorType> RandomNumberGeneratorTypeVM
+    public OptionViewModel<RandomNumberGeneratorType> RandomNumberGeneratorTypeVm
     {
-        get => _randomNumberGeneratorTypeVM;
+        get => _randomNumberGeneratorTypeVm;
         set
         {
-            _randomNumberGeneratorTypeVM = value;
-            OnPropertyChanged(nameof(RandomNumberGeneratorTypeVM));
+            _randomNumberGeneratorTypeVm = value;
+            OnPropertyChanged(nameof(RandomNumberGeneratorTypeVm));
         }
     }
 
-    public OptionViewModel<PhaseFunctionType> PhaseFunctionTypeVM
+    public OptionViewModel<PhaseFunctionType> PhaseFunctionTypeVm
     {
-        get => _phaseFunctionTypeVM;
+        get => _phaseFunctionTypeVm;
         set
         {
-            _phaseFunctionTypeVM = value;
-            OnPropertyChanged(nameof(PhaseFunctionTypeVM));
+            _phaseFunctionTypeVm = value;
+            OnPropertyChanged(nameof(PhaseFunctionTypeVm));
         }
     }
 }

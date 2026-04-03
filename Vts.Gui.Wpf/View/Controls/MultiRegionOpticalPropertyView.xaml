@@ -21,9 +21,9 @@
         </StackPanel>
          
         <ListBox x:Name="opListBox" SelectedIndex="{Binding CurrentRegionIndex, Mode=TwoWay}"
-                 ItemsSource="{Binding RegionsVM, Mode=TwoWay}" MaxHeight="180" Margin="5" SelectionChanged="ListBox_SelectionChanged">
-             <!--<ListBox SelectedIndex="{Binding Value, ElementName=nudRegionIndex, Mode=TwoWay}"  ItemsSource="{Binding LayerRegionsVM, Mode=TwoWay}" MaxHeight="150" Margin="5"></ListBox>
-             <ListBox SelectedIndex="{Binding CurrentRegionIndex, Mode=TwoWay}" ItemsSource="{Binding LayerRegionsVM, Mode=TwoWay}" MaxHeight="150" Margin="5"></ListBox>-->
+                 ItemsSource="{Binding RegionsVm, Mode=TwoWay}" MaxHeight="180" Margin="5" SelectionChanged="ListBox_SelectionChanged">
+             <!--<ListBox SelectedIndex="{Binding Value, ElementName=nudRegionIndex, Mode=TwoWay}"  ItemsSource="{Binding LayerRegionsVm, Mode=TwoWay}" MaxHeight="150" Margin="5"></ListBox>
+             <ListBox SelectedIndex="{Binding CurrentRegionIndex, Mode=TwoWay}" ItemsSource="{Binding LayerRegionsVm, Mode=TwoWay}" MaxHeight="150" Margin="5"></ListBox>-->
             <ListBox.Resources>
                 <DataTemplate x:Key="MultiLayer">
                     <StackPanel Orientation="Horizontal"
@@ -33,7 +33,7 @@
                             <TextBlock Text="{Binding ConverterParameter=Label_StartStop, Converter={StaticResource MyResourceToStringConverter}}" />
                         </StackPanel>
                         <StackPanel>
-                            <view:RangeView DataContext="{Binding ZRangeVM}" Margin="20,0" />
+                            <view:RangeView DataContext="{Binding ZRangeVm}" Margin="20,0" />
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
@@ -134,7 +134,7 @@
                                     <TextBlock Text="{Binding ConverterParameter=Label_OpticalProperties, Converter={StaticResource MyResourceToStringConverter}}" />
                                 </StackPanel>
                                 <StackPanel VerticalAlignment="Top">
-                                    <view:OpticalPropertyView DataContext="{Binding OpticalPropertyVM}" />
+                                    <view:OpticalPropertyView DataContext="{Binding OpticalPropertyVm}" />
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>

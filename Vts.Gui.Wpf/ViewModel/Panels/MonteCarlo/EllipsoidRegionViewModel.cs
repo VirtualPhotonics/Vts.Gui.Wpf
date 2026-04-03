@@ -91,13 +91,13 @@ public class EllipsoidRegionViewModel : BindableObject
         }
     }
 
-    public OpticalPropertyViewModel OpticalPropertyVM
+    public OpticalPropertyViewModel OpticalPropertyVm
     {
         get => _opticalPropertyVm;
         set
         {
             _opticalPropertyVm = value;
-            OnPropertyChanged(nameof(OpticalPropertyVM));
+            OnPropertyChanged(nameof(OpticalPropertyVm));
         }
     }
 

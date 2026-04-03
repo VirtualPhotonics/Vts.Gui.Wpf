@@ -11,15 +11,15 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo;
 public class SimulationInputViewModelTests
 {
     /// <summary>
-    /// Verifies that SimulationInputModel default constructor instantiates sub ViewModels
+    /// Verifies that SimulationInputModel default constructor instantiates sub View Models
     /// </summary>
     [Test]
     public void Verify_default_constructor_sets_properties_correctly()
     {
         var viewModel = new SimulationInputViewModel();
-        Assert.That(viewModel.SimulationOptionsVM != null, Is.True);
-        Assert.That(viewModel.TissueInputVM != null, Is.True);
-        Assert.That(viewModel.TissueTypeVM != null, Is.True);
+        Assert.That(viewModel.SimulationOptionsVm != null, Is.True);
+        Assert.That(viewModel.TissueInputVm != null, Is.True);
+        Assert.That(viewModel.TissueTypeVm != null, Is.True);
     }
 
     [Test]
@@ -28,9 +28,9 @@ public class SimulationInputViewModelTests
         var viewModel = new SimulationInputViewModel();
         var input = SimulationInputProvider.PointSourceOneLayerTissueAllDetectors();
         viewModel.SimulationInput = input;
-        Assert.That(viewModel.SimulationOptionsVM != null, Is.True);
-        Assert.That(viewModel.TissueInputVM != null, Is.True);
-        Assert.That(viewModel.TissueTypeVM != null, Is.True);
+        Assert.That(viewModel.SimulationOptionsVm != null, Is.True);
+        Assert.That(viewModel.TissueInputVm != null, Is.True);
+        Assert.That(viewModel.TissueTypeVm != null, Is.True);
         Assert.That(viewModel.SimulationInput, Is.EqualTo(input));
         Assert.That(viewModel.N, Is.EqualTo(input.N));
     }
@@ -40,9 +40,9 @@ public class SimulationInputViewModelTests
     {
         var input = SimulationInputProvider.PointSourceOneLayerTissueAllDetectors();
         var viewModel = new SimulationInputViewModel(input);
-        Assert.That(viewModel.SimulationOptionsVM != null, Is.True);
-        Assert.That(viewModel.TissueInputVM != null, Is.True);
-        Assert.That(viewModel.TissueTypeVM != null, Is.True);
+        Assert.That(viewModel.SimulationOptionsVm != null, Is.True);
+        Assert.That(viewModel.TissueInputVm != null, Is.True);
+        Assert.That(viewModel.TissueTypeVm != null, Is.True);
         Assert.That(viewModel.SimulationInput, Is.EqualTo(input));
         Assert.That(viewModel.N, Is.EqualTo(input.N));
     }
@@ -54,14 +54,14 @@ public class SimulationInputViewModelTests
         var viewModel = new SimulationInputViewModel(input)
         {
             N = 10000,
-            SimulationOptionsVM = new SimulationOptionsViewModel(new SimulationOptions(1, RandomNumberGeneratorType.MersenneTwister, AbsorptionWeightingType.Analog))
+            SimulationOptionsVm = new SimulationOptionsViewModel(new SimulationOptions(1, RandomNumberGeneratorType.MersenneTwister, AbsorptionWeightingType.Analog))
         };
-        Assert.That(viewModel.SimulationOptionsVM != null, Is.True);
-        Assert.That(viewModel.TissueInputVM != null, Is.True);
-        Assert.That(viewModel.TissueTypeVM != null, Is.True);
+        Assert.That(viewModel.SimulationOptionsVm != null, Is.True);
+        Assert.That(viewModel.TissueInputVm != null, Is.True);
+        Assert.That(viewModel.TissueTypeVm != null, Is.True);
         Assert.That(viewModel.N, Is.EqualTo(10000));
-        Assert.That(viewModel.SimulationOptionsVM.SimulationOptions.Seed, Is.EqualTo(1));
-        Assert.That(viewModel.SimulationOptionsVM.SimulationOptions.RandomNumberGeneratorType, Is.EqualTo(RandomNumberGeneratorType.MersenneTwister));
-        Assert.That(viewModel.SimulationOptionsVM.SimulationOptions.AbsorptionWeightingType, Is.EqualTo(AbsorptionWeightingType.Analog));
+        Assert.That(viewModel.SimulationOptionsVm.SimulationOptions.Seed, Is.EqualTo(1));
+        Assert.That(viewModel.SimulationOptionsVm.SimulationOptions.RandomNumberGeneratorType, Is.EqualTo(RandomNumberGeneratorType.MersenneTwister));
+        Assert.That(viewModel.SimulationOptionsVm.SimulationOptions.AbsorptionWeightingType, Is.EqualTo(AbsorptionWeightingType.Analog));
     }
 }

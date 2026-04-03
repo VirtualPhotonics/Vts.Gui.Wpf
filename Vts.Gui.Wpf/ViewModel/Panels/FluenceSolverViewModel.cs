@@ -42,7 +42,7 @@ public class FluenceSolverViewModel : BindableObject
             return muaArray;
         };
 
-    // private fields to cache created instances of tissue inputs, created on-demand in GetTissueInputVM (vs up-front in constructor)
+    // private fields to cache created instances of tissue inputs, created on-demand in GetTissueInputVm (vs up-front in constructor)
     private OpticalProperties _currentHomogeneousOpticalProperties;
     private MultiLayerTissueInput _currentMultiLayerTissueInput;
     private SemiInfiniteTissueInput _currentSemiInfiniteTissueInput;
@@ -98,7 +98,7 @@ public class FluenceSolverViewModel : BindableObject
         {
             if (args.PropertyName == "IndependentAxisType")
             {
-                RhoRangeVm = ((FluenceSolutionDomainOptionViewModel) sender)?.IndependentAxesVMs[0].AxisRangeVM;
+                RhoRangeVm = ((FluenceSolutionDomainOptionViewModel) sender)?.IndependentAxesVMs[0].AxisRangeVm;
             }
             // todo: must this fire on ANY property, or is there a specific one we can listen to, as above?
             OnPropertyChanged(nameof(IsTimeFrequencyDomain));
@@ -473,14 +473,14 @@ public class FluenceSolverViewModel : BindableObject
         var opticalProperties = GetOpticalProperties();
             // could be OpticalProperties[] or IOpticalPropertyRegion[][]
 
-        //double[] rhos = RhoRangeVM.Values.Reverse().Concat(RhoRangeVM.Values).ToArray();
+        //double[] rhos = RhoRangeVm.Values.Reverse().Concat(RhoRangeVm.Values).ToArray();
         var rhos = RhoRangeVm.Values.Reverse().Select(rho => -rho).Concat(RhoRangeVm.Values).ToArray();
         var zs = ZRangeVm.Values.ToArray();
 
         double[][] independentValues = [rhos, zs];
 
         var sd = GetSelectedSolutionDomain();
-        // todo: too much thinking at the VM layer?
+        // todo: too much thinking at the View Model layer?
         var constantValues = Array.Empty<double>();
 
         if (ComputationFactory.IsSolverWithConstantValues(sd.SelectedValue))
@@ -700,20 +700,20 @@ public class FluenceSolverViewModel : BindableObject
     private object GetOpticalProperties()
     {
         // todo: add-in spectral panel data
-        //if (SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.Contains(IndependentVariableAxis.Wavelength) &&
+        //if (SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Contains(IndependentVariableAxis.Wavelength) &&
         //    UseSpectralPanelData &&
         //    SolverDemoViewModel.Current != null &&
-        //    SolverDemoViewModel.Current.SpectralMappingVM != null)
+        //    SolverDemoViewModel.Current.SpectralMappingVm != null)
         //{
-        //    var tissue = SolverDemoViewModel.Current.SpectralMappingVM.SelectedTissue;
+        //    var tissue = SolverDemoViewModel.Current.SpectralMappingVm.SelectedTissue;
         //    var wavelengths = GetParameterValues(IndependentVariableAxis.Wavelength);
         //    var ops = tissue.GetOpticalProperties(wavelengths);
 
-        //    if (IsMultiRegion && MultiRegionTissueVM != null)
+        //    if (IsMultiRegion && MultiRegionTissueVm != null)
         //    {
         //        return ops.Select(op =>
         //        {
-        //            var regions = MultiRegionTissueVM.GetTissueInput().Regions.Select(region => (IOpticalPropertyRegion)region).ToArray();
+        //            var regions = MultiRegionTissueVm.GetTissueInput().Regions.Select(region => (IOpticalPropertyRegion)region).ToArray();
         //            regions.ForEach(region =>
         //            {
         //                region.RegionOP.Mua = op.Mua;

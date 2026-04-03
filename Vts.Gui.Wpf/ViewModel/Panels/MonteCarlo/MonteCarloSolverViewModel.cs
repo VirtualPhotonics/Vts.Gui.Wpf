@@ -456,7 +456,7 @@ public class MonteCarloSolverViewModel : BindableObject
                 CanLoadInputFile = true;
                 if (simulationInput.Options.TrackStatistics)
                 {
-                    _simulationInputVm.SimulationOptionsVM.SetStatisticsFolderCommand.Execute(null);
+                    _simulationInputVm.SimulationOptionsVm.SetStatisticsFolderCommand.Execute(null);
                 }
             }
         }
@@ -478,7 +478,7 @@ public class MonteCarloSolverViewModel : BindableObject
     /// must exist and be accessible for reading.</param>
     /// <returns>A <see langword="SimulationInput"/> object containing the loaded simulation input data
     /// if the input is valid; otherwise, returns null.</returns>
-    internal SimulationInput MC_ReadSimulationInputFromFile(string filename)
+    internal static SimulationInput MC_ReadSimulationInputFromFile(string filename)
     {
         using var stream = new FileStream(filename, FileMode.Open);
         var simulationInput = FileIO.ReadFromJsonStream<SimulationInput>(stream);
@@ -604,7 +604,7 @@ public class MonteCarloSolverViewModel : BindableObject
                 AxisType = axisType,
                 AxisLabel = axisType.GetInternationalizedString(),
                 AxisUnits = axisUnits.GetInternationalizedString(),
-                AxisRangeVM =
+                AxisRangeVm =
                     new RangeViewModel(rhoRange, axisUnits.GetInternationalizedString(), axisType, "ROfRho")
             });
     }

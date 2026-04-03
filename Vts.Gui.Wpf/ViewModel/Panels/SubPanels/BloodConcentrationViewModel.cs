@@ -27,13 +27,13 @@ public class BloodConcentrationViewModel : BindableObject
     /// <summary>
     ///     ChromophoreAbsorber representing the concentration of oxy-hemoglobin (uM)
     /// </summary>
-    public bool DisplayBloodVM
+    public bool DisplayBloodVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(DisplayBloodVM));
+            OnPropertyChanged(nameof(DisplayBloodVm));
         }
     } = true;
 
@@ -54,7 +54,7 @@ public class BloodConcentrationViewModel : BindableObject
                 field = value;
                 OnPropertyChanged(nameof(HbO2));
                 // subscribe to the new property changed event
-                field.PropertyChanged += (s, a) => UpdateStO2AndTotalHb();
+                field.PropertyChanged += (_, _) => UpdateStO2AndTotalHb();
                 // make sure that whatever's bound to StO2 and TotalHb will update
                 UpdateStO2AndTotalHb();
             }
@@ -82,7 +82,7 @@ public class BloodConcentrationViewModel : BindableObject
                 //_Hb.Concentration = FormatOutput(_Hb.Concentration);
                 OnPropertyChanged(nameof(Hb));
                 // subscribe to the new property changed event
-                field.PropertyChanged += (s, a) => UpdateStO2AndTotalHb();
+                field.PropertyChanged += (_, _) => UpdateStO2AndTotalHb();
                 // make sure that whatever's bound to StO2 and TotalHb will update
                 UpdateStO2AndTotalHb();
             }

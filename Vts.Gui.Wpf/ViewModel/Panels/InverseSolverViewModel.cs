@@ -71,7 +71,7 @@ public class InverseSolverViewModel : BindableObject
                                 IndependentVariableAxis.Wavelength
                                     ? WindowViewModel.Current.SpectralMappingVm.WavelengthRangeVm
                                     // bind to same instance, not a copy
-                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVM).ToArray();
+                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVm).ToArray();
 
                     // if the independent axis is wavelength, then hide optical properties (because they come from spectral panel)
                     ShowOpticalProperties = _allRangeVMs.All(value => value.AxisType != IndependentVariableAxis.Wavelength);
@@ -536,12 +536,12 @@ public class InverseSolverViewModel : BindableObject
         // replace unconstrained L-M optimization with constrained version
         // this solves problem of when distributed source solution produces neg OPs during inversion
         //var fit = ComputationFactory.SolveInverse(
-        //    InverseForwardSolverTypeOptionVM.SelectedValue,
-        //    OptimizerTypeOptionVM.SelectedValue,
-        //    SolutionDomainTypeOptionVM.SelectedValue,
+        //    InverseForwardSolverTypeOptionVm.SelectedValue,
+        //    OptimizerTypeOptionVm.SelectedValue,
+        //    SolutionDomainTypeOptionVm.SelectedValue,
         //    dependentValues,
         //    dependentValues, // set standard deviation, sd, to measured (works w/ or w/o noise)
-        //    InverseFitTypeOptionVM.SelectedValue,
+        //    InverseFitTypeOptionVm.SelectedValue,
         //    initGuessParameters.Values.ToArray())
 
         var fit = ComputationFactory.SolveInverse(
@@ -656,7 +656,7 @@ public class InverseSolverViewModel : BindableObject
         var isConstant = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.UnSelectedValues.Contains(axis);
         if (isConstant)
         {
-            //var positionIndex = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.UnSelectedValues.IndexOf(axis)
+            //var positionIndex = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.UnSelectedValues.IndexOf(axis)
             var positionIndex = 0; //hard-coded for now
             return positionIndex switch
             {
@@ -669,7 +669,7 @@ public class InverseSolverViewModel : BindableObject
         {
             var numAxes = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Length;
             var positionIndex = 0; //hard-coded for now - commented the options that are currently unreachable
-            //var positionIndex = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.IndexOf(axis)
+            //var positionIndex = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.IndexOf(axis)
             return numAxes switch
             {
                 2 => positionIndex switch

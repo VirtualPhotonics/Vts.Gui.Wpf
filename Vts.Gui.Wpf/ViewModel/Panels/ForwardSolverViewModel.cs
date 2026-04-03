@@ -24,7 +24,7 @@ public class ForwardSolverViewModel : BindableObject
 {
     private RangeViewModel[] _allRangeVMs;
 
-    // private fields to cache created instances of tissue inputs, created on-demand in GetTissueInputVM (vs up-front in constructor)
+    // private fields to cache created instances of tissue inputs, created on-demand in GetTissueInputVm (vs up-front in constructor)
     private OpticalProperties _currentHomogeneousOpticalProperties;
     private MultiLayerTissueInput _currentMultiLayerTissueInput;
     private SemiInfiniteTissueInput _currentSemiInfiniteTissueInput;
@@ -89,7 +89,7 @@ public class ForwardSolverViewModel : BindableObject
                                 IndependentVariableAxis.Wavelength
                                     ? WindowViewModel.Current.SpectralMappingVm.WavelengthRangeVm
                                     // bind to same instance, not a copy
-                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVM)];
+                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVm)];
 
                     // if the independent axis is wavelength, then hide optical properties (because they come from spectral panel)
                     ShowOpticalProperties =
@@ -155,8 +155,8 @@ public class ForwardSolverViewModel : BindableObject
                     {
                         if (IsMultiRegion && MultiRegionTissueVm != null)
                         {
-                            MultiRegionTissueVm.RegionsVM.ForEach(region =>
-                                ((dynamic) region).OpticalPropertyVM.SetOpticalProperties(
+                            MultiRegionTissueVm.RegionsVm.ForEach(region =>
+                                ((dynamic) region).OpticalPropertyVm.SetOpticalProperties(
                                     WindowViewModel.Current.SpectralMappingVm.OpticalProperties));
                         }
                         else if (OpticalPropertyVm != null)
@@ -272,8 +272,8 @@ public class ForwardSolverViewModel : BindableObject
             WindowViewModel.Current.SpectralMappingVm == null) return;
         if (IsMultiRegion && MultiRegionTissueVm != null)
         {
-            MultiRegionTissueVm.RegionsVM.ForEach(region =>
-                ((dynamic) region).OpticalPropertyVM.SetOpticalProperties(
+            MultiRegionTissueVm.RegionsVm.ForEach(region =>
+                ((dynamic) region).OpticalPropertyVm.SetOpticalProperties(
                     WindowViewModel.Current.SpectralMappingVm.OpticalProperties));
         }
         else
@@ -360,10 +360,10 @@ public class ForwardSolverViewModel : BindableObject
                 SolutionDomainTypeOptionVm.IsROfFxAndTimeEnabled = true;
                 SolutionDomainTypeOptionVm.IsROfFxAndFtEnabled = true;
             }
-            //SolutionDomainTypeOptionVM.EnableMultiAxis =
-            //    ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
-            //SolutionDomainTypeOptionVM.EnableSpectralPanelInputs = 
-            //    ForwardSolverTypeOptionVM.SelectedValue != ForwardSolverType.TwoLayerSDA;
+            //SolutionDomainTypeOptionVm.EnableMultiAxis =
+            //    ForwardSolverTypeOptionVm.SelectedValue != ForwardSolverType.TwoLayerSDA;
+            //SolutionDomainTypeOptionVm.EnableSpectralPanelInputs = 
+            //    ForwardSolverTypeOptionVm.SelectedValue != ForwardSolverType.TwoLayerSDA;
         }
 
         if (ForwardAnalysisTypeOptionVm != null)

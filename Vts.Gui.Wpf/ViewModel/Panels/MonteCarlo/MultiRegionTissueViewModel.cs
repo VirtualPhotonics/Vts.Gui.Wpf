@@ -13,7 +13,7 @@ public class MultiRegionTissueViewModel : BindableObject
     private int _currentRegionIndex;
     private readonly ITissueInput _input;
 
-    private ObservableCollection<object> _regionsVM;
+    private ObservableCollection<object> _regionsVm;
 
     public MultiRegionTissueViewModel(ITissueInput input)
     {
@@ -24,14 +24,14 @@ public class MultiRegionTissueViewModel : BindableObject
         {
             case "MultiLayer":
                 var multiLayerTissueInput = (MultiLayerTissueInput) _input;
-                _regionsVM = new ObservableCollection<object>(
+                _regionsVm = new ObservableCollection<object>(
                     multiLayerTissueInput.Regions.Select((r, i) => (object) new LayerRegionViewModel(
                         (LayerTissueRegion) r,
                         StringLookup.GetLocalizedString("Label_Layer") + i)));
                 break;
             case "SingleEllipsoid":
                 var singleEllipsoidTissueInput = (SingleEllipsoidTissueInput) _input;
-                _regionsVM = new ObservableCollection<object>(
+                _regionsVm = new ObservableCollection<object>(
                     singleEllipsoidTissueInput.LayerRegions
                         .Select((r, i) => (object) new LayerRegionViewModel(
                             (LayerTissueRegion) r,
@@ -43,7 +43,7 @@ public class MultiRegionTissueViewModel : BindableObject
                 break;
             case "SingleVoxel":
                 var singleVoxelTissueInput = (SingleVoxelTissueInput)_input;
-                _regionsVM = new ObservableCollection<object>(
+                _regionsVm = new ObservableCollection<object>(
                     singleVoxelTissueInput.LayerRegions
                         .Select((r, i) => (object)new LayerRegionViewModel(
                             (LayerTissueRegion)r,
@@ -63,14 +63,13 @@ public class MultiRegionTissueViewModel : BindableObject
     {
     }
 
-    public ObservableCollection<object> RegionsVM
+    public ObservableCollection<object> RegionsVm
     {
-        get => _regionsVM;
+        get => _regionsVm;
         set
         {
-            _regionsVM = value;
-            //OnPropertyChanged("LayerRegionsVM");
-            OnPropertyChanged(nameof(RegionsVM)); // ckh: RegionsVM is what is bound in xaml, LayerRegionsVM is in old comment
+            _regionsVm = value;
+            OnPropertyChanged(nameof(RegionsVm));
         }
     }
 
@@ -79,7 +78,7 @@ public class MultiRegionTissueViewModel : BindableObject
         get => _currentRegionIndex;
         set
         {
-            if ((value < _regionsVM.Count) && (value >= 0))
+            if ((value < _regionsVm.Count) && (value >= 0))
             {
                 _currentRegionIndex = value;
                 OnPropertyChanged(nameof(CurrentRegionIndex));
@@ -91,7 +90,7 @@ public class MultiRegionTissueViewModel : BindableObject
 
     public int MinimumRegionIndex => 0;
 
-    public int MaximumRegionIndex => _regionsVM != null ? _regionsVM.Count - 1 : 0;
+    public int MaximumRegionIndex => _regionsVm != null ? _regionsVm.Count - 1 : 0;
 
     public ITissueInput GetTissueInput()
     {

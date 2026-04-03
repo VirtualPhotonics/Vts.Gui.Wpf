@@ -213,7 +213,7 @@ public class PlotViewModelTests
             new IndependentAxisViewModel 
             {
                 AxisLabel = "independent",
-                AxisRangeVM = new RangeViewModel(new DoubleRange(0.5, 9.5, 19), "mm", IndependentVariableAxis.Rho, "Detector Positions"),
+                AxisRangeVm = new RangeViewModel(new DoubleRange(0.5, 9.5, 19), "mm", IndependentVariableAxis.Rho, "Detector Positions"),
                 AxisType = IndependentVariableAxis.Rho,
                 AxisUnits = "units"
             },

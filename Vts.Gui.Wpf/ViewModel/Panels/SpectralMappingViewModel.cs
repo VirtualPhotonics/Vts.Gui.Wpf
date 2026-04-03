@@ -71,8 +71,8 @@ public class SpectralMappingViewModel : BindableObject
 
         #region DC notes 1
 
-        // DC NOTES on how to propagate the correct hemoglobin instances into BloodConcentrationVM:
-        // Upon setting SelectedTissue (below), we internally update the BloodConcentrationVM hemoglobin references 
+        // DC NOTES on how to propagate the correct hemoglobin instances into BloodConcentrationVm:
+        // Upon setting SelectedTissue (below), we internally update the BloodConcentrationVm hemoglobin references 
         // This is the simplest solution, but maybe violates SOC...(see SelectedTissue property for details)
         // A second alternative way would be to override AfterPropertyChanged (see AfterPropertyChanged method below)
 
@@ -82,7 +82,7 @@ public class SpectralMappingViewModel : BindableObject
 
         SelectedTissue = Tissues[0];
         ScatteringTypeVm.SelectedValue = SelectedTissue.ScattererType;
-        // forces update to all bindings established in handler for ScatteringTypeVM.PropertyChanged above
+        // forces update to all bindings established in handler for ScatteringTypeVm.PropertyChanged above
         ScatteringTypeName = SelectedTissue.Scatterer.GetType().FullName;
 
         OpticalProperties = new OpticalProperties(0.01, 1, 0.8, 1.4);
@@ -149,10 +149,10 @@ public class SpectralMappingViewModel : BindableObject
             {
                 BloodConcentrationVm.Hb = hb;
                 BloodConcentrationVm.HbO2 = hbO2;
-                BloodConcentrationVm.DisplayBloodVM = true;
+                BloodConcentrationVm.DisplayBloodVm = true;
             }
             else
-                BloodConcentrationVm.DisplayBloodVM = false;
+                BloodConcentrationVm.DisplayBloodVm = false;
         }
     }
 
@@ -271,7 +271,7 @@ public class SpectralMappingViewModel : BindableObject
                 AxisType = axisType,
                 AxisLabel = axisType.GetInternationalizedString(),
                 AxisUnits = axisUnits.GetInternationalizedString(),
-                AxisRangeVM = WavelengthRangeVm
+                AxisRangeVm = WavelengthRangeVm
             });
 
         WindowViewModel.Current.PlotVm.SetAxesLabels.Execute(axesLabels);
@@ -304,7 +304,7 @@ public class SpectralMappingViewModel : BindableObject
                 AxisType = axisType,
                 AxisLabel = axisType.GetInternationalizedString(),
                 AxisUnits = axisUnits.GetInternationalizedString(),
-                AxisRangeVM = WavelengthRangeVm
+                AxisRangeVm = WavelengthRangeVm
             });
         WindowViewModel.Current.PlotVm.SetAxesLabels.Execute(axesLabels);
 
@@ -347,8 +347,8 @@ public class SpectralMappingViewModel : BindableObject
     //        // only assign the values if both queries return valid (non-null) instances of IChromophoreAbsorber
     //        if (hb != null && hbO2 != null)
     //        {
-    //            BloodConcentrationVM.Hb = hb;
-    //            BloodConcentrationVM.HbO2 = hbO2;
+    //            BloodConcentrationVm.Hb = hb;
+    //            BloodConcentrationVm.HbO2 = hbO2;
     //        }
     //    }
     //    base.AfterPropertyChanged(propertyName);
