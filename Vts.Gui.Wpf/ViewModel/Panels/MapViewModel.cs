@@ -281,7 +281,7 @@ public class MapViewModel : BindableObject
                     imageData[i*4 + 3] = buffer[3];
                 }
                 break;
-            default:
+            default: // case ScalingType.Log
                 if (_minValue <= 0.0) _minValue = 10E-9;
                 if (_maxValue <= 0.0) _maxValue = 10E2;
                 for (var i = 0; i < _mapData.RawData.Length; i++)

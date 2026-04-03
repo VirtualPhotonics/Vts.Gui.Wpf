@@ -102,7 +102,7 @@ public class BloodConcentrationViewModel : BindableObject
             var hbO2 = value * TotalHb;
 
             // after calculated, assign them to the concentration properties of 
-            // the ChromphoreAbsorber instances
+            // the ChromophoreAbsorber instances
             Hb.Concentration = hb;
             HbO2.Concentration = hbO2;
 
@@ -127,7 +127,7 @@ public class BloodConcentrationViewModel : BindableObject
             var hb = value * (1 - StO2);
 
             // after calculated, assign them to the concentration properties of 
-            // the ChromphoreAbsorber instances
+            // the ChromophoreAbsorber instances
             Hb.Concentration = hb;
             HbO2.Concentration = hbO2;
 
