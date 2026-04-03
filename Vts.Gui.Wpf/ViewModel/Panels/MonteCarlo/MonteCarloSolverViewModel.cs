@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Vts.Common.Logging;
 using Vts.Gui.Wpf.Extensions;
@@ -27,6 +26,8 @@ namespace Vts.Gui.Wpf.ViewModel;
 /// </summary>
 public class MonteCarloSolverViewModel : BindableObject
 {
+    private const string StoryboardKey = "WaitStoryboard";
+    private const string MessageDone = "Message_Done";
     private static readonly ILogger Logger =
         LoggerFactoryLocator.GetDefaultNLogFactory().Create(typeof(MonteCarloSolverViewModel));
 
@@ -59,12 +60,12 @@ public class MonteCarloSolverViewModel : BindableObject
         _simulationInputVm = new SimulationInputViewModel(simulationInput);
         _outputName = simulationInput.OutputName;
 
-        ExecuteMonteCarloSolverCommand = new RelayCommand(() => _ = MC_ExecuteMonteCarloSolver_Executed(null, null));
-        CancelMonteCarloSolverCommand = new RelayCommand(() => _ = MC_CancelMonteCarloSolver_Executed(null, null));
-        LoadSimulationInputCommand = new RelayCommand(() => _ = MC_LoadSimulationInput_Executed(null, null));
+        ExecuteMonteCarloSolverCommand = new RelayCommand(() => _ = MC_ExecuteMonteCarloSolver_Executed());
+        CancelMonteCarloSolverCommand = new RelayCommand(() => _ = MC_CancelMonteCarloSolver_Executed());
+        LoadSimulationInputCommand = new RelayCommand(() => _ = MC_LoadSimulationInput_Executed());
         DownloadDefaultSimulationInputCommand =
-            new RelayCommand(() => _ = MC_DownloadDefaultSimulationInput_Executed(null, null));
-        SaveSimulationResultsCommand = new RelayCommand(() => _ = MC_SaveSimulationResults_Executed(null, null));
+            new RelayCommand(() => _ = MC_DownloadDefaultSimulationInput_Executed());
+        SaveSimulationResultsCommand = new RelayCommand(() => _ = MC_SaveSimulationResults_Executed());
 
         _canDownloadInfiles = true;
         _canLoadInputFile = true;
@@ -141,17 +142,17 @@ public class MonteCarloSolverViewModel : BindableObject
         }
     }
 
-    public SimulationInputViewModel SimulationInputVM
+    public SimulationInputViewModel SimulationInputVm
     {
         get => _simulationInputVm;
         set
         {
             _simulationInputVm = value;
-            OnPropertyChanged(nameof(SimulationInputVM));
+            OnPropertyChanged(nameof(SimulationInputVm));
         }
     }
 
-    private async Task MC_ExecuteMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+    private async Task MC_ExecuteMonteCarloSolver_Executed()
     {
         _currentCancellationTokenSource = new CancellationTokenSource();
         CanRunSimulation = false;
@@ -172,7 +173,7 @@ public class MonteCarloSolverViewModel : BindableObject
             if (MainWindow.Current != null)
             {
                 MainWindow.Current.Wait.Visibility = Visibility.Visible;
-                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Begin();
+                ((Storyboard)MainWindow.Current.FindResource(StoryboardKey)).Begin();
             }
             _newResultsAvailable = false;
 
@@ -187,10 +188,7 @@ public class MonteCarloSolverViewModel : BindableObject
                 return;
             }
 
-            if (!MC_InfileIsValidForGUI(input))
-            {
-                return;
-            }
+            if (!MC_InfileIsValidForGUI(input)) return;
 
             _simulation = new MonteCarloSimulation(input);
 
@@ -206,13 +204,11 @@ public class MonteCarloSolverViewModel : BindableObject
                 {
                     Logger.Info(() => StringLookup.GetLocalizedString("Message_CreateROfRhoPlot"));
 
-                    var detectorInput = (ROfRhoDetectorInput) rOfRhoDetectorInputs.First();
+                    var detectorInput = (ROfRhoDetectorInput)rOfRhoDetectorInputs[0];
 
                     var independentValues = detectorInput.Rho.AsEnumerable().ToArray();
 
-                    DoubleDataPoint[] points;
-
-                    points = [.. independentValues.Zip(_output.R_r,
+                    IDataPoint[] points = [.. independentValues.Zip(_output.R_r,
                         (x, y) => new DoubleDataPoint(x, y))];
 
                     var axesLabels = GetPlotLabels();
@@ -223,7 +219,7 @@ public class MonteCarloSolverViewModel : BindableObject
                     if (MainWindow.Current != null)
                         WindowViewModel.Current.PlotVm.PlotValues.Execute(new[] {new PlotData(points, plotLabel)});
                     plotView = true;
-                    Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+                    Logger.Info(() => StringLookup.GetLocalizedString(MessageDone) + ".\r");
                 }
 
                 var fluenceDetectorInputs =
@@ -232,7 +228,7 @@ public class MonteCarloSolverViewModel : BindableObject
                 if (fluenceDetectorInputs.Count != 0)
                 {
                     Logger.Info(() => StringLookup.GetLocalizedString("Message_CreatingFluenceRhoZMap"));
-                    var detectorInput = (FluenceOfRhoAndZDetectorInput) fluenceDetectorInputs.First();
+                    var detectorInput = (FluenceOfRhoAndZDetectorInput)fluenceDetectorInputs[0];
                     var rhosMc = detectorInput.Rho.AsEnumerable().ToArray();
                     var zsMc = detectorInput.Z.AsEnumerable().ToArray();
 
@@ -245,7 +241,7 @@ public class MonteCarloSolverViewModel : BindableObject
 
                     var dRhos =
                         rhos.Select(rho => 2 * Math.PI * Math.Abs(rho) * detectorInput.Rho.Delta).ToArray();
-                    var dZs = zs.Select(z => detectorInput.Rho.Delta).ToArray();
+                    var dZs = zs.Select(_ => detectorInput.Rho.Delta).ToArray();
 
                     if (_mapArrayBuffer == null || _mapArrayBuffer.Length != _output.Flu_rz.Length * 2)
                     {
@@ -273,7 +269,7 @@ public class MonteCarloSolverViewModel : BindableObject
 
                     WindowViewModel.Current.MapVm.PlotMap.Execute(mapData);
                     mapView = true;
-                    Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+                    Logger.Info(() => StringLookup.GetLocalizedString(MessageDone) + ".\r");
                 }
                 // put map view on top if no plot and plot view on top if no map otherwise stay on current view
                 if (!(plotView && mapView) && MainWindow.Current != null)
@@ -284,7 +280,7 @@ public class MonteCarloSolverViewModel : BindableObject
 
             if (MainWindow.Current != null)
             {
-                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                ((Storyboard)MainWindow.Current.FindResource(StoryboardKey)).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
             }
             await Task.Run(() => MC_CacheSimulationResults(input), _currentCancellationTokenSource.Token);
@@ -298,7 +294,7 @@ public class MonteCarloSolverViewModel : BindableObject
         {
             if (MainWindow.Current != null)
             {
-                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                ((Storyboard)MainWindow.Current.FindResource(StoryboardKey)).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
             }
         }
@@ -306,7 +302,7 @@ public class MonteCarloSolverViewModel : BindableObject
         {
             if (MainWindow.Current != null)
             {
-                ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+                ((Storyboard)MainWindow.Current.FindResource(StoryboardKey)).Stop();
                 MainWindow.Current.Wait.Visibility = Visibility.Hidden;
             }
         }
@@ -316,11 +312,11 @@ public class MonteCarloSolverViewModel : BindableObject
     /// This method goes beyond the regular SimulationInput validation performed in SimulationInputValidation class.
     /// The validation performed here checks that the input can be plotted, i.e., tissue and detectors have 
     /// cylindrical symmetry.  It also checks if a database output is specified and specifies that a new infile
-    /// be specified because database files cannot be cached. Finally it checks if TrackStatistics is true
+    /// be specified because database files cannot be cached. Finally, it checks if TrackStatistics is true
     /// and if so, logs to the user to verify selection using TrackStatistics check box 
     /// </summary>
     /// <param name="input">Simulation input</param>
-    internal bool MC_InfileIsValidForGUI(SimulationInput input)
+    internal static bool MC_InfileIsValidForGUI(SimulationInput input)
     {
         if ((input.TissueInput is not MultiLayerTissueInput && input.TissueInput is not SingleEllipsoidTissueInput) || (input.DetectorInputs.All(d => d.TallyType != TallyType.ROfRho) &&
                 input.DetectorInputs.All(d => d.TallyType != TallyType.FluenceOfRhoAndZ)))
@@ -346,7 +342,7 @@ public class MonteCarloSolverViewModel : BindableObject
 
         _cache.Set(nameof(SimulationInput), input, policy);
         _cache.Set(nameof(SimulationOutput), _output, policy);
-        Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+        Logger.Info(() => StringLookup.GetLocalizedString(MessageDone) + ".\r");
     }
 
     private async Task<bool> MC_SaveSimulationResultsFromCache()
@@ -385,7 +381,7 @@ public class MonteCarloSolverViewModel : BindableObject
             CancelButtonText = StringLookup.GetLocalizedString("Button_Cancel");
             CanCancelSimulation = false;
 
-            Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+            Logger.Info(() => StringLookup.GetLocalizedString(MessageDone) + ".\r");
             return true;
         }
         catch (Exception)
@@ -415,7 +411,7 @@ public class MonteCarloSolverViewModel : BindableObject
         FileIO.CopyFolderFromEmbeddedResources("Matlab", folder, currentAssembly.FullName, false); // put Matlab scripts in "results"
     }
 
-    private async Task MC_CancelMonteCarloSolver_Executed(object sender, ExecutedRoutedEventArgs e)
+    private async Task MC_CancelMonteCarloSolver_Executed()
     {
         CanCancelSimulation = false;
         CanRunSimulation = true;
@@ -428,7 +424,7 @@ public class MonteCarloSolverViewModel : BindableObject
         Logger.Info(() => StringLookup.GetLocalizedString("Message_Cancelled") + ".\n");
     }
 
-    private async Task MC_LoadSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
+    private async Task MC_LoadSimulationInput_Executed()
     {
         // Create OpenFileDialog 
         var dialog = new Microsoft.Win32.OpenFileDialog
@@ -455,7 +451,7 @@ public class MonteCarloSolverViewModel : BindableObject
             if (simulationInput != null)
             {
                 _outputName = simulationInput.OutputName;
-                SimulationInputVM.SimulationInput = simulationInput;
+                SimulationInputVm.SimulationInput = simulationInput;
                 CanRunSimulation = true;
                 CanLoadInputFile = true;
                 if (simulationInput.Options.TrackStatistics)
@@ -497,7 +493,7 @@ public class MonteCarloSolverViewModel : BindableObject
         return null;
     }
 
-    private async Task MC_DownloadDefaultSimulationInput_Executed(object sender, ExecutedRoutedEventArgs e)
+    private async Task MC_DownloadDefaultSimulationInput_Executed()
     {
         using var dialog = new FolderBrowserDialog();
         var dialogResult = dialog.ShowDialog();
@@ -523,7 +519,7 @@ public class MonteCarloSolverViewModel : BindableObject
                 CanDownloadInfiles = false;
                 await Task.Run(() => MC_DownloadDefaultSimulationInputToFolder(folder));
                 CanDownloadInfiles = true;
-                Logger.Info(() => StringLookup.GetLocalizedString("Message_Done") + ".\r");
+                Logger.Info(() => StringLookup.GetLocalizedString(MessageDone) + ".\r");
             }
             catch (Exception)
             {
@@ -578,7 +574,7 @@ public class MonteCarloSolverViewModel : BindableObject
         }
     }
 
-    private async Task MC_SaveSimulationResults_Executed(object sender, ExecutedRoutedEventArgs e)
+    private async Task MC_SaveSimulationResults_Executed()
     {
         if (_output != null && _newResultsAvailable)
         {

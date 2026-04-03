@@ -80,7 +80,7 @@ public class SpectralMappingViewModel : BindableObject
 
         BloodConcentrationVm.PropertyChanged += (_, _) => UpdateOpticalProperties();
 
-        SelectedTissue = Tissues.First();
+        SelectedTissue = Tissues[0];
         ScatteringTypeVm.SelectedValue = SelectedTissue.ScattererType;
         // forces update to all bindings established in handler for ScatteringTypeVM.PropertyChanged above
         ScatteringTypeName = SelectedTissue.Scatterer.GetType().FullName;

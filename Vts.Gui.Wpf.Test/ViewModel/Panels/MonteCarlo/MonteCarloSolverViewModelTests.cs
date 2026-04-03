@@ -157,7 +157,7 @@ public class MonteCarloSolverViewModelTests
     {
         var viewModel = new MonteCarloSolverViewModel();
         var input = SimulationInputProvider.PointSourceOneLayerTissueAllDetectors();
-        var isValid = viewModel.MC_InfileIsValidForGUI(input);
+        var isValid = MonteCarloSolverViewModel.MC_InfileIsValidForGUI(input);
         Assert.That(isValid, Is.True);
     }
 
@@ -166,7 +166,7 @@ public class MonteCarloSolverViewModelTests
     {
         var viewModel = new MonteCarloSolverViewModel();
         var input = SimulationInputProvider.Flat2DSourceTwoLayerBoundedTissueAOfRhoAndZDetector();
-        var isValid = viewModel.MC_InfileIsValidForGUI(input);
+        var isValid = MonteCarloSolverViewModel.MC_InfileIsValidForGUI(input);
         Assert.That(isValid, Is.False);
     }
 

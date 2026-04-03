@@ -23,6 +23,8 @@ namespace Vts.Gui.Wpf.ViewModel;
 /// </summary>
 public class FluenceSolverViewModel : BindableObject
 {
+    private const string StoryboardKey = "WaitStoryboard";
+
     // the following function determines a flattened mua array for layered tissue
     private static readonly Func<ILayerOpticalPropertyRegion[], double[], double[], double[]>
         GetRhoZMuaArrayFromLayerRegions = (regions, rhos, zs) =>
@@ -300,7 +302,7 @@ public class FluenceSolverViewModel : BindableObject
         try
         {
             MainWindow.Current.Wait.Visibility = Visibility.Visible;
-            ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Begin();
+            ((Storyboard)MainWindow.Current.FindResource(StoryboardKey)).Begin();
             try
             {
                 await GetMapData();
@@ -315,13 +317,13 @@ public class FluenceSolverViewModel : BindableObject
 
         catch (OperationCanceledException)
         {
-            ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+            ((Storyboard) MainWindow.Current.FindResource(StoryboardKey)).Stop();
             MainWindow.Current.Wait.Visibility = Visibility.Hidden;
             WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("Operation Cancelled\r");
         }
         finally
         {
-            ((Storyboard) MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+            ((Storyboard) MainWindow.Current.FindResource(StoryboardKey)).Stop();
             MainWindow.Current.Wait.Visibility = Visibility.Hidden;
             CanRunSolver = true;
         }
@@ -354,7 +356,7 @@ public class FluenceSolverViewModel : BindableObject
     {
         CanCancelSolver = false;
         _currentCancellationTokenSource?.Cancel();
-        ((Storyboard)MainWindow.Current.FindResource("WaitStoryboard")).Stop();
+        ((Storyboard)MainWindow.Current.FindResource(StoryboardKey)).Stop();
         MainWindow.Current.Wait.Visibility = Visibility.Hidden;
         WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("Canceling... \r");
 
@@ -439,7 +441,7 @@ public class FluenceSolverViewModel : BindableObject
                         new SemiInfiniteTissueInput(
                             new SemiInfiniteTissueRegion(_currentHomogeneousOpticalProperties));
                 return new OpticalPropertyViewModel(
-                    _currentSemiInfiniteTissueInput.Regions.First().RegionOP,
+                    _currentSemiInfiniteTissueInput.Regions[0].RegionOP,
                     IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
                     StringLookup.GetLocalizedString("Heading_OpticalProperties"));
             case "MultiLayer":
@@ -483,15 +485,11 @@ public class FluenceSolverViewModel : BindableObject
 
         if (ComputationFactory.IsSolverWithConstantValues(sd.SelectedValue))
         {
-            switch (sd.SelectedValue)
+            constantValues = sd.SelectedValue switch
             {
-                case FluenceSolutionDomainType.FluenceOfRhoAndZAndFt:
-                    constantValues = [TimeModulationFrequency];
-                    break;
-                default:
-                    constantValues = [sd.ConstantAxesVMs[0].AxisValue];
-                    break;
-            }
+                FluenceSolutionDomainType.FluenceOfRhoAndZAndFt => [TimeModulationFrequency],
+                _ => [sd.ConstantAxesVMs[0].AxisValue]
+            };
         }
 
         var independentAxes =

@@ -23,10 +23,10 @@ public class FluenceSolutionDomainOptionViewModel : AbstractSolutionDomainOption
         {
             if (sender is FluenceSolutionDomainOptionViewModel && args.PropertyName == "SelectedValue")
             {
-                UpdateOptions();
+                UpdateOptions("IndependentAxis");
             }
         };
-        UpdateOptions();
+        UpdateOptions("IndependentAxis");
     }
 
     public FluenceSolutionDomainOptionViewModel()
@@ -65,40 +65,40 @@ public class FluenceSolutionDomainOptionViewModel : AbstractSolutionDomainOption
 
     public override int NativeAxesCount => 1;
 
-    private void UpdateOptions()
+    private void UpdateOptions(string groupName)
     {
         switch (SelectedValue)
         {
             case FluenceSolutionDomainType.FluenceOfRhoAndZ:
                 IndependentVariableAxisOptionVm =
-                    new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                    new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         [IndependentVariableAxis.Rho]);
                 FluenceOfRhoAndZOption.IsSelected = true;
                     //added to force the radio button when it is changed programatically
                 break;
             case FluenceSolutionDomainType.FluenceOfFxAndZ:
                 IndependentVariableAxisOptionVm =
-                    new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                    new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         [IndependentVariableAxis.Fx]);
                 break;
             case FluenceSolutionDomainType.FluenceOfRhoAndZAndTime:
                 IndependentVariableAxisOptionVm =
-                    new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                    new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         [IndependentVariableAxis.Rho, IndependentVariableAxis.Time]);
                 break;
             case FluenceSolutionDomainType.FluenceOfFxAndZAndTime:
                 IndependentVariableAxisOptionVm =
-                    new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                    new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         [IndependentVariableAxis.Fx, IndependentVariableAxis.Time]);
                 break;
             case FluenceSolutionDomainType.FluenceOfRhoAndZAndFt:
                 IndependentVariableAxisOptionVm =
-                    new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                    new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         [IndependentVariableAxis.Rho, IndependentVariableAxis.Ft]);
                 break;
             case FluenceSolutionDomainType.FluenceOfFxAndZAndFt:
                 IndependentVariableAxisOptionVm =
-                    new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                    new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         [IndependentVariableAxis.Fx, IndependentVariableAxis.Ft]);
                 break;
             default:

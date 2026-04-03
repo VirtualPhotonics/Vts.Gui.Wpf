@@ -14,7 +14,7 @@ public partial class PlotView : UserControl
 
     private void ExportImage_Click(object sender, RoutedEventArgs e)
     {
-        ImageTools.SaveUIElementToPngImage(MyChart);
+        ImageTools.SaveUiElementToPngImage(MyChart);
     }
 
     private void TextBox_KeyDown(object sender, KeyEventArgs e)

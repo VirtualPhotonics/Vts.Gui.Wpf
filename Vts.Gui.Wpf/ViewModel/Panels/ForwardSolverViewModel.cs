@@ -310,7 +310,7 @@ public class ForwardSolverViewModel : BindableObject
         var sd = SolutionDomainTypeOptionVm;
         var axesLabels = new PlotAxesLabels(
             sd.SelectedDisplayName, sd.SelectedValue.GetUnits(),
-            sd.IndependentAxesVMs.First(vm => vm.AxisType == AllRangeVMs.First().AxisType),
+            sd.IndependentAxesVMs.First(vm => vm.AxisType == AllRangeVMs[0].AxisType),
             sd.ConstantAxesVMs)
         {
             IsComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVm.SelectedValue)
@@ -394,7 +394,7 @@ public class ForwardSolverViewModel : BindableObject
                         new SemiInfiniteTissueInput(
                             new SemiInfiniteTissueRegion(_currentHomogeneousOpticalProperties));
                 return new OpticalPropertyViewModel(
-                    _currentSemiInfiniteTissueInput.Regions.First().RegionOP,
+                    _currentSemiInfiniteTissueInput.Regions[0].RegionOP,
                     IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
                     "Optical Properties");
             case "MultiLayer":

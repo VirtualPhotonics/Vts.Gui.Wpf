@@ -26,7 +26,7 @@
         
         <ContentControl IsEnabled="{Binding CanRunSimulation, Mode=TwoWay}">
 
-        <StackPanel DataContext="{Binding SimulationInputVM, Mode=TwoWay}"
+        <StackPanel DataContext="{Binding SimulationInputVm, Mode=TwoWay}"
                     Margin="0,10,0,0">
                 <TextBlock Text="{Binding ConverterParameter=Label_BasicInfo, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" />
             <StackPanel Orientation="Horizontal" Margin="10,0,0,0">

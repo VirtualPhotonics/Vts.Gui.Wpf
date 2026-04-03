@@ -12,7 +12,7 @@ namespace Vts.Gui.Wpf.ViewModel.Helpers;
 /// </summary>
 public static class ImageTools
 {
-    public static void SaveUIElementToPngImage(Visual element)
+    public static void SaveUiElementToPngImage(Visual element)
     {
         // Create SaveFileDialog 
         var dialog = new SaveFileDialog

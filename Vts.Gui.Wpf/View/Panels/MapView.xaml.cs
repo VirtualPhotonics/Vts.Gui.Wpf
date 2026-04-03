@@ -15,7 +15,7 @@ public partial class MapView : UserControl
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-        ImageTools.SaveUIElementToPngImage(this);
+        ImageTools.SaveUiElementToPngImage(this);
     }
 
     private void TextBox_KeyDown(object sender, KeyEventArgs e)

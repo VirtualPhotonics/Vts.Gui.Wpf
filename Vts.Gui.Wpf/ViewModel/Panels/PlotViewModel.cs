@@ -26,7 +26,7 @@ public class DataPointCollection
 
 public class PlotPointCollection : ObservableCollection<Point[]>
 {
-    public PlotPointCollection(Point[][] points, IList<string> colorTags)
+    internal PlotPointCollection(Point[][] points, IList<string> colorTags)
         : base(points)
     {
         ColorTags = colorTags;
@@ -604,7 +604,7 @@ public class PlotViewModel : BindableObject, ITextFileService
 
     protected virtual void WriteExportedData(Tuple<FileStream,string> file, Encoding encoding)
     {
-        if (file == null || file.Item2 == "") return;
+        if (file is not { Item2: not "" }) return;
         var stream = file.Item1;
         using var sw = new StreamWriter(stream);
         sw.Write("%");

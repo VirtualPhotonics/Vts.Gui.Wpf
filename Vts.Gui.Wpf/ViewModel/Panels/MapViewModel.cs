@@ -52,8 +52,8 @@ public class MapViewModel : BindableObject
         PlotMap = new RelayCommand<object>(PlotMap_Executed);
         ClearMap = new RelayCommand<object>(ClearMap_Executed);
 
-        ExportDataToTextCommand = new RelayCommand(() => Maps_ExportDataToText_Executed());
-        DuplicateWindowCommand = new RelayCommand(() => Map_DuplicateWindow_Executed());
+        ExportDataToTextCommand = new RelayCommand(Maps_ExportDataToText_Executed);
+        DuplicateWindowCommand = new RelayCommand(Map_DuplicateWindow_Executed);
     }
 
     public RelayCommand<object> PlotMap { get; set; }
@@ -360,45 +360,5 @@ public class MapViewModel : BindableObject
         var b = _colormap.BlueByte[value];
 
         return (a << 24) | (r << 16) | (g << 8) | b;
-    }
-
-    /// <summary>
-    ///     An internal class that separates out the providing of sample (test) data.
-    /// </summary>
-    /// <remarks> Helps to separate desired behavior of above class from any data-specific concerns. </remarks>
-    private static class SampleBitmapDataProvider
-    {
-        private static double _xPhase;
-        private static double _yPhase = Math.PI;
-
-        public static MapData GetSampleBitmapData()
-        {
-            var tempData = new double[600, 600];
-
-            _xPhase -= 21/180.0*Math.PI;
-            _yPhase += 7/180.0*Math.PI;
-
-            var width = tempData.GetLength(0);
-            var height = tempData.GetLength(1);
-            for (var col = 0; col < height; col++)
-            {
-                for (var row = 0; row < width; row++)
-                {
-                    var x = .01*col;
-                    var y = .02*row;
-
-                    tempData[row, col] =
-                        (Math.Sin(Math.Pow(_yPhase/Math.PI*x, 2) - Math.Pow(_xPhase/Math.PI*y, 2)) + _xPhase +
-                         _yPhase)*
-                        Math.Cos(x + _xPhase)*Math.Sin(y + _yPhase);
-                }
-            }
-
-            return MapData.Create(tempData,
-                [.. Enumerable.Range(0, width).Select(i => (double) i)],
-                [.. Enumerable.Range(0, height).Select(i => (double) i)],
-                [.. Enumerable.Range(0, width).Select(i => 1D)],
-                [.. Enumerable.Range(0, height).Select(i => 1D)]);
-        }
     }
 }
