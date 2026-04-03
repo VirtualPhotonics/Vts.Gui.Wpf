@@ -145,7 +145,7 @@ public partial class MainWindow
             AllowsTransparency = true
         };
 
-        closeButton.Click += (sender, e) => { newViewWindow.IsOpen = false; };
+        closeButton.Click += (_, _) => { newViewWindow.IsOpen = false; };
 
         newViewWindow.MouseDown += (sender, e) => {
             if (e.ChangedButton != MouseButton.Left) return;
@@ -155,7 +155,7 @@ public partial class MainWindow
             thumb.RaiseEvent(e);
         };
 
-        thumb.DragDelta += (sender, e) => {
+        thumb.DragDelta += (_, e) => {
             newViewWindow.HorizontalOffset += e.HorizontalChange;
             newViewWindow.VerticalOffset += e.VerticalChange;
         };

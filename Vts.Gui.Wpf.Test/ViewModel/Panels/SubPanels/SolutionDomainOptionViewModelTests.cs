@@ -48,7 +48,7 @@ public class SolutionDomainOptionViewModelTests
     {
         Assert.Throws<NotImplementedException>(() =>
         {
-            var solutionDomainOptionViewModel = new SolutionDomainOptionViewModel("InvalidOption", (SolutionDomainType) 99);
+            var _ = new SolutionDomainOptionViewModel("InvalidOption", (SolutionDomainType) 99);
         });
     }
 }

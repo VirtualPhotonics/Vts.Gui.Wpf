@@ -50,7 +50,7 @@ public class FluenceSolutionDomainOptionViewModelTests
     {
         Assert.Throws<NotImplementedException>(() =>
         {
-            var viewModel = new FluenceSolutionDomainOptionViewModel
+            var _ = new FluenceSolutionDomainOptionViewModel
             {
                 SelectedValue = (FluenceSolutionDomainType) 99
             };

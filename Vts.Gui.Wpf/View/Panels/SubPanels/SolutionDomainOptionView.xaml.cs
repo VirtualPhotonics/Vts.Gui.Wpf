@@ -14,15 +14,13 @@ public partial class SolutionDomainOptionView : UserControl
 
     private void StackPanel_LayoutUpdated(object sender, EventArgs e)
     {
-        var stackPanel = sender as StackPanel;
-        if (stackPanel != null)
+        if (sender is StackPanel stackPanel)
             stackPanel.VerticalAlignment = VerticalAlignment.Top;
     }
 
     private void TextBox_KeyDown(object sender, KeyEventArgs e)
     {
-        var tbx = sender as TextBox;
-        if (tbx != null && e.Key == Key.Enter)
-            tbx.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+        if (sender is TextBox tbx && e.Key == Key.Enter)
+            tbx.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
     }
 }

@@ -38,14 +38,14 @@ public class SimulationInputViewModel : BindableObject
             ]);
 #endif
         UpdateTissueTypeVm(_simulationInput.TissueInput.TissueType);
-        _simulationOptionsVm.PropertyChanged += (sender, args) =>
+        _simulationOptionsVm.PropertyChanged += (_, _) =>
         {
             if (_simulationOptionsVm.TrackStatistics && _simulationOptionsVm.OutputFolder != null)
             {
                 _simulationInput.OutputName = Path.Combine(_simulationOptionsVm.OutputFolder, _outputName) ;
             }
         };
-        _tissueTypeVm.PropertyChanged += (sender, args) =>
+        _tissueTypeVm.PropertyChanged += (_, _) =>
         {
             _simulationInput.TissueInput = _tissueTypeVm.SelectedValue switch
             {
