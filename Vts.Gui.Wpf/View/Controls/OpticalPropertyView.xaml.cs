@@ -17,6 +17,6 @@ public partial class OpticalPropertyView : UserControl
     private void TextBox_KeyDown(object sender, KeyEventArgs e)
     {
         if (sender is TextBox tbx && e.Key == Key.Enter)
-            tbx.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+            tbx.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
     }
 }

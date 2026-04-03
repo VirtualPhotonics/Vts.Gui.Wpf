@@ -49,15 +49,13 @@ public class BloodConcentrationViewModel : BindableObject
                 field.PropertyChanged -= Func;
             }
 
-            if (value != null)
-            {
-                field = value;
-                OnPropertyChanged(nameof(HbO2));
-                // subscribe to the new property changed event
-                field.PropertyChanged += (_, _) => UpdateStO2AndTotalHb();
-                // make sure that whatever's bound to StO2 and TotalHb will update
-                UpdateStO2AndTotalHb();
-            }
+            if (value == null) return;
+            field = value;
+            OnPropertyChanged(nameof(HbO2));
+            // subscribe to the new property changed event
+            field.PropertyChanged += (_, _) => UpdateStO2AndTotalHb();
+            // make sure that whatever's bound to StO2 and TotalHb will update
+            UpdateStO2AndTotalHb();
         }
     }
 
@@ -76,16 +74,14 @@ public class BloodConcentrationViewModel : BindableObject
                 field.PropertyChanged -= Func;
             }
 
-            if (value != null)
-            {
-                field = value;
-                //_Hb.Concentration = FormatOutput(_Hb.Concentration);
-                OnPropertyChanged(nameof(Hb));
-                // subscribe to the new property changed event
-                field.PropertyChanged += (_, _) => UpdateStO2AndTotalHb();
-                // make sure that whatever's bound to StO2 and TotalHb will update
-                UpdateStO2AndTotalHb();
-            }
+            if (value == null) return;
+            field = value;
+            //_Hb.Concentration = FormatOutput(_Hb.Concentration);
+            OnPropertyChanged(nameof(Hb));
+            // subscribe to the new property changed event
+            field.PropertyChanged += (_, _) => UpdateStO2AndTotalHb();
+            // make sure that whatever's bound to StO2 and TotalHb will update
+            UpdateStO2AndTotalHb();
         }
     }
 
