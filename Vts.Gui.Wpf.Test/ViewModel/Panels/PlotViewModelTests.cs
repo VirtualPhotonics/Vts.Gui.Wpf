@@ -29,11 +29,11 @@ public class DataPointCollectionTests
         var dataPointCollection = new DataPointCollection
         {
             Title = "Title",
-            DataPoints = new IDataPoint[]
-            {
+            DataPoints =
+            [
                 new DoubleDataPoint(0, 0), 
                 new DoubleDataPoint(1, 1)
-            },
+            ],
             ColorTag = "HSV"
         };
         Assert.That(dataPointCollection.Title, Is.EqualTo("Title"));
@@ -160,7 +160,7 @@ public class PlotViewModelTests
             new Point(8, 8),
             new Point(9, 9)
         };
-        _plotData = new[] { new PlotData(points, "Diagonal Line") };
+        _plotData = [new PlotData(points, "Diagonal Line")];
         _plotViewModel = new PlotViewModel();
         _plotViewModel.PlotValues.Execute(_plotData);
     }
@@ -213,20 +213,22 @@ public class PlotViewModelTests
             new IndependentAxisViewModel 
             {
                 AxisLabel = "independent",
-                AxisRangeVM = new RangeViewModel(new DoubleRange(0.5, 9.5, 19), "mm", IndependentVariableAxis.Rho, "Detector Positions"),
+                AxisRangeVm = new RangeViewModel(new DoubleRange(0.5, 9.5, 19), "mm", IndependentVariableAxis.Rho, "Detector Positions"),
                 AxisType = IndependentVariableAxis.Rho,
                 AxisUnits = "units"
-            }, 
-            new[] { new ConstantAxisViewModel
+            },
+            [
+                new ConstantAxisViewModel
             {
                 AxisLabel = "t",
                 AxisType = IndependentVariableAxis.Time,
                 AxisUnits = "ns",
                 AxisValue = 0.05,
                 ImageHeight = 1
-            }});
+            }
+            ]);
         viewModel.SetAxesLabels.Execute(labels);
-        Assert.That(viewModel.Title, Is.EqualTo($"dependent [units] versus independent [units]"));
+        Assert.That(viewModel.Title, Is.EqualTo("dependent [units] versus independent [units]"));
         Assert.That(viewModel.AdditionalPlotValue, Is.EqualTo($"t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns"));
         var constantAxes = new[]
         {
@@ -249,7 +251,7 @@ public class PlotViewModelTests
         };
         labels.ConstantAxes = constantAxes;
         viewModel.SetAxesLabels.Execute(labels);
-        Assert.That(viewModel.Title, Is.EqualTo($"dependent [units] versus independent [units]"));
+        Assert.That(viewModel.Title, Is.EqualTo("dependent [units] versus independent [units]"));
         Assert.That(viewModel.AdditionalPlotValue, Is.EqualTo($"t = {0.05.ToString(Thread.CurrentThread.CurrentCulture)} ns\rz = {0.1.ToString(Thread.CurrentThread.CurrentCulture)} mm"));
     }
 
@@ -411,7 +413,7 @@ public class PlotViewModelTests
     public void Verify_clear_plot_single()
     {
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(_plotData);
         plotViewModel.PlotValues.Execute(_plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
@@ -423,7 +425,7 @@ public class PlotViewModelTests
     public void Verify_clear_plot_all()
     {
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(_plotData);
         plotViewModel.PlotValues.Execute(_plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
@@ -435,7 +437,7 @@ public class PlotViewModelTests
     public void Verify_duplicate_window()
     {
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(_plotData);
         // there is not an instance of window so duplicate with throw an error
         Assert.Throws<NullReferenceException>(() => plotViewModel.DuplicateWindowCommand.Execute(plotViewModel));
@@ -444,7 +446,8 @@ public class PlotViewModelTests
     [Test]
     public void Verify_complex_plot()
     {
-        IDataPoint[] points = {
+        IDataPoint[] points =
+        [
             new ComplexDataPoint(0, new Complex(0, 1)),
             new ComplexDataPoint(1, new Complex(1, 2)),
             new ComplexDataPoint(2, new Complex(2, 3)),
@@ -455,7 +458,7 @@ public class PlotViewModelTests
             new ComplexDataPoint(7, new Complex(7, 8)),
             new ComplexDataPoint(8, new Complex(8, 9)),
             new ComplexDataPoint(9, new Complex(9, 10))
-        };
+        ];
         var plotData = new[] { new PlotData(points, "Complex plot") };
         var plotViewModel = new PlotViewModel();
         plotViewModel.PlotValues.Execute(plotData);
@@ -473,7 +476,8 @@ public class PlotViewModelTests
     [Test]
     public void Verify_complex_derivative_plot()
     {
-        IDataPoint[] points = {
+        IDataPoint[] points =
+        [
             new ComplexDerivativeDataPoint(
                 0, 
                 new Complex(0, 1),
@@ -493,8 +497,8 @@ public class PlotViewModelTests
                 3,
                 new Complex(4, 5),
                 new Complex(5, 6),
-                ForwardAnalysisType.dRdMua),
-        };
+                ForwardAnalysisType.dRdMua)
+        ];
         var plotData = new[] { new PlotData(points, "Complex derivative plot") };
         var plotViewModel = new PlotViewModel();
         plotViewModel.PlotValues.Execute(plotData);
@@ -513,7 +517,7 @@ public class PlotViewModelTests
     public void Verify_max_normalization()
     {
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(_plotData);
         plotViewModel.PlotValues.Execute(_plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
@@ -532,7 +536,7 @@ public class PlotViewModelTests
     public void Verify_curve_normalization()
     {
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(_plotData);
         plotViewModel.PlotValues.Execute(_plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(2));
@@ -553,7 +557,8 @@ public class PlotViewModelTests
     [TestCase(PlotToggleType.Amp)]
     public void Verify_max_normalization_phase_amp_complex(PlotToggleType toggleType)
     {
-        IDataPoint[] points = {
+        IDataPoint[] points =
+        [
             new ComplexDataPoint(0, new Complex(0, 1)),
             new ComplexDataPoint(1, new Complex(1, 2)),
             new ComplexDataPoint(2, new Complex(2, 3)),
@@ -564,10 +569,10 @@ public class PlotViewModelTests
             new ComplexDataPoint(7, new Complex(7, 8)),
             new ComplexDataPoint(8, new Complex(8, 9)),
             new ComplexDataPoint(9, new Complex(9, 10))
-        };
+        ];
         var plotData = new[] { new PlotData(points, "Complex plot") };
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotToggleTypeOptionVm.SelectedValue = toggleType;
         plotViewModel.PlotValues.Execute(plotData);
         plotViewModel.PlotValues.Execute(plotData);
@@ -586,7 +591,8 @@ public class PlotViewModelTests
     [Test]
     public void Verify_curve_normalization_complex()
     {
-        IDataPoint[] points = {
+        IDataPoint[] points =
+        [
             new ComplexDataPoint(2, new Complex(5, 1)),
             new ComplexDataPoint(1, new Complex(1, 2)),
             new ComplexDataPoint(2, new Complex(2, 3)),
@@ -597,10 +603,10 @@ public class PlotViewModelTests
             new ComplexDataPoint(7, new Complex(7, 8)),
             new ComplexDataPoint(8, new Complex(8, 9)),
             new ComplexDataPoint(9, new Complex(9, 10))
-        };
+        ];
         var plotData = new[] { new PlotData(points, "Complex plot") };
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(plotData);
         plotViewModel.PlotValues.Execute(plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(4));
@@ -621,7 +627,8 @@ public class PlotViewModelTests
     [TestCase(PlotToggleType.Amp)]
     public void Verify_max_normalization_phase_amp_complex_derivative(PlotToggleType toggleType)
     {
-        IDataPoint[] points = {
+        IDataPoint[] points =
+        [
             new ComplexDerivativeDataPoint(
                 0,
                 new Complex(0, 1),
@@ -641,11 +648,11 @@ public class PlotViewModelTests
                 3,
                 new Complex(4, 5),
                 new Complex(5, 6),
-                ForwardAnalysisType.dRdMua),
-        };
+                ForwardAnalysisType.dRdMua)
+        ];
         var plotData = new[] { new PlotData(points, "Complex derivative plot") };
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotToggleTypeOptionVm.SelectedValue = toggleType;
         plotViewModel.PlotValues.Execute(plotData);
         plotViewModel.PlotValues.Execute(plotData);
@@ -664,7 +671,8 @@ public class PlotViewModelTests
     [Test]
     public void Verify_curve_normalization_complex_derivative()
     {
-        IDataPoint[] points = {
+        IDataPoint[] points =
+        [
             new ComplexDerivativeDataPoint(
                 0,
                 new Complex(0, 1),
@@ -684,11 +692,11 @@ public class PlotViewModelTests
                 3,
                 new Complex(4, 5),
                 new Complex(5, 6),
-                ForwardAnalysisType.dRdMua),
-        };
+                ForwardAnalysisType.dRdMua)
+        ];
         var plotData = new[] { new PlotData(points, "Complex derivative plot") };
         var windowViewModel = new WindowViewModel();
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         plotViewModel.PlotValues.Execute(plotData);
         plotViewModel.PlotValues.Execute(plotData);
         Assert.That(plotViewModel.PlotModel.Series.Count, Is.EqualTo(4));
@@ -705,7 +713,7 @@ public class PlotViewModelTests
 
     /// <summary>
     /// ExportDataToTextCommand brings up Dialog window so not tested
-    /// DuplicateWindowCommand - not sure if can test 
+    /// DuplicateWindowCommand - not sure if we can test 
     /// </summary>
 
     /// <summary>
@@ -716,7 +724,7 @@ public class PlotViewModelTests
     public void Verify_ExportDataToText_correct_when_X_and_Y_scaling_set_to_log()
     {
         // clear any prior test results
-        const string exportFilename = "testexportdata.txt";
+        const string exportFilename = "TestExportData.txt";
         FileIO.FileDelete(exportFilename);
 
         var points = new[]
@@ -771,18 +779,18 @@ public class PlotViewModelTests
     public void Verify_ExportDataToText_correct_when_complex_data_plotted()
     {
         // clear any prior test results
-        const string exportFilename = "testexportdata.txt";
+        const string exportFilename = "TestExportData.txt";
         FileIO.FileDelete(exportFilename);
 
         IDataPoint[] points =
-        {
+        [
             new ComplexDataPoint(1, new Complex(1, 1)),
             new ComplexDataPoint(2, new Complex(2, 2)),
             new ComplexDataPoint(3, new Complex(3, 3)),
             new ComplexDataPoint(4, new Complex(4, 4)),
             new ComplexDataPoint(5, new Complex(5, 5)),
-            new ComplexDataPoint(6, new Complex(6, 6)),
-        };
+            new ComplexDataPoint(6, new Complex(6, 6))
+        ];
         // plot the data to be saved
         var plotData = new[] { new PlotData(points, "Real and Imaginary Lines") };
 
@@ -816,7 +824,6 @@ public class PlotViewModelTests
             Assert.That(data[1], Is.EqualTo(t.Y.Real.ToString(CultureInfo.InvariantCulture)));
             // check imaginary value
             Assert.That(data[1], Is.EqualTo(t.Y.Imaginary.ToString(CultureInfo.InvariantCulture)));
-
         }
     }
 

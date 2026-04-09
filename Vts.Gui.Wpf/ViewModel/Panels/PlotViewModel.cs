@@ -26,7 +26,7 @@ public class DataPointCollection
 
 public class PlotPointCollection : ObservableCollection<Point[]>
 {
-    public PlotPointCollection(Point[][] points, IList<string> colorTags)
+    internal PlotPointCollection(Point[][] points, IList<string> colorTags)
         : base(points)
     {
         ColorTags = colorTags;
@@ -53,7 +53,7 @@ public class PlotPointCollection : ObservableCollection<Point[]>
 
     public PlotPointCollection Clone()
     {
-        return new PlotPointCollection(this.Select(points => points).ToArray(),
+        return new PlotPointCollection([.. this.Select(points => points)],
             ColorTags.Select(name => name).ToArray());
     }
 }
@@ -341,7 +341,7 @@ public class PlotViewModel : BindableObject, ITextFileService
             if (_clearPlot && ShowInPlotView)
             {
                 ClearPlot();
-                WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
+                WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(
                     StringLookup.GetLocalizedString("Message_PlotViewCleared") + "\r");
             }
 
@@ -492,11 +492,11 @@ public class PlotViewModel : BindableObject, ITextFileService
         plotToClone._plotViewId += 1;
 
         output.Title = plotToClone.Title;
-        output.PlotTitles = plotToClone.PlotTitles.ToList();
+        output.PlotTitles = [.. plotToClone.PlotTitles];
         output.PlotType = plotToClone.PlotType;
         output.HoldOn = plotToClone.HoldOn;
         output.PlotSeriesCollection = [];
-        output.Labels = plotToClone._labels.ToList();
+        output.Labels = [.. plotToClone._labels];
         output.CustomPlotLabel = plotToClone.CustomPlotLabel;
         output.ShowInPlotView = false;
         output.ShowAxes = plotToClone.ShowAxes;
@@ -526,14 +526,14 @@ public class PlotViewModel : BindableObject, ITextFileService
         output.XAxisSpacingOptionVm.Options[plotToClone._xAxisSpacingOptionVm.SelectedValue].IsSelected = true;
 
         output.DataSeriesCollection =
-            plotToClone.DataSeriesCollection.Select(
+            [.. plotToClone.DataSeriesCollection.Select(
                 ds =>
                     new DataPointCollection
                     {
-                        DataPoints = ds.DataPoints.Select(val => val).ToArray(),
+                        DataPoints = [.. ds.DataPoints.Select(val => val)],
                         ColorTag = ds.ColorTag,
                         Title = ds.Title
-                    }).ToList();
+                    })];
         // add a property at the end that will call UpdatePlotSeries so the plot data is in the clone
         output.HideKey = plotToClone.HideKey;
         return output;
@@ -604,7 +604,7 @@ public class PlotViewModel : BindableObject, ITextFileService
 
     protected virtual void WriteExportedData(Tuple<FileStream,string> file, Encoding encoding)
     {
-        if (file == null || file.Item2 == "") return;
+        if (file is not { Item2: not "" }) return;
         var stream = file.Item1;
         using var sw = new StreamWriter(stream);
         sw.Write("%");
@@ -830,14 +830,14 @@ public class PlotViewModel : BindableObject, ITextFileService
         double[] tempIm = null;
         if (normToCurve)
         {
-            tempAmp = (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
-                       select dp.Y.Magnitude).ToArray();
-            tempPh = (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
-                      select dp.Y.Phase * (-180 / Math.PI)).ToArray();
-            tempRe = (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
-                      select dp.Y.Real).ToArray();
-            tempIm = (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
-                      select dp.Y.Imaginary).ToArray();
+            tempAmp = [.. (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
+                       select dp.Y.Magnitude)];
+            tempPh = [.. (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
+                      select dp.Y.Phase * (-180 / Math.PI))];
+            tempRe = [.. (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
+                      select dp.Y.Real)];
+            tempIm = [.. (from ComplexDataPoint dp in DataSeriesCollection[0].DataPoints
+                      select dp.Y.Imaginary)];
         }
 
         var curveIndex = 0;
@@ -931,7 +931,7 @@ public class PlotViewModel : BindableObject, ITextFileService
                 lineSeriesB.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_Real");
                 lineSeriesB.MarkerType = MarkerType.Circle;
                 PlotModel.Series.Add(lineSeriesB);
-                PlotSeriesCollection.Add(tempPointArrayB.ToArray());
+                PlotSeriesCollection.Add([.. tempPointArrayB]);
                 break;
             case PlotToggleType.Phase:
                 lineSeriesA.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_Phase");
@@ -943,7 +943,7 @@ public class PlotViewModel : BindableObject, ITextFileService
         lineSeriesA.MarkerType = MarkerType.Circle;
         PlotModel.Series.Add(lineSeriesA);
         PlotModel.Title = PlotTitles[^1];
-        PlotSeriesCollection.Add(tempPointArrayA.ToArray());
+        PlotSeriesCollection.Add([.. tempPointArrayA]);
     }
 
     private void GenerateComplexDerivativePlot(DataPointCollection dataPointCollection, bool normToMax, bool normToCurve)
@@ -982,14 +982,14 @@ public class PlotViewModel : BindableObject, ITextFileService
         double[] tempIm = null;
         if (normToCurve)
         {
-            tempAmp = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
-                       select dp.AmplitudeDerivative).ToArray();
-            tempPh = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
-                      select dp.PhaseDerivative * (-180 / Math.PI)).ToArray();
-            tempRe = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
-                      select dp.Dy.Real).ToArray();
-            tempIm = (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
-                      select dp.Dy.Imaginary).ToArray();
+            tempAmp = [.. (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
+                       select dp.AmplitudeDerivative)];
+            tempPh = [.. (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
+                      select dp.PhaseDerivative * (-180 / Math.PI))];
+            tempRe = [.. (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
+                      select dp.Dy.Real)];
+            tempIm = [.. (from ComplexDerivativeDataPoint dp in DataSeriesCollection[0].DataPoints
+                      select dp.Dy.Imaginary)];
         }
 
         var curveIndex = 0;
@@ -1078,7 +1078,7 @@ public class PlotViewModel : BindableObject, ITextFileService
                 lineSeriesB.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_RealDerivative");
                 lineSeriesB.MarkerType = MarkerType.Circle;
                 PlotModel.Series.Add(lineSeriesB);
-                PlotSeriesCollection.Add(tempPointArrayB.ToArray());
+                PlotSeriesCollection.Add([.. tempPointArrayB]);
                 break;
             case PlotToggleType.Phase:
                 lineSeriesA.Title = dataPointCollection.Title + StringLookup.GetLocalizedString("Label_PhaseDerivative");
@@ -1090,7 +1090,7 @@ public class PlotViewModel : BindableObject, ITextFileService
         lineSeriesA.MarkerType = MarkerType.Circle;
         PlotModel.Series.Add(lineSeriesA);
         PlotModel.Title = PlotTitles[^1];
-        PlotSeriesCollection.Add(tempPointArrayA.ToArray());
+        PlotSeriesCollection.Add([.. tempPointArrayA]);
     }
 
     private void GenerateNonComplexPlot(DataPointCollection dataPointCollection, bool normToMax, bool normToCurve)
@@ -1107,7 +1107,7 @@ public class PlotViewModel : BindableObject, ITextFileService
         double[] tempY = null;
         if (normToCurve)
         {
-            tempY = (from DoubleDataPoint dp in DataSeriesCollection[0].DataPoints select dp.Y).ToArray();
+            tempY = [.. (from DoubleDataPoint dp in DataSeriesCollection[0].DataPoints select dp.Y)];
         }
 
         var curveIndex = 0;
@@ -1141,7 +1141,7 @@ public class PlotViewModel : BindableObject, ITextFileService
         lineSeriesA.MarkerType = MarkerType.Circle;
         PlotModel.Series.Add(lineSeriesA);
         PlotModel.Title = PlotTitles[^1];
-        PlotSeriesCollection.Add(tempPointArrayA.ToArray());
+        PlotSeriesCollection.Add([.. tempPointArrayA]);
     }
 
     /// <summary>

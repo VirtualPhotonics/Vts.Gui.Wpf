@@ -3,22 +3,14 @@ namespace Vts.Gui.Wpf.ViewModel;
 /// <summary>
 ///     Data structure to hold data for plot information
 /// </summary>
-public class PlotAxesLabels
+public class PlotAxesLabels(
+    string dependentAxisName, string dependentAxisUnits,
+    IndependentAxisViewModel independentAxis,
+    ConstantAxisViewModel[] constantAxes = null)
 {
-    public PlotAxesLabels(
-        string dependentAxisName, string dependentAxisUnits,
-        IndependentAxisViewModel independentAxis,
-        ConstantAxisViewModel[] constantAxes = null)
-    {
-        DependentAxisName = dependentAxisName;
-        DependentAxisUnits = dependentAxisUnits;
-        IndependentAxis = independentAxis;
-        ConstantAxes = constantAxes ?? new ConstantAxisViewModel[0];
-    }
-
-    public string DependentAxisUnits { get; set; }
-    public string DependentAxisName { get; set; }
-    public IndependentAxisViewModel IndependentAxis { get; set; }
-    public ConstantAxisViewModel[] ConstantAxes { get; set; }
+    public string DependentAxisUnits { get; set; } = dependentAxisUnits;
+    public string DependentAxisName { get; set; } = dependentAxisName;
+    public IndependentAxisViewModel IndependentAxis { get; set; } = independentAxis;
+    public ConstantAxisViewModel[] ConstantAxes { get; set; } = constantAxes ?? [];
     public bool IsComplexPlot { get; set; }
 }

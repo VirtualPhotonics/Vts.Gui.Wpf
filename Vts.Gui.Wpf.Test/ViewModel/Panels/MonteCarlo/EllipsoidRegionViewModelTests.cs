@@ -23,7 +23,7 @@ public class EllipsoidRegionViewModelTests
         Assert.That(viewModel.IsEllipsoid, Is.True);
         Assert.That(viewModel.IsLayer, Is.False);
         Assert.That(viewModel.Units, Is.EqualTo(StringLookup.GetLocalizedString("Measurement_mm")));
-        Assert.That(viewModel.OpticalPropertyVM != null, Is.True);
+        Assert.That(viewModel.OpticalPropertyVm != null, Is.True);
     }
 
     [Test]
@@ -34,7 +34,7 @@ public class EllipsoidRegionViewModelTests
         Assert.That(viewModel.IsEllipsoid, Is.True);
         Assert.That(viewModel.IsLayer, Is.False);
         Assert.That(viewModel.Units, Is.EqualTo(StringLookup.GetLocalizedString("Measurement_mm")));
-        Assert.That(viewModel.OpticalPropertyVM != null, Is.True);
+        Assert.That(viewModel.OpticalPropertyVm != null, Is.True);
     }
 
     [Test]
@@ -58,7 +58,7 @@ public class EllipsoidRegionViewModelTests
             X = 0.1,
             Y = 0.2,
             Z = 0.3,
-            OpticalPropertyVM =
+            OpticalPropertyVm =
                 new OpticalPropertyViewModel(new OpticalProperties()
                     {
                         G = 0.8, Mua = 0.1, Musp = 0.01, N = 1.4
@@ -67,11 +67,11 @@ public class EllipsoidRegionViewModelTests
             Name = "NewName"
         };
         Assert.That(viewModel.Name, Is.EqualTo("NewName" + StringLookup.GetLocalizedString("Label_Tissue")));
-        Assert.That(viewModel.OpticalPropertyVM.Mua, Is.EqualTo(0.1));
-        Assert.That(viewModel.OpticalPropertyVM.G, Is.EqualTo(0.8));
-        Assert.That(viewModel.OpticalPropertyVM.Musp, Is.EqualTo(0.01));
-        Assert.That(viewModel.OpticalPropertyVM.N, Is.EqualTo(1.4));
-        Assert.That(viewModel.OpticalPropertyVM.Units, Is.EqualTo("cm"));
+        Assert.That(viewModel.OpticalPropertyVm.Mua, Is.EqualTo(0.1));
+        Assert.That(viewModel.OpticalPropertyVm.G, Is.EqualTo(0.8));
+        Assert.That(viewModel.OpticalPropertyVm.Musp, Is.EqualTo(0.01));
+        Assert.That(viewModel.OpticalPropertyVm.N, Is.EqualTo(1.4));
+        Assert.That(viewModel.OpticalPropertyVm.Units, Is.EqualTo("cm"));
         Assert.That(viewModel.X, Is.EqualTo(0.1));
         Assert.That(viewModel.Y, Is.EqualTo(0.2));
         Assert.That(viewModel.Z, Is.EqualTo(0.3));

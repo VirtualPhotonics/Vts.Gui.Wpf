@@ -16,7 +16,7 @@ public class TextOutputViewModelTests
     public void Verify_default_constructor_relay_command_correctly()
     {
         var textOutputVm = new TextOutputViewModel();
-        Assert.That(textOutputVm.TextOutput_PostMessage != null, Is.True);
+        Assert.That(textOutputVm.TextOutputPostMessage != null, Is.True);
     }
 
     /// <summary>
@@ -26,8 +26,8 @@ public class TextOutputViewModelTests
     public void Verify_relay_command_works_correctly()
     {
         var windowViewModel = new WindowViewModel();
-        var textOutputVm = windowViewModel.TextOutputVM;
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("UnitTest:");
+        var textOutputVm = windowViewModel.TextOutputVm;
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("UnitTest:");
         Assert.That(textOutputVm.Text, Is.EqualTo("UnitTest:"));
     }
 
@@ -35,7 +35,7 @@ public class TextOutputViewModelTests
     public void Verify_append_text_appends_text()
     {
         var windowViewModel = new WindowViewModel();
-        var textOutputVm = windowViewModel.TextOutputVM;
+        var textOutputVm = windowViewModel.TextOutputVm;
         textOutputVm.AppendText("Hello");
         Assert.That(textOutputVm.Text, Is.EqualTo("Hello"));
     }

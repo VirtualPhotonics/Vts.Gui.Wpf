@@ -9,7 +9,6 @@ internal class WindowViewModelTests
     [Test]
     public void Verify_version_returns_value()
     {
-        var windowViewModel = new WindowViewModel();
-        Assert.That(windowViewModel.Version, Is.Not.Null);
+        Assert.That(WindowViewModel.Version, Is.Not.Null);
     }
 }

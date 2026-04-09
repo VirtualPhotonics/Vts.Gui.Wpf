@@ -7,7 +7,7 @@ namespace Vts.Gui.Wpf.View;
 
 public partial class TextOutputView : UserControl
 {
-    private TextOutputViewModel _textOutputVM;
+    private TextOutputViewModel _textOutputVm;
 
     public TextOutputView()
     {
@@ -18,14 +18,14 @@ public partial class TextOutputView : UserControl
 
     private void TextOutputView_Loaded(object sender, RoutedEventArgs e)
     {
-        _textOutputVM = DataContext as TextOutputViewModel;
-        if (_textOutputVM != null)
+        _textOutputVm = DataContext as TextOutputViewModel;
+        if (_textOutputVm != null)
         {
-            _textOutputVM.PropertyChanged += textOutputVM_PropertyChanged;
+            _textOutputVm.PropertyChanged += textOutputVm_PropertyChanged;
         }
     }
 
-    private void textOutputVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void textOutputVm_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
 #if !DEBUG
         if (e.PropertyName == "Text")

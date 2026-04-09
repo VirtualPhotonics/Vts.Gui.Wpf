@@ -13,7 +13,7 @@ public class SolutionDomainOptionViewModel : AbstractSolutionDomainOptionViewMod
 
 
     public SolutionDomainOptionViewModel(string groupName, SolutionDomainType defaultType)
-        : base(groupName, defaultType)
+        : base(groupName)
     {
         _enableMultiAxis = true;
         _enableSpectralPanelInputs = true;
@@ -24,15 +24,13 @@ public class SolutionDomainOptionViewModel : AbstractSolutionDomainOptionViewMod
         ROfRhoAndFtOption = Options[SolutionDomainType.ROfRhoAndFt];
         ROfFxAndFtOption = Options[SolutionDomainType.ROfFxAndFt];
 
-        PropertyChanged += (sender, args) =>
+        PropertyChanged += (_, args) =>
         {
-            if (args.PropertyName == "SelectedValue" ||
-                args.PropertyName == "UseSpectralInputs" ||
-                args.PropertyName == "AllowMultiAxis")
-                UpdateOptions();
+            if (args.PropertyName is "SelectedValue" or "UseSpectralInputs" or "AllowMultiAxis")
+                UpdateOptions("IndependentAxis");
         };
         SelectedValue = defaultType;
-        UpdateOptions();
+        UpdateOptions("IndependentAxis");
     }
 
     public SolutionDomainOptionViewModel()
@@ -113,74 +111,70 @@ public class SolutionDomainOptionViewModel : AbstractSolutionDomainOptionViewMod
         }
     }
 
-    private void UpdateOptions()
+    private void UpdateOptions(string groupName)
     {
         switch (SelectedValue)
         {
             case SolutionDomainType.ROfRho:
-                IndependentVariableAxisOptionVM = UseSpectralInputs
-                    ? new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                IndependentVariableAxisOptionVm = UseSpectralInputs
+                    ? new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         IndependentVariableAxis.Rho,
-                        new[] {IndependentVariableAxis.Rho, IndependentVariableAxis.Wavelength}, AllowMultiAxis)
-                    : new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        IndependentVariableAxis.Rho, new[] {IndependentVariableAxis.Rho}, AllowMultiAxis);
+                        [IndependentVariableAxis.Rho, IndependentVariableAxis.Wavelength], AllowMultiAxis)
+                    : new OptionViewModel<IndependentVariableAxis>(groupName, false,
+                        IndependentVariableAxis.Rho, [IndependentVariableAxis.Rho], AllowMultiAxis);
                 ROfRhoOption.IsSelected = true;
                 break;
             case SolutionDomainType.ROfFx:
-                IndependentVariableAxisOptionVM = UseSpectralInputs
-                    ? new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                IndependentVariableAxisOptionVm = UseSpectralInputs
+                    ? new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         IndependentVariableAxis.Fx,
-                        new[] {IndependentVariableAxis.Fx, IndependentVariableAxis.Wavelength}, AllowMultiAxis)
-                    : new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        IndependentVariableAxis.Fx, new[] {IndependentVariableAxis.Fx}, AllowMultiAxis);
+                        [IndependentVariableAxis.Fx, IndependentVariableAxis.Wavelength], AllowMultiAxis)
+                    : new OptionViewModel<IndependentVariableAxis>(groupName, false,
+                        IndependentVariableAxis.Fx, [IndependentVariableAxis.Fx], AllowMultiAxis);
                 break;
             case SolutionDomainType.ROfRhoAndTime:
-                IndependentVariableAxisOptionVM = UseSpectralInputs
-                    ? new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                IndependentVariableAxisOptionVm = UseSpectralInputs
+                    ? new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         IndependentVariableAxis.Rho,
-                        new[]
-                        {
+                        [
                             IndependentVariableAxis.Rho, IndependentVariableAxis.Time,
                             IndependentVariableAxis.Wavelength
-                        }, AllowMultiAxis)
-                    : new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                        ], AllowMultiAxis)
+                    : new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         IndependentVariableAxis.Rho,
-                        new[] {IndependentVariableAxis.Rho, IndependentVariableAxis.Time}, AllowMultiAxis);
+                        [IndependentVariableAxis.Rho, IndependentVariableAxis.Time], AllowMultiAxis);
                 break;
             case SolutionDomainType.ROfFxAndTime:
-                IndependentVariableAxisOptionVM = UseSpectralInputs
-                    ? new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                IndependentVariableAxisOptionVm = UseSpectralInputs
+                    ? new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         IndependentVariableAxis.Fx,
-                        new[]
-                        {
+                        [
                             IndependentVariableAxis.Fx, IndependentVariableAxis.Time,
                             IndependentVariableAxis.Wavelength
-                        }, AllowMultiAxis)
-                    : new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        IndependentVariableAxis.Fx, new[] {IndependentVariableAxis.Fx, IndependentVariableAxis.Time},
+                        ], AllowMultiAxis)
+                    : new OptionViewModel<IndependentVariableAxis>(groupName, false,
+                        IndependentVariableAxis.Fx, [IndependentVariableAxis.Fx, IndependentVariableAxis.Time],
                         AllowMultiAxis);
                 break;
             case SolutionDomainType.ROfRhoAndFt:
-                IndependentVariableAxisOptionVM = UseSpectralInputs
-                    ? new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                IndependentVariableAxisOptionVm = UseSpectralInputs
+                    ? new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         IndependentVariableAxis.Rho,
-                        new[]
-                        {
+                        [
                             IndependentVariableAxis.Rho, IndependentVariableAxis.Ft, IndependentVariableAxis.Wavelength
-                        }, AllowMultiAxis)
-                    : new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        IndependentVariableAxis.Rho, new[] {IndependentVariableAxis.Rho, IndependentVariableAxis.Ft},
+                        ], AllowMultiAxis)
+                    : new OptionViewModel<IndependentVariableAxis>(groupName, false,
+                        IndependentVariableAxis.Rho, [IndependentVariableAxis.Rho, IndependentVariableAxis.Ft],
                         AllowMultiAxis);
                 break;
             case SolutionDomainType.ROfFxAndFt:
-                IndependentVariableAxisOptionVM = UseSpectralInputs
-                    ? new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
+                IndependentVariableAxisOptionVm = UseSpectralInputs
+                    ? new OptionViewModel<IndependentVariableAxis>(groupName, false,
                         IndependentVariableAxis.Fx,
-                        new[]
-                        {IndependentVariableAxis.Fx, IndependentVariableAxis.Ft, IndependentVariableAxis.Wavelength},
+                        [IndependentVariableAxis.Fx, IndependentVariableAxis.Ft, IndependentVariableAxis.Wavelength],
                         AllowMultiAxis)
-                    : new OptionViewModel<IndependentVariableAxis>("IndependentAxis", false,
-                        IndependentVariableAxis.Fx, new[] {IndependentVariableAxis.Fx, IndependentVariableAxis.Ft},
+                    : new OptionViewModel<IndependentVariableAxis>(groupName, false,
+                        IndependentVariableAxis.Fx, [IndependentVariableAxis.Fx, IndependentVariableAxis.Ft],
                         AllowMultiAxis);
                 break;
             default:
@@ -188,7 +182,7 @@ public class SolutionDomainOptionViewModel : AbstractSolutionDomainOptionViewMod
         }
 
         // create a new callback based on the new viewmodel
-        IndependentVariableAxisOptionVM.PropertyChanged += (s, a) => UpdateAxes();
+        IndependentVariableAxisOptionVm.PropertyChanged += (_, _) => UpdateAxes();
 
         UpdateAxes();
     }

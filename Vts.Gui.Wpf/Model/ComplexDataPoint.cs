@@ -4,28 +4,23 @@ using System.Numerics;
 
 namespace Vts.Gui.Wpf.Model;
 
-public sealed class ComplexDataPoint : IDataPoint, IEquatable<ComplexDataPoint>, IEqualityComparer<ComplexDataPoint>
+/// <summary>
+/// Constructor for the ComplexDataPoint
+/// </summary>
+/// <param name="x">A double representing the x value</param>
+/// <param name="y">A Complex number representing the y value</param>
+public sealed class ComplexDataPoint(double x, Complex y) : IDataPoint, IEquatable<ComplexDataPoint>, IEqualityComparer<ComplexDataPoint>
 {
-    /// <summary>
-    /// Constructor for the ComplexDataPoint
-    /// </summary>
-    /// <param name="x">A double representing the x value</param>
-    /// <param name="y">A Complex number representing the y value</param>
-    public ComplexDataPoint(double x, Complex y)
-    {
-        X = x;
-        Y = y;
-    }
 
     /// <summary>
     /// The X-coordinate value of this ComplexDataPoint structure.
     /// </summary>
-    public double X { get; set; }
+    public double X { get; set; } = x;
 
     /// <summary>
     /// The SY-coordinate value of this ComplexDataPoint structure.
     /// </summary>
-    public Complex Y { get; set; }
+    public Complex Y { get; set; } = y;
 
     /// <summary>
     /// Determines whether the specified object is a ComplexDataPoint and whether

@@ -34,9 +34,5 @@ public class MapViewModelTests
         var viewModel = new MapViewModel();
         viewModel.PlotMap.Execute(null);
         Assert.That(viewModel.Bitmap, Is.Null);
-
     }
-
-    /// ExportDataToTextCommand brings up Dialog window so not tested
-    /// DuplicateWindowCommand - not sure if can test 
 }

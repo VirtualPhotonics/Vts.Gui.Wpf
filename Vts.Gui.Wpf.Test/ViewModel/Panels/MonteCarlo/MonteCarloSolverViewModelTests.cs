@@ -118,7 +118,7 @@ public class MonteCarloSolverViewModelTests
         foreach (var filePath in _expectedFileNames.Select(fileName => Path.Combine(folder, fileName)))
         {
             Assert.That(File.Exists(filePath), Is.True, $"Expected file not found: {filePath}");
-            var simulationInput = viewModel.MC_ReadSimulationInputFromFile(filePath);
+            var simulationInput = MonteCarloSolverViewModel.MC_ReadSimulationInputFromFile(filePath);
             Assert.That(simulationInput, Is.Not.Null, $"Failed to read simulation input from file: {filePath}");
         }
     }
@@ -142,9 +142,8 @@ public class MonteCarloSolverViewModelTests
             file.Input.ToFile(file.Name);
         }
 
-        var viewModel = new MonteCarloSolverViewModel();
         const string noFile = "invalid_file.txt";
-        var simulationInput = viewModel.MC_ReadSimulationInputFromFile(noFile);
+        var simulationInput = MonteCarloSolverViewModel.MC_ReadSimulationInputFromFile(noFile);
         Assert.That(simulationInput, Is.Null);
         if (File.Exists(noFile))
         {
@@ -155,18 +154,16 @@ public class MonteCarloSolverViewModelTests
     [Test]
     public void Verify_MC_InfileIsValidForGUI_returns_true()
     {
-        var viewModel = new MonteCarloSolverViewModel();
         var input = SimulationInputProvider.PointSourceOneLayerTissueAllDetectors();
-        var isValid = viewModel.MC_InfileIsValidForGUI(input);
+        var isValid = MonteCarloSolverViewModel.MC_InfileIsValidForGUI(input);
         Assert.That(isValid, Is.True);
     }
 
     [Test]
     public void Verify_MC_InfileIsValidForGUI_returns_false()
     {
-        var viewModel = new MonteCarloSolverViewModel();
         var input = SimulationInputProvider.Flat2DSourceTwoLayerBoundedTissueAOfRhoAndZDetector();
-        var isValid = viewModel.MC_InfileIsValidForGUI(input);
+        var isValid = MonteCarloSolverViewModel.MC_InfileIsValidForGUI(input);
         Assert.That(isValid, Is.False);
     }
 

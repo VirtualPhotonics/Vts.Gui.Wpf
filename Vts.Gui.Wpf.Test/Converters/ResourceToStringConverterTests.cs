@@ -15,7 +15,7 @@ public class ResourceToStringConverterTests
     /// Verifies method Convert returns correct value
     /// </summary>
     [Test]
-    public void verify_method_Convert_returns_correct_value()
+    public void Verify_method_Convert_returns_correct_value()
     {
         var rtsConverter = new ResourceToStringConverter();
         Assert.That(rtsConverter, Is.Not.Null);
@@ -30,7 +30,7 @@ public class ResourceToStringConverterTests
     /// Verifies method ConvertBack returns correct value
     /// </summary>
     [Test]
-    public void verify_method_ConvertBack_returns_correct_value()
+    public void Verify_method_ConvertBack_returns_correct_value()
     {
         var rtsConverter = new ResourceToStringConverter();
         Assert.That(rtsConverter, Is.Not.Null);

@@ -10,10 +10,10 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels;
 public class AbstractSolutionDomainOptionViewModelTests
 {
     /// <summary>
-    /// Verifies that AbstractSolutionDomainOptionViewModel default constructor instantiates sub viewmodels
+    /// Verifies that AbstractSolutionDomainOptionViewModel default constructor instantiates sub view models
     /// </summary>
     [Test]
-    public void verify_default_constructor_sets_properties_correctly()
+    public void Verify_default_constructor_sets_properties_correctly()
     {
         var viewModel = new AbstractSolutionDomainOptionViewModel<IndependentVariableAxis>();
         Assert.That(viewModel.UseSpectralInputs, Is.False);

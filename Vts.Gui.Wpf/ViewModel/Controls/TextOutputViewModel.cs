@@ -6,10 +6,10 @@ public class TextOutputViewModel : BindableObject
 {
     public TextOutputViewModel()
     {
-        TextOutput_PostMessage = new RelayCommand<object>(PostMessage_Executed);
+        TextOutputPostMessage = new RelayCommand<object>(PostMessage_Executed);
     }
 
-    public RelayCommand<object> TextOutput_PostMessage { get; set; }
+    public RelayCommand<object> TextOutputPostMessage { get; set; }
 
     public string Text
     {
@@ -23,8 +23,7 @@ public class TextOutputViewModel : BindableObject
 
     private void PostMessage_Executed(object sender)
     {
-        var s = sender as string;
-        if (s != null)
+        if (sender is string s)
             Text += s;
     }
 

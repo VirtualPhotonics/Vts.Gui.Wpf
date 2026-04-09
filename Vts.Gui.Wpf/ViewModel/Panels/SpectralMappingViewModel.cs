@@ -26,18 +26,18 @@ public class SpectralMappingViewModel : BindableObject
     public SpectralMappingViewModel()
     {
 #if WHITELIST 
-        ScatteringTypeVM = new OptionViewModel<ScatteringType>(StringLookup.GetLocalizedString("Heading_ScattererType"), true, WhiteList.ScatteringTypes);
+        ScatteringTypeVm = new OptionViewModel<ScatteringType>(StringLookup.GetLocalizedString("Heading_ScattererType"), true, WhiteList.ScatteringTypes);
 #else
-        ScatteringTypeVM = new OptionViewModel<ScatteringType>(StringLookup.GetLocalizedString("Heading_ScattererType"), true);
+        ScatteringTypeVm = new OptionViewModel<ScatteringType>(StringLookup.GetLocalizedString("Heading_ScattererType"), true);
 #endif
-        ScatteringTypeVM.PropertyChanged += (sender, args) =>
+        ScatteringTypeVm.PropertyChanged += (_, args) =>
         {
             if (args.PropertyName == "SelectedValue" && SelectedTissue != null)
             {
-                SelectedTissue.Scatterer = SolverFactory.GetScattererType(ScatteringTypeVM.SelectedValue);
+                SelectedTissue.Scatterer = SolverFactory.GetScattererType(ScatteringTypeVm.SelectedValue);
                 if (SelectedTissue.Scatterer is INotifyPropertyChanged bindableScatterer)
                 {
-                    bindableScatterer.PropertyChanged += (s, a) => UpdateOpticalProperties();
+                    bindableScatterer.PropertyChanged += (_, _) => UpdateOpticalProperties();
                 }
                 ScatteringTypeName = SelectedTissue.Scatterer.GetType().FullName;
                 // Set the tissue type again for skin so it will set the PowerLaw A and B values correctly
@@ -51,38 +51,38 @@ public class SpectralMappingViewModel : BindableObject
             UpdateOpticalProperties();
         };
 
-        WavelengthRangeVM = new RangeViewModel(new DoubleRange(650.0, 1000.0, 36), StringLookup.GetLocalizedString("Measurement_nm"),
+        WavelengthRangeVm = new RangeViewModel(new DoubleRange(650.0, 1000.0, 36), StringLookup.GetLocalizedString("Measurement_nm"),
             IndependentVariableAxis.Wavelength, StringLookup.GetLocalizedString("Heading_WavelengthRange"));
 
-        Tissues = new List<Tissue>
-        {
-            new(TissueType.Skin),
-            new(TissueType.BrainWhiteMatter),
-            new(TissueType.BrainGrayMatter),
-            new(TissueType.BreastPreMenopause),
-            new(TissueType.BreastPostMenopause),
-            new(TissueType.Liver),
-            new(TissueType.IntralipidPhantom),
+        Tissues =
+        [
+            new Tissue(TissueType.Skin),
+            new Tissue(TissueType.BrainWhiteMatter),
+            new Tissue(TissueType.BrainGrayMatter),
+            new Tissue(TissueType.BreastPreMenopause),
+            new Tissue(TissueType.BreastPostMenopause),
+            new Tissue(TissueType.Liver),
+            new Tissue(TissueType.IntralipidPhantom),
             //new Tissue(TissueType.PolystyreneSpherePhantom),
-            new(TissueType.Custom)
-        };
+            new Tissue(TissueType.Custom)
+        ];
 
-        BloodConcentrationVM = new BloodConcentrationViewModel();
+        BloodConcentrationVm = new BloodConcentrationViewModel();
 
         #region DC notes 1
 
-        // DC NOTES on how to propagate the correct hemoglobin instances into BloodConcentrationVM:
-        // Upon setting SelectedTissue (below), we internally update the BloodConcentrationVM hemoglobin references 
+        // DC NOTES on how to propagate the correct hemoglobin instances into BloodConcentrationVm:
+        // Upon setting SelectedTissue (below), we internally update the BloodConcentrationVm hemoglobin references 
         // This is the simplest solution, but maybe violates SOC...(see SelectedTissue property for details)
         // A second alternative way would be to override AfterPropertyChanged (see AfterPropertyChanged method below)
 
         #endregion
 
-        BloodConcentrationVM.PropertyChanged += (sender, args) => UpdateOpticalProperties();
+        BloodConcentrationVm.PropertyChanged += (_, _) => UpdateOpticalProperties();
 
-        SelectedTissue = Tissues.First();
-        ScatteringTypeVM.SelectedValue = SelectedTissue.ScattererType;
-        // forces update to all bindings established in handler for ScatteringTypeVM.PropertyChanged above
+        SelectedTissue = Tissues[0];
+        ScatteringTypeVm.SelectedValue = SelectedTissue.ScattererType;
+        // forces update to all bindings established in handler for ScatteringTypeVm.PropertyChanged above
         ScatteringTypeName = SelectedTissue.Scatterer.GetType().FullName;
 
         OpticalProperties = new OpticalProperties(0.01, 1, 0.8, 1.4);
@@ -115,13 +115,13 @@ public class SpectralMappingViewModel : BindableObject
         }
     }
 
-    public OptionViewModel<ScatteringType> ScatteringTypeVM
+    public OptionViewModel<ScatteringType> ScatteringTypeVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(ScatteringTypeVM));
+            OnPropertyChanged(nameof(ScatteringTypeVm));
         }
     }
 
@@ -135,7 +135,7 @@ public class SpectralMappingViewModel : BindableObject
             OnPropertyChanged(nameof(SelectedTissue));
             OnPropertyChanged(nameof(Scatterer));
 
-            ScatteringTypeVM.Options[_selectedTissue.Scatterer.ScattererType].IsSelected = true;
+            ScatteringTypeVm.Options[_selectedTissue.Scatterer.ScattererType].IsSelected = true;
 
             UpdateOpticalProperties();
 
@@ -147,12 +147,12 @@ public class SpectralMappingViewModel : BindableObject
             // only assign the values if both queries return valid (non-null) instances of IChromophoreAbsorber
             if (hb != null && hbO2 != null)
             {
-                BloodConcentrationVM.Hb = hb;
-                BloodConcentrationVM.HbO2 = hbO2;
-                BloodConcentrationVM.DisplayBloodVM = true;
+                BloodConcentrationVm.Hb = hb;
+                BloodConcentrationVm.HbO2 = hbO2;
+                BloodConcentrationVm.DisplayBloodVm = true;
             }
             else
-                BloodConcentrationVM.DisplayBloodVM = false;
+                BloodConcentrationVm.DisplayBloodVm = false;
         }
     }
 
@@ -196,7 +196,7 @@ public class SpectralMappingViewModel : BindableObject
         {
             OpticalProperties.Musp = value;
             OnPropertyChanged(nameof(Musp));
-            OnPropertyChanged(nameof(ScatteringTypeVM));
+            OnPropertyChanged(nameof(ScatteringTypeVm));
         }
     }
 
@@ -220,23 +220,23 @@ public class SpectralMappingViewModel : BindableObject
         }
     }
 
-    public RangeViewModel WavelengthRangeVM
+    public RangeViewModel WavelengthRangeVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(WavelengthRangeVM));
+            OnPropertyChanged(nameof(WavelengthRangeVm));
         }
     }
 
-    public BloodConcentrationViewModel BloodConcentrationVM
+    public BloodConcentrationViewModel BloodConcentrationVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(BloodConcentrationVM));
+            OnPropertyChanged(nameof(BloodConcentrationVm));
             OnPropertyChanged(nameof(SelectedTissue));
         }
     }
@@ -249,20 +249,20 @@ public class SpectralMappingViewModel : BindableObject
         OnPropertyChanged(nameof(G));
         OnPropertyChanged(nameof(N));
         OnPropertyChanged(nameof(OpticalProperties));
-        WindowViewModel.Current.ForwardSolverVM.UpdateOpticalProperties_Executed();
+        WindowViewModel.Current.ForwardSolverVm.UpdateOpticalProperties_Executed();
     }
 
     private void ResetConcentrations_Executed(object obj)
     {
-        var _tissue = (Tissue)obj;
-        _tissue.Absorbers = TissueProvider.CreateAbsorbers(_tissue.TissueType);
-        SelectedTissue = _tissue;
+        var tissue = (Tissue)obj;
+        tissue.Absorbers = TissueProvider.CreateAbsorbers(tissue.TissueType);
+        SelectedTissue = tissue;
     }
 
     private void PlotMuaSpectrum_Executed()
     {
-        var axisType = IndependentVariableAxis.Wavelength;
-        var axisUnits = IndependentVariableAxisUnits.NM;
+        const IndependentVariableAxis axisType = IndependentVariableAxis.Wavelength;
+        const IndependentVariableAxisUnits axisUnits = IndependentVariableAxisUnits.NM;
         var axesLabels = new PlotAxesLabels(
             StringLookup.GetLocalizedString("Label_MuA"),
             StringLookup.GetLocalizedString("Measurement_Inv_mm"),
@@ -271,31 +271,31 @@ public class SpectralMappingViewModel : BindableObject
                 AxisType = axisType,
                 AxisLabel = axisType.GetInternationalizedString(),
                 AxisUnits = axisUnits.GetInternationalizedString(),
-                AxisRangeVM = WavelengthRangeVM
+                AxisRangeVm = WavelengthRangeVm
             });
 
-        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+        WindowViewModel.Current.PlotVm.SetAxesLabels.Execute(axesLabels);
 
         var tissue = SelectedTissue;
-        var wavelengths = WavelengthRangeVM.Values.ToArray();
+        var wavelengths = WavelengthRangeVm.Values.ToArray();
         var points = new Point[wavelengths.Length];
         for (var wvi = 0; wvi < wavelengths.Length; wvi++)
         {
             var wavelength = wavelengths[wvi];
             points[wvi] = new Point(wavelength, tissue.GetMua(wavelength));
         }
-        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, StringLookup.GetLocalizedString("Label_MuASpectra"))});
+        WindowViewModel.Current.PlotVm.PlotValues.Execute(new[] {new PlotData(points, StringLookup.GetLocalizedString("Label_MuASpectra"))});
 
-        var minWavelength = WavelengthRangeVM.Values.Min();
-        var maxWavelength = WavelengthRangeVM.Values.Max();
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
+        var minWavelength = WavelengthRangeVm.Values.Min();
+        var maxWavelength = WavelengthRangeVm.Values.Max();
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(
             StringLookup.GetLocalizedString("Message_PlotMuASpectrum") + "[" + minWavelength + ", " + maxWavelength + "]\r");
     }
 
     private void PlotMuspSpectrum_Executed()
     {
-        var axisType = IndependentVariableAxis.Wavelength;
-        var axisUnits = IndependentVariableAxisUnits.NM;
+        const IndependentVariableAxis axisType = IndependentVariableAxis.Wavelength;
+        const IndependentVariableAxisUnits axisUnits = IndependentVariableAxisUnits.NM;
         var axesLabels = new PlotAxesLabels(
             StringLookup.GetLocalizedString("Label_MuSPrime"),
             StringLookup.GetLocalizedString("Measurement_Inv_mm"),
@@ -304,12 +304,12 @@ public class SpectralMappingViewModel : BindableObject
                 AxisType = axisType,
                 AxisLabel = axisType.GetInternationalizedString(),
                 AxisUnits = axisUnits.GetInternationalizedString(),
-                AxisRangeVM = WavelengthRangeVM
+                AxisRangeVm = WavelengthRangeVm
             });
-        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+        WindowViewModel.Current.PlotVm.SetAxesLabels.Execute(axesLabels);
 
         var tissue = SelectedTissue;
-        var wavelengths = WavelengthRangeVM.Values.ToArray();
+        var wavelengths = WavelengthRangeVm.Values.ToArray();
         var points = new Point[wavelengths.Length];
         for (var wvi = 0; wvi < wavelengths.Length; wvi++)
         {
@@ -317,11 +317,11 @@ public class SpectralMappingViewModel : BindableObject
             points[wvi] = new Point(wavelength, tissue.GetMusp(wavelength));
         }
 
-        WindowViewModel.Current.PlotVM.PlotValues.Execute(new[] {new PlotData(points, StringLookup.GetLocalizedString("Label_MuSPrimeSpectra"))});
+        WindowViewModel.Current.PlotVm.PlotValues.Execute(new[] {new PlotData(points, StringLookup.GetLocalizedString("Label_MuSPrimeSpectra"))});
 
-        var minWavelength = WavelengthRangeVM.Values.Min();
-        var maxWavelength = WavelengthRangeVM.Values.Max();
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(
+        var minWavelength = WavelengthRangeVm.Values.Min();
+        var maxWavelength = WavelengthRangeVm.Values.Max();
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(
             StringLookup.GetLocalizedString("Message_PlotMuSPrimeSpectrum") + "[" + minWavelength + ", " + maxWavelength + "]\r");
     }
 
@@ -347,8 +347,8 @@ public class SpectralMappingViewModel : BindableObject
     //        // only assign the values if both queries return valid (non-null) instances of IChromophoreAbsorber
     //        if (hb != null && hbO2 != null)
     //        {
-    //            BloodConcentrationVM.Hb = hb;
-    //            BloodConcentrationVM.HbO2 = hbO2;
+    //            BloodConcentrationVm.Hb = hb;
+    //            BloodConcentrationVm.HbO2 = hbO2;
     //        }
     //    }
     //    base.AfterPropertyChanged(propertyName);

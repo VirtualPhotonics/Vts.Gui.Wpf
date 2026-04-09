@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Vts.Gui.Wpf.ViewModel.Helpers;
@@ -15,14 +14,13 @@ public partial class MapView : UserControl
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-        ImageTools.SaveUIElementToPngImage(this);
+        ImageTools.SaveUiElementToPngImage(this);
     }
 
     private void TextBox_KeyDown(object sender, KeyEventArgs e)
     {
-        var tbx = sender as TextBox;
-        if (tbx != null && e.Key == Key.Enter)
-            tbx.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+        if (sender is TextBox tbx && e.Key == Key.Enter)
+            tbx.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
     }
 
     private void MapImage_OnSizeChanged(object sender, SizeChangedEventArgs e)
@@ -33,7 +31,6 @@ public partial class MapView : UserControl
         //{
         //    newHeight = e.NewSize.Height;
         //}
-        var threshold = Math.Abs(e.PreviousSize.Height - MapImage.ActualHeight);
         zMargin = new Thickness(0, newHeight, 0, 0);
         ZMax.Margin = zMargin;
     }

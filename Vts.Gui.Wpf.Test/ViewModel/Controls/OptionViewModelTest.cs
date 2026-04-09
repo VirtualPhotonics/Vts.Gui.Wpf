@@ -18,56 +18,56 @@ public class OptionViewModelTests
     public void Verify_constructor_with_GroupName_parameter_sets_properties_correctly()
     {
         // constructor overload
-        var optionVM = new OptionViewModel<ColormapType>("Label_Test");
-        Assert.That(optionVM.GroupName, Is.EqualTo("Label_Test"));
-        Assert.That(optionVM.ShowTitle, Is.True);
+        var optionVm = new OptionViewModel<ColormapType>("Label_Test");
+        Assert.That(optionVm.GroupName, Is.EqualTo("Label_Test"));
+        Assert.That(optionVm.ShowTitle, Is.True);
     }
 
     [Test]
     public void Verify_constructor_with_groupName_and_showTitle_parameters_sets_properties_correctly()
     {
-        var optionVM = new OptionViewModel<ColormapType>("Label_Test", false);
-        Assert.That(optionVM.GroupName, Is.EqualTo("Label_Test"));
-        Assert.That(optionVM.ShowTitle, Is.False);
+        var optionVm = new OptionViewModel<ColormapType>("Label_Test", false);
+        Assert.That(optionVm.GroupName, Is.EqualTo("Label_Test"));
+        Assert.That(optionVm.ShowTitle, Is.False);
     }
 
     [Test]
     public void Verify_constructor_with_groupName_and_initialValue_parameters_sets_properties_correctly()
     {
         var simulationInput = new SimulationInput();
-        var optionVM = new OptionViewModel<string>("Label_Test", simulationInput.TissueInput.TissueType);
-        Assert.That(optionVM.GroupName, Is.EqualTo("Label_Test"));
-        Assert.That(optionVM.ShowTitle, Is.True);
+        var optionVm = new OptionViewModel<string>("Label_Test", simulationInput.TissueInput.TissueType);
+        Assert.That(optionVm.GroupName, Is.EqualTo("Label_Test"));
+        Assert.That(optionVm.ShowTitle, Is.True);
     }
 
     [Test]
     public void Verify_constructor_with_all_parameter_sets_properties_correctly()
     {
         var simulationInput = new SimulationInput();
-        var optionVM = new OptionViewModel<string>("Tissue Type:", true, simulationInput.TissueInput.TissueType,
-            new[]
-            {
-                "MultiLayer",
+        var optionVm = new OptionViewModel<string>("Tissue Type:", true, simulationInput.TissueInput.TissueType,
+        [
+            "MultiLayer",
                 "SingleEllipsoid",
                 "SingleVoxel"
-            });
-        optionVM.EnableMultiSelect = false;
-        Assert.That(optionVM.GroupName, Is.EqualTo("Tissue Type:"));
-        Assert.That(optionVM.ShowTitle, Is.True);
-        Assert.That(optionVM.SelectedValue, Is.EqualTo(simulationInput.TissueInput.TissueType));
+        ])
+        {
+            EnableMultiSelect = false
+        };
+        Assert.That(optionVm.GroupName, Is.EqualTo("Tissue Type:"));
+        Assert.That(optionVm.ShowTitle, Is.True);
+        Assert.That(optionVm.SelectedValue, Is.EqualTo(simulationInput.TissueInput.TissueType));
     }
 
     [Test]
     public void Verify_constructor_with_all_parameter_and_multi_select()
     {
         var optionViewModel = new OptionViewModel<string>("String List:", true, "SecondValue",
-            new[]
-            {
-                "FirstValue",
+        [
+            "FirstValue",
                 "SecondValue",
                 "ThirdValue",
                 "FourthValue"
-            })
+        ])
         {
             EnableMultiSelect = true
         };

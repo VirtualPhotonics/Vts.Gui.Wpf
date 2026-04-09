@@ -1,10 +1,9 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
 using Vts.Extensions;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
@@ -33,123 +32,125 @@ public class InverseSolverViewModel : BindableObject
         _showOpticalProperties = true;
         _useSpectralPanelData = false;
 
-        _allRangeVMs = new[] {new RangeViewModel {Title = Strings.IndependentVariableAxis_Rho}};
+        _allRangeVMs = [new RangeViewModel {Title = Strings.IndependentVariableAxis_Rho}];
 
-        SolutionDomainTypeOptionVM = new SolutionDomainOptionViewModel("Solution Domain", SolutionDomainType.ROfRho);
-        SolutionDomainTypeOptionVM.EnableMultiAxis = false;
-        SolutionDomainTypeOptionVM.AllowMultiAxis = false;
+        SolutionDomainTypeOptionVm = new SolutionDomainOptionViewModel("Solution Domain", SolutionDomainType.ROfRho)
+            {
+                EnableMultiAxis = false,
+                AllowMultiAxis = false
+            };
 
-        Action<double> updateSolutionDomainWithWavelength = wv =>
+        void UpdateSolutionDomainWithWavelength(double wv)
         {
-            var wvAxis =
-                SolutionDomainTypeOptionVM.ConstantAxesVMs.FirstOrDefault(
-                    axis => axis.AxisType == IndependentVariableAxis.Wavelength);
-            if (wvAxis != null)
-            {
-                wvAxis.AxisValue = wv;
-            }
-        };
+            var wvAxis = SolutionDomainTypeOptionVm.ConstantAxesVMs.FirstOrDefault(axis => axis.AxisType == IndependentVariableAxis.Wavelength);
+            wvAxis?.AxisValue = wv;
+        }
 
-        SolutionDomainTypeOptionVM.PropertyChanged += (sender, args) =>
+        SolutionDomainTypeOptionVm.PropertyChanged += (_, args) =>
         {
-            if (args.PropertyName == "UseSpectralInputs")
+            switch (args.PropertyName)
             {
-                UseSpectralPanelData = SolutionDomainTypeOptionVM.UseSpectralInputs;
-            }
-            if (args.PropertyName == "IndependentAxesVMs")
-            {
-                var useSpectralPanelDataAndNotNull = UseSpectralPanelData && WindowViewModel.Current != null &&
-                                                     WindowViewModel.Current.SpectralMappingVM != null;
-
-                AllRangeVMs =
-                    (from i in
-                        Enumerable.Range(0,
-                            SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.Length)
-                        orderby i descending
-                        // descending so that wavelength takes highest priority, then time/time frequency, then space/spatial frequency
-                        select
-                            useSpectralPanelDataAndNotNull &&
-                            SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues[i] ==
-                            IndependentVariableAxis.Wavelength
-                                ? WindowViewModel.Current.SpectralMappingVM.WavelengthRangeVM
-                                // bind to same instance, not a copy
-                                : SolutionDomainTypeOptionVM.IndependentAxesVMs[i].AxisRangeVM).ToArray();
-
-                // if the independent axis is wavelength, then hide optical properties (because they come from spectral panel)
-                ShowOpticalProperties =
-                    !_allRangeVMs.Any(value => value.AxisType == IndependentVariableAxis.Wavelength);
-
-                // update solution domain wavelength constant if applicable
-                if (useSpectralPanelDataAndNotNull &&
-                    SolutionDomainTypeOptionVM.ConstantAxesVMs.Any(
-                        axis => axis.AxisType == IndependentVariableAxis.Wavelength))
+                case "UseSpectralInputs":
+                    UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
+                    break;
+                case "IndependentAxesVMs":
                 {
-                    updateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVM.Wavelength);
+                    var useSpectralPanelDataAndNotNull = UseSpectralPanelData && 
+                                                         WindowViewModel.Current != null &&
+                                                         WindowViewModel.Current.SpectralMappingVm != null;
+
+                    AllRangeVMs =
+                        (from i in
+                                Enumerable.Range(0,
+                                    SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Length)
+                            orderby i descending
+                            // descending so that wavelength takes highest priority, then time/time frequency, then space/spatial frequency
+                            select
+                                useSpectralPanelDataAndNotNull &&
+                                SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues[i] ==
+                                IndependentVariableAxis.Wavelength
+                                    ? WindowViewModel.Current.SpectralMappingVm.WavelengthRangeVm
+                                    // bind to same instance, not a copy
+                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVm).ToArray();
+
+                    // if the independent axis is wavelength, then hide optical properties (because they come from spectral panel)
+                    ShowOpticalProperties = _allRangeVMs.All(value => value.AxisType != IndependentVariableAxis.Wavelength);
+
+                        // update solution domain wavelength constant if applicable
+                        if (useSpectralPanelDataAndNotNull &&
+                            SolutionDomainTypeOptionVm.ConstantAxesVMs.Any(
+                                axis => axis.AxisType == IndependentVariableAxis.Wavelength) && 
+                            WindowViewModel.Current != null && 
+                            WindowViewModel.Current.SpectralMappingVm != null)
+                        {
+                            UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
+                        }
+                        break;
                 }
             }
         };
 
 #if WHITELIST
-        MeasuredForwardSolverTypeOptionVM = new OptionViewModel<ForwardSolverType>(
+        MeasuredForwardSolverTypeOptionVm = new OptionViewModel<ForwardSolverType>(
             "Forward Model Engine",false, WhiteList.InverseForwardSolverTypes);
 #else
-        MeasuredForwardSolverTypeOptionVM = new OptionViewModel<ForwardSolverType>(
+        MeasuredForwardSolverTypeOptionVm = new OptionViewModel<ForwardSolverType>(
             "Forward Model Engine", false); //These titles are not displayed so we can hard-code strings
 #endif
 
 #if WHITELIST 
-        InverseForwardSolverTypeOptionVM = new OptionViewModel<ForwardSolverType>("Inverse Model Engine",false, WhiteList.InverseForwardSolverTypes);
+        InverseForwardSolverTypeOptionVm = new OptionViewModel<ForwardSolverType>("Inverse Model Engine",false, WhiteList.InverseForwardSolverTypes);
 #else
-        InverseForwardSolverTypeOptionVM = new OptionViewModel<ForwardSolverType>("Inverse Model Engine", false); //These titles are not displayed so we can hard-code strings
+        InverseForwardSolverTypeOptionVm = new OptionViewModel<ForwardSolverType>("Inverse Model Engine", false); //These titles are not displayed so we can hard-code strings
 #endif
-        InverseForwardSolverTypeOptionVM.PropertyChanged += (sender, args) =>
+        InverseForwardSolverTypeOptionVm.PropertyChanged += (_, _) =>
             OnPropertyChanged(nameof(InverseForwardSolver));
 
-        OptimizerTypeOptionVM = new OptionViewModel<OptimizerType>(StringLookup.GetLocalizedString("Heading_OptimizerType"), true);
-        OptimizerTypeOptionVM.PropertyChanged += (sender, args) =>
+        OptimizerTypeOptionVm = new OptionViewModel<OptimizerType>(StringLookup.GetLocalizedString("Heading_OptimizerType"), true);
+        OptimizerTypeOptionVm.PropertyChanged += (_, _) =>
             OnPropertyChanged(nameof(Optimizer));
 
-        InverseFitTypeOptionVM = new OptionViewModel<InverseFitType>(StringLookup.GetLocalizedString("Heading_OptimizationParameters"), true);
+        InverseFitTypeOptionVm = new OptionViewModel<InverseFitType>(StringLookup.GetLocalizedString("Heading_OptimizationParameters"), true);
 
-        MeasuredOpticalPropertyVM = new OpticalPropertyViewModel {Title = ""};
-        InitialGuessOpticalPropertyVM = new OpticalPropertyViewModel {Title = ""};
-        ResultOpticalPropertyVM = new OpticalPropertyViewModel {Title = ""};
+        MeasuredOpticalPropertyVm = new OpticalPropertyViewModel {Title = ""};
+        InitialGuessOpticalPropertyVm = new OpticalPropertyViewModel {Title = ""};
+        ResultOpticalPropertyVm = new OpticalPropertyViewModel {Title = ""};
 
-        SimulateMeasuredDataCommand = new RelayCommand(() => SimulateMeasuredDataCommand_Executed(null, null));
-        CalculateInitialGuessCommand = new RelayCommand(() => CalculateInitialGuessCommand_Executed(null, null));
-        SolveInverseCommand = new RelayCommand(() => SolveInverseCommand_Executed(null, null));
+        SimulateMeasuredDataCommand = new RelayCommand(SimulateMeasuredDataCommand_Executed);
+        CalculateInitialGuessCommand = new RelayCommand(CalculateInitialGuessCommand_Executed);
+        SolveInverseCommand = new RelayCommand(SolveInverseCommand_Executed);
 
-        if (WindowViewModel.Current.SpectralMappingVM != null)
+        if (WindowViewModel.Current.SpectralMappingVm != null)
         {
-            WindowViewModel.Current.SpectralMappingVM.PropertyChanged += (sender, args) =>
+            WindowViewModel.Current.SpectralMappingVm.PropertyChanged += (_, args) =>
             {
                 if (args.PropertyName == "Wavelength")
                 {
                     //need to get the value from the checkbox in case UseSpectralPanelData has not yet been updated
-                    if (SolutionDomainTypeOptionVM != null)
+                    if (SolutionDomainTypeOptionVm != null)
                     {
-                        UseSpectralPanelData = SolutionDomainTypeOptionVM.UseSpectralInputs;
+                        UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
                     }
                     if (UseSpectralPanelData && WindowViewModel.Current != null &&
-                        WindowViewModel.Current.SpectralMappingVM != null)
+                        WindowViewModel.Current.SpectralMappingVm != null)
                     {
-                        updateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVM.Wavelength);
+                        UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
                     }
                 }
 
                 if (args.PropertyName == "OpticalProperties")
                 {
                     //need to get the value from the checkbox in case UseSpectralPanelData has not yet been updated
-                    if (SolutionDomainTypeOptionVM != null)
+                    if (SolutionDomainTypeOptionVm != null)
                     {
-                        UseSpectralPanelData = SolutionDomainTypeOptionVM.UseSpectralInputs;
+                        UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
                     }
                     if (UseSpectralPanelData && WindowViewModel.Current != null &&
-                        WindowViewModel.Current.SpectralMappingVM != null &&
-                        MeasuredOpticalPropertyVM != null)
+                        WindowViewModel.Current.SpectralMappingVm != null &&
+                        MeasuredOpticalPropertyVm != null)
                     {
-                        MeasuredOpticalPropertyVM.SetOpticalProperties(
-                            WindowViewModel.Current.SpectralMappingVM.OpticalProperties);
+                        MeasuredOpticalPropertyVm.SetOpticalProperties(
+                            WindowViewModel.Current.SpectralMappingVm.OpticalProperties);
                     }
                     
                 }
@@ -161,13 +162,13 @@ public class InverseSolverViewModel : BindableObject
     public RelayCommand CalculateInitialGuessCommand { get; set; }
     public RelayCommand SolveInverseCommand { get; set; }
 
-    public SolutionDomainOptionViewModel SolutionDomainTypeOptionVM
+    public SolutionDomainOptionViewModel SolutionDomainTypeOptionVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(SolutionDomainTypeOptionVM));
+            OnPropertyChanged(nameof(SolutionDomainTypeOptionVm));
         }
     }
 
@@ -181,53 +182,53 @@ public class InverseSolverViewModel : BindableObject
         }
     }
 
-    public OptionViewModel<ForwardSolverType> MeasuredForwardSolverTypeOptionVM
+    public OptionViewModel<ForwardSolverType> MeasuredForwardSolverTypeOptionVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(MeasuredForwardSolverTypeOptionVM));
+            OnPropertyChanged(nameof(MeasuredForwardSolverTypeOptionVm));
         }
     }
 
-    public OptionViewModel<ForwardSolverType> InverseForwardSolverTypeOptionVM
+    public OptionViewModel<ForwardSolverType> InverseForwardSolverTypeOptionVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(InverseForwardSolverTypeOptionVM));
+            OnPropertyChanged(nameof(InverseForwardSolverTypeOptionVm));
         }
     }
 
-    public OptionViewModel<OptimizerType> OptimizerTypeOptionVM
+    public OptionViewModel<OptimizerType> OptimizerTypeOptionVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(OptimizerTypeOptionVM));
+            OnPropertyChanged(nameof(OptimizerTypeOptionVm));
         }
     }
 
-    public OptionViewModel<InverseFitType> InverseFitTypeOptionVM
+    public OptionViewModel<InverseFitType> InverseFitTypeOptionVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(InverseFitTypeOptionVM));
+            OnPropertyChanged(nameof(InverseFitTypeOptionVm));
         }
     }
 
-    public OpticalPropertyViewModel MeasuredOpticalPropertyVM
+    public OpticalPropertyViewModel MeasuredOpticalPropertyVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(MeasuredOpticalPropertyVM));
+            OnPropertyChanged(nameof(MeasuredOpticalPropertyVm));
         }
     }
 
@@ -251,23 +252,23 @@ public class InverseSolverViewModel : BindableObject
         }
     }
 
-    public OpticalPropertyViewModel InitialGuessOpticalPropertyVM
+    public OpticalPropertyViewModel InitialGuessOpticalPropertyVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(InitialGuessOpticalPropertyVM));
+            OnPropertyChanged(nameof(InitialGuessOpticalPropertyVm));
         }
     }
 
-    public OpticalPropertyViewModel ResultOpticalPropertyVM
+    public OpticalPropertyViewModel ResultOpticalPropertyVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(ResultOpticalPropertyVM));
+            OnPropertyChanged(nameof(ResultOpticalPropertyVm));
         }
     }
 
@@ -281,24 +282,22 @@ public class InverseSolverViewModel : BindableObject
         }
     }
 
-    public IForwardSolver MeasuredForwardSolver => SolverFactory.GetForwardSolver(MeasuredForwardSolverTypeOptionVM.SelectedValue);
+    public IForwardSolver InverseForwardSolver => SolverFactory.GetForwardSolver(InverseForwardSolverTypeOptionVm.SelectedValue);
 
-    public IForwardSolver InverseForwardSolver => SolverFactory.GetForwardSolver(InverseForwardSolverTypeOptionVM.SelectedValue);
+    public IOptimizer Optimizer => SolverFactory.GetOptimizer(OptimizerTypeOptionVm.SelectedValue);
 
-    public IOptimizer Optimizer => SolverFactory.GetOptimizer(OptimizerTypeOptionVM.SelectedValue);
-
-    private void SimulateMeasuredDataCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+    private void SimulateMeasuredDataCommand_Executed()
     {
         var measuredDataValues = GetSimulatedMeasuredData();
         var measuredDataPoints = GetDataPoints(measuredDataValues);
 
         //Report the results
         var axesLabels = GetPlotLabels();
-        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+        WindowViewModel.Current.PlotVm.SetAxesLabels.Execute(axesLabels);
         var plotLabels = GetLegendLabels(PlotDataType.Simulated);
         var plotData = measuredDataPoints.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
-        WindowViewModel.Current.PlotVM.PlotValues.Execute(plotData);
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_SimulatedMeasuredData") + MeasuredOpticalPropertyVM + " \r");
+        WindowViewModel.Current.PlotVm.PlotValues.Execute(plotData);
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(StringLookup.GetLocalizedString("Label_SimulatedMeasuredData") + MeasuredOpticalPropertyVm + " \r");
     }
 
     private string[] GetLegendLabels(PlotDataType datatype)
@@ -312,18 +311,18 @@ public class InverseSolverViewModel : BindableObject
         {
             case PlotDataType.Simulated:
                 solverString = "\n" + StringLookup.GetLocalizedString("Label_Simulated");
-                opticalProperties = MeasuredOpticalPropertyVM.GetOpticalProperties();
-                forwardSolver = MeasuredForwardSolverTypeOptionVM.SelectedValue;
+                opticalProperties = MeasuredOpticalPropertyVm.GetOpticalProperties();
+                forwardSolver = MeasuredForwardSolverTypeOptionVm.SelectedValue;
                 break;
             case PlotDataType.Calculated:
                 solverString = "\n" + StringLookup.GetLocalizedString("Label_Calculated");
-                opticalProperties = ResultOpticalPropertyVM.GetOpticalProperties();
-                forwardSolver = MeasuredForwardSolverTypeOptionVM.SelectedValue;
+                opticalProperties = ResultOpticalPropertyVm.GetOpticalProperties();
+                forwardSolver = MeasuredForwardSolverTypeOptionVm.SelectedValue;
                 break;
             case PlotDataType.Guess:
                 solverString = "\n" + StringLookup.GetLocalizedString("Label_Guess");
-                opticalProperties = InitialGuessOpticalPropertyVM.GetOpticalProperties();
-                forwardSolver = InverseForwardSolverTypeOptionVM.SelectedValue;
+                opticalProperties = InitialGuessOpticalPropertyVm.GetOpticalProperties();
+                forwardSolver = InverseForwardSolverTypeOptionVm.SelectedValue;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(datatype));
@@ -349,74 +348,69 @@ public class InverseSolverViewModel : BindableObject
                 break;
         }
 
-        if (_allRangeVMs.Length > 1)
-        {
-            var isWavelengthPlot = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
-            var secondaryRangeVM = isWavelengthPlot
-                ? _allRangeVMs.First(vm => vm.AxisType != IndependentVariableAxis.Wavelength)
-                : _allRangeVMs.First(
-                    vm => vm.AxisType != IndependentVariableAxis.Time && 
-                          vm.AxisType != IndependentVariableAxis.Ft);
+        if (_allRangeVMs.Length <= 1) return [solverString + modelString + opString];
+        var isWavelengthPlot = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
+        var secondaryRangeVm = isWavelengthPlot
+            ? _allRangeVMs.First(vm => vm.AxisType != IndependentVariableAxis.Wavelength)
+            : _allRangeVMs.First(
+                vm => vm.AxisType != IndependentVariableAxis.Time && 
+                      vm.AxisType != IndependentVariableAxis.Ft);
 
-            var secondaryAxesStrings =
-                secondaryRangeVM.Values.Select(
+        var secondaryAxesStrings =
+            secondaryRangeVm.Values.Select(
                     value =>
-                        "\r" + secondaryRangeVM.AxisType.GetInternationalizedString() + " = " + value.ToString())
-                    .ToArray();
-            return
-                secondaryAxesStrings.Select(
-                    sas => solverString + modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString))
-                    .ToArray();
-        }
-
-        return new[] {solverString + modelString + opString};
+                        "\r" + secondaryRangeVm.AxisType.GetInternationalizedString() + " = " + value)
+                .ToArray();
+        return
+            [.. secondaryAxesStrings.Select(
+                    sas => solverString + modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString))];
     }
 
     private PlotAxesLabels GetPlotLabels()
     {
-        var sd = SolutionDomainTypeOptionVM;
+        var sd = SolutionDomainTypeOptionVm;
         var axesLabels = new PlotAxesLabels(
             sd.SelectedDisplayName, sd.SelectedValue.GetUnits(),
-            sd.IndependentAxesVMs.First(),
+            sd.IndependentAxesVMs[0],
             sd.ConstantAxesVMs);
         return axesLabels;
     }
 
-    private void CalculateInitialGuessCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+    private void CalculateInitialGuessCommand_Executed()
     {
         var initialGuessDataValues = CalculateInitialGuess();
         var initialGuessDataPoints = GetDataPoints(initialGuessDataValues);
 
         //Report the results
         var axesLabels = GetPlotLabels();
-        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+        WindowViewModel.Current.PlotVm.SetAxesLabels.Execute(axesLabels);
         var plotLabels = GetLegendLabels(PlotDataType.Guess);
         var plotData = initialGuessDataPoints.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
-        WindowViewModel.Current.PlotVM.PlotValues.Execute(plotData);
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_InitialGuess") +
-                                                                            InitialGuessOpticalPropertyVM + " \r");
+        WindowViewModel.Current.PlotVm.PlotValues.Execute(plotData);
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(StringLookup.GetLocalizedString("Label_InitialGuess") +
+                                                                            InitialGuessOpticalPropertyVm + " \r");
     }
 
-    private void SolveInverseCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+    private void SolveInverseCommand_Executed()
     {
         // Report inverse solver setup and results
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(StringLookup.GetLocalizedString("Label_InverseSolutionResults") + "\r");
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_OptimizationParameter") +
-                                                                            InverseFitTypeOptionVM.SelectedValue +
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(StringLookup.GetLocalizedString("Label_InverseSolutionResults") + "\r");
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_OptimizationParameter") +
+                                                                            InverseFitTypeOptionVm.SelectedValue +
                                                                             " \r");
-        WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_InitialGuess") +
-                                                                            InitialGuessOpticalPropertyVM + " \r");
+        WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_InitialGuess") +
+                                                                            InitialGuessOpticalPropertyVm + " \r");
 
         var inverseResult = SolveInverse();
-        ResultOpticalPropertyVM.SetOpticalProperties(inverseResult.FitOpticalProperties.First());
+        ResultOpticalPropertyVm.SetOpticalProperties(inverseResult.FitOpticalProperties[0]);
             // todo: this only works for one set of properties
 
         //Report the results
         if (
-            SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.Contains(
+            SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Contains(
                 IndependentVariableAxis.Wavelength) &&
             inverseResult.FitOpticalProperties.Length > 1)
-            // If multi-valued OPs, the results aren't in the "scalar" VMs, need to parse OPs directly
+            // If multivalued OPs, the results aren't in the "scalar" VMs, need to parse OPs directly
         {
             var fitOPs = inverseResult.FitOpticalProperties;
             var measuredOPs = inverseResult.MeasuredOpticalProperties;
@@ -432,37 +426,37 @@ public class InverseSolverViewModel : BindableObject
                 sb.Append("\t" + wavelengths[i] + "\t\t\t\t\t\t" + measuredOPs[i] + "\t\t\t" + fitOPs[i] + "\t\t\t" +
                           opUnitString + " \r");
             }
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute(sb.ToString());
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute(sb.ToString());
         }
         else
         {
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_Exact") + ": " +
-                                                                                MeasuredOpticalPropertyVM + " \r");
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_ConvergedValues") + ": " +
-                                                                                ResultOpticalPropertyVM + " \r");
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_Exact") + ": " +
+                                                                                MeasuredOpticalPropertyVm + " \r");
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_ConvergedValues") + ": " +
+                                                                                ResultOpticalPropertyVm + " \r");
                             //Display Percent Error
-            double muaError = 0.0;
-            double muspError = 0.0;
-            if (MeasuredOpticalPropertyVM.Mua > 0)
+            var muaError = 0.0;
+            var muspError = 0.0;
+            if (MeasuredOpticalPropertyVm.Mua > 0)
             {
-                int tempMuaError = (int)(10000.0 * Math.Abs(ResultOpticalPropertyVM.Mua - MeasuredOpticalPropertyVM.Mua) / MeasuredOpticalPropertyVM.Mua);
+                var tempMuaError = (int)(10000.0 * Math.Abs(ResultOpticalPropertyVm.Mua - MeasuredOpticalPropertyVm.Mua) / MeasuredOpticalPropertyVm.Mua);
                 muaError = tempMuaError / 100.0;
             }
-            if (MeasuredOpticalPropertyVM.Musp > 0)
+            if (MeasuredOpticalPropertyVm.Musp > 0)
             {
-                int tempMuspError = (int)(10000.0 * Math.Abs(ResultOpticalPropertyVM.Musp - MeasuredOpticalPropertyVM.Musp) / MeasuredOpticalPropertyVM.Musp);
+                var tempMuspError = (int)(10000.0 * Math.Abs(ResultOpticalPropertyVm.Musp - MeasuredOpticalPropertyVm.Musp) / MeasuredOpticalPropertyVm.Musp);
                 muspError = tempMuspError / 100.0;
             }
-            WindowViewModel.Current.TextOutputVM.TextOutput_PostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_PercentError") + 
+            WindowViewModel.Current.TextOutputVm.TextOutputPostMessage.Execute("   " + StringLookup.GetLocalizedString("Label_PercentError") + 
                                                                                 StringLookup.GetLocalizedString("Label_MuA") + " = " + muaError +
                                                                                 "%  " + StringLookup.GetLocalizedString("Label_MuSPrime") + " = " + muspError + "% \r");
         }
 
         var axesLabels = GetPlotLabels();
-        WindowViewModel.Current.PlotVM.SetAxesLabels.Execute(axesLabels);
+        WindowViewModel.Current.PlotVm.SetAxesLabels.Execute(axesLabels);
         var plotLabels = GetLegendLabels(PlotDataType.Calculated);
         var plotData = inverseResult.FitDataPoints.Zip(plotLabels, (p, el) => new PlotData(p, el)).ToArray();
-        WindowViewModel.Current.PlotVM.PlotValues.Execute(plotData);
+        WindowViewModel.Current.PlotVm.PlotValues.Execute(plotData);
     }
 
     private double[] GetSimulatedMeasuredData()
@@ -472,56 +466,46 @@ public class InverseSolverViewModel : BindableObject
         var parameters = GetParametersInOrder(opticalProperties);
 
         var measuredData = ComputationFactory.ComputeReflectance(
-            MeasuredForwardSolverTypeOptionVM.SelectedValue,
-            SolutionDomainTypeOptionVM.SelectedValue,
+            MeasuredForwardSolverTypeOptionVm.SelectedValue,
+            SolutionDomainTypeOptionVm.SelectedValue,
             ForwardAnalysisType.R,
-            parameters.Values.ToArray());
+            [.. parameters.Values]);
 
         return measuredData.AddNoise(PercentNoise);
     }
 
-    private object GetMeasuredOpticalProperties()
+    private OpticalProperties[] GetMeasuredOpticalProperties()
     {
-        return GetOpticalPropertiesFromSpectralPanel() ?? new[] {MeasuredOpticalPropertyVM.GetOpticalProperties()};
+        return GetOpticalPropertiesFromSpectralPanel() ?? [MeasuredOpticalPropertyVm.GetOpticalProperties()];
     }
 
-    private object GetInitialGuessOpticalProperties()
+    private OpticalProperties[] GetInitialGuessOpticalProperties()
     {
-        return GetDuplicatedListofOpticalProperties() ??
-               new[] {InitialGuessOpticalPropertyVM.GetOpticalProperties()};
+        return GetDuplicatedListOfOpticalProperties() ??
+               [InitialGuessOpticalPropertyVm.GetOpticalProperties()];
     }
 
-    private OpticalProperties[] GetDuplicatedListofOpticalProperties()
+    private OpticalProperties[] GetDuplicatedListOfOpticalProperties()
     {
-        var initialGuessOPs = InitialGuessOpticalPropertyVM.GetOpticalProperties();
-        if (
-            SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.Contains(
-                IndependentVariableAxis.Wavelength))
-        {
-            var wavelengths = GetParameterValues(IndependentVariableAxis.Wavelength);
-            return wavelengths.Select(_ => initialGuessOPs.Clone()).ToArray();
-        }
-
-        return null;
+        var initialGuessOPs = InitialGuessOpticalPropertyVm.GetOpticalProperties();
+        if (!SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Contains(
+                IndependentVariableAxis.Wavelength)) return null;
+        var wavelengths = GetParameterValues(IndependentVariableAxis.Wavelength);
+        return [.. wavelengths.Select(_ => initialGuessOPs.Clone())];
     }
 
     private OpticalProperties[] GetOpticalPropertiesFromSpectralPanel()
     {
-        if (
-            SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.Contains(
-                IndependentVariableAxis.Wavelength) &&
-            UseSpectralPanelData &&
-            WindowViewModel.Current != null &&
-            WindowViewModel.Current.SpectralMappingVM != null)
-        {
-            var tissue = WindowViewModel.Current.SpectralMappingVM.SelectedTissue;
-            var wavelengths = GetParameterValues(IndependentVariableAxis.Wavelength);
-            var ops = tissue.GetOpticalProperties(wavelengths);
+        if (!SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Contains(
+                IndependentVariableAxis.Wavelength) ||
+            !UseSpectralPanelData ||
+            WindowViewModel.Current == null ||
+            WindowViewModel.Current.SpectralMappingVm == null) return null;
+        var tissue = WindowViewModel.Current.SpectralMappingVm.SelectedTissue;
+        var wavelengths = GetParameterValues(IndependentVariableAxis.Wavelength);
+        var ops = tissue.GetOpticalProperties(wavelengths);
 
-            return ops;
-        }
-
-        return null;
+        return ops;
     }
 
     public double[] CalculateInitialGuess()
@@ -531,16 +515,16 @@ public class InverseSolverViewModel : BindableObject
         var parameters = GetParametersInOrder(opticalProperties);
 
         return ComputationFactory.ComputeReflectance(
-            InverseForwardSolverTypeOptionVM.SelectedValue,
-            SolutionDomainTypeOptionVM.SelectedValue,
+            InverseForwardSolverTypeOptionVm.SelectedValue,
+            SolutionDomainTypeOptionVm.SelectedValue,
             ForwardAnalysisType.R,
-            parameters.Values.ToArray());
+            [.. parameters.Values]);
     }
 
     public InverseSolutionResult SolveInverse()
     {
         var lowerBounds = new double[] { 0, 0, 0, 0 };
-        var upperBounds = new double[] { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity };
+        var upperBounds = new[] { double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity };
 
         var measuredOpticalProperties = GetMeasuredOpticalProperties();
         var measuredDataValues = GetSimulatedMeasuredData();
@@ -552,22 +536,22 @@ public class InverseSolverViewModel : BindableObject
         // replace unconstrained L-M optimization with constrained version
         // this solves problem of when distributed source solution produces neg OPs during inversion
         //var fit = ComputationFactory.SolveInverse(
-        //    InverseForwardSolverTypeOptionVM.SelectedValue,
-        //    OptimizerTypeOptionVM.SelectedValue,
-        //    SolutionDomainTypeOptionVM.SelectedValue,
+        //    InverseForwardSolverTypeOptionVm.SelectedValue,
+        //    OptimizerTypeOptionVm.SelectedValue,
+        //    SolutionDomainTypeOptionVm.SelectedValue,
         //    dependentValues,
         //    dependentValues, // set standard deviation, sd, to measured (works w/ or w/o noise)
-        //    InverseFitTypeOptionVM.SelectedValue,
-        //    initGuessParameters.Values.ToArray());
+        //    InverseFitTypeOptionVm.SelectedValue,
+        //    initGuessParameters.Values.ToArray())
 
         var fit = ComputationFactory.SolveInverse(
-            InverseForwardSolverTypeOptionVM.SelectedValue,
-            OptimizerTypeOptionVM.SelectedValue,
-            SolutionDomainTypeOptionVM.SelectedValue,
+            InverseForwardSolverTypeOptionVm.SelectedValue,
+            OptimizerTypeOptionVm.SelectedValue,
+            SolutionDomainTypeOptionVm.SelectedValue,
             dependentValues,
             dependentValues, // set standard deviation, sd, to measured (works w/ or w/o noise)
-            InverseFitTypeOptionVM.SelectedValue,
-            initGuessParameters.Values.ToArray(),
+            InverseFitTypeOptionVm.SelectedValue,
+            [.. initGuessParameters.Values],
             lowerBounds, upperBounds);
 
         var fitOpticalProperties = ComputationFactory.UnFlattenOpticalProperties(fit);
@@ -575,20 +559,20 @@ public class InverseSolverViewModel : BindableObject
         var fitParameters = GetParametersInOrder(fitOpticalProperties);
 
         var resultDataValues = ComputationFactory.ComputeReflectance(
-            InverseForwardSolverTypeOptionVM.SelectedValue,
-            SolutionDomainTypeOptionVM.SelectedValue,
+            InverseForwardSolverTypeOptionVm.SelectedValue,
+            SolutionDomainTypeOptionVm.SelectedValue,
             ForwardAnalysisType.R,
-            fitParameters.Values.ToArray());
+            [.. fitParameters.Values]);
 
         var resultDataPoints = GetDataPoints(resultDataValues);
 
         return new InverseSolutionResult
         {
             FitDataPoints = resultDataPoints,
-            MeasuredOpticalProperties = (OpticalProperties[]) measuredOpticalProperties,
-            // todo: currently only supports homog OPs
-            GuessOpticalProperties = (OpticalProperties[]) initGuessOpticalProperties,
-            // todo: currently only supports homog OPss
+            MeasuredOpticalProperties = measuredOpticalProperties,
+            // todo: currently only supports homogeneous OPs
+            GuessOpticalProperties = initGuessOpticalProperties,
+            // todo: currently only supports homogeneous OPss
             FitOpticalProperties = fitOpticalProperties
         };
     }
@@ -596,35 +580,35 @@ public class InverseSolverViewModel : BindableObject
     private IDataPoint[][] GetDataPoints(double[] reflectance)
     {
         var plotIsVsWavelength = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
-        var isComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVM.SelectedValue);
-        var primaryIndependentValues = _allRangeVMs.First().Values.ToArray();
+        var isComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVm.SelectedValue);
+        var primaryIndependentValues = _allRangeVMs[0].Values.ToArray();
         var numPointsPerCurve = primaryIndependentValues.Length;
         var numForwardValues = isComplexPlot ? reflectance.Length/2 : reflectance.Length;
-        // complex reported as all reals, then all imaginaries
+        // complex reported as all real numbers, then all imaginary numbers
         var numCurves = numForwardValues/numPointsPerCurve;
 
         var points = new IDataPoint[numCurves][];
-        Func<int, int, IDataPoint> getReflectanceAtIndex = (i, j) =>
-        {
-            // man, this is getting hacky...
-            var index = plotIsVsWavelength
-                ? i*numCurves + j
-                : j*numPointsPerCurve + i;
-            return isComplexPlot
-                ?
-                    new ComplexDataPoint(primaryIndependentValues[i],
-                        new Complex(reflectance[index], reflectance[index + numForwardValues]))
-                : new DoubleDataPoint(primaryIndependentValues[i], reflectance[index]);
-        };
+
         for (var j = 0; j < numCurves; j++)
         {
             points[j] = new IDataPoint[numPointsPerCurve];
             for (var i = 0; i < numPointsPerCurve; i++)
             {
-                points[j][i] = getReflectanceAtIndex(i, j);
+                points[j][i] = GetReflectanceAtIndex(i, j);
             }
         }
         return points;
+
+        IDataPoint GetReflectanceAtIndex(int i, int j)
+        {
+            // man, this is getting hacky...
+            var index = plotIsVsWavelength
+                ? i * numCurves + j
+                : j * numPointsPerCurve + i;
+            return isComplexPlot
+                ? new ComplexDataPoint(primaryIndependentValues[i], new Complex(reflectance[index], reflectance[index + numForwardValues]))
+                : new DoubleDataPoint(primaryIndependentValues[i], reflectance[index]);
+        }
     }
 
     private IDictionary<IndependentVariableAxis, object> GetParametersInOrder(object opticalProperties)
@@ -634,8 +618,8 @@ public class InverseSolverViewModel : BindableObject
         // then, call the appropriate parameter generator, defined above
         var allParameters =
             from iv in
-                SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.Concat(
-                    SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.UnSelectedValues)
+                SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Concat(
+                    SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.UnSelectedValues)
             where iv != IndependentVariableAxis.Wavelength
             orderby GetParameterOrder(iv)
             select new KeyValuePair<IndependentVariableAxis, object>(iv, GetParameterValues(iv));
@@ -653,76 +637,56 @@ public class InverseSolverViewModel : BindableObject
     /// </summary>
     /// <param name="axis"></param>
     /// <returns></returns>
-    private int GetParameterOrder(IndependentVariableAxis axis)
+    private static int GetParameterOrder(IndependentVariableAxis axis)
     {
-        switch (axis)
+        return axis switch
         {
-            case IndependentVariableAxis.Wavelength:
-                return 0;
-            case IndependentVariableAxis.Rho:
-                return 1;
-            case IndependentVariableAxis.Fx:
-                return 1;
-            case IndependentVariableAxis.Time:
-                return 2;
-            case IndependentVariableAxis.Ft:
-                return 2;
-            case IndependentVariableAxis.Z:
-                return 3;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(axis));
-        }
+            IndependentVariableAxis.Wavelength => 0,
+            IndependentVariableAxis.Rho => 1,
+            IndependentVariableAxis.Fx => 1,
+            IndependentVariableAxis.Time => 2,
+            IndependentVariableAxis.Ft => 2,
+            IndependentVariableAxis.Z => 3,
+            _ => throw new ArgumentOutOfRangeException(nameof(axis))
+        };
     }
 
     private double[] GetParameterValues(IndependentVariableAxis axis)
     {
-        var isConstant = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.UnSelectedValues.Contains(axis);
+        var isConstant = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.UnSelectedValues.Contains(axis);
         if (isConstant)
         {
-            //var positionIndex = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.UnSelectedValues.IndexOf(axis);
+            //var positionIndex = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.UnSelectedValues.IndexOf(axis)
             var positionIndex = 0; //hard-coded for now
-            switch (positionIndex)
+            return positionIndex switch
             {
-                case 0:
-                default:
-                    return new[] {SolutionDomainTypeOptionVM.ConstantAxesVMs[0].AxisValue};
-                case 1:
-                    return new[] {SolutionDomainTypeOptionVM.ConstantAxesVMs[1].AxisValue};
-                //case 2:
-                //    return new[] { SolutionDomainTypeOptionVM.ConstantAxisThreeValue };
-            }
+                // add this back if hard-coding is removed
+                // 1 => [SolutionDomainTypeOptionVm.ConstantAxesVMs[1].AxisValue],
+                _ => [SolutionDomainTypeOptionVm.ConstantAxesVMs[0].AxisValue]
+            };
         }
         else
         {
-            var numAxes = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.Length;
-            var positionIndex = 0; //hard-coded for now
-            //var positionIndex = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.IndexOf(axis);
-            switch (numAxes)
+            var numAxes = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Length;
+            var positionIndex = 0; //hard-coded for now - commented the options that are currently unreachable
+            //var positionIndex = SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.IndexOf(axis)
+            return numAxes switch
             {
-                case 1:
-                default:
-                    return AllRangeVMs[0].Values.ToArray();
-                case 2:
-                    switch (positionIndex)
-                    {
-                        case 0:
-                        default:
-                            return AllRangeVMs[1].Values.ToArray();
-                        case 1:
-                            return AllRangeVMs[0].Values.ToArray();
-                    }
-                case 3:
-                    switch (positionIndex)
-                    {
-                        case 0:
-                        default:
-                            return AllRangeVMs[2].Values.ToArray();
-                        case 1:
-                            return AllRangeVMs[1].Values.ToArray();
-                        case 2:
-                            return AllRangeVMs[0].Values.ToArray();
-                    }
-            }
+                2 => positionIndex switch
+                {
+                    // add this back if hard-coding is removed
+                    //1 => AllRangeVMs[0].Values.ToArray(),
+                    _ => [.. AllRangeVMs[1].Values]
+                },
+                3 => positionIndex switch
+                {
+                    // add these back if hard-coding is removed
+                    //1 => AllRangeVMs[1].Values.ToArray(),
+                    //2 => AllRangeVMs[0].Values.ToArray(),
+                    _ => [.. AllRangeVMs[2].Values]
+                },
+                _ => [.. AllRangeVMs[0].Values]
+            };
         }
     }
 

@@ -15,11 +15,11 @@ public class OpticalPropertyViewModelTests
     [Test]
     public void Verify_default_constructor_sets_properties_correctly()
     {
-        var opticalPropertyVM = new OpticalPropertyViewModel();
-        Assert.That(opticalPropertyVM.Mua, Is.EqualTo(0.01));
-        Assert.That(opticalPropertyVM.Musp, Is.EqualTo(1.0));
-        Assert.That(opticalPropertyVM.G, Is.EqualTo(0.8));
-        Assert.That(opticalPropertyVM.N, Is.EqualTo(1.4));
+        var opticalPropertyVm = new OpticalPropertyViewModel();
+        Assert.That(opticalPropertyVm.Mua, Is.EqualTo(0.01));
+        Assert.That(opticalPropertyVm.Musp, Is.EqualTo(1.0));
+        Assert.That(opticalPropertyVm.G, Is.EqualTo(0.8));
+        Assert.That(opticalPropertyVm.N, Is.EqualTo(1.4));
     }
 
     /// <summary>

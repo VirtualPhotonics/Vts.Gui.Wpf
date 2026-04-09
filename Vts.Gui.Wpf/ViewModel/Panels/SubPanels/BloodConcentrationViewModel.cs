@@ -27,13 +27,13 @@ public class BloodConcentrationViewModel : BindableObject
     /// <summary>
     ///     ChromophoreAbsorber representing the concentration of oxy-hemoglobin (uM)
     /// </summary>
-    public bool DisplayBloodVM
+    public bool DisplayBloodVm
     {
         get;
         set
         {
             field = value;
-            OnPropertyChanged(nameof(DisplayBloodVM));
+            OnPropertyChanged(nameof(DisplayBloodVm));
         }
     } = true;
 
@@ -49,15 +49,13 @@ public class BloodConcentrationViewModel : BindableObject
                 field.PropertyChanged -= Func;
             }
 
-            if (value != null)
-            {
-                field = value;
-                OnPropertyChanged(nameof(HbO2));
-                // subscribe to the new property changed event
-                field.PropertyChanged += (s, a) => UpdateStO2AndTotalHb();
-                // make sure that whatever's bound to StO2 and TotalHb will update
-                UpdateStO2AndTotalHb();
-            }
+            if (value == null) return;
+            field = value;
+            OnPropertyChanged(nameof(HbO2));
+            // subscribe to the new property changed event
+            field.PropertyChanged += (_, _) => UpdateStO2AndTotalHb();
+            // make sure that whatever's bound to StO2 and TotalHb will update
+            UpdateStO2AndTotalHb();
         }
     }
 
@@ -76,16 +74,14 @@ public class BloodConcentrationViewModel : BindableObject
                 field.PropertyChanged -= Func;
             }
 
-            if (value != null)
-            {
-                field = value;
-                //_Hb.Concentration = FormatOutput(_Hb.Concentration);
-                OnPropertyChanged(nameof(Hb));
-                // subscribe to the new property changed event
-                field.PropertyChanged += (s, a) => UpdateStO2AndTotalHb();
-                // make sure that whatever's bound to StO2 and TotalHb will update
-                UpdateStO2AndTotalHb();
-            }
+            if (value == null) return;
+            field = value;
+            //_Hb.Concentration = FormatOutput(_Hb.Concentration);
+            OnPropertyChanged(nameof(Hb));
+            // subscribe to the new property changed event
+            field.PropertyChanged += (_, _) => UpdateStO2AndTotalHb();
+            // make sure that whatever's bound to StO2 and TotalHb will update
+            UpdateStO2AndTotalHb();
         }
     }
 
@@ -106,7 +102,7 @@ public class BloodConcentrationViewModel : BindableObject
             var hbO2 = value * TotalHb;
 
             // after calculated, assign them to the concentration properties of 
-            // the ChromphoreAbsorber instances
+            // the ChromophoreAbsorber instances
             Hb.Concentration = hb;
             HbO2.Concentration = hbO2;
 
@@ -131,7 +127,7 @@ public class BloodConcentrationViewModel : BindableObject
             var hb = value * (1 - StO2);
 
             // after calculated, assign them to the concentration properties of 
-            // the ChromphoreAbsorber instances
+            // the ChromophoreAbsorber instances
             Hb.Concentration = hb;
             HbO2.Concentration = hbO2;
 

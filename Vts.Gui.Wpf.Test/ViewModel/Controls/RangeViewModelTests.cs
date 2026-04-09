@@ -29,10 +29,10 @@ public class RangeViewModelTests
     [Test]
     public void Verify_default_constructor_sets_properties_correctly()
     {
-        var rangeVM = new RangeViewModel();
-        Assert.That(rangeVM.Start, Is.EqualTo(1.0));
-        Assert.That(rangeVM.Stop, Is.EqualTo(6));
-        Assert.That(rangeVM.Number, Is.EqualTo(60));
+        var rangeVm = new RangeViewModel();
+        Assert.That(rangeVm.Start, Is.EqualTo(1.0));
+        Assert.That(rangeVm.Stop, Is.EqualTo(6));
+        Assert.That(rangeVm.Number, Is.EqualTo(60));
     }
 
     /// <summary>
@@ -41,19 +41,19 @@ public class RangeViewModelTests
     [Test]
     public void Verify_constructor_with_arguments_sets_properties_correctly()
     {
-        var rangeVM = new RangeViewModel(
+        var rangeVm = new RangeViewModel(
             new DoubleRange(0.0, 100.0, 101), 
             "xx", 
             IndependentVariableAxis.Time, 
             "Test:", 
             false);
-        Assert.That(rangeVM.Start, Is.EqualTo(0.0));
-        Assert.That(rangeVM.Stop, Is.EqualTo(100.0));
-        Assert.That(rangeVM.Number, Is.EqualTo(101));
-        Assert.That(rangeVM.Units, Is.EqualTo("xx"));
-        Assert.That(rangeVM.AxisType, Is.EqualTo(IndependentVariableAxis.Time));
-        Assert.That(rangeVM.Title, Is.EqualTo("Test:"));
-        Assert.That(rangeVM.EnableNumber, Is.False);
+        Assert.That(rangeVm.Start, Is.EqualTo(0.0));
+        Assert.That(rangeVm.Stop, Is.EqualTo(100.0));
+        Assert.That(rangeVm.Number, Is.EqualTo(101));
+        Assert.That(rangeVm.Units, Is.EqualTo("xx"));
+        Assert.That(rangeVm.AxisType, Is.EqualTo(IndependentVariableAxis.Time));
+        Assert.That(rangeVm.Title, Is.EqualTo("Test:"));
+        Assert.That(rangeVm.EnableNumber, Is.False);
     }
 
     [Test]

@@ -8,14 +8,14 @@ namespace Vts.Gui.Wpf.ViewModel;
 public class VoxelRegionViewModel : BindableObject
 {
     private string _name;
-    private OpticalPropertyViewModel _opticalPropertyVM;
+    private OpticalPropertyViewModel _opticalPropertyVm;
     private readonly VoxelTissueRegion _region;
 
     public VoxelRegionViewModel(VoxelTissueRegion region, string name)
     {
         _region = region;
         _name = name ?? "";
-        _opticalPropertyVM = new OpticalPropertyViewModel(_region.RegionOP, StringLookup.GetLocalizedString("Measurement_Inv_mm"), "", true, true, true, false);
+        _opticalPropertyVm = new OpticalPropertyViewModel(_region.RegionOP, StringLookup.GetLocalizedString("Measurement_Inv_mm"), "", true, true, true, false);
     }
 
     public VoxelRegionViewModel() : this(new VoxelTissueRegion(), "")
@@ -62,13 +62,13 @@ public class VoxelRegionViewModel : BindableObject
         }
     }
 
-    public OpticalPropertyViewModel OpticalPropertyVM
+    public OpticalPropertyViewModel OpticalPropertyVm
     {
-        get => _opticalPropertyVM;
+        get => _opticalPropertyVm;
         set
         {
-            _opticalPropertyVM = value;
-            OnPropertyChanged(nameof(OpticalPropertyVM));
+            _opticalPropertyVm = value;
+            OnPropertyChanged(nameof(OpticalPropertyVm));
         }
     }
 

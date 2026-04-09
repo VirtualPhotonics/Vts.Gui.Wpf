@@ -12,30 +12,33 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels;
 public class FluenceSolverViewModelTests
 {
     /// <summary>
-    /// Verifies that FluenceSolverViewModel default constructor instantiates sub viewmodels
+    /// Verifies that FluenceSolverViewModel default constructor instantiates sub view models
     /// </summary>
     [Test]
     public void Verify_default_constructor_sets_properties_correctly()
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
-        var viewModel = windowViewModel.FluenceSolverVM;
-        Assert.That(viewModel.ForwardSolverTypeOptionVM != null, Is.True);
-        Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVM != null, Is.True);
-        Assert.That(viewModel.FluenceSolutionDomainTypeOptionVM != null, Is.True);
-        Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVM != null, Is.True);
-        Assert.That(viewModel.MapTypeOptionVM != null, Is.True);
-        Assert.That(viewModel.TissueInputVM != null, Is.True);
-        Assert.That(viewModel.RhoRangeVM != null, Is.True);
-        Assert.That(viewModel.ZRangeVM != null, Is.True);
+        var viewModel = windowViewModel.FluenceSolverVm;
+        Assert.That(viewModel.ForwardSolverTypeOptionVm != null, Is.True);
+        Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVm != null, Is.True);
+        Assert.That(viewModel.FluenceSolutionDomainTypeOptionVm != null, Is.True);
+        Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVm != null, Is.True);
+        Assert.That(viewModel.MapTypeOptionVm != null, Is.True);
+        Assert.That(viewModel.TissueInputVm != null, Is.True);
+        Assert.That(viewModel.RhoRangeVm != null, Is.True);
+        Assert.That(viewModel.ZRangeVm != null, Is.True);
         // default settings
-        Assert.That(viewModel.FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
-        Assert.That(viewModel.FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
-        Assert.That(viewModel.FluenceSolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
-        Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
-        Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
-        Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
-        Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVM.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
+        Assert.That(viewModel.FluenceSolutionDomainTypeOptionVm, Is.Not.Null);
+        Assert.That(viewModel.FluenceSolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
+        Assert.That(viewModel.FluenceSolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
+        Assert.That(viewModel.FluenceSolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
+        Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVm, Is.Not.Null);
+        Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
+        Assert.That(viewModel.AbsorbedEnergySolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
+        Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVm, Is.Not.Null);
+        Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndTimeEnabled, Is.False);
+        Assert.That(viewModel.PhotonHittingDensitySolutionDomainTypeOptionVm.IsFluenceOfRhoAndZAndFtEnabled, Is.True);
     }
 
     // The following tests verify the Relay Commands
@@ -47,16 +50,16 @@ public class FluenceSolverViewModelTests
     {
         // WindowViewModel needs to be instantiated for default constructor
         var windowViewModel = new WindowViewModel();
-        var viewModel = windowViewModel.FluenceSolverVM;
-        viewModel.ForwardSolverTypeOptionVM.SelectedValue = ForwardSolverType.PointSourceSDA;
-        viewModel.FluenceSolutionDomainTypeOptionVM.SelectedValue = FluenceSolutionDomainType.FluenceOfRhoAndZ;
+        var viewModel = windowViewModel.FluenceSolverVm;
+        viewModel.ForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.PointSourceSDA;
+        viewModel.FluenceSolutionDomainTypeOptionVm.SelectedValue = FluenceSolutionDomainType.FluenceOfRhoAndZ;
         var result = viewModel.GetMapData();
         result.Wait();
         // ExecuteForwardSolver default settings
-        var plotViewModel = windowViewModel.PlotVM;
+        var plotViewModel = windowViewModel.PlotVm;
         Assert.That(plotViewModel.Labels.Count, Is.EqualTo(0));
         Assert.That(plotViewModel.Title, Is.Null);
-        var textOutputViewModel = windowViewModel.TextOutputVM;
+        var textOutputViewModel = windowViewModel.TextOutputVm;
         const double d1 = 0.01;
         const int i1 = 1;
         const double g = 0.8;

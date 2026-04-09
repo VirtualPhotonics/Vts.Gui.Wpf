@@ -7,17 +7,17 @@ namespace Vts.Gui.Wpf.ViewModel;
 public class LayerRegionViewModel : BindableObject
 {
     private string _name;
-    private OpticalPropertyViewModel _opticalPropertyVM;
+    private OpticalPropertyViewModel _opticalPropertyVm;
     private readonly LayerTissueRegion _region;
-    private RangeViewModel _zRangeVM;
+    private RangeViewModel _zRangeVm;
 
     public LayerRegionViewModel(LayerTissueRegion region, string name)
     {
         _region = region;
         _name = name ?? "";
-        _zRangeVM = new RangeViewModel(_region.ZRange, StringLookup.GetLocalizedString("Measurement_mm"), IndependentVariableAxis.Z, "", false);
-        _opticalPropertyVM = new OpticalPropertyViewModel(_region.RegionOP, StringLookup.GetLocalizedString("Measurement_Inv_mm"), "", true, true, true, true);
-        _opticalPropertyVM.PropertyChanged += (s, a) => OnPropertyChanged(nameof(Name));
+        _zRangeVm = new RangeViewModel(_region.ZRange, StringLookup.GetLocalizedString("Measurement_mm"), IndependentVariableAxis.Z, "", false);
+        _opticalPropertyVm = new OpticalPropertyViewModel(_region.RegionOP, StringLookup.GetLocalizedString("Measurement_Inv_mm"), "", true, true, true, true);
+        _opticalPropertyVm.PropertyChanged += (_, _) => OnPropertyChanged(nameof(Name));
     }
 
     //public LayerRegionViewModel(LayerRegion region) : this(region, "")
@@ -29,13 +29,13 @@ public class LayerRegionViewModel : BindableObject
     {
     }
 
-    public RangeViewModel ZRangeVM
+    public RangeViewModel ZRangeVm
     {
-        get => _zRangeVM;
+        get => _zRangeVm;
         set
         {
-            _zRangeVM = value;
-            OnPropertyChanged(nameof(ZRangeVM));
+            _zRangeVm = value;
+            OnPropertyChanged(nameof(ZRangeVm));
         }
     }
 
@@ -49,13 +49,13 @@ public class LayerRegionViewModel : BindableObject
         }
     }
 
-    public OpticalPropertyViewModel OpticalPropertyVM
+    public OpticalPropertyViewModel OpticalPropertyVm
     {
-        get => _opticalPropertyVM;
+        get => _opticalPropertyVm;
         set
         {
-            _opticalPropertyVM = value;
-            OnPropertyChanged(nameof(OpticalPropertyVM));
+            _opticalPropertyVm = value;
+            OnPropertyChanged(nameof(OpticalPropertyVm));
         }
     }
 

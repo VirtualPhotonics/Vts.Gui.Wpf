@@ -12,7 +12,7 @@ namespace Vts.Gui.Wpf.ViewModel.Helpers;
 /// </summary>
 public static class ImageTools
 {
-    public static void SaveUIElementToPngImage(Visual element)
+    public static void SaveUiElementToPngImage(Visual element)
     {
         // Create SaveFileDialog 
         var dialog = new SaveFileDialog
@@ -50,9 +50,7 @@ public static class ImageTools
 
         png.Frames.Add(BitmapFrame.Create(bitmap));
 
-        using (var stream = File.Create(filename))
-        {
-            png.Save(stream);
-        }
+        using var stream = File.Create(filename);
+        png.Save(stream);
     }
 }
