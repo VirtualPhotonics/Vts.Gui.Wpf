@@ -31,7 +31,7 @@ public partial class TextOutputView : UserControl
         if (e.PropertyName == "Text")
         {
             // this line throws an error in debug mode so added in a check for debugging
-            scrollViewer.ScrollToBottom();
+            ScrollViewer.ScrollToBottom();
         }
 #endif
     }
