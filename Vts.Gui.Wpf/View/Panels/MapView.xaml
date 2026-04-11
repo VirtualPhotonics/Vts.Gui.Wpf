@@ -4,8 +4,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
              HorizontalAlignment="Left" VerticalAlignment="Top" mc:Ignorable="d" d:DesignHeight="600"
              d:DesignWidth="900">
+    <UserControl.DataContext>
+        <viewModel:MapViewModel />
+    </UserControl.DataContext>
+
     <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />

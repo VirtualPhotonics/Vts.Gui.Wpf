@@ -1,7 +1,11 @@
 ﻿<UserControl x:Class="Vts.Gui.Wpf.View.InverseSolverView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:view="clr-namespace:Vts.Gui.Wpf.View">
+             xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
+             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel">
+    <UserControl.DataContext>
+        <viewModel:InverseSolverViewModel />
+    </UserControl.DataContext>
 
     <StackPanel Orientation="Vertical" 
                 VerticalAlignment="Top">
@@ -59,7 +63,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <!-- Optimization paramters -->
+        <!-- Optimization parameters -->
         <view:RadioButtonOptionView DataContext="{Binding InverseFitTypeOptionVm}" 
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top" 

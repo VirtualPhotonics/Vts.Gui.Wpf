@@ -94,6 +94,10 @@ public class PlotViewModel : BindableObject, ITextFileService
     // function to filter out any invalid data points
     private static bool IsValidDataPoint(DataPoint p) => !double.IsInfinity(Math.Abs(p.X)) && !double.IsNaN(p.X) && !double.IsInfinity(Math.Abs(p.Y)) && !double.IsNaN(p.Y);
 
+    public PlotViewModel() : this(0)
+    {
+    }
+
     public PlotViewModel(int plotViewId = 0)
     {
         _plotViewId = plotViewId;

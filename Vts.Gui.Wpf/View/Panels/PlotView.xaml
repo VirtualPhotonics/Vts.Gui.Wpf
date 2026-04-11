@@ -5,8 +5,13 @@
              xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
              HorizontalAlignment="Left" VerticalAlignment="Top"
              mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="860">
+    <UserControl.DataContext>
+        <viewModel:PlotViewModel />
+    </UserControl.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

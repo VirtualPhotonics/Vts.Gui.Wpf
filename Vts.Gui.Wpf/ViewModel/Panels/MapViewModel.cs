@@ -25,6 +25,10 @@ public class MapViewModel : BindableObject
     private double _minValue;
     private OptionViewModel<ScalingType> _scalingTypeOptionVm;
 
+    public MapViewModel() : this(0)
+    {
+    }
+
     public MapViewModel(int mapViewId = 0)
     {
         _mapViewId = mapViewId;

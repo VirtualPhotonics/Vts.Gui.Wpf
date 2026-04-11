@@ -2,9 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
-             xmlns:templates="clr-namespace:Vts.Gui.Wpf.View.Templates"
+             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
              Height="Auto" Width="440">
-    <Grid x:Name="LayoutRoot" Background="White" HorizontalAlignment="Left">
+    <UserControl.DataContext>
+        <viewModel:SpectralMappingViewModel />
+    </UserControl.DataContext>
+
+    <Grid Background="White" HorizontalAlignment="Left">
         <StackPanel Orientation="Vertical">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -79,7 +83,7 @@
                 <StackPanel Margin="0,10,0,0">
                     <StackPanel.Resources>
                         <!-- Intralipid parameters -->
-                        <DataTemplate x:Key="IntralipidScattering">
+                        <DataTemplate x:Key="IntralipidScattering" >
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding ConverterParameter=Value_VolumeFraction, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
                                 <TextBlock Text=" = " VerticalAlignment="Center" />
@@ -108,7 +112,7 @@
                                              Width="30" KeyDown="TextBox_KeyDown" />
                             </StackPanel>
                         </DataTemplate>
-                        <!-- Powerlaw parameters -->
+                        <!-- Power Law parameters -->
                         <DataTemplate x:Key="PowerLawScattering">
                             <StackPanel Orientation="Vertical" Margin="3,0,0,0">
                                 <StackPanel Orientation="Horizontal">
