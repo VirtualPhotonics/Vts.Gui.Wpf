@@ -30,9 +30,9 @@ public class RangeViewModelTests
     public void Verify_default_constructor_sets_properties_correctly()
     {
         var rangeVm = new RangeViewModel();
-        Assert.That(rangeVm.Start, Is.EqualTo(1.0));
-        Assert.That(rangeVm.Stop, Is.EqualTo(6));
-        Assert.That(rangeVm.Number, Is.EqualTo(60));
+        Assert.That(rangeVm.Start, Is.EqualTo(0.5));
+        Assert.That(rangeVm.Stop, Is.EqualTo(9.5));
+        Assert.That(rangeVm.Number, Is.EqualTo(19));
     }
 
     /// <summary>

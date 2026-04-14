@@ -56,6 +56,7 @@ public class ForwardSolverViewModel : BindableObject
 
         ForwardSolverTypeOptionVm.PropertyChanged += (_, _) =>
         {
+            OnPropertyChanged(nameof(ForwardSolver));
             OnPropertyChanged(nameof(IsGaussianForwardModel));
             OnPropertyChanged(nameof(IsMultiRegion));
             OnPropertyChanged(nameof(IsSemiInfinite));
@@ -179,6 +180,9 @@ public class ForwardSolverViewModel : BindableObject
     }
 
     public RelayCommand ExecuteForwardSolverCommand { get; set; }
+
+    public IForwardSolver ForwardSolver => SolverFactory.GetForwardSolver(
+        ForwardSolverTypeOptionVm.SelectedValue);
 
     public bool IsGaussianForwardModel => ForwardSolverTypeOptionVm.SelectedValue.IsGaussianForwardModel();
 

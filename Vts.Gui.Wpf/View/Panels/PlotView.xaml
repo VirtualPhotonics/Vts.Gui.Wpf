@@ -5,8 +5,13 @@
              xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewModel:PlotViewModel, IsDesignTimeCreatable=True}"
              HorizontalAlignment="Left" VerticalAlignment="Top"
-             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="860">
+             d:Background="White"
+             d:DesignWidth="900" d:DesignHeight="860">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -23,7 +28,6 @@
                   Content="{Binding ConverterParameter=Label_HideKey, Converter={StaticResource MyResourceToStringConverter}}"
                   IsChecked="{Binding HideKey, Mode=TwoWay}" Margin="0,0,20,0" />
         <!-- Options below the plot -->
-        <Image Grid.Row="2" Source="/Vts.Gui.Wpf;Component/Resources/Images/logo-small.png" Height="50" Stretch="None" />
         <StackPanel Grid.Row="2" Orientation="Vertical" MinWidth="515" MinHeight="135" Height="115" Margin="10"
                     VerticalAlignment="Top" HorizontalAlignment="Center" Background="White">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">

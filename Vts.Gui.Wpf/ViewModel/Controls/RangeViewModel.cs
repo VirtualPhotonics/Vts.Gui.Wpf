@@ -35,7 +35,7 @@ public class RangeViewModel : BindableObject
     {
     }
 
-    public RangeViewModel() : this(new DoubleRange(1.0, 6.0, 60), "mm", IndependentVariableAxis.Rho, "Range:", true)
+    public RangeViewModel() : this(new DoubleRange(0.5, 9.5, 19), "mm", IndependentVariableAxis.Rho, "Range:", true)
     {
     }
 

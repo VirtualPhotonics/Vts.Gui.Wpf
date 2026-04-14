@@ -34,9 +34,9 @@ public class InverseSolverViewModelTests
         Assert.That(viewModel.SolutionDomainTypeOptionVm.AllowMultiAxis, Is.False);
         Assert.That(viewModel.SolutionDomainTypeOptionVm.SelectedValue, Is.EqualTo(SolutionDomainType.ROfRho));
         Assert.That(viewModel.AllRangeVMs.Length, Is.EqualTo(1));
-        Assert.That(Math.Abs(viewModel.AllRangeVMs[0].Start - 1) < 1e-6, Is.True);
-        Assert.That(Math.Abs(viewModel.AllRangeVMs[0].Stop - 6) < 1e-6, Is.True);
-        Assert.That(viewModel.AllRangeVMs[0].Number, Is.EqualTo(60));
+        Assert.That(Math.Abs(viewModel.AllRangeVMs[0].Start - 0.5) < 1e-6, Is.True);
+        Assert.That(Math.Abs(viewModel.AllRangeVMs[0].Stop - 9.5) < 1e-6, Is.True);
+        Assert.That(viewModel.AllRangeVMs[0].Number, Is.EqualTo(19));
     }
 
     // The following tests verify the Relay Commands

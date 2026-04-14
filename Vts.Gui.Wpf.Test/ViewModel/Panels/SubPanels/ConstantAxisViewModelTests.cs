@@ -30,7 +30,7 @@ internal class ConstantAxisViewModelTests
     {
         Assert.Throws<InvalidOperationException>(() =>
         {
-            var _ = new ConstantAxisViewModel
+            _ = new ConstantAxisViewModel
             {
                 AxisLabel = "Wavelength",
                 AxisType = IndependentVariableAxis.Wavelength,

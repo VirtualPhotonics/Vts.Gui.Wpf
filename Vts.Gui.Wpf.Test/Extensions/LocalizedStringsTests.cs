@@ -10,7 +10,8 @@ internal class LocalizedStringsTests
     [Test]
     public void Verify_get_localized_string()
     {
-        var strings = LocalizedStrings.MainResource;
+        var localizedStrings = new LocalizedStrings();
+        var strings = localizedStrings.MainResource;
         Assert.That(strings, Is.InstanceOf<Strings>());
         Assert.That(Strings.Button_Cancel, Is.InstanceOf<string>());
         Assert.That(Strings.Button_Cancel.Length > 0, Is.True);
