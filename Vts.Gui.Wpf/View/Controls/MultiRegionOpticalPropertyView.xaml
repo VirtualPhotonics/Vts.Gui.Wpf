@@ -5,8 +5,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
              xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="400">
+             d:DesignHeight="300" 
+             d:DesignWidth="400"
+             d:Background="White"
+             d:DataContext="{d:DesignInstance Type=viewModel:MultiRegionTissueViewModel, IsDesignTimeCreatable=True}">
 
     <StackPanel Orientation="Vertical">
         <TextBlock Text="{Binding ConverterParameter=Label_TissueInput, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" />

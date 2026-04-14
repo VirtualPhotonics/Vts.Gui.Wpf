@@ -6,10 +6,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
              mc:Ignorable="d"
+             d:Background="White"
              d:DataContext="{d:DesignInstance Type=viewModel:SpectralMappingViewModel, IsDesignTimeCreatable=True}"
              Height="Auto" Width="440">
 
-    <Grid Background="White" HorizontalAlignment="Left">
+    <Grid HorizontalAlignment="Left">
         <StackPanel Orientation="Vertical">
             <Grid>
                 <Grid.ColumnDefinitions>

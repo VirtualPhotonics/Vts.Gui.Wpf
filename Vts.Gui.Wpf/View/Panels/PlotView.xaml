@@ -6,9 +6,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:oxy="http://oxyplot.org/wpf"
              xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
+             mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=viewModel:PlotViewModel, IsDesignTimeCreatable=True}"
              HorizontalAlignment="Left" VerticalAlignment="Top"
-             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="860">
+             d:Background="White"
+             d:DesignWidth="900" d:DesignHeight="860">
 
     <Grid>
         <Grid.RowDefinitions>

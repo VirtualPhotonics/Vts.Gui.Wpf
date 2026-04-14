@@ -4,7 +4,8 @@
              xmlns:resources="clr-namespace:Vts.Gui.Wpf.Resources"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"             
+             mc:Ignorable="d"
+             d:Background="White"
              xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
              d:DataContext="{d:DesignInstance Type=viewModel:FluenceSolutionDomainOptionViewModel, IsDesignTimeCreatable=True}">
 

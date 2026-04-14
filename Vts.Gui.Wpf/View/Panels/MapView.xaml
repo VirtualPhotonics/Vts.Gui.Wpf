@@ -6,6 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
              mc:Ignorable="d"
+             d:Background="White"
              d:DataContext="{d:DesignInstance Type=viewModel:MapViewModel, IsDesignTimeCreatable=True}"
              HorizontalAlignment="Left" VerticalAlignment="Top" d:DesignHeight="600"
              d:DesignWidth="900">
