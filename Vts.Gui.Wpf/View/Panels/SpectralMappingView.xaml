@@ -84,7 +84,7 @@
                 <StackPanel Margin="0,10,0,0">
                     <StackPanel.Resources>
                         <!-- Intralipid parameters -->
-                        <DataTemplate x:Key="IntralipidScattering" >
+                        <DataTemplate x:Key="IntralipidScattering">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding ConverterParameter=Value_VolumeFraction, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" />
                                 <TextBlock Text=" = " VerticalAlignment="Center" />
