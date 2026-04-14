@@ -18,15 +18,15 @@
             <TextBlock Text="{Binding ConverterParameter=Label_SelectedRegion, Converter={StaticResource MyResourceToStringConverter}}" 
                        VerticalAlignment="Center"
                        Margin="0,0,4,0" />              
-            <toolkit:IntegerUpDown Name="nudRegionIndex" DefaultValue="0" Value="{Binding CurrentRegionIndex, Mode=TwoWay}" 
+            <toolkit:IntegerUpDown Name="NudRegionIndex" DefaultValue="0" Value="{Binding CurrentRegionIndex, Mode=TwoWay}" 
                                    Minimum="{Binding MinimumRegionIndex}" Maximum="{Binding MaximumRegionIndex}"
                                    Width="40" HorizontalAlignment="Left"
                                    />
         </StackPanel>
          
-        <ListBox x:Name="opListBox" SelectedIndex="{Binding CurrentRegionIndex, Mode=TwoWay}"
+        <ListBox x:Name="OpListBox" SelectedIndex="{Binding CurrentRegionIndex, Mode=TwoWay}"
                  ItemsSource="{Binding RegionsVm, Mode=TwoWay}" MaxHeight="180" Margin="5" SelectionChanged="ListBox_SelectionChanged">
-             <!--<ListBox SelectedIndex="{Binding Value, ElementName=nudRegionIndex, Mode=TwoWay}"  ItemsSource="{Binding LayerRegionsVm, Mode=TwoWay}" MaxHeight="150" Margin="5"></ListBox>
+             <!--<ListBox SelectedIndex="{Binding Value, ElementName=NudRegionIndex, Mode=TwoWay}"  ItemsSource="{Binding LayerRegionsVm, Mode=TwoWay}" MaxHeight="150" Margin="5"></ListBox>
              <ListBox SelectedIndex="{Binding CurrentRegionIndex, Mode=TwoWay}" ItemsSource="{Binding LayerRegionsVm, Mode=TwoWay}" MaxHeight="150" Margin="5"></ListBox>-->
             <ListBox.Resources>
                 <DataTemplate x:Key="MultiLayer">
