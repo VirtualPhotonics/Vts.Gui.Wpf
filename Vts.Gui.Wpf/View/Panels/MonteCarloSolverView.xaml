@@ -3,11 +3,12 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=viewModel:MonteCarloSolverViewModel, IsDesignTimeCreatable=True}"
     VerticalAlignment="Top">
-    <UserControl.DataContext>
-        <viewModel:MonteCarloSolverViewModel />
-    </UserControl.DataContext>
 
     <StackPanel Orientation="Vertical" VerticalAlignment="Top">
         <TextBlock Text="{Binding ConverterParameter=Label_SpecifyInputsFromFile, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" />

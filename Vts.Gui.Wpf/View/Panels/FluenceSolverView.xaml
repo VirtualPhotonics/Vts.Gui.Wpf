@@ -4,10 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
     xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
-    VerticalAlignment="Top">
-    <UserControl.DataContext>
-        <viewModel:FluenceSolverViewModel />
-    </UserControl.DataContext>
+    VerticalAlignment="Top"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=viewModel:FluenceSolverViewModel, IsDesignTimeCreatable=True}">
 
     <StackPanel Orientation="Vertical" VerticalAlignment="Top" Width="480">
         <!-- Solver Engine -->
