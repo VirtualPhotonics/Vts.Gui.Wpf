@@ -29,7 +29,7 @@ public class MapViewModel : BindableObject
     {
     }
 
-    public MapViewModel(int mapViewId = 0)
+    public MapViewModel(int mapViewId)
     {
         _mapViewId = mapViewId;
         MinValue = 1E-9;

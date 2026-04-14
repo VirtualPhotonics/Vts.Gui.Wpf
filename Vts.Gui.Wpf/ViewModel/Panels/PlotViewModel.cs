@@ -98,7 +98,7 @@ public class PlotViewModel : BindableObject, ITextFileService
     {
     }
 
-    public PlotViewModel(int plotViewId = 0)
+    public PlotViewModel(int plotViewId)
     {
         _plotViewId = plotViewId;
         _minYValue = 1E-9;
