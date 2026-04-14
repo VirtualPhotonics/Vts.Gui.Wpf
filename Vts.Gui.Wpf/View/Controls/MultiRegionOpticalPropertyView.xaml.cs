@@ -12,7 +12,7 @@ public partial class MultiRegionOpticalPropertyView : UserControl
 
     private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if ((OpListBox.SelectedIndex <= NudRegionIndex.Maximum) && (OpListBox.SelectedIndex >= NudRegionIndex.Minimum))
+        if (OpListBox.SelectedIndex <= NudRegionIndex.Maximum && OpListBox.SelectedIndex >= NudRegionIndex.Minimum)
         {
             OpListBox.ScrollIntoView(OpListBox.Items[OpListBox.SelectedIndex]);
         }

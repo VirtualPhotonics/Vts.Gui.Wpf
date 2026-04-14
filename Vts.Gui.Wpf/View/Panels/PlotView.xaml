@@ -28,7 +28,6 @@
                   Content="{Binding ConverterParameter=Label_HideKey, Converter={StaticResource MyResourceToStringConverter}}"
                   IsChecked="{Binding HideKey, Mode=TwoWay}" Margin="0,0,20,0" />
         <!-- Options below the plot -->
-        <Image Grid.Row="2" Source="/Vts.Gui.Wpf;Component/Resources/Images/logo-small.png" Height="50" Stretch="None" />
         <StackPanel Grid.Row="2" Orientation="Vertical" MinWidth="515" MinHeight="135" Height="115" Margin="10"
                     VerticalAlignment="Top" HorizontalAlignment="Center" Background="White">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
