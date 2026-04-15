@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Controls;
 
-namespace Vts.Gui.Wpf.View;
+namespace Vts.Gui.Wpf.View.Controls;
 
 public partial class TextOutputView : UserControl
 {

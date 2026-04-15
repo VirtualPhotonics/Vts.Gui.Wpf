@@ -1,7 +1,8 @@
 using System;
 using Vts.Gui.Wpf.Model;
+using Vts.Gui.Wpf.ViewModel.Controls;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 
 /// <summary>
 ///     View model implementing Fluence domain sub-panel functionality

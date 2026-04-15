@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,16 +9,20 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Animation;
+using CommunityToolkit.Mvvm.Input;
 using Vts.Common.Logging;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
+using Vts.Gui.Wpf.ViewModel.Controls;
+using Vts.Gui.Wpf.ViewModel.Helpers;
+using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 using Vts.IO;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Detectors;
 using Vts.MonteCarlo.IO;
 using Vts.MonteCarlo.Tissues;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
 
 /// <summary>
 ///     View model implementing the Monte Carlo panel functionality (experimental)

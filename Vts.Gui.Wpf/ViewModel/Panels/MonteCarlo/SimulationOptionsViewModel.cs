@@ -1,14 +1,14 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using CommunityToolkit.Mvvm.Input;
 using Vts.Gui.Wpf.Extensions;
+using Vts.Gui.Wpf.ViewModel.Controls;
 using Vts.MonteCarlo;
-
 #if WHITELIST
 using Vts.Gui.Wpf.ViewModel.Application;
 #endif
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
 
 public class SimulationOptionsViewModel : BindableObject
 {

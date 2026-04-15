@@ -1,4 +1,7 @@
 using System.Reflection;
+using Vts.Gui.Wpf.ViewModel.Controls;
+using Vts.Gui.Wpf.ViewModel.Panels;
+using Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
 
 namespace Vts.Gui.Wpf.ViewModel;
 

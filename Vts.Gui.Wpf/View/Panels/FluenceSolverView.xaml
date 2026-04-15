@@ -1,21 +1,22 @@
 ﻿<UserControl
-    x:Class="Vts.Gui.Wpf.View.FluenceSolverView"
+    x:Class="Vts.Gui.Wpf.View.Panels.FluenceSolverView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
-    xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
     VerticalAlignment="Top"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:panels="clr-namespace:Vts.Gui.Wpf.ViewModel.Panels"
+    xmlns:controls="clr-namespace:Vts.Gui.Wpf.View.Controls"
+    xmlns:subPanels="clr-namespace:Vts.Gui.Wpf.View.Panels.SubPanels"
     mc:Ignorable="d"
     d:Background="White"
-    d:DataContext="{d:DesignInstance Type=viewModel:FluenceSolverViewModel, IsDesignTimeCreatable=True}">
+    d:DataContext="{d:DesignInstance Type=panels:FluenceSolverViewModel, IsDesignTimeCreatable=True}">
 
     <StackPanel Orientation="Vertical" VerticalAlignment="Top" Width="480">
         <!-- Solver Engine -->
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding ConverterParameter=Label_FwdSolver, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" Width="75" />
-            <view:ComboBoxOptionView DataContext="{Binding ForwardSolverTypeOptionVm}" HorizontalAlignment="Left"
+            <controls:ComboBoxOptionView DataContext="{Binding ForwardSolverTypeOptionVm}" HorizontalAlignment="Left"
                                      VerticalAlignment="Top" />
         </StackPanel>
         <!-- Gaussian Beam Diameter -->
@@ -35,14 +36,14 @@
                        VerticalAlignment="Center" />
         </StackPanel>
         <!-- Map Type -->
-        <view:RadioButtonOptionView DataContext="{Binding MapTypeOptionVm}" HorizontalAlignment="Left"
+        <controls:RadioButtonOptionView DataContext="{Binding MapTypeOptionVm}" HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     Margin="0,10,0,0"/>
         <!-- Solution Domains (One for each map type) -->
         <!-- Fluence -->
         <StackPanel
             Visibility="{Binding IsFluence, Converter={StaticResource MyBooleanToVisibilityConverter}}">
-            <view:FluenceSolutionDomainOptionView
+            <subPanels:FluenceSolutionDomainOptionView
                 DataContext="{Binding FluenceSolutionDomainTypeOptionVm}"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
@@ -51,7 +52,7 @@
         <!-- Absorbed Energy -->
         <StackPanel
             Visibility="{Binding IsAbsorbedEnergy, Converter={StaticResource MyBooleanToVisibilityConverter}}">
-            <view:AbsorbedEnergySolutionDomainOptionView
+            <subPanels:AbsorbedEnergySolutionDomainOptionView
                 DataContext="{Binding AbsorbedEnergySolutionDomainTypeOptionVm}"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
@@ -60,7 +61,7 @@
         <!-- Photon Hitting Density -->
         <StackPanel
             Visibility="{Binding IsPhotonHittingDensity, Converter={StaticResource MyBooleanToVisibilityConverter}}">
-            <view:PhotonHittingDensitySolutionDomainOptionView
+            <subPanels:PhotonHittingDensitySolutionDomainOptionView
                 DataContext="{Binding PhotonHittingDensitySolutionDomainTypeOptionVm}"
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top"
@@ -107,7 +108,7 @@
                        Margin="3,7,0,0" 
                        FontWeight="DemiBold"
                        VerticalAlignment="Center" />
-            <view:RangeView DataContext="{Binding RhoRangeVm}" 
+            <controls:RangeView DataContext="{Binding RhoRangeVm}" 
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Top" />
         </StackPanel>
@@ -118,7 +119,7 @@
                        Margin="3,7,0,0" 
                        FontWeight="DemiBold"
                        VerticalAlignment="Center" />
-            <view:RangeView DataContext="{Binding ZRangeVm}" 
+            <controls:RangeView DataContext="{Binding ZRangeVm}" 
                             HorizontalAlignment="Left" 
                             VerticalAlignment="Top" />
         </StackPanel>
@@ -127,7 +128,7 @@
             <StackPanel.Resources>
                 <DataTemplate x:Key="SemiInfinite">
                     <StackPanel>
-                        <view:OpticalPropertyView DataContext="{Binding TissueInputVm}" 
+                        <controls:OpticalPropertyView DataContext="{Binding TissueInputVm}" 
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Top" 
                                                   Margin="0,3,0,0" />
@@ -135,7 +136,7 @@
                 </DataTemplate>
                 <DataTemplate x:Key="MultiRegion">
                     <StackPanel>
-                        <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVm}" 
+                        <controls:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVm}" 
                                                              HorizontalAlignment="Left"
                                                              VerticalAlignment="Top" 
                                                              Margin="0,3,0,0" />

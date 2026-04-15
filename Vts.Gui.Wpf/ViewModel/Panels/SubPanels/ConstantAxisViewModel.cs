@@ -1,6 +1,6 @@
 ﻿using Vts.Gui.Wpf.Input;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 
 public class ConstantAxisViewModel : BindableObject
 {

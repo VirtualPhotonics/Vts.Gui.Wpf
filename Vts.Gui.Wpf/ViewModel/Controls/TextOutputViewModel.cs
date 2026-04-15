@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Controls;
 
 public class TextOutputViewModel : BindableObject
 {

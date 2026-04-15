@@ -6,8 +6,10 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using Vts.Common.Logging;
-using Vts.Gui.Wpf.View;
 using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Panels;
+using MapView = Vts.Gui.Wpf.View.Panels.MapView;
+using PlotView = Vts.Gui.Wpf.View.Panels.PlotView;
 
 namespace Vts.Gui.Wpf;
 

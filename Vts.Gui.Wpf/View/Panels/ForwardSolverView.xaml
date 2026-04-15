@@ -1,13 +1,14 @@
-﻿<UserControl x:Class="Vts.Gui.Wpf.View.ForwardSolverView"
+﻿<UserControl x:Class="Vts.Gui.Wpf.View.Panels.ForwardSolverView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              d:Background="White"
-             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
-             d:DataContext="{d:DesignInstance Type=viewModel:ForwardSolverViewModel, IsDesignTimeCreatable=True}"
+             xmlns:panels="clr-namespace:Vts.Gui.Wpf.ViewModel.Panels"
+             xmlns:controls="clr-namespace:Vts.Gui.Wpf.View.Controls"
+             xmlns:subPanels="clr-namespace:Vts.Gui.Wpf.View.Panels.SubPanels"
+             d:DataContext="{d:DesignInstance Type=panels:ForwardSolverViewModel, IsDesignTimeCreatable=True}"
              VerticalAlignment="Top">
 
     <StackPanel Orientation="Vertical" 
@@ -16,7 +17,7 @@
         <!-- Solver Engine -->
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding ConverterParameter=Label_FwdSolver, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" Width="75" />
-            <view:ComboBoxOptionView DataContext="{Binding ForwardSolverTypeOptionVm}" HorizontalAlignment="Left"
+            <controls:ComboBoxOptionView DataContext="{Binding ForwardSolverTypeOptionVm}" HorizontalAlignment="Left"
                                      VerticalAlignment="Top" />
         </StackPanel>
         <!-- Gaussian Beam Diameter -->
@@ -36,7 +37,7 @@
                        VerticalAlignment="Center" />
         </StackPanel>
         <!-- Solution Domain -->
-        <view:SolutionDomainOptionView DataContext="{Binding SolutionDomainTypeOptionVm}" 
+        <subPanels:SolutionDomainOptionView DataContext="{Binding SolutionDomainTypeOptionVm}" 
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top" 
                                        Margin="0,15,0,0" />
@@ -45,7 +46,7 @@
                       Margin="0,0,0,0">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <view:RangeView DataContext="{Binding}" 
+                    <controls:RangeView DataContext="{Binding}" 
                                     HorizontalAlignment="Left" 
                                     VerticalAlignment="Top"
                                     Margin="0,3,0,0" />
@@ -59,7 +60,7 @@
             <StackPanel.Resources>
                 <DataTemplate x:Key="SemiInfinite">
                     <StackPanel>
-                        <view:OpticalPropertyView DataContext="{Binding TissueInputVm}" 
+                        <controls:OpticalPropertyView DataContext="{Binding TissueInputVm}" 
                                                   HorizontalAlignment="Left"
                                                   VerticalAlignment="Top" 
                                                   Margin="0,3,0,0" />
@@ -67,7 +68,7 @@
                 </DataTemplate>
                 <DataTemplate x:Key="MultiRegion">
                     <StackPanel>
-                        <view:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVm}" 
+                        <controls:MultiRegionOpticalPropertyView DataContext="{Binding TissueInputVm}" 
                                                              HorizontalAlignment="Left"
                                                              VerticalAlignment="Top" 
                                                              Margin="0,3,0,0" />
@@ -96,7 +97,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <!-- Model/Analysis Output -->
-            <view:RadioButtonOptionView Grid.Column="0" 
+            <controls:RadioButtonOptionView Grid.Column="0" 
                                         DataContext="{Binding ForwardAnalysisTypeOptionVm}"
                                         HorizontalAlignment="Left" 
                                         VerticalAlignment="Top" 

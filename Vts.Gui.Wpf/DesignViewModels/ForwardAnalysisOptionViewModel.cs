@@ -1,4 +1,4 @@
-﻿using Vts.Gui.Wpf.ViewModel;
+﻿using Vts.Gui.Wpf.ViewModel.Controls;
 
 namespace Vts.Gui.Wpf.DesignViewModels;
 

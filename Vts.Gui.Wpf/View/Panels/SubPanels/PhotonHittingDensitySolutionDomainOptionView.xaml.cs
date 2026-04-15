@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Vts.Gui.Wpf.View;
+namespace Vts.Gui.Wpf.View.Panels.SubPanels;
 
 public partial class PhotonHittingDensitySolutionDomainOptionView : UserControl
 {

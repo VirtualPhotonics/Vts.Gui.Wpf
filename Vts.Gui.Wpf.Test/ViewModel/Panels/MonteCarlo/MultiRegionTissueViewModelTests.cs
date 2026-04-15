@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
 

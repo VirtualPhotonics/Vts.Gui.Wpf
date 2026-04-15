@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Extensions;
+using Vts.Gui.Wpf.ViewModel.Controls;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 
 /// <summary>
 ///     View model implementing domain sub-panel functionality (abstract - implemented for reflectance and fluence)

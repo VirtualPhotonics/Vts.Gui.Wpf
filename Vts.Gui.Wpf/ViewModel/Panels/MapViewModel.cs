@@ -1,16 +1,17 @@
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.View.Helpers;
+using Vts.Gui.Wpf.ViewModel.Controls;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels;
 
 public class MapViewModel : BindableObject
 {

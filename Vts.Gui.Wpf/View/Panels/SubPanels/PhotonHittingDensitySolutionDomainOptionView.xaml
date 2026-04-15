@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Vts.Gui.Wpf.View.PhotonHittingDensitySolutionDomainOptionView"
+﻿<UserControl x:Class="Vts.Gui.Wpf.View.Panels.SubPanels.PhotonHittingDensitySolutionDomainOptionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:resources="clr-namespace:Vts.Gui.Wpf.Resources"
@@ -6,8 +6,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              d:Background="White"
-             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
-             d:DataContext="{d:DesignInstance Type=viewModel:FluenceSolutionDomainOptionViewModel, IsDesignTimeCreatable=True}">
+             xmlns:subPanels="clr-namespace:Vts.Gui.Wpf.ViewModel.Panels.SubPanels"
+             d:DataContext="{d:DesignInstance Type=subPanels:FluenceSolutionDomainOptionViewModel, IsDesignTimeCreatable=True}">
 
     <StackPanel VerticalAlignment="Top">
         <HeaderedContentControl

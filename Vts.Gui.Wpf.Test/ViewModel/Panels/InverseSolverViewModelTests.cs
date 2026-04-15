@@ -3,6 +3,8 @@ using System.Globalization;
 using NUnit.Framework;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Controls;
+using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels;
 

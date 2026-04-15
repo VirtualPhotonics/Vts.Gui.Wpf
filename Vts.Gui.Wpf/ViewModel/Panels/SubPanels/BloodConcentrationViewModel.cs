@@ -1,7 +1,7 @@
 using System;
 using Vts.SpectralMapping;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 
 /// <summary>
 ///     View model implementing Blood Concentration sub-panel functionality

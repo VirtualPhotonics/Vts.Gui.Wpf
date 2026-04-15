@@ -6,7 +6,7 @@ using Vts.Gui.Wpf.Extensions;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
 
 public class MultiRegionTissueViewModel : BindableObject
 {

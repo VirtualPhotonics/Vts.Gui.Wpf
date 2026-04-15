@@ -1,6 +1,6 @@
 using Vts.Common;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Controls;
 
 /// <summary>
 ///     View model exposing the Position model class with change notification

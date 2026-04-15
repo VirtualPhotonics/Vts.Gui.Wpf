@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
 using System.IO;
 using Vts.Gui.Wpf.Extensions;
+using Vts.Gui.Wpf.ViewModel.Controls;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
-
 #if WHITELIST
 using Vts.Gui.Wpf.ViewModel.Application;
 #endif
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
 
 public class SimulationInputViewModel : BindableObject
 {

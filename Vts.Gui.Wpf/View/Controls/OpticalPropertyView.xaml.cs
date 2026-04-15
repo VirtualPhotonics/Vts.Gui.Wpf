@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Vts.Gui.Wpf.View;
+namespace Vts.Gui.Wpf.View.Controls;
 
 // Since this is a control, we want dependency properties (or attached properties?)
 // This really seems to make the ViewModel redundant (it's much more testable, but also more complex...two copies of OpticalProperties)

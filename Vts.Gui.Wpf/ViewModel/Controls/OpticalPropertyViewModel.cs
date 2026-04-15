@@ -1,4 +1,4 @@
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Controls;
 
 /// <summary>
 ///     View model exposing the OpticalProperties model class with change notification

@@ -13,6 +13,10 @@ using Vts.Common;
 using Vts.Gui.Wpf.FileSystem;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Controls;
+using Vts.Gui.Wpf.ViewModel.Helpers;
+using Vts.Gui.Wpf.ViewModel.Panels;
+using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 using Vts.IO;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels;

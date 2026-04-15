@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Panels;
 using Vts.SpectralMapping;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels;

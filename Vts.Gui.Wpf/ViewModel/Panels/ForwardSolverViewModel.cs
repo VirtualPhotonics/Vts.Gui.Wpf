@@ -1,21 +1,24 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using CommunityToolkit.Mvvm.Input;
 using Vts.Common;
 using Vts.Extensions;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
+using Vts.Gui.Wpf.ViewModel.Controls;
+using Vts.Gui.Wpf.ViewModel.Helpers;
+using Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
+using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 using Vts.IO;
 using Vts.MonteCarlo.Tissues;
-
 #if WHITELIST
 using Vts.Gui.Wpf.ViewModel.Application;
 #endif
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels;
 
 /// <summary>
 ///     View model implementing Forward Solver panel functionality
