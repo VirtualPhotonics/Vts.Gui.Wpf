@@ -1,18 +1,20 @@
+using NUnit.Framework;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using NUnit.Framework;
+using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.Test.View.TestHelpers;
+using Vts.Gui.Wpf.View.Controls;
 using Vts.Gui.Wpf.View.Panels;
 using Vts.Gui.Wpf.View.Panels.SubPanels;
-using Vts.Gui.Wpf.View.Controls;
+using Vts.Gui.Wpf.ViewModel.Helpers;
 
 namespace Vts.Gui.Wpf.Test.View.Panels;
 
 [TestFixture, Apartment(ApartmentState.STA), NonParallelizable]
 public class PanelViewTests : ViewTestBase
 {
-
     // list of panels with TextBox KeyDown behavior to test
     public static IEnumerable<TestCaseData> TextBoxViewTypes()
     {
@@ -103,5 +105,44 @@ public class PanelViewTests : ViewTestBase
         });
 
         Assert.AreEqual(expected, vm.BoundText);
+    }
+
+    [Test]
+    public void Verify_OptionTemplateSelector_selects_correct_template()
+    {
+        // Create an OptionModel<IndependentVariableAxis> instance
+        var options = OptionModel<IndependentVariableAxis>.CreateAvailableOptions(
+            (sender, e) => { }, "group", IndependentVariableAxis.Rho, null, false);
+        var option = options.Values.First();
+
+        DataTemplate? checkboxTemplate = null;
+        DataTemplate? radioTemplate = null;
+        object? resultRadio = null;
+        object? resultCheckbox = null;
+
+        // Run UI work on the test host dispatcher
+        InvokeOnUI(() =>
+        {
+            // add templates to the host window resources
+            checkboxTemplate = new DataTemplate();
+            radioTemplate = new DataTemplate();
+            Application.Current!.MainWindow = HostWindow;
+
+            var selector = new OptionTemplateSelector();
+
+            option.MultiSelectEnabled = false;
+            resultRadio = selector.SelectTemplate(option, null);
+
+            option.MultiSelectEnabled = true;
+            resultCheckbox = selector.SelectTemplate(option, null);
+        });
+
+        Assert.IsNotNull(resultRadio);
+        Assert.IsNotNull(resultCheckbox);
+        Assert.IsNotNull(checkboxTemplate);
+        Assert.IsNotNull(radioTemplate);
+
+        Assert.IsInstanceOf(radioTemplate?.GetType()!, resultRadio);
+        Assert.IsInstanceOf(checkboxTemplate?.GetType()!, resultCheckbox);
     }
 }
