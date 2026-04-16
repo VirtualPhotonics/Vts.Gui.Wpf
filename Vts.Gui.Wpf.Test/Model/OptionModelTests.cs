@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Vts.Gui.Wpf.Model;
 
 namespace Vts.Gui.Wpf.Test.Model;
@@ -10,7 +9,7 @@ namespace Vts.Gui.Wpf.Test.Model;
 [TestFixture]
 public class OptionModelTests
 {
-    private OptionModel<ColormapType> _optionModel;
+    private OptionModel<ColormapType>? _optionModel;
 
     [OneTimeSetUp]
     public void Setup()

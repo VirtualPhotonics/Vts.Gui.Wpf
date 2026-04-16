@@ -60,7 +60,7 @@ public class SimulationInputViewModelTests
         Assert.That(viewModel.TissueInputVm != null, Is.True);
         Assert.That(viewModel.TissueTypeVm != null, Is.True);
         Assert.That(viewModel.N, Is.EqualTo(10000));
-        Assert.That(viewModel.SimulationOptionsVm.SimulationOptions.Seed, Is.EqualTo(1));
+        Assert.That(viewModel.SimulationOptionsVm!.SimulationOptions.Seed, Is.EqualTo(1));
         Assert.That(viewModel.SimulationOptionsVm.SimulationOptions.RandomNumberGeneratorType, Is.EqualTo(RandomNumberGeneratorType.MersenneTwister));
         Assert.That(viewModel.SimulationOptionsVm.SimulationOptions.AbsorptionWeightingType, Is.EqualTo(AbsorptionWeightingType.Analog));
     }

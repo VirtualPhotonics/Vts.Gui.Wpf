@@ -1,13 +1,8 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
 using OxyPlot.Legends;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Numerics;
-using System.Threading;
 using System.Windows;
 using Vts.Common;
 using Vts.Gui.Wpf.FileSystem;
@@ -145,8 +140,8 @@ public class PlotPointCollectionTests
 [TestFixture]
 public class PlotViewModelTests
 {
-    private PlotViewModel _plotViewModel;
-    private PlotData[] _plotData;
+    private PlotViewModel? _plotViewModel;
+    private PlotData[]? _plotData;
 
     [OneTimeSetUp]
     public void One_time_setup()

@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
 using Vts.Gui.Wpf.Model;
 
 namespace Vts.Gui.Wpf.Test.Model;
@@ -10,7 +9,7 @@ namespace Vts.Gui.Wpf.Test.Model;
 [TestFixture]
 public class MapDataTests
 {
-    private double[] _rawData, _xValues, _yValues, _dxValues, _dyValues;
+    private double[]? _rawData, _xValues, _yValues, _dxValues, _dyValues;
 
     /// <summary>
     /// setup data

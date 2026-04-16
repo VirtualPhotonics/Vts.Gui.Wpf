@@ -10,7 +10,7 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Controls;
 [TestFixture]
 public class RangeViewModelTests
 {
-    private RangeViewModel _rangeViewModel;
+    private RangeViewModel? _rangeViewModel;
 
     [OneTimeSetUp]
     public void Setup()

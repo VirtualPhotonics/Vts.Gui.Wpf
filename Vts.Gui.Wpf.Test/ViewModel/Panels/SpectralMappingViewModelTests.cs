@@ -1,7 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Vts.Gui.Wpf.ViewModel;
 using Vts.Gui.Wpf.ViewModel.Panels;
 using Vts.SpectralMapping;
@@ -14,8 +11,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels;
 [TestFixture]
 public class SpectralMappingViewModelTests
 {
-    private WindowViewModel _windowViewModel;
-    private SpectralMappingViewModel _viewModel;
+    private WindowViewModel? _windowViewModel;
+    private SpectralMappingViewModel? _viewModel;
     
     [SetUp]
     public void Setup()
@@ -45,7 +42,7 @@ public class SpectralMappingViewModelTests
         ]));
         Assert.That(_viewModel.SelectedTissue.TissueType == TissueType.Skin, Is.True);
         Assert.That(_viewModel.ScatteringTypeVm, Is.Not.Null);
-        Assert.That(_viewModel.SelectedTissue.ScattererType, Is.EqualTo(_viewModel.ScatteringTypeVm.SelectedValue));
+        Assert.That(_viewModel.SelectedTissue.ScattererType, Is.EqualTo(_viewModel.ScatteringTypeVm!.SelectedValue));
         Assert.That(_viewModel.ScatteringTypeName, Is.EqualTo("Vts.SpectralMapping.PowerLawScatterer"));
         Assert.That(Math.Abs(_viewModel.OpticalProperties.Mua - 0.1677) < 0.0001, Is.True);
         Assert.That(Math.Abs(_viewModel.OpticalProperties.Musp - 2.212) < 0.001, Is.True);
