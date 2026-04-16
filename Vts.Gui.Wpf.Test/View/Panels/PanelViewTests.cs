@@ -70,7 +70,7 @@ public class PanelViewTests : ViewTestBase
         });
 
         // find a TextBox in that view (logical/visual helper)
-        TextBox? textBox = null;
+        TextBox textBox = null;
         InvokeOnUI(() =>
         {
             textBox = VisualTreeHelpers.FindChildLogicalOrVisual<TextBox>(HostWindow!);
@@ -115,10 +115,10 @@ public class PanelViewTests : ViewTestBase
             (sender, e) => { }, "group", IndependentVariableAxis.Rho, null, false);
         var option = options.Values.First();
 
-        DataTemplate? checkboxTemplate = null;
-        DataTemplate? radioTemplate = null;
-        object? resultRadio = null;
-        object? resultCheckbox = null;
+        DataTemplate checkboxTemplate = null;
+        DataTemplate radioTemplate = null;
+        object resultRadio = null;
+        object resultCheckbox = null;
 
         // Run UI work on the test host dispatcher
         InvokeOnUI(() =>

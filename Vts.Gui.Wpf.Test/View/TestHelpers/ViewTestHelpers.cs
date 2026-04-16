@@ -14,7 +14,7 @@ public static class ViewTestHelpers
 
     public static void AddDefaultResources()
     {
-        var res = Application.Current!.Resources;
+        var res = Application.Current.Resources;
 
         // simple converter stubs sufficient for XAML parsing in tests
         res["MyResourceToStringConverter"] = new TestConverters.TestResourceToStringConverter();
@@ -45,18 +45,25 @@ public static class ViewTestHelpers
 
     public static Window CreateHostWindow()
     {
-        var window = new Window();
-        // ensure window has the same templates in its resources (some code looks up MainWindow.FindResource)
-        window.Resources["RadioButtonTemplate"] = CreateSimpleDataTemplate();
-        window.Resources["CheckboxTemplate"] = CreateSimpleDataTemplate();
+        var window = new Window
+        {
+            Resources =
+            {
+                // ensure window has the same templates in its resources (some code looks up MainWindow.FindResource)
+                ["RadioButtonTemplate"] = CreateSimpleDataTemplate(),
+                ["CheckboxTemplate"] = CreateSimpleDataTemplate()
+            }
+        };
         Application.Current!.MainWindow = window;
         return window;
     }
 
     private static DataTemplate CreateSimpleDataTemplate()
     {
-        var dt = new DataTemplate();
-        dt.VisualTree = new FrameworkElementFactory(typeof(TextBlock));
+        var dt = new DataTemplate
+        {
+            VisualTree = new FrameworkElementFactory(typeof(TextBlock))
+        };
         return dt;
     }
 }

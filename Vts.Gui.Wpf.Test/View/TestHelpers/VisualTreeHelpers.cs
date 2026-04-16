@@ -7,7 +7,7 @@ namespace Vts.Gui.Wpf.Test.View.TestHelpers;
 public static class VisualTreeHelpers
 {
     // Try logical tree first, fallback to visual traversal
-    public static T? FindChildLogicalOrVisual<T>(DependencyObject? parent) where T : DependencyObject
+    public static T FindChildLogicalOrVisual<T>(DependencyObject parent) where T : DependencyObject
     {
         if (parent == null) return null;
 

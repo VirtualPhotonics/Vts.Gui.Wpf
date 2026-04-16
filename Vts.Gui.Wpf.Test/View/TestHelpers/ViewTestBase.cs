@@ -8,7 +8,7 @@ namespace Vts.Gui.Wpf.Test.View.TestHelpers;
 
 public abstract class ViewTestBase
 {
-    protected Window? HostWindow;
+    protected Window HostWindow;
 
     // keep temporary HwndSource instances so we can dispose them in TeardownHost
     private readonly List<HwndSource> _tempHwndSources = [];
@@ -17,7 +17,7 @@ public abstract class ViewTestBase
     {
         ViewTestHelpers.EnsureApplication();
         // all UI ops on dispatcher to ensure ownership
-        Application.Current!.Dispatcher.Invoke(() =>
+        Application.Current.Dispatcher.Invoke(() =>
         {
             ViewTestHelpers.AddDefaultResources();
             HostWindow = ViewTestHelpers.CreateHostWindow();
@@ -33,7 +33,7 @@ public abstract class ViewTestBase
         if (Application.Current == null) return;
         Application.Current.Dispatcher.Invoke(() =>
         {
-            try { HostWindow?.Close(); } catch { }
+            try { HostWindow.Close(); } catch { }
             if (Application.Current.MainWindow == HostWindow)
                 Application.Current.MainWindow = null;
             HostWindow = null;
@@ -50,13 +50,13 @@ public abstract class ViewTestBase
 
     protected static void InvokeOnUI(Action action)
     {
-        Application.Current!.Dispatcher.Invoke(action, DispatcherPriority.Send);
+        Application.Current.Dispatcher.Invoke(action, DispatcherPriority.Send);
     }
 
     protected KeyEventArgs CreateKeyEventArgsFor(Visual target, Key key)
     {
         KeyEventArgs args = null!;
-        Application.Current!.Dispatcher.Invoke(() =>
+        Application.Current.Dispatcher.Invoke(() =>
         {
             // Try to get an existing PresentationSource
             var presentationSources = PresentationSource.FromVisual(target) ?? PresentationSource.FromVisual(HostWindow!);

@@ -11,8 +11,8 @@ namespace Vts.Gui.Wpf.Test.ViewModel.Panels;
 [TestFixture]
 public class SpectralMappingViewModelTests
 {
-    private WindowViewModel? _windowViewModel;
-    private SpectralMappingViewModel? _viewModel;
+    private WindowViewModel _windowViewModel;
+    private SpectralMappingViewModel _viewModel;
     
     [SetUp]
     public void Setup()

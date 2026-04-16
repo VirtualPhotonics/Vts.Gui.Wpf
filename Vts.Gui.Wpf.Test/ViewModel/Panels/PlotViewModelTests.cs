@@ -140,8 +140,8 @@ public class PlotPointCollectionTests
 [TestFixture]
 public class PlotViewModelTests
 {
-    private PlotViewModel? _plotViewModel;
-    private PlotData[]? _plotData;
+    private PlotViewModel _plotViewModel;
+    private PlotData[] _plotData;
 
     [OneTimeSetUp]
     public void One_time_setup()

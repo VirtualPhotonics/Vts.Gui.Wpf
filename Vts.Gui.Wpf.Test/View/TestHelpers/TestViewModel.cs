@@ -13,5 +13,5 @@ internal class TestViewModel : System.ComponentModel.INotifyPropertyChanged
         }
     } = string.Empty;
 
-    public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 }
