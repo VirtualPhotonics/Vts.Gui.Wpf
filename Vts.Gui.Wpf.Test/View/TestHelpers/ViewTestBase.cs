@@ -33,14 +33,28 @@ public abstract class ViewTestBase
         if (Application.Current == null) return;
         Application.Current.Dispatcher.Invoke(() =>
         {
-            try { HostWindow.Close(); } catch { }
+            try
+            {
+                HostWindow.Close();
+            } 
+            catch 
+            {
+                //ignored
+            }
             if (Application.Current.MainWindow == HostWindow)
                 Application.Current.MainWindow = null;
             HostWindow = null;
             // dispose any temporary HwndSources we created during tests
             foreach (var hs in _tempHwndSources)
             {
-                try { hs.Dispose(); } catch { }
+                try
+                {
+                    hs.Dispose();
+                } 
+                catch 
+                { 
+                    //ignored
+                }
             }
             _tempHwndSources.Clear();
 
