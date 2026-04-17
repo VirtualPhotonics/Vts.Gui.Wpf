@@ -1,13 +1,14 @@
-﻿<UserControl x:Class="Vts.Gui.Wpf.View.SpectralMappingView"
+﻿<UserControl x:Class="Vts.Gui.Wpf.View.Panels.SpectralMappingView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
+             xmlns:panels="clr-namespace:Vts.Gui.Wpf.ViewModel.Panels"
+             xmlns:subPanels="clr-namespace:Vts.Gui.Wpf.View.Panels.SubPanels"
+             xmlns:controls="clr-namespace:Vts.Gui.Wpf.View.Controls"
              mc:Ignorable="d"
              d:Background="White"
-             d:DataContext="{d:DesignInstance Type=viewModel:SpectralMappingViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=panels:SpectralMappingViewModel, IsDesignTimeCreatable=True}"
              Height="Auto" Width="440">
 
     <Grid HorizontalAlignment="Left">
@@ -78,7 +79,7 @@
             <StackPanel Orientation="Vertical"
                         Margin="0,10,0,0">
                 <!-- Blood Concentration -->
-                <view:BloodConcentrationView
+                <subPanels:BloodConcentrationView
                     DataContext="{Binding BloodConcentrationVm}"
                     Visibility="{Binding DisplayBloodVm, Converter={StaticResource MyBooleanToVisibilityConverter}}"
                     Margin="0,3,0,0" />
@@ -132,7 +133,7 @@
                         </DataTemplate>
                     </StackPanel.Resources>
                     <!-- Scatterer Type -->
-                    <view:RadioButtonOptionView DataContext="{Binding ScatteringTypeVm}" />
+                    <controls:RadioButtonOptionView DataContext="{Binding ScatteringTypeVm}" />
                     <ContentControl Content="{Binding}">
                         <ContentControl.Style>
                             <Style TargetType="ContentControl">
@@ -194,7 +195,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" 
                                 VerticalAlignment="Top">
-                        <view:RangeView DataContext="{Binding WavelengthRangeVm}" Margin="0,3,0,0"
+                        <controls:RangeView DataContext="{Binding WavelengthRangeVm}" Margin="0,3,0,0"
                                         VerticalAlignment="Top" />
                         <!-- Plot Buttons -->
                         <Button

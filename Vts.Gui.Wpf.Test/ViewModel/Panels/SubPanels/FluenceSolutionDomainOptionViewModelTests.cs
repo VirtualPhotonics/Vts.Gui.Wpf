@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
-using System;
-using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels.SubPanels;
 

@@ -1,9 +1,6 @@
 ﻿using NUnit.Framework;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Vts.Gui.Wpf.Extensions;
-using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
 using Vts.MonteCarlo;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Panels.MonteCarlo;

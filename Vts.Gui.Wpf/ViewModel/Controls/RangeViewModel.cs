@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Vts.Common;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Controls;
 
 /// <summary>
 ///     View model exposing the DoubleRange model class with change notification

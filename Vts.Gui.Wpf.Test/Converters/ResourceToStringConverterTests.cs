@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Vts.Gui.Wpf.Converters;
 using Vts.Gui.Wpf.Extensions;
 

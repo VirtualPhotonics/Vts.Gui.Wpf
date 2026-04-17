@@ -1,4 +1,6 @@
-namespace Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
+
+namespace Vts.Gui.Wpf.ViewModel.Helpers;
 
 /// <summary>
 ///     Data structure to hold data for plot information

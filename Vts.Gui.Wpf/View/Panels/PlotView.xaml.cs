@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Vts.Gui.Wpf.ViewModel.Helpers;
 
-namespace Vts.Gui.Wpf.View;
+namespace Vts.Gui.Wpf.View.Panels;
 
 public partial class PlotView : UserControl
 {

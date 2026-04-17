@@ -1,13 +1,13 @@
-﻿<UserControl x:Class="Vts.Gui.Wpf.View.PlotView"
+﻿<UserControl x:Class="Vts.Gui.Wpf.View.Panels.PlotView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:oxy="http://oxyplot.org/wpf"
-             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
+             xmlns:panels="clr-namespace:Vts.Gui.Wpf.ViewModel.Panels"
+             xmlns:controls="clr-namespace:Vts.Gui.Wpf.View.Controls"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=viewModel:PlotViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance Type=panels:PlotViewModel, IsDesignTimeCreatable=True}"
              HorizontalAlignment="Left" VerticalAlignment="Top"
              d:Background="White"
              d:DesignWidth="900" d:DesignHeight="860">
@@ -51,20 +51,20 @@
                 <StackPanel Orientation="Vertical" Margin="5,0,10,0">
                     <StackPanel Orientation="Horizontal" Margin="0">
                         <TextBlock Text="{Binding ConverterParameter=Label_XAxisSpacing, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,2,0" />
-                        <view:RadioButtonOptionView DataContext="{Binding XAxisSpacingOptionVm}" VerticalAlignment="Center" />
+                        <controls:RadioButtonOptionView DataContext="{Binding XAxisSpacingOptionVm}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0">
                         <TextBlock Text="{Binding ConverterParameter=Label_YAxisSpacing, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,2,0" />
-                        <view:RadioButtonOptionView DataContext="{Binding YAxisSpacingOptionVm}" VerticalAlignment="Center" />
+                        <controls:RadioButtonOptionView DataContext="{Binding YAxisSpacingOptionVm}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0"
                                 Visibility="{Binding ShowComplexPlotToggle, Converter={StaticResource MyBooleanToVisibilityConverter}}">
                         <TextBlock Text="{Binding ConverterParameter=Label_PlotToggle, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,0,2,0" />
-                        <view:RadioButtonOptionView DataContext="{Binding PlotToggleTypeOptionVm}" VerticalAlignment="Center" />
+                        <controls:RadioButtonOptionView DataContext="{Binding PlotToggleTypeOptionVm}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0">
                         <TextBlock Text="{Binding ConverterParameter=Label_Normalization, Converter={StaticResource MyResourceToStringConverter}}" VerticalAlignment="Center" Margin="0,2,2,0" />
-                        <view:RadioButtonOptionView DataContext="{Binding PlotNormalizationTypeOptionVm}" VerticalAlignment="Center" />
+                        <controls:RadioButtonOptionView DataContext="{Binding PlotNormalizationTypeOptionVm}" VerticalAlignment="Center" />
                     </StackPanel>
                 </StackPanel>
                 <!--  -->

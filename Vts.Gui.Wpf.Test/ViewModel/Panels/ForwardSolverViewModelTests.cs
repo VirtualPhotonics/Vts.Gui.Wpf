@@ -84,10 +84,9 @@ public class ForwardSolverViewModelTests
         const int i1 = 1;
         const double d2 = 0.0100;
         // s1 should be "Plot View: plot cleared due to independent axis variable change
-        // Forward Solver: Vts.Gui.Wpf.ViewModel.MultiRegionTissueViewModel"
+        // Forward Solver: Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo.MultiRegionTissueViewModel"
         var s1 = StringLookup.GetLocalizedString("Message_PlotViewCleared") + "\r" +
-                     StringLookup.GetLocalizedString("Label_ForwardSolver") +
-                     "Vts.Gui.Wpf.ViewModel.MultiRegionTissueViewModel\r";
+                     StringLookup.GetLocalizedString("Label_ForwardSolver") + "Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo.MultiRegionTissueViewModel\r";
         // s2 should be "R(ρ) [Unitless] versus fx [1/mm]"
         var s2 = StringLookup.GetLocalizedString("Label_ROfRho") + " [Unitless] " +
                  StringLookup.GetLocalizedString("Label_Versus") + " fx [1/mm]";

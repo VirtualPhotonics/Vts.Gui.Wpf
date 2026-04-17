@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
@@ -7,16 +6,20 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
+using CommunityToolkit.Mvvm.Input;
 using Vts.Common;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
+using Vts.Gui.Wpf.ViewModel.Controls;
+using Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
+using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 using Vts.IO;
 using Vts.Modeling.ForwardSolvers;
 using Vts.MonteCarlo.Helpers;
 using Vts.MonteCarlo.Tissues;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels;
 
 /// <summary>
 ///     View model implementing Fluence Solver panel functionality

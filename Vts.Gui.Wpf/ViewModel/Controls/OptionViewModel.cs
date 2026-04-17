@@ -4,7 +4,7 @@ using System.Linq;
 using Vts.Extensions;
 using Vts.Gui.Wpf.Model;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Controls;
 
 // todo: consider refactoring to derive from ObservableCollection:
 // http://www.thejoyofcode.com/ViewModels_and_CheckListBoxes.aspx

@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using System.Threading;
 using NUnit.Framework;
 using Vts.Gui.Wpf.Model;
 

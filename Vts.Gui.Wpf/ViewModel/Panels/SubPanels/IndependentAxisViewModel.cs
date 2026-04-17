@@ -1,4 +1,6 @@
-﻿namespace Vts.Gui.Wpf.ViewModel;
+﻿using Vts.Gui.Wpf.ViewModel.Controls;
+
+namespace Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 
 public class IndependentAxisViewModel : BindableObject
 {

@@ -1,21 +1,23 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using CommunityToolkit.Mvvm.Input;
 using Vts.Extensions;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.Resources;
+using Vts.Gui.Wpf.ViewModel.Controls;
+using Vts.Gui.Wpf.ViewModel.Helpers;
+using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 using Vts.IO;
-
 #if WHITELIST
 using Vts.Gui.Wpf.ViewModel.Application;
 #endif
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels;
 
 /// <summary>
 ///     View model implementing Inverse Solver panel functionality

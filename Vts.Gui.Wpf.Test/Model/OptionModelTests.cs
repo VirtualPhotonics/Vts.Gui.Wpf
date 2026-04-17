@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Vts.Gui.Wpf.Model;
 
 namespace Vts.Gui.Wpf.Test.Model;

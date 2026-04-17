@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
 
@@ -30,14 +30,14 @@ public class MultiRegionTissueViewModelTests
         Assert.That(viewModel.RegionsVm != null, Is.True);
         listOfTissueRegions = viewModel.RegionsVm;
         Assert.That(listOfTissueRegions, Is.Not.Null);
-        Assert.That(((EllipsoidRegionViewModel) listOfTissueRegions[3]).IsEllipsoid, Is.True);
+        Assert.That(((EllipsoidRegionViewModel) listOfTissueRegions![3]).IsEllipsoid, Is.True);
         // verify SingleVoxelTissueInput
         tissueInput = new SingleVoxelTissueInput();
         viewModel = new MultiRegionTissueViewModel(tissueInput);
         Assert.That(viewModel.RegionsVm != null, Is.True);
         listOfTissueRegions = viewModel.RegionsVm;
         Assert.That(listOfTissueRegions, Is.Not.Null);
-        Assert.That(((VoxelRegionViewModel)listOfTissueRegions[3]).IsVoxel, Is.True);
+        Assert.That(((VoxelRegionViewModel)listOfTissueRegions![3]).IsVoxel, Is.True);
     }
 
     // The following tests verify the Relay Commands

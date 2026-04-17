@@ -6,7 +6,7 @@ using Vts.Gui.Wpf.Extensions;
 using Vts.MonteCarlo;
 using Vts.MonteCarlo.Tissues;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
 
 public class MultiRegionTissueViewModel : BindableObject
 {
@@ -78,13 +78,11 @@ public class MultiRegionTissueViewModel : BindableObject
         get => _currentRegionIndex;
         set
         {
-            if ((value < _regionsVm.Count) && (value >= 0))
-            {
-                _currentRegionIndex = value;
-                OnPropertyChanged(nameof(CurrentRegionIndex));
-                OnPropertyChanged(nameof(MinimumRegionIndex));
-                OnPropertyChanged(nameof(MaximumRegionIndex));
-            }
+            if (value >= _regionsVm.Count || value < 0) return;
+            _currentRegionIndex = value;
+            OnPropertyChanged(nameof(CurrentRegionIndex));
+            OnPropertyChanged(nameof(MinimumRegionIndex));
+            OnPropertyChanged(nameof(MaximumRegionIndex));
         }
     }
 

@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:system="clr-namespace:System;assembly=mscorlib" 
              xmlns:converters="clr-namespace:Vts.Gui.Wpf.Converters" 
-             xmlns:extensions="clr-namespace:Vts.Gui.Wpf.Extensions" 
-             xmlns:helpers="clr-namespace:Vts.Gui.Wpf.Helpers" 
+             xmlns:extensions="clr-namespace:Vts.Gui.Wpf.Extensions"
              StartupUri="MainWindow.xaml" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:helpers="clr-namespace:Vts.Gui.Wpf.ViewModel.Helpers">
   <Application.Resources>
     <ResourceDictionary>
       <DataTemplate x:Key="RadioButtonTemplate">

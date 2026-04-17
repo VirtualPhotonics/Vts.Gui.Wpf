@@ -1,16 +1,16 @@
-﻿<UserControl x:Class="Vts.Gui.Wpf.View.MultiRegionOpticalPropertyView"
+﻿<UserControl x:Class="Vts.Gui.Wpf.View.Controls.MultiRegionOpticalPropertyView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:view="clr-namespace:Vts.Gui.Wpf.View"
              xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:viewModel="clr-namespace:Vts.Gui.Wpf.ViewModel"
+             xmlns:monteCarlo="clr-namespace:Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo"
+             xmlns:controls="clr-namespace:Vts.Gui.Wpf.View.Controls"
              mc:Ignorable="d"
              d:DesignHeight="300" 
              d:DesignWidth="400"
              d:Background="White"
-             d:DataContext="{d:DesignInstance Type=viewModel:MultiRegionTissueViewModel, IsDesignTimeCreatable=True}">
+             d:DataContext="{d:DesignInstance Type=monteCarlo:MultiRegionTissueViewModel, IsDesignTimeCreatable=True}">
 
     <StackPanel Orientation="Vertical">
         <TextBlock Text="{Binding ConverterParameter=Label_TissueInput, Converter={StaticResource MyResourceToStringConverter}}" FontWeight="Bold" />
@@ -37,7 +37,7 @@
                             <TextBlock Text="{Binding ConverterParameter=Label_StartStop, Converter={StaticResource MyResourceToStringConverter}}" />
                         </StackPanel>
                         <StackPanel>
-                            <view:RangeView DataContext="{Binding ZRangeVm}" Margin="20,0" />
+                            <controls:RangeView DataContext="{Binding ZRangeVm}" Margin="20,0" />
                         </StackPanel>
                     </StackPanel>
                 </DataTemplate>
@@ -138,7 +138,7 @@
                                     <TextBlock Text="{Binding ConverterParameter=Label_OpticalProperties, Converter={StaticResource MyResourceToStringConverter}}" />
                                 </StackPanel>
                                 <StackPanel VerticalAlignment="Top">
-                                    <view:OpticalPropertyView DataContext="{Binding OpticalPropertyVm}" />
+                                    <controls:OpticalPropertyView DataContext="{Binding OpticalPropertyVm}" />
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>

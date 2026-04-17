@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using Vts.Common;
-using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Controls;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Controls;
 

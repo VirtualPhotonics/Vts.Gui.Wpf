@@ -1,6 +1,4 @@
-﻿using System;
-using System.Numerics;
-using System.Threading;
+﻿using System.Numerics;
 using NUnit.Framework;
 using Vts.Gui.Wpf.Model;
 

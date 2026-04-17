@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Vts.Gui.Wpf.ViewModel;
+using Vts.Gui.Wpf.ViewModel.Controls;
 using Vts.MonteCarlo;
 
 namespace Vts.Gui.Wpf.Test.ViewModel.Controls;

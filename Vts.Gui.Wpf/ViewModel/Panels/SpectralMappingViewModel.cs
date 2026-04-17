@@ -1,19 +1,21 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using CommunityToolkit.Mvvm.Input;
 using Vts.Common;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
+using Vts.Gui.Wpf.ViewModel.Controls;
+using Vts.Gui.Wpf.ViewModel.Helpers;
+using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 using Vts.SpectralMapping;
-
 #if WHITELIST
 using Vts.Gui.Wpf.ViewModel.Application;
 #endif
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels;
 
 /// <summary>
 ///     View model implementing Spectral panel functionality

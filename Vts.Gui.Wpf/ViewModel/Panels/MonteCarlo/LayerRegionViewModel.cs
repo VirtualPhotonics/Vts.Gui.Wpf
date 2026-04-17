@@ -1,8 +1,9 @@
 ﻿using Vts.Gui.Wpf.Extensions;
+using Vts.Gui.Wpf.ViewModel.Controls;
 using Vts.MonteCarlo.Extensions;
 using Vts.MonteCarlo.Tissues;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo;
 
 public class LayerRegionViewModel : BindableObject
 {

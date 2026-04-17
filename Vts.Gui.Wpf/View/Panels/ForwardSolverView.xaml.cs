@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Vts.Gui.Wpf.View;
+namespace Vts.Gui.Wpf.View.Panels;
 
 public partial class ForwardSolverView : UserControl
 {

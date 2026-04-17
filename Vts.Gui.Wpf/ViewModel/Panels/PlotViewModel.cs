@@ -1,8 +1,3 @@
-using CommunityToolkit.Mvvm.Input;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Legends;
-using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,12 +5,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using CommunityToolkit.Mvvm.Input;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Legends;
+using OxyPlot.Series;
 using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.FileSystem;
 using Vts.Gui.Wpf.Model;
+using Vts.Gui.Wpf.ViewModel.Controls;
+using Vts.Gui.Wpf.ViewModel.Helpers;
 using FontWeights = OxyPlot.FontWeights;
 
-namespace Vts.Gui.Wpf.ViewModel;
+namespace Vts.Gui.Wpf.ViewModel.Panels;
 
 public class DataPointCollection
 {
