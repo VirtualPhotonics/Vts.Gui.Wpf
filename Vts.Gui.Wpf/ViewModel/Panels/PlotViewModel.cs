@@ -559,6 +559,7 @@ public class PlotViewModel : BindableObject, ITextFileService
     private void Plot_SetAxesLabels_Executed(object sender)
     {
         if (sender is not PlotAxesLabels labels) return;
+        AdditionalPlotValue = "";
         _clearPlot = CurrentIndependentVariableAxis != labels.IndependentAxis.AxisType;
 
         if (_isComplexPlot != labels.IsComplexPlot)

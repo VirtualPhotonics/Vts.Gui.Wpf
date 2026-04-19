@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Vts.Gui.Wpf.Resources; 
+namespace Vts.Gui.Wpf.Resources;
 using System;
-
-
+    
+    
 /// <summary>
 ///   A strongly-typed resource class, for looking up localized strings, etc.
 /// </summary>
@@ -23,15 +23,15 @@ using System;
 [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
 public class Strings {
-    
+        
     private static global::System.Resources.ResourceManager resourceMan;
-    
+        
     private static global::System.Globalization.CultureInfo resourceCulture;
-    
+        
     [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
     internal Strings() {
     }
-    
+        
     /// <summary>
     ///   Returns the cached ResourceManager instance used by this class.
     /// </summary>
@@ -45,7 +45,7 @@ public class Strings {
             return resourceMan;
         }
     }
-    
+        
     /// <summary>
     ///   Overrides the current thread's CurrentUICulture property for all
     ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ public class Strings {
             resourceCulture = value;
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Cancel.
     /// </summary>
@@ -68,7 +68,7 @@ public class Strings {
             return ResourceManager.GetString("Button_Cancel", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Cancel Save.
     /// </summary>
@@ -77,7 +77,7 @@ public class Strings {
             return ResourceManager.GetString("Button_CancelSave", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Cancel Simulation.
     /// </summary>
@@ -86,7 +86,7 @@ public class Strings {
             return ResourceManager.GetString("Button_CancelSimulation", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Clear All.
     /// </summary>
@@ -95,7 +95,7 @@ public class Strings {
             return ResourceManager.GetString("Button_ClearAll", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Clear Newest.
     /// </summary>
@@ -104,7 +104,7 @@ public class Strings {
             return ResourceManager.GetString("Button_ClearNewest", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Download Prototype Input Files.
     /// </summary>
@@ -113,7 +113,7 @@ public class Strings {
             return ResourceManager.GetString("Button_DownloadPrototypeInputFiles", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Export Raw Data.
     /// </summary>
@@ -122,7 +122,7 @@ public class Strings {
             return ResourceManager.GetString("Button_ExportData", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Export As Image.
     /// </summary>
@@ -131,7 +131,7 @@ public class Strings {
             return ResourceManager.GetString("Button_ExportImage", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Generate Fluence/Interrogation Map.
     /// </summary>
@@ -140,7 +140,7 @@ public class Strings {
             return ResourceManager.GetString("Button_GenerateFluence", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Run Inverse Solver.
     /// </summary>
@@ -149,7 +149,7 @@ public class Strings {
             return ResourceManager.GetString("Button_InverseSolver", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Load Input File.
     /// </summary>
@@ -158,7 +158,7 @@ public class Strings {
             return ResourceManager.GetString("Button_LoadInputFile", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plot Initial Guess.
     /// </summary>
@@ -167,7 +167,7 @@ public class Strings {
             return ResourceManager.GetString("Button_PlotInitialGuess", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plot Measured Data.
     /// </summary>
@@ -176,7 +176,7 @@ public class Strings {
             return ResourceManager.GetString("Button_PlotMeasured", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plot μa Spectrum.
     /// </summary>
@@ -185,7 +185,7 @@ public class Strings {
             return ResourceManager.GetString("Button_PlotMua", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plot μs&apos; Spectrum.
     /// </summary>
@@ -194,7 +194,7 @@ public class Strings {
             return ResourceManager.GetString("Button_PlotMusPrime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plot Reflectance.
     /// </summary>
@@ -203,7 +203,7 @@ public class Strings {
             return ResourceManager.GetString("Button_PlotReflectance", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Reset Values.
     /// </summary>
@@ -212,7 +212,7 @@ public class Strings {
             return ResourceManager.GetString("Button_ResetValues", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Run Simulation.
     /// </summary>
@@ -221,7 +221,7 @@ public class Strings {
             return ResourceManager.GetString("Button_RunSimulation", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Save Simulation Results.
     /// </summary>
@@ -230,7 +230,7 @@ public class Strings {
             return ResourceManager.GetString("Button_SaveSimulationResults", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Update.
     /// </summary>
@@ -239,7 +239,7 @@ public class Strings {
             return ResourceManager.GetString("Button_Update", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Error: Database output specified in infile.  Please specify another infile or run infile with MCCL.
     /// </summary>
@@ -248,7 +248,7 @@ public class Strings {
             return ResourceManager.GetString("Error_DatabaseOutputNotSupported", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to JSON File not loaded.
     /// </summary>
@@ -257,7 +257,7 @@ public class Strings {
             return ResourceManager.GetString("Error_FileLoad", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Unable to save files..
     /// </summary>
@@ -266,7 +266,7 @@ public class Strings {
             return ResourceManager.GetString("Error_FileSave", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to No map type of the specified type exists..
     /// </summary>
@@ -275,7 +275,7 @@ public class Strings {
             return ResourceManager.GetString("Error_NoMapTypeExists", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to No solution domain of the specified type exists..
     /// </summary>
@@ -284,7 +284,7 @@ public class Strings {
             return ResourceManager.GetString("Error_NoSolutionDomainExists", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to No tissue of the specified type exists.
     /// </summary>
@@ -293,7 +293,7 @@ public class Strings {
             return ResourceManager.GetString("Error_NoTissueTypeExists", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Simulation input not loaded..
     /// </summary>
@@ -302,7 +302,7 @@ public class Strings {
             return ResourceManager.GetString("Error_SimulationInputNotLoaded", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to This solution domain is not supported..
     /// </summary>
@@ -311,7 +311,7 @@ public class Strings {
             return ResourceManager.GetString("Error_SolutionDomainNotSupported", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to  is not implemented for this software feature..
     /// </summary>
@@ -320,7 +320,7 @@ public class Strings {
             return ResourceManager.GetString("Exception_CustomNotImplemented", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Value must be a double or int.
     /// </summary>
@@ -329,7 +329,7 @@ public class Strings {
             return ResourceManager.GetString("Exception_DoubleOrInt", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to  is not an enum or a string..
     /// </summary>
@@ -338,7 +338,7 @@ public class Strings {
             return ResourceManager.GetString("Exception_EnumOrString", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Independent axis .
     /// </summary>
@@ -347,7 +347,7 @@ public class Strings {
             return ResourceManager.GetString("Exception_IndependentAxis", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Array lengths do not match..
     /// </summary>
@@ -356,7 +356,7 @@ public class Strings {
             return ResourceManager.GetString("Exception_MismatchedArrays", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Value must be a string.
     /// </summary>
@@ -365,7 +365,7 @@ public class Strings {
             return ResourceManager.GetString("Exception_String", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Absorbed Energy SolutionDomain.
     /// </summary>
@@ -374,7 +374,7 @@ public class Strings {
             return ResourceManager.GetString("Heading_AbsorbedEnergySolutionDomain", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Fluence Solution Domain.
     /// </summary>
@@ -383,7 +383,7 @@ public class Strings {
             return ResourceManager.GetString("Heading_FluenceSolutionDomain", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Initial Guess.
     /// </summary>
@@ -392,7 +392,7 @@ public class Strings {
             return ResourceManager.GetString("Heading_InitialGuess", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Model/Analysis Output.
     /// </summary>
@@ -401,7 +401,7 @@ public class Strings {
             return ResourceManager.GetString("Heading_ModelAnalysisOutput", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Optical Properties.
     /// </summary>
@@ -410,7 +410,7 @@ public class Strings {
             return ResourceManager.GetString("Heading_OpticalProperties", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Optimization Parameters.
     /// </summary>
@@ -419,7 +419,7 @@ public class Strings {
             return ResourceManager.GetString("Heading_OptimizationParameters", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Optimizer Type.
     /// </summary>
@@ -428,7 +428,7 @@ public class Strings {
             return ResourceManager.GetString("Heading_OptimizerType", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to PHD Solution Domain.
     /// </summary>
@@ -437,7 +437,7 @@ public class Strings {
             return ResourceManager.GetString("Heading_PHDSolutionDomain", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Scatterer Type.
     /// </summary>
@@ -446,7 +446,7 @@ public class Strings {
             return ResourceManager.GetString("Heading_ScattererType", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Wavelength Range.
     /// </summary>
@@ -455,7 +455,7 @@ public class Strings {
             return ResourceManager.GetString("Heading_WavelengthRange", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Temporal Frequencies.
     /// </summary>
@@ -464,7 +464,7 @@ public class Strings {
             return ResourceManager.GetString("IndependentVariableAxis_Ft", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Spatial Frequencies.
     /// </summary>
@@ -473,7 +473,7 @@ public class Strings {
             return ResourceManager.GetString("IndependentVariableAxis_Fx", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Detector Positions.
     /// </summary>
@@ -482,7 +482,7 @@ public class Strings {
             return ResourceManager.GetString("IndependentVariableAxis_Rho", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Detection Times.
     /// </summary>
@@ -491,7 +491,7 @@ public class Strings {
             return ResourceManager.GetString("IndependentVariableAxis_Time", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Wavelengths.
     /// </summary>
@@ -500,7 +500,7 @@ public class Strings {
             return ResourceManager.GetString("IndependentVariableAxis_Wavelength", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Absorber Concentrations.
     /// </summary>
@@ -509,7 +509,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AbsorberConcentrations", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to  (Air).
     /// </summary>
@@ -518,7 +518,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Air", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to  (amp).
     /// </summary>
@@ -527,7 +527,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Amplitude", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to (damp).
     /// </summary>
@@ -536,7 +536,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AmplitudeDerivative", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Analog.
     /// </summary>
@@ -545,7 +545,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Analog", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to A(fx,z).
     /// </summary>
@@ -554,7 +554,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AOfFxAndZ", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to A(fx,z,ft).
     /// </summary>
@@ -563,7 +563,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AOfFxAndZAndFt", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to A(fx,z,t).
     /// </summary>
@@ -572,7 +572,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AOfFxAndZAndTime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to A(ρ,z).
     /// </summary>
@@ -581,7 +581,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AOfRhoAndZ", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to A(ρ,z,ft).
     /// </summary>
@@ -590,7 +590,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AOfRhoAndZAndFt", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to A(ρ,z,t).
     /// </summary>
@@ -599,7 +599,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AOfRhoAndZAndTime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to at.
     /// </summary>
@@ -608,7 +608,7 @@ public class Strings {
             return ResourceManager.GetString("Label_At", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to At λ [nm] =.
     /// </summary>
@@ -617,7 +617,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Atnm", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Auto Scale.
     /// </summary>
@@ -626,7 +626,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AutoScale", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Auto-X.
     /// </summary>
@@ -635,7 +635,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AutoScaleX", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Auto-Y.
     /// </summary>
@@ -644,7 +644,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AutoScaleY", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Absorption Weighting Type:.
     /// </summary>
@@ -653,7 +653,7 @@ public class Strings {
             return ResourceManager.GetString("Label_AWT", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Basic Info.
     /// </summary>
@@ -662,7 +662,7 @@ public class Strings {
             return ResourceManager.GetString("Label_BasicInfo", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Blood Concentration.
     /// </summary>
@@ -671,7 +671,7 @@ public class Strings {
             return ResourceManager.GetString("Label_BloodConcentration", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Blood volume [vol. frac.]:.
     /// </summary>
@@ -680,7 +680,7 @@ public class Strings {
             return ResourceManager.GetString("Label_BloodVolume", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Calculated:.
     /// </summary>
@@ -689,7 +689,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Calculated", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Single-λ Calculator.
     /// </summary>
@@ -698,7 +698,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Calculator", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Colormap Type:.
     /// </summary>
@@ -707,7 +707,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ColormapType", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Continuous.
     /// </summary>
@@ -716,7 +716,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Continuous", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to At Converged Values.
     /// </summary>
@@ -725,7 +725,16 @@ public class Strings {
             return ResourceManager.GetString("Label_ConvergedValues", resourceCulture);
         }
     }
-    
+        
+    /// <summary>
+    ///   Looks up a localized string similar to diam:.
+    /// </summary>
+    public static string Label_Diameter {
+        get {
+            return ResourceManager.GetString("Label_Diameter", resourceCulture);
+        }
+    }
+        
     /// <summary>
     ///   Looks up a localized string similar to Discrete.
     /// </summary>
@@ -734,7 +743,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Discrete", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Ellipsoid Region.
     /// </summary>
@@ -743,7 +752,7 @@ public class Strings {
             return ResourceManager.GetString("Label_EllipsoidRegion", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Exact.
     /// </summary>
@@ -752,7 +761,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Exact", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Φ(fx,z).
     /// </summary>
@@ -761,7 +770,7 @@ public class Strings {
             return ResourceManager.GetString("Label_FluenceOfFxAndZ", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Φ(fx,z,ft).
     /// </summary>
@@ -770,7 +779,7 @@ public class Strings {
             return ResourceManager.GetString("Label_FluenceOfFxAndZAndFt", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Φ(fx,z,t).
     /// </summary>
@@ -779,7 +788,7 @@ public class Strings {
             return ResourceManager.GetString("Label_FluenceOfFxAndZAndTime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Φ(ρ,z).
     /// </summary>
@@ -788,7 +797,7 @@ public class Strings {
             return ResourceManager.GetString("Label_FluenceOfRhoAndZ", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Φ(ρ,z,ft).
     /// </summary>
@@ -797,7 +806,7 @@ public class Strings {
             return ResourceManager.GetString("Label_FluenceOfRhoAndZAndFt", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Φ(ρ,z,t).
     /// </summary>
@@ -806,7 +815,7 @@ public class Strings {
             return ResourceManager.GetString("Label_FluenceOfRhoAndZAndTime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Fluence Solver: .
     /// </summary>
@@ -815,7 +824,7 @@ public class Strings {
             return ResourceManager.GetString("Label_FluenceSolver", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Forward Simulation.
     /// </summary>
@@ -824,7 +833,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ForwardSimulation", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Forward Solver: .
     /// </summary>
@@ -833,7 +842,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ForwardSolver", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Frequency-Domain.
     /// </summary>
@@ -842,7 +851,7 @@ public class Strings {
             return ResourceManager.GetString("Label_FrequencyDomain", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Fwd Solver:.
     /// </summary>
@@ -851,7 +860,7 @@ public class Strings {
             return ResourceManager.GetString("Label_FwdSolver", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Gaussian Beam Diameter:.
     /// </summary>
@@ -860,7 +869,7 @@ public class Strings {
             return ResourceManager.GetString("Label_GaussianBeam", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Guess:.
     /// </summary>
@@ -869,7 +878,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Guess", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Hide Key.
     /// </summary>
@@ -878,7 +887,7 @@ public class Strings {
             return ResourceManager.GetString("Label_HideKey", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Hold On.
     /// </summary>
@@ -887,7 +896,7 @@ public class Strings {
             return ResourceManager.GetString("Label_HoldOn", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to  (imag).
     /// </summary>
@@ -896,7 +905,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Imaginary", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to (dimag).
     /// </summary>
@@ -905,7 +914,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ImaginaryDerivative", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Independent Axis.
     /// </summary>
@@ -914,7 +923,7 @@ public class Strings {
             return ResourceManager.GetString("Label_IndependentAxis", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Initial Guess: .
     /// </summary>
@@ -923,7 +932,7 @@ public class Strings {
             return ResourceManager.GetString("Label_InitialGuess", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Inverse Solution Results: .
     /// </summary>
@@ -932,7 +941,7 @@ public class Strings {
             return ResourceManager.GetString("Label_InverseSolutionResults", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Inv Solver: .
     /// </summary>
@@ -941,7 +950,7 @@ public class Strings {
             return ResourceManager.GetString("Label_InvSolver", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Check out this useful manipulation tool .
     /// </summary>
@@ -950,7 +959,7 @@ public class Strings {
             return ResourceManager.GetString("Label_JSONTool", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to http://www.jsoneditoronline.org.
     /// </summary>
@@ -959,7 +968,7 @@ public class Strings {
             return ResourceManager.GetString("Label_JSONUrl", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Layer .
     /// </summary>
@@ -968,7 +977,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Layer", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Layer Height.
     /// </summary>
@@ -977,7 +986,7 @@ public class Strings {
             return ResourceManager.GetString("Label_LayerHeight", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Max:.
     /// </summary>
@@ -986,7 +995,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Max", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Max X:.
     /// </summary>
@@ -995,7 +1004,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MaxX", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Max Y:.
     /// </summary>
@@ -1004,7 +1013,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MaxY", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Mean Depth:.
     /// </summary>
@@ -1013,7 +1022,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MeanDepth", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to n_rel.
     /// </summary>
@@ -1022,7 +1031,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MieNRel", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Mie scattering law:.
     /// </summary>
@@ -1031,7 +1040,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MieScatteringLaw", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Min:.
     /// </summary>
@@ -1040,7 +1049,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Min", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Min X:.
     /// </summary>
@@ -1049,7 +1058,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MinX", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Min Y:.
     /// </summary>
@@ -1058,7 +1067,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MinY", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Model - 2 layer SDA.
     /// </summary>
@@ -1067,7 +1076,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Model2LayerSDA", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Model - MC.
     /// </summary>
@@ -1076,7 +1085,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ModelMC", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Model - nurbs.
     /// </summary>
@@ -1085,7 +1094,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ModelNurbs", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Model - scaled MC.
     /// </summary>
@@ -1094,7 +1103,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ModelScaledMC", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Model - SDA.
     /// </summary>
@@ -1103,7 +1112,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ModelSDA", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Modulation Frequency:.
     /// </summary>
@@ -1112,7 +1121,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ModulationFrequency", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to μa.
     /// </summary>
@@ -1121,7 +1130,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MuA", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to μa1.
     /// </summary>
@@ -1130,7 +1139,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MuA1", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to μa2.
     /// </summary>
@@ -1139,7 +1148,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MuA2", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to μa spectra.
     /// </summary>
@@ -1148,7 +1157,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MuASpectra", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to allow multi-axis selection.
     /// </summary>
@@ -1157,7 +1166,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MultiAxisSelection", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to μs&apos;.
     /// </summary>
@@ -1166,7 +1175,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MuSPrime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to μs&apos;1.
     /// </summary>
@@ -1175,7 +1184,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MuSPrime1", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to μs&apos;2.
     /// </summary>
@@ -1184,7 +1193,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MuSPrime2", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to μs&apos; spectra.
     /// </summary>
@@ -1193,7 +1202,7 @@ public class Strings {
             return ResourceManager.GetString("Label_MuSPrimeSpectra", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to -rho_max.
     /// </summary>
@@ -1202,7 +1211,7 @@ public class Strings {
             return ResourceManager.GetString("Label_NegRhoMax", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Normalization:.
     /// </summary>
@@ -1211,7 +1220,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Normalization", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Number of Photons:.
     /// </summary>
@@ -1220,7 +1229,7 @@ public class Strings {
             return ResourceManager.GetString("Label_NumberOfPhotons", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Opt. Prop..
     /// </summary>
@@ -1229,7 +1238,7 @@ public class Strings {
             return ResourceManager.GetString("Label_OP", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Optical Properties:.
     /// </summary>
@@ -1238,7 +1247,7 @@ public class Strings {
             return ResourceManager.GetString("Label_OpticalProperties", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Optimization parameter(s): .
     /// </summary>
@@ -1247,7 +1256,7 @@ public class Strings {
             return ResourceManager.GetString("Label_OptimizationParameter", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Percent Error: .
     /// </summary>
@@ -1256,7 +1265,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PercentError", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to % noise.
     /// </summary>
@@ -1265,7 +1274,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PercentNoise", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to  (phase).
     /// </summary>
@@ -1274,7 +1283,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Phase", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to (dphase).
     /// </summary>
@@ -1283,7 +1292,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PhaseDerivative", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Phase Function Type:.
     /// </summary>
@@ -1292,7 +1301,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PhaseFunctionType", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to phd(fx,z).
     /// </summary>
@@ -1301,7 +1310,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PHDOfFxAndZ", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to phd(fx,z,ft).
     /// </summary>
@@ -1310,7 +1319,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PHDOfFxAndZAndFt", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to phd(fx,z,t).
     /// </summary>
@@ -1319,7 +1328,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PHDOfFxAndZAndTime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to phd(ρ,z).
     /// </summary>
@@ -1328,7 +1337,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PHDOfRhoAndZ", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to phd(ρ,z,ft).
     /// </summary>
@@ -1337,7 +1346,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PHDOfRhoAndZAndFt", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to phd(ρ,z,t).
     /// </summary>
@@ -1346,7 +1355,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PHDOfRhoAndZAndTime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plot Label:.
     /// </summary>
@@ -1355,7 +1364,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PlotLabel", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plot Toggle:.
     /// </summary>
@@ -1364,7 +1373,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PlotToggle", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plot Type:.
     /// </summary>
@@ -1373,7 +1382,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PlotType", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to +rho_max.
     /// </summary>
@@ -1382,7 +1391,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PosRhoMax", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Power law: .
     /// </summary>
@@ -1391,7 +1400,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PowerLaw", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to (A = μs&apos; at 1000nm).
     /// </summary>
@@ -1400,7 +1409,7 @@ public class Strings {
             return ResourceManager.GetString("Label_PowerLawDefinitionA", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Random Number Generator Type:.
     /// </summary>
@@ -1409,7 +1418,7 @@ public class Strings {
             return ResourceManager.GetString("Label_RandomNumberGeneratorType", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to  (real).
     /// </summary>
@@ -1418,7 +1427,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Real", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to (dreal).
     /// </summary>
@@ -1427,7 +1436,7 @@ public class Strings {
             return ResourceManager.GetString("Label_RealDerivative", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to ρ (Rho) Range:.
     /// </summary>
@@ -1436,7 +1445,7 @@ public class Strings {
             return ResourceManager.GetString("Label_RhoRange", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to R(fx).
     /// </summary>
@@ -1445,7 +1454,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ROfFx", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to R(fx,ft).
     /// </summary>
@@ -1454,7 +1463,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ROfFxAndFt", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to R(fx,t).
     /// </summary>
@@ -1463,7 +1472,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ROfFxAndTime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to R(ρ).
     /// </summary>
@@ -1472,7 +1481,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ROfRho", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to R(ρ,ft).
     /// </summary>
@@ -1481,7 +1490,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ROfRhoAndFt", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to R(ρ,t).
     /// </summary>
@@ -1490,7 +1499,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ROfRhoAndTime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Scaling Type:.
     /// </summary>
@@ -1499,7 +1508,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ScalingType", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to scatter radius.
     /// </summary>
@@ -1508,7 +1517,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ScatteringRadius", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Seed:.
     /// </summary>
@@ -1517,7 +1526,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Seed", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Currently selected region:.
     /// </summary>
@@ -1526,7 +1535,7 @@ public class Strings {
             return ResourceManager.GetString("Label_SelectedRegion", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Simulated:.
     /// </summary>
@@ -1535,7 +1544,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Simulated", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Simulated Measured Data: .
     /// </summary>
@@ -1544,7 +1553,7 @@ public class Strings {
             return ResourceManager.GetString("Label_SimulatedMeasuredData", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Simulation Options.
     /// </summary>
@@ -1553,7 +1562,7 @@ public class Strings {
             return ResourceManager.GetString("Label_SimulationOptions", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Source Detector Separation:.
     /// </summary>
@@ -1562,7 +1571,7 @@ public class Strings {
             return ResourceManager.GetString("Label_SourceDetector", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Specify Inputs From File (recommended).
     /// </summary>
@@ -1571,7 +1580,7 @@ public class Strings {
             return ResourceManager.GetString("Label_SpecifyInputsFromFile", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to (spectral μa,μs&apos;).
     /// </summary>
@@ -1580,7 +1589,7 @@ public class Strings {
             return ResourceManager.GetString("Label_SpectralMuAMuSPrime", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Start/Stop:.
     /// </summary>
@@ -1589,7 +1598,7 @@ public class Strings {
             return ResourceManager.GetString("Label_StartStop", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Steady-State.
     /// </summary>
@@ -1598,7 +1607,7 @@ public class Strings {
             return ResourceManager.GetString("Label_SteadyState", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to StO2 [frac.]:.
     /// </summary>
@@ -1607,7 +1616,7 @@ public class Strings {
             return ResourceManager.GetString("Label_StO2", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Time-Domain.
     /// </summary>
@@ -1616,7 +1625,7 @@ public class Strings {
             return ResourceManager.GetString("Label_TimeDomain", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to  (Tissue).
     /// </summary>
@@ -1625,7 +1634,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Tissue", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Tissue Input.
     /// </summary>
@@ -1634,7 +1643,7 @@ public class Strings {
             return ResourceManager.GetString("Label_TissueInput", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Tissue Types.
     /// </summary>
@@ -1643,7 +1652,7 @@ public class Strings {
             return ResourceManager.GetString("Label_TissueTypes", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Total Hb [μM]:.
     /// </summary>
@@ -1652,7 +1661,7 @@ public class Strings {
             return ResourceManager.GetString("Label_TotalHb", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Track Statistics.
     /// </summary>
@@ -1661,7 +1670,7 @@ public class Strings {
             return ResourceManager.GetString("Label_TrackStatistics", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Units.
     /// </summary>
@@ -1670,7 +1679,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Units", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to use spectral panel inputs.
     /// </summary>
@@ -1679,7 +1688,7 @@ public class Strings {
             return ResourceManager.GetString("Label_UseSpectralPanel", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to versus.
     /// </summary>
@@ -1688,7 +1697,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Versus", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Voxel Region.
     /// </summary>
@@ -1697,7 +1706,7 @@ public class Strings {
             return ResourceManager.GetString("Label_VoxelRegion", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Wavelength.
     /// </summary>
@@ -1706,7 +1715,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Wavelength", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to X Axis Spacing:.
     /// </summary>
@@ -1715,7 +1724,7 @@ public class Strings {
             return ResourceManager.GetString("Label_XAxisSpacing", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Y Axis Spacing:.
     /// </summary>
@@ -1724,7 +1733,7 @@ public class Strings {
             return ResourceManager.GetString("Label_YAxisSpacing", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to z=0.
     /// </summary>
@@ -1733,7 +1742,7 @@ public class Strings {
             return ResourceManager.GetString("Label_Z0", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to z_max.
     /// </summary>
@@ -1742,7 +1751,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ZMax", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to z Range:.
     /// </summary>
@@ -1751,7 +1760,7 @@ public class Strings {
             return ResourceManager.GetString("Label_ZRange", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to GHz.
     /// </summary>
@@ -1760,7 +1769,7 @@ public class Strings {
             return ResourceManager.GetString("Measurement_GHz", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to mm-1.
     /// </summary>
@@ -1769,7 +1778,7 @@ public class Strings {
             return ResourceManager.GetString("Measurement_Inv_mm", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to mm.
     /// </summary>
@@ -1778,7 +1787,7 @@ public class Strings {
             return ResourceManager.GetString("Measurement_mm", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to nm.
     /// </summary>
@@ -1787,7 +1796,7 @@ public class Strings {
             return ResourceManager.GetString("Measurement_nm", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Caching simulation results....
     /// </summary>
@@ -1796,7 +1805,7 @@ public class Strings {
             return ResourceManager.GetString("Message_CachingSimulationResults", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Cancelled.
     /// </summary>
@@ -1805,7 +1814,7 @@ public class Strings {
             return ResourceManager.GetString("Message_Cancelled", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Creating R(rho) plot....
     /// </summary>
@@ -1814,7 +1823,7 @@ public class Strings {
             return ResourceManager.GetString("Message_CreateROfRhoPlot", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Creating Fluence(rho,z) map....
     /// </summary>
@@ -1823,7 +1832,7 @@ public class Strings {
             return ResourceManager.GetString("Message_CreatingFluenceRhoZMap", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Details: .
     /// </summary>
@@ -1832,7 +1841,7 @@ public class Strings {
             return ResourceManager.GetString("Message_Details", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to done.
     /// </summary>
@@ -1841,7 +1850,7 @@ public class Strings {
             return ResourceManager.GetString("Message_Done", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Downloading infiles....
     /// </summary>
@@ -1850,7 +1859,7 @@ public class Strings {
             return ResourceManager.GetString("Message_DownloadingInfiles", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Simulation input not valid.  Cancel simulation and try again.
     /// </summary>
@@ -1859,7 +1868,7 @@ public class Strings {
             return ResourceManager.GetString("Message_InvalidSimulationInput", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plotted μa spectrum; wavelength range [nm]: .
     /// </summary>
@@ -1868,7 +1877,7 @@ public class Strings {
             return ResourceManager.GetString("Message_PlotMuASpectrum", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plotted μs&apos; spectrum; wavelength range [nm]: .
     /// </summary>
@@ -1877,7 +1886,7 @@ public class Strings {
             return ResourceManager.GetString("Message_PlotMuSPrimeSpectrum", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plot View: plot cleared due to independent axis variable change.
     /// </summary>
@@ -1886,7 +1895,7 @@ public class Strings {
             return ResourceManager.GetString("Message_PlotViewCleared", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Rule: .
     /// </summary>
@@ -1895,7 +1904,7 @@ public class Strings {
             return ResourceManager.GetString("Message_Rule", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Saving simulation results....
     /// </summary>
@@ -1904,7 +1913,7 @@ public class Strings {
             return ResourceManager.GetString("Message_SaveSimulationResults", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Simulation input loaded..
     /// </summary>
@@ -1913,7 +1922,7 @@ public class Strings {
             return ResourceManager.GetString("Message_SimulationInputLoaded", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Please select a location to save the simulation statistics, if you cancel, the &quot;Track Statistics&quot; option will be un-checked..
     /// </summary>
@@ -1922,7 +1931,7 @@ public class Strings {
             return ResourceManager.GetString("Message_TrackStatisticsFolder", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to The sub folder &quot;infiles&quot; already exists and contains files, these files will be deleted, are you sure you want to continue?.
     /// </summary>
@@ -1931,7 +1940,7 @@ public class Strings {
             return ResourceManager.GetString("MessageBox_DeleteConfirmInfiles", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to The sub folder &quot;results&quot; already exists and contains files, these files will be deleted, are you sure you want to continue?.
     /// </summary>
@@ -1940,7 +1949,7 @@ public class Strings {
             return ResourceManager.GetString("MessageBox_DeleteConfirmResults", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Delete Confirmation.
     /// </summary>
@@ -1949,7 +1958,7 @@ public class Strings {
             return ResourceManager.GetString("MessageBoxTitle_DeleteConfirm", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to AWT: .
     /// </summary>
@@ -1958,7 +1967,7 @@ public class Strings {
             return ResourceManager.GetString("PlotLabel_AWT", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to N: .
     /// </summary>
@@ -1967,7 +1976,7 @@ public class Strings {
             return ResourceManager.GetString("PlotLabel_N", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Begin.
     /// </summary>
@@ -1976,7 +1985,7 @@ public class Strings {
             return ResourceManager.GetString("Range_Begin", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to End.
     /// </summary>
@@ -1985,7 +1994,7 @@ public class Strings {
             return ResourceManager.GetString("Range_End", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Number.
     /// </summary>
@@ -1994,7 +2003,7 @@ public class Strings {
             return ResourceManager.GetString("Range_Number", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Fluence/Interrogation Solver Panel.
     /// </summary>
@@ -2003,7 +2012,7 @@ public class Strings {
             return ResourceManager.GetString("Tab_Fluence", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Forward Solver/Analysis Panel.
     /// </summary>
@@ -2012,7 +2021,7 @@ public class Strings {
             return ResourceManager.GetString("Tab_ForwardSolver", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Inverse Solver Panel.
     /// </summary>
@@ -2021,7 +2030,7 @@ public class Strings {
             return ResourceManager.GetString("Tab_InverseSolver", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Map View.
     /// </summary>
@@ -2030,7 +2039,7 @@ public class Strings {
             return ResourceManager.GetString("Tab_MapView", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Monte Carlo Solver Panel.
     /// </summary>
@@ -2039,7 +2048,7 @@ public class Strings {
             return ResourceManager.GetString("Tab_MonteCarlo", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Plot View.
     /// </summary>
@@ -2048,7 +2057,7 @@ public class Strings {
             return ResourceManager.GetString("Tab_PlotView", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Spectral Panel.
     /// </summary>
@@ -2057,7 +2066,7 @@ public class Strings {
             return ResourceManager.GetString("Tab_Spectral", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to A.
     /// </summary>
@@ -2066,7 +2075,7 @@ public class Strings {
             return ResourceManager.GetString("Value_A", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to b.
     /// </summary>
@@ -2075,7 +2084,7 @@ public class Strings {
             return ResourceManager.GetString("Value_b", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Medium n.
     /// </summary>
@@ -2084,7 +2093,7 @@ public class Strings {
             return ResourceManager.GetString("Value_MediumN", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Particle n.
     /// </summary>
@@ -2093,7 +2102,7 @@ public class Strings {
             return ResourceManager.GetString("Value_ParticleN", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Particle radius.
     /// </summary>
@@ -2102,7 +2111,7 @@ public class Strings {
             return ResourceManager.GetString("Value_ParticleRadius", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Volume Fraction.
     /// </summary>
@@ -2111,7 +2120,7 @@ public class Strings {
             return ResourceManager.GetString("Value_VolumeFraction", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Warning: No plots will be displayed for detector(s) specified in infile.
     /// </summary>
@@ -2120,7 +2129,7 @@ public class Strings {
             return ResourceManager.GetString("Warning_NoPlotsDisplayedForDetector", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Warning: No plots will be displayed for tissue specified in infile.
     /// </summary>
@@ -2129,7 +2138,7 @@ public class Strings {
             return ResourceManager.GetString("Warning_NoPlotsDisplayedForTissue", resourceCulture);
         }
     }
-    
+        
     /// <summary>
     ///   Looks up a localized string similar to Warning: This infile will not display anything, we suggest using the MCCL application.
     /// </summary>

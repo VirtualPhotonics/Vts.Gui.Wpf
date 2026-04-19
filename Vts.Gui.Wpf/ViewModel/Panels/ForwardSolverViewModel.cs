@@ -429,9 +429,13 @@ public class ForwardSolverViewModel : BindableObject
     private string[] GetLegendLabels()
     {
         string modelString = null;
+        string gaussianDiameter = null;
         switch (ForwardSolverTypeOptionVm.SelectedValue)
         {
             case ForwardSolverType.DistributedGaussianSourceSDA:
+                modelString = "\r" + StringLookup.GetLocalizedString("Label_ModelSDA");
+                gaussianDiameter = "\r" + StringLookup.GetLocalizedString("Label_Diameter") + ForwardSolver.BeamDiameter;
+                break;
             case ForwardSolverType.DistributedPointSourceSDA:
             case ForwardSolverType.PointSourceSDA:
                 modelString = "\r" + StringLookup.GetLocalizedString("Label_ModelSDA");
@@ -451,19 +455,19 @@ public class ForwardSolverViewModel : BindableObject
         if (IsMultiRegion && MultiRegionTissueVm != null)
         {
             var regions = MultiRegionTissueVm.GetTissueInput().Regions;
-            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA1") + "=" + regions[0].RegionOP.Mua.ToString("F4") + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime1") + "=" +
-                       regions[0].RegionOP.Musp.ToString("F4") +
-                       "\r" + StringLookup.GetLocalizedString("Label_MuA2") + "=" + regions[1].RegionOP.Mua.ToString("F4") + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime2") + "=" +
-                       regions[1].RegionOP.Musp.ToString("F4");
+            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA1") + "=" + regions[0].RegionOP.Mua.ToString("F3") + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime1") + "=" +
+                       regions[0].RegionOP.Musp.ToString("F3") +
+                       "\r" + StringLookup.GetLocalizedString("Label_MuA2") + "=" + regions[1].RegionOP.Mua.ToString("F3") + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime2") + "=" +
+                       regions[1].RegionOP.Musp.ToString("F3");
         }
         else
         {
             var opticalProperties = OpticalPropertyVm.GetOpticalProperties();
-            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + "=" + opticalProperties.Mua.ToString("F4") + " \r" + StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
-                       opticalProperties.Musp.ToString("F4");
+            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + "=" + opticalProperties.Mua.ToString("F3") + " \r" + StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
+                       opticalProperties.Musp.ToString("F3");
         }
 
-        if (_allRangeVMs.Length <= 1) return [modelString + opString];
+        if (_allRangeVMs.Length <= 1) return [modelString + opString + gaussianDiameter];
         var isWavelengthPlot = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
         var secondaryRangeVm = isWavelengthPlot
             ? _allRangeVMs.First(vm => vm.AxisType != IndependentVariableAxis.Wavelength)
@@ -473,11 +477,15 @@ public class ForwardSolverViewModel : BindableObject
         var secondaryAxesStrings =
             secondaryRangeVm.Values.Select(
                     value =>
-                        "\r" + secondaryRangeVm.AxisType.GetInternationalizedString() + " = " + value)
-                .ToArray();
+                    {
+                        var roundedValue = Math.Round(value, 3);
+                        return "\r" + secondaryRangeVm.AxisType.GetInternationalizedString() + 
+                               " = " + roundedValue + " " +
+                               secondaryRangeVm.Units;
+                    }).ToArray();
         return
             [.. secondaryAxesStrings.Select(
-                sas => modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString))];
+                sas => modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString) + gaussianDiameter)];
 
     }
 

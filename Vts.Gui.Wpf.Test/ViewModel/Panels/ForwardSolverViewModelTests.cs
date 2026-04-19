@@ -58,9 +58,9 @@ public class ForwardSolverViewModelTests
                  StringLookup.GetLocalizedString("Label_Versus") + " ρ [mm]";
         var s3 = "\r" + StringLookup.GetLocalizedString("Label_ModelSDA") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA") + "=" +
-                 d2.ToString("N4", CultureInfo.CurrentCulture) + " \r" +
+                 d2.ToString("N3", CultureInfo.CurrentCulture) + " \r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
-                 d3.ToString("N4", CultureInfo.CurrentCulture);
+                 d3.ToString("N3", CultureInfo.CurrentCulture);
         Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
         Assert.That(plotViewModel.Title, Is.EqualTo(s2));
         var textOutputViewModel = windowViewModel.TextOutputVm;
@@ -93,13 +93,13 @@ public class ForwardSolverViewModelTests
         // s3 should be "Model - 2 layer SDA\rμa1 = 0.0100\rμs'1=1.0000\rμa2 = 0.0100\r μs'2=1.0000"
         var s3 = "\r" + StringLookup.GetLocalizedString("Label_Model2LayerSDA") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA1") + "=" +
-                 d2.ToString("N4", CultureInfo.CurrentCulture) + "\r" +
+                 d2.ToString("N3", CultureInfo.CurrentCulture) + "\r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime1") + "=" +
-                 i1.ToString("N4", CultureInfo.CurrentCulture) + "\r" +
+                 i1.ToString("N3", CultureInfo.CurrentCulture) + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA2") + "=" +
-                 d2.ToString("N4", CultureInfo.CurrentCulture) + "\r" +
+                 d2.ToString("N3", CultureInfo.CurrentCulture) + "\r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime2") + "=" +
-                 i1.ToString("N4", CultureInfo.CurrentCulture);
+                 i1.ToString("N3", CultureInfo.CurrentCulture);
         Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
         Assert.That(plotViewModel.Title, Is.EqualTo(s2));
         var textOutputViewModel = windowViewModel.TextOutputVm;
@@ -144,9 +144,9 @@ public class ForwardSolverViewModelTests
         // "ft" is not in Strings.resx
         var s3 = "\r" + StringLookup.GetLocalizedString("Label_ModelScaledMC") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA") + "=" +
-                 d2.ToString("N4", CultureInfo.CurrentCulture) + " \r" +
+                 d2.ToString("N3", CultureInfo.CurrentCulture) + " \r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
-                 d3.ToString("N4", CultureInfo.CurrentCulture) + " \rft = " +
+                 d3.ToString("N3", CultureInfo.CurrentCulture) + " \rft = " +
                  d4.ToString("N0", CultureInfo.CurrentCulture) + " " +
                  StringLookup.GetLocalizedString("Measurement_GHz");
         Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));

@@ -574,7 +574,7 @@
     <value>Error: Database output specified in infile.  Please specify another infile or run infile with MCCL</value>
   </data>
   <data name="Error_FileLoad" xml:space="preserve">
-    <value>JSON File not loaded</value>
+    <value>Fichier JSON pas chargé</value>
   </data>
   <data name="Error_FileSave" xml:space="preserve">
     <value>Unable to save files.</value>
@@ -809,5 +809,8 @@
   </data>
   <data name="Warning_NoPlotsUse_MCCL" xml:space="preserve">
     <value>Warning: This infile will not display anything, we suggest using the MCCL application</value>
+  </data>
+  <data name="Label_Diameter" xml:space="preserve">
+    <value>diam:</value>
   </data>
 </root>
