@@ -329,8 +329,8 @@ public class InverseSolverViewModel : BindableObject
             default:
                 throw new ArgumentOutOfRangeException(nameof(datatype));
         }
-        var opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + "=" + opticalProperties.Mua.ToString("F4") + " \r" + StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
-                       opticalProperties.Musp.ToString("F4");
+        var opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + " = " + Math.Round(opticalProperties.Mua, 4) + " \r" + StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
+                       Math.Round(opticalProperties.Musp, 4);
 
         switch (forwardSolver)
         {

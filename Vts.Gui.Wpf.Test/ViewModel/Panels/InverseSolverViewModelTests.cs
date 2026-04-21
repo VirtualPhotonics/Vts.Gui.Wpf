@@ -65,8 +65,8 @@ public class InverseSolverViewModelTests
         const int i1 = 1;
         const double g = 0.8;
         const double n = 1.4;
-        const double d2 = 0.0100;
-        const double d3 = 1.0000;
+        const double d2 = 0.01;
+        const double d3 = 1;
         const double d4 = 0.0129;
         const double d5 = 0.9255;
         const double muaError = 28.9;
@@ -89,22 +89,22 @@ public class InverseSolverViewModelTests
                  StringLookup.GetLocalizedString("Label_Versus") + " ρ [mm]";
         var s3 = "\n" + StringLookup.GetLocalizedString("Label_Simulated") + "\r" +
                  StringLookup.GetLocalizedString("Label_ModelNurbs") + "\r" +
-                 StringLookup.GetLocalizedString("Label_MuA") + "=" +
-                 d2.ToString("N4", CultureInfo.CurrentCulture) + " \r" +
-                 StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
-                 d3.ToString("N4", CultureInfo.CurrentCulture);
+                 StringLookup.GetLocalizedString("Label_MuA") + " = " +
+                 d2 + " \r" +
+                 StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
+                 d3;
         var s4 = "\n" + StringLookup.GetLocalizedString("Label_Guess") + "\r" +
                  StringLookup.GetLocalizedString("Label_ModelSDA") + "\r" +
-                 StringLookup.GetLocalizedString("Label_MuA") + "=" +
-                 d2.ToString("N4", CultureInfo.CurrentCulture) + " \r" +
-                 StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
-                 d3.ToString("N4", CultureInfo.CurrentCulture);
+                 StringLookup.GetLocalizedString("Label_MuA") + " = " +
+                 d2 + " \r" +
+                 StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
+                 d3;
         var s5 = "\n" + StringLookup.GetLocalizedString("Label_Calculated") + "\r" +
                  StringLookup.GetLocalizedString("Label_ModelSDA") + "\r" +
-                 StringLookup.GetLocalizedString("Label_MuA") + "=" +
-                 d4.ToString("N4", CultureInfo.CurrentCulture) + " \r" +
-                 StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
-                 d5.ToString("N4", CultureInfo.CurrentCulture);
+                 StringLookup.GetLocalizedString("Label_MuA") + " = " +
+                 d4 + " \r" +
+                 StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
+                 d5;
         var s6 = StringLookup.GetLocalizedString("Label_SimulatedMeasuredData") + op1;
         var s7 = StringLookup.GetLocalizedString("Label_InitialGuess") + op1;
         var s8 = StringLookup.GetLocalizedString("Label_InverseSolutionResults") + "\r   " +
