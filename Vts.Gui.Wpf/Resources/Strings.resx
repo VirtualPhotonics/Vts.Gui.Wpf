@@ -643,7 +643,7 @@
     <value>Model - MC</value>
   </data>
   <data name="Label_ModelNurbs" xml:space="preserve">
-    <value>Model - nurbs</value>
+    <value>Model - NURBS</value>
   </data>
   <data name="Label_ModelScaledMC" xml:space="preserve">
     <value>Model - scaled MC</value>
@@ -694,7 +694,7 @@
     <value>Simulated Measured Data: </value>
   </data>
   <data name="Label_SpectralMuAMuSPrime" xml:space="preserve">
-    <value>(spectral μa,μs')</value>
+    <value>(spectral μa, μs')</value>
   </data>
   <data name="Label_Units" xml:space="preserve">
     <value>Units</value>
@@ -811,7 +811,10 @@
     <value>Warning: This infile will not display anything, we suggest using the MCCL application</value>
   </data>
   <data name="Label_Diameter" xml:space="preserve">
-    <value>diam:</value>
+    <value>diam</value>
     <comment>Gaussian beam diameter</comment>
+  </data>
+  <data name="Label_GaussianBeamUnits" xml:space="preserve">
+    <value>mm</value>
   </data>
 </root>

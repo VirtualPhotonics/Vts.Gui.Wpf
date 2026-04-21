@@ -434,7 +434,7 @@ public class ForwardSolverViewModel : BindableObject
         {
             case ForwardSolverType.DistributedGaussianSourceSDA:
                 modelString = "\r" + StringLookup.GetLocalizedString("Label_ModelSDA");
-                gaussianDiameter = "\r" + StringLookup.GetLocalizedString("Label_Diameter") + ForwardSolver.BeamDiameter;
+                gaussianDiameter = "\r" + StringLookup.GetLocalizedString("Label_Diameter") + " = " + ForwardSolver.BeamDiameter + " " + StringLookup.GetLocalizedString("Label_GaussianBeamUnits");
                 break;
             case ForwardSolverType.DistributedPointSourceSDA:
             case ForwardSolverType.PointSourceSDA:
@@ -455,16 +455,16 @@ public class ForwardSolverViewModel : BindableObject
         if (IsMultiRegion && MultiRegionTissueVm != null)
         {
             var regions = MultiRegionTissueVm.GetTissueInput().Regions;
-            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA1") + "=" + regions[0].RegionOP.Mua.ToString("F3") + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime1") + "=" +
-                       regions[0].RegionOP.Musp.ToString("F3") +
-                       "\r" + StringLookup.GetLocalizedString("Label_MuA2") + "=" + regions[1].RegionOP.Mua.ToString("F3") + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime2") + "=" +
-                       regions[1].RegionOP.Musp.ToString("F3");
+            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA1") + " = " + regions[0].RegionOP.Mua + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime1") + " = " +
+                       regions[0].RegionOP.Musp +
+                       "\r" + StringLookup.GetLocalizedString("Label_MuA2") + " = " + regions[1].RegionOP.Mua + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime2") + " = " +
+                       regions[1].RegionOP.Musp;
         }
         else
         {
             var opticalProperties = OpticalPropertyVm.GetOpticalProperties();
-            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + "=" + opticalProperties.Mua.ToString("F3") + " \r" + StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
-                       opticalProperties.Musp.ToString("F3");
+            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + " = " + opticalProperties.Mua + " \r" + StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
+                       opticalProperties.Musp;
         }
 
         if (_allRangeVMs.Length <= 1) return [modelString + opString + gaussianDiameter];
@@ -478,7 +478,7 @@ public class ForwardSolverViewModel : BindableObject
             secondaryRangeVm.Values.Select(
                     value =>
                     {
-                        var roundedValue = Math.Round(value, 3);
+                        var roundedValue = Math.Round(value, 4);
                         return "\r" + secondaryRangeVm.AxisType.GetInternationalizedString() + 
                                " = " + roundedValue + " " +
                                secondaryRangeVm.Units;

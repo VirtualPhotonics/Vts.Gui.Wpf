@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace Vts.Gui.Wpf.Resources;
+
 using System;
     
     
@@ -727,7 +728,7 @@ public class Strings {
     }
         
     /// <summary>
-    ///   Looks up a localized string similar to diam:.
+    ///   Looks up a localized string similar to diam.
     /// </summary>
     public static string Label_Diameter {
         get {
@@ -867,6 +868,15 @@ public class Strings {
     public static string Label_GaussianBeam {
         get {
             return ResourceManager.GetString("Label_GaussianBeam", resourceCulture);
+        }
+    }
+        
+    /// <summary>
+    ///   Looks up a localized string similar to mm.
+    /// </summary>
+    public static string Label_GaussianBeamUnits {
+        get {
+            return ResourceManager.GetString("Label_GaussianBeamUnits", resourceCulture);
         }
     }
         
@@ -1087,7 +1097,7 @@ public class Strings {
     }
         
     /// <summary>
-    ///   Looks up a localized string similar to Model - nurbs.
+    ///   Looks up a localized string similar to Model - NURBS.
     /// </summary>
     public static string Label_ModelNurbs {
         get {
@@ -1582,7 +1592,7 @@ public class Strings {
     }
         
     /// <summary>
-    ///   Looks up a localized string similar to (spectral μa,μs&apos;).
+    ///   Looks up a localized string similar to (spectral μa, μs&apos;).
     /// </summary>
     public static string Label_SpectralMuAMuSPrime {
         get {
