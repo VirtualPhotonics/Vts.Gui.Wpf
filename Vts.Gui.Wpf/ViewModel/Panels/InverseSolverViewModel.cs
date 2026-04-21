@@ -319,7 +319,7 @@ public class InverseSolverViewModel : BindableObject
             case PlotDataType.Calculated:
                 solverString = "\n" + StringLookup.GetLocalizedString("Label_Calculated");
                 opticalProperties = ResultOpticalPropertyVm.GetOpticalProperties();
-                forwardSolver = MeasuredForwardSolverTypeOptionVm.SelectedValue;
+                forwardSolver = InverseForwardSolverTypeOptionVm.SelectedValue;
                 break;
             case PlotDataType.Guess:
                 solverString = "\n" + StringLookup.GetLocalizedString("Label_Guess");

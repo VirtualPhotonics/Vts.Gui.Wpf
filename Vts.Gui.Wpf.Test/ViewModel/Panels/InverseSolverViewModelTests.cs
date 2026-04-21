@@ -100,7 +100,7 @@ public class InverseSolverViewModelTests
                  StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
                  d3.ToString("N4", CultureInfo.CurrentCulture);
         var s5 = "\n" + StringLookup.GetLocalizedString("Label_Calculated") + "\r" +
-                 StringLookup.GetLocalizedString("Label_ModelNurbs") + "\r" +
+                 StringLookup.GetLocalizedString("Label_ModelSDA") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA") + "=" +
                  d4.ToString("N4", CultureInfo.CurrentCulture) + " \r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
