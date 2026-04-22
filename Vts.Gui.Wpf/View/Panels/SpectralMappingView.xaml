@@ -177,17 +177,19 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right"
                                         Margin="0,0,0,0">
-                                <TextBlock Text="μ" />
-                                <TextBlock Text="a" VerticalAlignment="Center" />
-                                <TextBlock Text=" [1/mm] = " Width="Auto" />
+                                <TextBlock Text="{Binding ConverterParameter=Label_MuA, Converter={StaticResource MyResourceToStringConverter}}" />
+                                <TextBlock Text=" [" />
+                                <TextBlock Text="{Binding ConverterParameter=Measurement_Inv_mm, Converter={StaticResource MyResourceToStringConverter}}" />
+                                <TextBlock Text="] = " />
                                 <TextBlock Width="Auto"
                                            Text="{Binding Mua, Converter={StaticResource MyDoubleToStringConverter}, ConverterParameter=g3}" />
                             </StackPanel>
                             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right"
                                         Margin="5,0,0,0">
-                                <TextBlock Text="μ" />
-                                <TextBlock Text="s" VerticalAlignment="Center" />
-                                <TextBlock Text="' [1/mm] = " />
+                                <TextBlock Text="{Binding ConverterParameter=Label_MuSPrime, Converter={StaticResource MyResourceToStringConverter}}" />
+                                <TextBlock Text=" [" />
+                                <TextBlock Text="{Binding ConverterParameter=Measurement_Inv_mm, Converter={StaticResource MyResourceToStringConverter}}" />
+                                <TextBlock Text="] = " />
                                 <TextBlock Width="Auto"
                                            Text="{Binding Musp,Converter={StaticResource MyDoubleToStringConverter}, ConverterParameter=g3}" />
                             </StackPanel>

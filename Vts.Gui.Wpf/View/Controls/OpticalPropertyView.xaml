@@ -16,7 +16,8 @@
         <StackPanel x:Name="LayoutRoot" Orientation="Horizontal" Margin="3,0,0,0">
             <StackPanel Orientation="Vertical" Width="70">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-                    <TextBlock Text="μa [" />
+                    <TextBlock Text="{Binding ConverterParameter=Label_MuA, Converter={StaticResource MyResourceToStringConverter}}" />
+                    <TextBlock Text=" [" />
                     <TextBlock Text="{Binding Units}" />
                     <TextBlock Text="]" />
                 </StackPanel>
@@ -25,7 +26,8 @@
             </StackPanel>
             <StackPanel Orientation="Vertical" Width="70">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-                    <TextBlock Text="μs' [" />
+                    <TextBlock Text="{Binding ConverterParameter=Label_MuSPrime, Converter={StaticResource MyResourceToStringConverter}}" />
+                    <TextBlock Text=" [" />
                     <TextBlock Text="{Binding Units}" />
                     <TextBlock Text="]" />
                 </StackPanel>

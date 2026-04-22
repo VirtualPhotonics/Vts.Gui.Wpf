@@ -78,7 +78,7 @@ public class SpectralMappingViewModelTests
     {
         _viewModel.PlotMuaSpectrumCommand.Execute(null);
         Assert.That(_windowViewModel.PlotVm.Labels[0], Is.EqualTo("μa spectra"));
-        Assert.That(_windowViewModel.PlotVm.Title, Is.EqualTo("μa [mm-1] versus λ [nm]"));
+        Assert.That(_windowViewModel.PlotVm.Title, Is.EqualTo("μa [mm⁻¹] versus λ [nm]"));
         // can't verify plotted data because inside private object
         var textOutputViewModel = _windowViewModel.TextOutputVm;
         Assert.That(textOutputViewModel.Text, Is.EqualTo("Plot View: plot cleared due to independent axis variable change\rPlotted μa spectrum; wavelength range [nm]: [650, 1000]\r"));
@@ -92,7 +92,7 @@ public class SpectralMappingViewModelTests
     {
         _viewModel.PlotMuspSpectrumCommand.Execute(null);
         Assert.That(_windowViewModel.PlotVm.Labels[0], Is.EqualTo("μs' spectra"));
-        Assert.That(_windowViewModel.PlotVm.Title, Is.EqualTo("μs' [mm-1] versus λ [nm]"));
+        Assert.That(_windowViewModel.PlotVm.Title, Is.EqualTo("μs' [mm⁻¹] versus λ [nm]"));
         var textOutputViewModel = _windowViewModel.TextOutputVm;
         Assert.That(textOutputViewModel.Text, Is.EqualTo("Plot View: plot cleared due to independent axis variable change\rPlotted μs' spectrum; wavelength range [nm]: [650, 1000]\r"));
     }

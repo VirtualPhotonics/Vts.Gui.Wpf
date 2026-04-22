@@ -1781,7 +1781,7 @@ public class Strings {
     }
         
     /// <summary>
-    ///   Looks up a localized string similar to mm-1.
+    ///   Looks up a localized string similar to mm⁻¹.
     /// </summary>
     public static string Measurement_Inv_mm {
         get {

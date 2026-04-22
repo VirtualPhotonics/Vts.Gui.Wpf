@@ -418,7 +418,7 @@ public class InverseSolverViewModel : BindableObject
             var measuredOPs = inverseResult.MeasuredOpticalProperties;
             var wavelengths = GetParameterValues(IndependentVariableAxis.Wavelength);
             var wvUnitString = IndependentVariableAxisUnits.NM.GetInternationalizedString();
-            var opUnitString = IndependentVariableAxisUnits.InverseMM.GetInternationalizedString();
+            var opUnitString = StringLookup.GetLocalizedString("Measurement_Inv_mm");
             var sb =
                 new StringBuilder("\t[" + StringLookup.GetLocalizedString("Label_Wavelength") + " (" + wvUnitString +
                                   ")]\t\t\t\t\t\t[" + StringLookup.GetLocalizedString("Label_Exact") + "]\t\t\t\t\t\t[" + 

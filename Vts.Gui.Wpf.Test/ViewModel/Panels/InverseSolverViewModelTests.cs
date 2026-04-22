@@ -77,14 +77,14 @@ public class InverseSolverViewModelTests
                  i1.ToString(CultureInfo.CurrentCulture) + " g=" +
                  g.ToString(CultureInfo.CurrentCulture) + " n=" +
                  n.ToString(CultureInfo.CurrentCulture) + "; " +
-                 StringLookup.GetLocalizedString("Label_Units") + " = 1/mm \r";
+                 StringLookup.GetLocalizedString("Label_Units") + " = mm⁻¹ \r";
         var op2 = StringLookup.GetLocalizedString("Label_MuA") + "=" +
                   d4.ToString(CultureInfo.CurrentCulture) + " " +
                   StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
                   d5.ToString(CultureInfo.CurrentCulture) + " g=" +
                   g.ToString(CultureInfo.CurrentCulture) + " n=" +
                   n.ToString(CultureInfo.CurrentCulture) + "; " +
-                  StringLookup.GetLocalizedString("Label_Units") + " = 1/mm \r";
+                  StringLookup.GetLocalizedString("Label_Units") + " = mm⁻¹ \r";
         var s2 = StringLookup.GetLocalizedString("Label_ROfRho") + " [mm-2] " +
                  StringLookup.GetLocalizedString("Label_Versus") + " ρ [mm]";
         var s3 = "\n" + StringLookup.GetLocalizedString("Label_Simulated") + "\r" +

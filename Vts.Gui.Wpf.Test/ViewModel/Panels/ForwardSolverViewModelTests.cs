@@ -53,7 +53,7 @@ public class ForwardSolverViewModelTests
                  i1.ToString(CultureInfo.CurrentCulture) + " g=" +
                  g.ToString(CultureInfo.CurrentCulture) + " n=" +
                  n.ToString(CultureInfo.CurrentCulture) + "; " +
-                 StringLookup.GetLocalizedString("Label_Units") + " = 1/mm\r";
+                 StringLookup.GetLocalizedString("Label_Units") + " = mm⁻¹\r";
         var s2 = StringLookup.GetLocalizedString("Label_ROfRho") + " [mm-2] " +
                  StringLookup.GetLocalizedString("Label_Versus") + " ρ [mm]";
         var s3 = "\r" + StringLookup.GetLocalizedString("Label_ModelSDA") + "\r" +
@@ -89,7 +89,7 @@ public class ForwardSolverViewModelTests
                      StringLookup.GetLocalizedString("Label_ForwardSolver") + "Vts.Gui.Wpf.ViewModel.Panels.MonteCarlo.MultiRegionTissueViewModel\r";
         // s2 should be "R(ρ) [Unitless] versus fx [1/mm]"
         var s2 = StringLookup.GetLocalizedString("Label_ROfRho") + " [Unitless] " +
-                 StringLookup.GetLocalizedString("Label_Versus") + " fx [1/mm]";
+                 StringLookup.GetLocalizedString("Label_Versus") + " fx [mm⁻¹]";
         // s3 should be "Model - 2 layer SDA\rμa1 = 0.01\rμs'1=1\rμa2 = 0.01\r μs'2=1"
         var s3 = "\r" + StringLookup.GetLocalizedString("Label_Model2LayerSDA") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA1") + " = " +
@@ -137,10 +137,10 @@ public class ForwardSolverViewModelTests
                  i1.ToString(CultureInfo.CurrentCulture) + " g=" +
                  g.ToString(CultureInfo.CurrentCulture) + " n=" +
                  n.ToString(CultureInfo.CurrentCulture) + "; " +
-                 StringLookup.GetLocalizedString("Label_Units") + " = 1/mm\r";
+                 StringLookup.GetLocalizedString("Label_Units") + " = mm⁻¹\r";
         // s2 should be "R(ρ) [GHz-1] versus fx [1/mm]"
         var s2 = StringLookup.GetLocalizedString("Label_ROfRho") + " [GHz-1] " +
-                 StringLookup.GetLocalizedString("Label_Versus") + " fx [1/mm]";
+                 StringLookup.GetLocalizedString("Label_Versus") + " fx [mm⁻¹]";
         // "ft" is not in Strings.resx
         var s3 = "\r" + StringLookup.GetLocalizedString("Label_ModelScaledMC") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA") + " = " +

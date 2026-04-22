@@ -402,7 +402,7 @@ public class ForwardSolverViewModel : BindableObject
                             new SemiInfiniteTissueRegion(_currentHomogeneousOpticalProperties));
                 return new OpticalPropertyViewModel(
                     _currentSemiInfiniteTissueInput.Regions[0].RegionOP,
-                    IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
+                    StringLookup.GetLocalizedString("Measurement_Inv_mm"),
                     "Optical Properties");
             case "MultiLayer":
                 _currentMultiLayerTissueInput ??= new MultiLayerTissueInput([

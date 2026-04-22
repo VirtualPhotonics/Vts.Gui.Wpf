@@ -526,7 +526,7 @@
     <value>Voxel Region</value>
   </data>
   <data name="Measurement_Inv_mm" xml:space="preserve">
-    <value>mm-1</value>
+    <value>mm⁻¹</value>
   </data>
   <data name="Range_Begin" xml:space="preserve">
     <value>Begin</value>

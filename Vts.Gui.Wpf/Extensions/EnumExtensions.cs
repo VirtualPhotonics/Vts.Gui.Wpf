@@ -120,7 +120,7 @@ public static class EnumExtensions
             return axis switch
             {
                 IndependentVariableAxis.Time => IndependentVariableAxisUnits.NS.GetInternationalizedString(),
-                IndependentVariableAxis.Fx => IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
+                IndependentVariableAxis.Fx => StringLookup.GetLocalizedString("Measurement_Inv_mm"),
                 IndependentVariableAxis.Ft => IndependentVariableAxisUnits.GHz.GetInternationalizedString(),
                 IndependentVariableAxis.Wavelength => IndependentVariableAxisUnits.NM.GetInternationalizedString(),
                 _ => IndependentVariableAxisUnits.MM.GetInternationalizedString(),
