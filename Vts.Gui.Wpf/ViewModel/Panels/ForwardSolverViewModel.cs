@@ -455,16 +455,28 @@ public class ForwardSolverViewModel : BindableObject
         if (IsMultiRegion && MultiRegionTissueVm != null)
         {
             var regions = MultiRegionTissueVm.GetTissueInput().Regions;
-            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA1") + " = " + regions[0].RegionOP.Mua + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime1") + " = " +
-                       regions[0].RegionOP.Musp +
-                       "\r" + StringLookup.GetLocalizedString("Label_MuA2") + " = " + regions[1].RegionOP.Mua + "\r" + StringLookup.GetLocalizedString("Label_MuSPrime2") + " = " +
-                       regions[1].RegionOP.Musp;
+            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA1") + " = " +
+                       Math.Round(regions[0].RegionOP.Mua, 4) + " " +
+                       StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
+                       StringLookup.GetLocalizedString("Label_MuSPrime1") + " = " +
+                       Math.Round(regions[0].RegionOP.Musp, 4) + " " +
+                       StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
+                       StringLookup.GetLocalizedString("Label_MuA2") + " = " + 
+                       Math.Round(regions[1].RegionOP.Mua, 4) + " " + 
+                       StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
+                       StringLookup.GetLocalizedString("Label_MuSPrime2") + " = " +
+                       Math.Round(regions[1].RegionOP.Musp, 4) + " " +
+                       StringLookup.GetLocalizedString("Measurement_Inv_mm");
         }
         else
         {
             var opticalProperties = OpticalPropertyVm.GetOpticalProperties();
-            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + " = " + opticalProperties.Mua + " \r" + StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
-                       opticalProperties.Musp;
+            opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + " = " +
+                       Math.Round(opticalProperties.Mua, 4) + " " +
+                       StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
+                       StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
+                       Math.Round(opticalProperties.Musp, 4) + " " +
+                       StringLookup.GetLocalizedString("Measurement_Inv_mm");
         }
 
         if (_allRangeVMs.Length <= 1) return [modelString + opString + gaussianDiameter];

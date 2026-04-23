@@ -90,21 +90,27 @@ public class InverseSolverViewModelTests
         var s3 = "\n" + StringLookup.GetLocalizedString("Label_Simulated") + "\r" +
                  StringLookup.GetLocalizedString("Label_ModelNurbs") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA") + " = " +
-                 d2 + " \r" +
+                 d2 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
-                 d3;
+                 d3 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm");
         var s4 = "\n" + StringLookup.GetLocalizedString("Label_Guess") + "\r" +
                  StringLookup.GetLocalizedString("Label_ModelSDA") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA") + " = " +
-                 d2 + " \r" +
+                 d2 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
-                 d3;
+                 d3 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm");
         var s5 = "\n" + StringLookup.GetLocalizedString("Label_Calculated") + "\r" +
                  StringLookup.GetLocalizedString("Label_ModelSDA") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA") + " = " +
-                 d4 + " \r" +
+                 d4 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
-                 d5;
+                 d5 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm");
         var s6 = StringLookup.GetLocalizedString("Label_SimulatedMeasuredData") + op1;
         var s7 = StringLookup.GetLocalizedString("Label_InitialGuess") + op1;
         var s8 = StringLookup.GetLocalizedString("Label_InverseSolutionResults") + "\r   " +

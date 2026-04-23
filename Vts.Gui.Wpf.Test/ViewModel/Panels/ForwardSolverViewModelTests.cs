@@ -56,11 +56,14 @@ public class ForwardSolverViewModelTests
                  StringLookup.GetLocalizedString("Label_Units") + " = mm⁻¹\r";
         var s2 = StringLookup.GetLocalizedString("Label_ROfRho") + " [mm-2] " +
                  StringLookup.GetLocalizedString("Label_Versus") + " ρ [mm]";
-        var s3 = "\r" + StringLookup.GetLocalizedString("Label_ModelSDA") + "\r" +
+        var s3 = "\r" + 
+                 StringLookup.GetLocalizedString("Label_ModelSDA") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA") + " = " +
-                 d2 + " \r" +
+                 d2 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
-                 d3;
+                 d3 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm");
         Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
         Assert.That(plotViewModel.Title, Is.EqualTo(s2));
         var textOutputViewModel = windowViewModel.TextOutputVm;
@@ -91,15 +94,20 @@ public class ForwardSolverViewModelTests
         var s2 = StringLookup.GetLocalizedString("Label_ROfRho") + " [Unitless] " +
                  StringLookup.GetLocalizedString("Label_Versus") + " fx [mm⁻¹]";
         // s3 should be "Model - 2 layer SDA\rμa1 = 0.01\rμs'1=1\rμa2 = 0.01\r μs'2=1"
-        var s3 = "\r" + StringLookup.GetLocalizedString("Label_Model2LayerSDA") + "\r" +
+        var s3 = "\r" + 
+                 StringLookup.GetLocalizedString("Label_Model2LayerSDA") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA1") + " = " +
-                 d2 + "\r" +
+                 d2 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime1") + " = " +
-                 i1 + "\r" +
+                 i1 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA2") + " = " +
-                 d2 + "\r" +
+                 d2 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime2") + " = " +
-                 i1;
+                 i1 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm");
         Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
         Assert.That(plotViewModel.Title, Is.EqualTo(s2));
         var textOutputViewModel = windowViewModel.TextOutputVm;
@@ -142,11 +150,14 @@ public class ForwardSolverViewModelTests
         var s2 = StringLookup.GetLocalizedString("Label_ROfRho") + " [GHz-1] " +
                  StringLookup.GetLocalizedString("Label_Versus") + " fx [mm⁻¹]";
         // "ft" is not in Strings.resx
-        var s3 = "\r" + StringLookup.GetLocalizedString("Label_ModelScaledMC") + "\r" +
+        var s3 = "\r" + 
+                 StringLookup.GetLocalizedString("Label_ModelScaledMC") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuA") + " = " +
-                 d2 + " \r" +
+                 d2 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
                  StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
-                 d3 + " \rft = " +
+                 d3 + " " +
+                 StringLookup.GetLocalizedString("Measurement_Inv_mm") + " \rft = " +
                  d4 + " " +
                  StringLookup.GetLocalizedString("Measurement_GHz");
         Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
