@@ -658,12 +658,11 @@ public class ForwardSolverViewModel : BindableObject
 
     private object GetOpticalProperties()
     {
-        if (
-            SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Contains(
+        if (SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Contains(
                 IndependentVariableAxis.Wavelength) &&
-            SolutionDomainTypeOptionVm.UseSpectralInputs &&
-            WindowViewModel.Current != null &&
-            WindowViewModel.Current.SpectralMappingVm != null)
+                SolutionDomainTypeOptionVm.UseSpectralInputs &&
+                WindowViewModel.Current != null &&
+                WindowViewModel.Current.SpectralMappingVm != null)
         {
             var tissue = WindowViewModel.Current.SpectralMappingVm.SelectedTissue;
             var wavelengths = GetParameterValues(IndependentVariableAxis.Wavelength);
