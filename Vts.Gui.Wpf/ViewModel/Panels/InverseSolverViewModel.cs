@@ -329,8 +329,12 @@ public class InverseSolverViewModel : BindableObject
             default:
                 throw new ArgumentOutOfRangeException(nameof(datatype));
         }
-        var opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + "=" + opticalProperties.Mua.ToString("F4") + " \r" + StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
-                       opticalProperties.Musp.ToString("F4");
+        var opString = "\r" + StringLookup.GetLocalizedString("Label_MuA") + " = " + 
+                       Math.Round(opticalProperties.Mua, 4) + " " +
+                       StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
+                       StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
+                       Math.Round(opticalProperties.Musp, 4) + " " +
+                       StringLookup.GetLocalizedString("Measurement_Inv_mm");
 
         switch (forwardSolver)
         {
@@ -418,7 +422,7 @@ public class InverseSolverViewModel : BindableObject
             var measuredOPs = inverseResult.MeasuredOpticalProperties;
             var wavelengths = GetParameterValues(IndependentVariableAxis.Wavelength);
             var wvUnitString = IndependentVariableAxisUnits.NM.GetInternationalizedString();
-            var opUnitString = IndependentVariableAxisUnits.InverseMM.GetInternationalizedString();
+            var opUnitString = StringLookup.GetLocalizedString("Measurement_Inv_mm");
             var sb =
                 new StringBuilder("\t[" + StringLookup.GetLocalizedString("Label_Wavelength") + " (" + wvUnitString +
                                   ")]\t\t\t\t\t\t[" + StringLookup.GetLocalizedString("Label_Exact") + "]\t\t\t\t\t\t[" + 

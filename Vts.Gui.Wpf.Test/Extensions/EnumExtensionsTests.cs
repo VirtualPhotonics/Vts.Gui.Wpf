@@ -163,7 +163,7 @@ public class EnumExtensionsTests
     {
         Assert.That(IndependentVariableAxis.Time.GetUnits(), Is.EqualTo(IndependentVariableAxisUnits.NS.GetInternationalizedString()));
         Assert.That(IndependentVariableAxis.Rho.GetUnits(), Is.EqualTo(IndependentVariableAxisUnits.MM.GetInternationalizedString()));
-        Assert.That(IndependentVariableAxis.Fx.GetUnits(), Is.EqualTo(IndependentVariableAxisUnits.InverseMM.GetInternationalizedString()));
+        Assert.That(IndependentVariableAxis.Fx.GetUnits(), Is.EqualTo(StringLookup.GetLocalizedString("Measurement_Inv_mm")));
         Assert.That(IndependentVariableAxis.Ft.GetUnits(), Is.EqualTo(IndependentVariableAxisUnits.GHz.GetInternationalizedString()));
         Assert.That(IndependentVariableAxis.Wavelength.GetUnits(), Is.EqualTo(IndependentVariableAxisUnits.NM.GetInternationalizedString()));
     }

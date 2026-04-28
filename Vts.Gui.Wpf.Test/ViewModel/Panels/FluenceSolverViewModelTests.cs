@@ -71,7 +71,7 @@ public class FluenceSolverViewModelTests
                  i1.ToString(CultureInfo.CurrentCulture) + " g=" +
                  g.ToString(CultureInfo.CurrentCulture) + " n=" +
                  n.ToString(CultureInfo.CurrentCulture) + "; " +
-                 StringLookup.GetLocalizedString("Label_Units") + " = 1/mm\r";
+                 StringLookup.GetLocalizedString("Label_Units") + " = mm⁻¹\r";
         Assert.That(textOutputViewModel.Text, Is.EqualTo(s1));
     }
 }

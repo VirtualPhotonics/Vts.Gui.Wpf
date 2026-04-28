@@ -526,7 +526,7 @@
     <value>Voxel Region</value>
   </data>
   <data name="Measurement_Inv_mm" xml:space="preserve">
-    <value>mm-1</value>
+    <value>mm⁻¹</value>
   </data>
   <data name="Range_Begin" xml:space="preserve">
     <value>Début</value>
@@ -574,7 +574,7 @@
     <value>Error: Database output specified in infile.  Please specify another infile or run infile with MCCL</value>
   </data>
   <data name="Error_FileLoad" xml:space="preserve">
-    <value>JSON File not loaded</value>
+    <value>Fichier JSON pas chargé</value>
   </data>
   <data name="Error_FileSave" xml:space="preserve">
     <value>Unable to save files.</value>
@@ -643,7 +643,7 @@
     <value>Model - MC</value>
   </data>
   <data name="Label_ModelNurbs" xml:space="preserve">
-    <value>Model - nurbs</value>
+    <value>Model - NURBS</value>
   </data>
   <data name="Label_ModelScaledMC" xml:space="preserve">
     <value>Model - scaled MC</value>
@@ -694,7 +694,7 @@
     <value>Simulated Measured Data: </value>
   </data>
   <data name="Label_SpectralMuAMuSPrime" xml:space="preserve">
-    <value>(spectral μa,μs')</value>
+    <value>(spectral μa, μs')</value>
   </data>
   <data name="Label_Units" xml:space="preserve">
     <value>Units</value>
@@ -809,5 +809,11 @@
   </data>
   <data name="Warning_NoPlotsUse_MCCL" xml:space="preserve">
     <value>Warning: This infile will not display anything, we suggest using the MCCL application</value>
+  </data>
+  <data name="Label_Diameter" xml:space="preserve">
+    <value>diam</value>
+  </data>
+  <data name="Label_GaussianBeamUnits" xml:space="preserve">
+    <value>mm</value>
   </data>
 </root>

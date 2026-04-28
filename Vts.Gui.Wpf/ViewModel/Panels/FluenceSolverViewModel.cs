@@ -65,7 +65,7 @@ public class FluenceSolverViewModel : BindableObject
         SourceDetectorSeparation = 10.0;
         TimeModulationFrequency = 0.1;
         _tissueInputVm = new OpticalPropertyViewModel(new OpticalProperties(),
-            IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
+            StringLookup.GetLocalizedString("Measurement_Inv_mm"),
             StringLookup.GetLocalizedString("Heading_OpticalProperties"));
 
         // right now, we're doing manual data binding to the selected item. need to enable data binding 
@@ -445,7 +445,7 @@ public class FluenceSolverViewModel : BindableObject
                             new SemiInfiniteTissueRegion(_currentHomogeneousOpticalProperties));
                 return new OpticalPropertyViewModel(
                     _currentSemiInfiniteTissueInput.Regions[0].RegionOP,
-                    IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
+                    StringLookup.GetLocalizedString("Measurement_Inv_mm"),
                     StringLookup.GetLocalizedString("Heading_OpticalProperties"));
             case "MultiLayer":
                 _currentMultiLayerTissueInput ??= new MultiLayerTissueInput([

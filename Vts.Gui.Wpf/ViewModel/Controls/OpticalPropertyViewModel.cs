@@ -1,3 +1,5 @@
+using Vts.Gui.Wpf.Extensions;
+
 namespace Vts.Gui.Wpf.ViewModel.Controls;
 
 /// <summary>
@@ -13,7 +15,7 @@ public class OpticalPropertyViewModel : BindableObject
     public OpticalPropertyViewModel()
         : this(
             new OpticalProperties(0.01, 1.0, 0.8, 1.4),
-            IndependentVariableAxisUnits.InverseMM.GetInternationalizedString(),
+            StringLookup.GetLocalizedString("Measurement_Inv_mm"),
             "")
     {
     }

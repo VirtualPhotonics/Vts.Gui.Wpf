@@ -1,13 +1,16 @@
 using NUnit.Framework;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.Test.View.TestHelpers;
 using Vts.Gui.Wpf.View.Controls;
 using Vts.Gui.Wpf.View.Panels;
 using Vts.Gui.Wpf.View.Panels.SubPanels;
+using Vts.Gui.Wpf.ViewModel;
 using Vts.Gui.Wpf.ViewModel.Helpers;
 
 namespace Vts.Gui.Wpf.Test.View.Panels;
@@ -144,5 +147,102 @@ public class PanelViewTests : ViewTestBase
 
         Assert.IsInstanceOf(radioTemplate?.GetType()!, resultRadio);
         Assert.IsInstanceOf(checkboxTemplate?.GetType()!, resultCheckbox);
+    }
+
+    /// <summary>
+    /// Test to verify the ForwardSolver executes correctly when using spectral inputs,
+    /// and that the expected text output, plot title/labels, and legend are produced.
+    /// </summary>
+    /// <param name="spectralInput">Indicates whether spectral inputs are used.</param>
+    /// <param name="multiAxis">Indicates whether multiple selections are enabled.</param>
+    [TestCase(false, false)]
+    [TestCase(true, false)]
+    [TestCase(true, true)]
+    [Test]
+    public void Verify_ForwardSolver_use_spectral_inputs(bool spectralInput, bool multiAxis)
+    {
+        // WindowViewModel needs to be instantiated for default constructor
+        var windowViewModel = new WindowViewModel();
+        var spectralMappingViewModel = windowViewModel.SpectralMappingVm;
+        var viewModel = windowViewModel.ForwardSolverVm;
+        viewModel.ForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.DistributedGaussianSourceSDA;
+        viewModel.ForwardSolver.BeamDiameter = 2;
+        viewModel.SolutionDomainTypeOptionVm.SelectedValue = SolutionDomainType.ROfRho;
+        spectralMappingViewModel.Wavelength = 750;
+        viewModel.SolutionDomainTypeOptionVm.UseSpectralInputs = spectralInput;
+        if (multiAxis && spectralInput)
+        {
+            var optionModel = viewModel.SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm;
+            optionModel.EnableMultiSelect = true;
+            optionModel.Options[IndependentVariableAxis.Wavelength].IsSelected = true;
+        }
+        viewModel.ExecuteForwardSolverCommand.Execute(null);
+        // ExecuteForwardSolver default settings
+        var plotViewModel = windowViewModel.PlotVm;
+        const double d1 = 0.01;
+        const int i1 = 1;
+        const double g = 0.8;
+        const double n = 1.4;
+        const double d2 = 0.01;
+        const double d3 = 1;
+        const double diameter = 2;
+        // Textbox output
+        var s1 = StringLookup.GetLocalizedString("Label_ForwardSolver") +
+                 StringLookup.GetLocalizedString("Label_MuA") + "=" +
+                 d1.ToString(CultureInfo.CurrentCulture) + " " +
+                 StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
+                 i1.ToString(CultureInfo.CurrentCulture) + " g=" +
+                 g.ToString(CultureInfo.CurrentCulture) + " n=" +
+                 n.ToString(CultureInfo.CurrentCulture) + "; " +
+                 StringLookup.GetLocalizedString("Label_Units") + " = mm⁻¹\r";
+        if (multiAxis && spectralInput)
+        {
+            s1 = "Plot View: plot cleared due to independent axis variable change\r" + s1;
+        }
+        // Plot label
+        var s2 = StringLookup.GetLocalizedString("Label_ROfRho") + " [mm-2] " +
+                 StringLookup.GetLocalizedString("Label_Versus");
+        if (multiAxis && spectralInput)
+        {
+            s2 += " " + viewModel.SolutionDomainTypeOptionVm.IndependentAxesVMs[1].AxisLabel + " [" +
+                  viewModel.SolutionDomainTypeOptionVm.IndependentAxesVMs[1].AxisUnits + "]";
+        }
+        else
+        {
+            s2 += " " + viewModel.SolutionDomainTypeOptionVm.IndependentAxesVMs[0].AxisLabel + " [" +
+                  viewModel.SolutionDomainTypeOptionVm.IndependentAxesVMs[0].AxisUnits + "]";
+        }
+        // Legend
+        var s3 = "\r" +
+                 StringLookup.GetLocalizedString("Label_ModelSDA") + "\r";
+        if (multiAxis && spectralInput)
+        {
+            s3 += viewModel.SolutionDomainTypeOptionVm.IndependentAxesVMs[0].AxisLabel + " = " +
+                  viewModel.SolutionDomainTypeOptionVm.IndependentAxesVMs[0].AxisRangeVm.Start + " " +
+                  viewModel.SolutionDomainTypeOptionVm.IndependentAxesVMs[0].AxisUnits + "\r" +
+                  StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") + "\r";
+        }
+        else
+        {
+            s3 += StringLookup.GetLocalizedString("Label_MuA") + " = " +
+                  d2 + " " +
+                  StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
+                  StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
+                  d3 + " " +
+                  StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r";
+        }
+        s3 += StringLookup.GetLocalizedString("Label_Diameter") + " = " +
+              diameter + " mm";
+        if (viewModel.SolutionDomainTypeOptionVm.ConstantAxesVMs.Length > 0)
+        {
+            s3 += " \r" + viewModel.SolutionDomainTypeOptionVm.ConstantAxesVMs[0].AxisLabel + " = " +
+                viewModel.SolutionDomainTypeOptionVm.ConstantAxesVMs[0].AxisValue + " " +
+                viewModel.SolutionDomainTypeOptionVm.ConstantAxesVMs[0].AxisUnits;
+        }
+        Assert.IsTrue(viewModel.IsGaussianForwardModel);
+        Assert.That(plotViewModel.Labels[0], Is.EqualTo(s3));
+        Assert.That(plotViewModel.Title, Is.EqualTo(s2));
+        var textOutputViewModel = windowViewModel.TextOutputVm;
+        Assert.That(textOutputViewModel.Text, Is.EqualTo(s1));
     }
 }
