@@ -450,8 +450,8 @@ public class ForwardSolverViewModel : BindableObject
                        StringLookup.GetLocalizedString("Measurement_Inv_mm");
         }
 
-        if (_allRangeVMs.Length <= 1) return [modelString + opString + gaussianDiameter];
         var isWavelengthPlot = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
+        if (_allRangeVMs.Length <= 1) return [modelString + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString) + gaussianDiameter];
         var secondaryRangeVm = isWavelengthPlot
             ? _allRangeVMs.First(vm => vm.AxisType != IndependentVariableAxis.Wavelength)
             : _allRangeVMs

@@ -360,8 +360,8 @@ public class InverseSolverViewModel : BindableObject
                 break;
         }
 
-        if (_allRangeVMs.Length <= 1) return [solverString + modelString + opString];
         var isWavelengthPlot = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
+        if (_allRangeVMs.Length <= 1) return [solverString + modelString + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString)];
         var secondaryRangeVm = isWavelengthPlot
             ? _allRangeVMs.First(vm => vm.AxisType != IndependentVariableAxis.Wavelength)
             : _allRangeVMs.First(
