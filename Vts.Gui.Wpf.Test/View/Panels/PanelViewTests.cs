@@ -179,19 +179,17 @@ public class PanelViewTests : ViewTestBase
         viewModel.ExecuteForwardSolverCommand.Execute(null);
         // ExecuteForwardSolver default settings
         var plotViewModel = windowViewModel.PlotVm;
-        const double d1 = 0.01;
-        const int i1 = 1;
+        var mua = spectralInput ? 0.1676 : 0.01;
+        var musp = spectralInput ? 2.2123 : 1;
         const double g = 0.8;
         const double n = 1.4;
-        const double d2 = 0.01;
-        const double d3 = 1;
         const double diameter = 2;
         // Textbox output
         var s1 = StringLookup.GetLocalizedString("Label_ForwardSolver") +
                  StringLookup.GetLocalizedString("Label_MuA") + "=" +
-                 d1.ToString(CultureInfo.CurrentCulture) + " " +
+                 mua.ToString(CultureInfo.CurrentCulture) + " " +
                  StringLookup.GetLocalizedString("Label_MuSPrime") + "=" +
-                 i1.ToString(CultureInfo.CurrentCulture) + " g=" +
+                 musp.ToString(CultureInfo.CurrentCulture) + " g=" +
                  g.ToString(CultureInfo.CurrentCulture) + " n=" +
                  n.ToString(CultureInfo.CurrentCulture) + "; " +
                  StringLookup.GetLocalizedString("Label_Units") + " = mm⁻¹\r";
@@ -225,10 +223,10 @@ public class PanelViewTests : ViewTestBase
         else
         {
             s3 += StringLookup.GetLocalizedString("Label_MuA") + " = " +
-                  d2 + " " +
+                  mua + " " +
                   StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r" +
                   StringLookup.GetLocalizedString("Label_MuSPrime") + " = " +
-                  d3 + " " +
+                  musp + " " +
                   StringLookup.GetLocalizedString("Measurement_Inv_mm") + "\r";
         }
         s3 += StringLookup.GetLocalizedString("Label_Diameter") + " = " +

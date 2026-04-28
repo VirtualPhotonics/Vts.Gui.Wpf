@@ -7,6 +7,7 @@ using Vts.Common;
 using Vts.Extensions;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
+using Vts.Gui.Wpf.Helpers;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel.Controls;
 using Vts.Gui.Wpf.ViewModel.Helpers;
@@ -70,19 +71,30 @@ public class ForwardSolverViewModel : BindableObject
 
         SolutionDomainTypeOptionVm.PropertyChanged += (_, args) =>
         {
+            var useSpectralPanelDataAndNotNull = SolutionDomainTypeOptionVm.UseSpectralInputs &&
+                                                 WindowViewModel.Current != null &&
+                                                 WindowViewModel.Current.SpectralMappingVm != null;
             switch (args.PropertyName)
             {
+                case "ConstantAxesVMs":
+                    // update solution domain wavelength constant if applicable
+                    if (useSpectralPanelDataAndNotNull &&
+                        WindowViewModel.Current != null &&
+                        SolutionDomainTypeOptionVm.ConstantAxesVMs.Any(
+                            axis => axis.AxisType == IndependentVariableAxis.Wavelength))
+                    {
+                        
+                        WindowViewModel.Current.SpectralMappingVm.Wavelength = SolutionDomainTypeOptionVm.ConstantAxesVMs
+                            .First(axis => axis.AxisType == IndependentVariableAxis.Wavelength).AxisValue;
+                    }
+                    break;
                 case "UseSpectralInputs":
                     UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
                     break;
                 case "IndependentAxesVMs":
                 {
-                    var useSpectralPanelDataAndNotNull = SolutionDomainTypeOptionVm.UseSpectralInputs &&
-                                                         WindowViewModel.Current != null &&
-                                                         WindowViewModel.Current.SpectralMappingVm != null;
-
                     AllRangeVMs =
-                        [.. (from i in
+                        [.. from i in
                                 Enumerable.Range(0,
                                     SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Length)
                             orderby i descending
@@ -93,7 +105,7 @@ public class ForwardSolverViewModel : BindableObject
                                 IndependentVariableAxis.Wavelength
                                     ? WindowViewModel.Current.SpectralMappingVm.WavelengthRangeVm
                                     // bind to same instance, not a copy
-                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVm)];
+                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVm];
 
                     // if the independent axis is wavelength, then hide optical properties (because they come from spectral panel)
                     ShowOpticalProperties =
@@ -128,57 +140,15 @@ public class ForwardSolverViewModel : BindableObject
                 UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
             }
         };
+    }
 
-        if (WindowViewModel.Current.SpectralMappingVm != null)
+    private void UpdateSolutionDomainWithWavelength(double wv)
+    {
+        var wvAxis = SolutionDomainTypeOptionVm.ConstantAxesVMs.FirstOrDefault(axis => axis.AxisType == IndependentVariableAxis.Wavelength);
+        // Use a tolerance for floating point comparisons to avoid exact inequality checks
+        if (wvAxis != null && !Calculations.AreApproximatelyEqual(wvAxis.AxisValue, wv))
         {
-            WindowViewModel.Current.SpectralMappingVm.PropertyChanged += (_, args) =>
-            {
-                if (args.PropertyName == "Wavelength")
-                {
-                    //need to get the value from the checkbox in case UseSpectralPanelData has not yet been updated
-                    if (SolutionDomainTypeOptionVm != null)
-                    {
-                        UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
-                    }
-                    if (UseSpectralPanelData && WindowViewModel.Current != null &&
-                        WindowViewModel.Current.SpectralMappingVm != null)
-                    {
-                        UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
-                    }
-                }
-
-                if (args.PropertyName == "OpticalProperties")
-                {
-                    //need to get the value from the checkbox in case UseSpectralPanelData has not yet been updated
-                    if (SolutionDomainTypeOptionVm != null)
-                    {
-                        UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
-                    }
-                    if (UseSpectralPanelData && WindowViewModel.Current != null &&
-                        WindowViewModel.Current.SpectralMappingVm != null)
-                    {
-                        if (IsMultiRegion && MultiRegionTissueVm != null)
-                        {
-                            MultiRegionTissueVm.RegionsVm.ForEach(region =>
-                                ((dynamic) region).OpticalPropertyVm.SetOpticalProperties(
-                                    WindowViewModel.Current.SpectralMappingVm.OpticalProperties));
-                        }
-                        else if (OpticalPropertyVm != null)
-                        {
-                            OpticalPropertyVm.SetOpticalProperties(
-                                WindowViewModel.Current.SpectralMappingVm.OpticalProperties);
-                        }
-                    }
-                }
-            };
-        }
-
-        return;
-
-        void UpdateSolutionDomainWithWavelength(double wv)
-        {
-            var wvAxis = SolutionDomainTypeOptionVm.ConstantAxesVMs.FirstOrDefault(axis => axis.AxisType == IndependentVariableAxis.Wavelength);
-            wvAxis?.AxisValue = wv;
+            wvAxis.AxisValue = wv;
         }
     }
 
@@ -317,7 +287,8 @@ public class ForwardSolverViewModel : BindableObject
         var sd = SolutionDomainTypeOptionVm;
         var axesLabels = new PlotAxesLabels(
             sd.SelectedDisplayName, sd.SelectedValue.GetUnits(),
-            sd.IndependentAxesVMs.First(vm => vm.AxisType == AllRangeVMs[0].AxisType),
+            sd.IndependentAxesVMs.First(vm =>
+                vm.AxisType == AllRangeVMs[0].AxisType),
             sd.ConstantAxesVMs)
         {
             IsComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVm.SelectedValue)

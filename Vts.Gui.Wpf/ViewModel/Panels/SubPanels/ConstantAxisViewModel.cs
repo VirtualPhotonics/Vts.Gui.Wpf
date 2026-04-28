@@ -1,6 +1,4 @@
-﻿using Vts.Gui.Wpf.Input;
-
-namespace Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
+﻿namespace Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 
 public class ConstantAxisViewModel : BindableObject
 {
@@ -40,12 +38,6 @@ public class ConstantAxisViewModel : BindableObject
         set
         {
             field = value;
-            if (AxisType == IndependentVariableAxis.Wavelength)
-            {
-                // update the world that this has changed, and react to it if desired (e.g. in Spectral Panel)
-                Commands.SetWavelength.Execute(AxisValue, null);
-            }
-
             OnPropertyChanged(nameof(AxisValue));
         }
     }

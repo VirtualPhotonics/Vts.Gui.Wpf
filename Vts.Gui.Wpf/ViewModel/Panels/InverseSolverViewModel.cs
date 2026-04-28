@@ -1,12 +1,13 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using CommunityToolkit.Mvvm.Input;
 using Vts.Extensions;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
+using Vts.Gui.Wpf.Helpers;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.Resources;
 using Vts.Gui.Wpf.ViewModel.Controls;
@@ -42,25 +43,31 @@ public class InverseSolverViewModel : BindableObject
                 AllowMultiAxis = false
             };
 
-        void UpdateSolutionDomainWithWavelength(double wv)
-        {
-            var wvAxis = SolutionDomainTypeOptionVm.ConstantAxesVMs.FirstOrDefault(axis => axis.AxisType == IndependentVariableAxis.Wavelength);
-            wvAxis?.AxisValue = wv;
-        }
-
         SolutionDomainTypeOptionVm.PropertyChanged += (_, args) =>
         {
+            var useSpectralPanelDataAndNotNull = SolutionDomainTypeOptionVm.UseSpectralInputs &&
+                                                 WindowViewModel.Current != null &&
+                                                 WindowViewModel.Current.SpectralMappingVm != null;
+
             switch (args.PropertyName)
             {
+                case "ConstantAxesVMs":
+                    // update solution domain wavelength constant if applicable
+                    if (useSpectralPanelDataAndNotNull &&
+                        WindowViewModel.Current != null &&
+                        SolutionDomainTypeOptionVm.ConstantAxesVMs.Any(
+                            axis => axis.AxisType == IndependentVariableAxis.Wavelength))
+                    {
+
+                        WindowViewModel.Current.SpectralMappingVm.Wavelength = SolutionDomainTypeOptionVm.ConstantAxesVMs
+                            .First(axis => axis.AxisType == IndependentVariableAxis.Wavelength).AxisValue;
+                    }
+                    break;
                 case "UseSpectralInputs":
                     UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
                     break;
                 case "IndependentAxesVMs":
                 {
-                    var useSpectralPanelDataAndNotNull = UseSpectralPanelData && 
-                                                         WindowViewModel.Current != null &&
-                                                         WindowViewModel.Current.SpectralMappingVm != null;
-
                     AllRangeVMs =
                         (from i in
                                 Enumerable.Range(0,
@@ -122,41 +129,26 @@ public class InverseSolverViewModel : BindableObject
         CalculateInitialGuessCommand = new RelayCommand(CalculateInitialGuessCommand_Executed);
         SolveInverseCommand = new RelayCommand(SolveInverseCommand_Executed);
 
-        if (WindowViewModel.Current.SpectralMappingVm != null)
+        MeasuredOpticalPropertyVm.PropertyChanged += (_, _) =>
         {
-            WindowViewModel.Current.SpectralMappingVm.PropertyChanged += (_, args) =>
+            //need to get the value from the checkbox in case UseSpectralPanelData has not yet been updated
+            if (SolutionDomainTypeOptionVm != null)
             {
-                if (args.PropertyName == "Wavelength")
-                {
-                    //need to get the value from the checkbox in case UseSpectralPanelData has not yet been updated
-                    if (SolutionDomainTypeOptionVm != null)
-                    {
-                        UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
-                    }
-                    if (UseSpectralPanelData && WindowViewModel.Current != null &&
-                        WindowViewModel.Current.SpectralMappingVm != null)
-                    {
-                        UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
-                    }
-                }
-
-                if (args.PropertyName == "OpticalProperties")
-                {
-                    //need to get the value from the checkbox in case UseSpectralPanelData has not yet been updated
-                    if (SolutionDomainTypeOptionVm != null)
-                    {
-                        UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
-                    }
-                    if (UseSpectralPanelData && WindowViewModel.Current != null &&
-                        WindowViewModel.Current.SpectralMappingVm != null &&
-                        MeasuredOpticalPropertyVm != null)
-                    {
-                        MeasuredOpticalPropertyVm.SetOpticalProperties(
-                            WindowViewModel.Current.SpectralMappingVm.OpticalProperties);
-                    }
-                    
-                }
-            };
+                UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
+            }
+            if (UseSpectralPanelData && WindowViewModel.Current != null &&
+                WindowViewModel.Current.SpectralMappingVm != null)
+            {
+                UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
+            }
+        };
+    }
+    private void UpdateSolutionDomainWithWavelength(double wv)
+    {
+        var wvAxis = SolutionDomainTypeOptionVm.ConstantAxesVMs.FirstOrDefault(axis => axis.AxisType == IndependentVariableAxis.Wavelength);
+        if (wvAxis != null && !Calculations.AreApproximatelyEqual(wvAxis.AxisValue, wv))
+        {
+            wvAxis.AxisValue = wv;
         }
     }
 
@@ -287,6 +279,20 @@ public class InverseSolverViewModel : BindableObject
     public IForwardSolver InverseForwardSolver => SolverFactory.GetForwardSolver(InverseForwardSolverTypeOptionVm.SelectedValue);
 
     public IOptimizer Optimizer => SolverFactory.GetOptimizer(OptimizerTypeOptionVm.SelectedValue);
+
+    public void UpdateOpticalProperties_Executed()
+    {
+        //need to get the value from the checkbox in case UseSpectralPanelData has not yet been updated
+        if (SolutionDomainTypeOptionVm != null)
+        {
+            UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
+        }
+
+        if (!UseSpectralPanelData || WindowViewModel.Current == null ||
+            WindowViewModel.Current.SpectralMappingVm == null) return;
+        InitialGuessOpticalPropertyVm?.SetOpticalProperties(WindowViewModel.Current.SpectralMappingVm.OpticalProperties);
+        MeasuredOpticalPropertyVm?.SetOpticalProperties(WindowViewModel.Current.SpectralMappingVm.OpticalProperties);
+    }
 
     private void SimulateMeasuredDataCommand_Executed()
     {
