@@ -39,6 +39,7 @@ public class InverseSolverViewModel : BindableObject
 
         SolutionDomainTypeOptionVm = new SolutionDomainOptionViewModel("Solution Domain", SolutionDomainType.ROfRho)
             {
+                EnableSpectralPanelInputs = false,
                 EnableMultiAxis = false,
                 AllowMultiAxis = false
             };
