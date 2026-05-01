@@ -89,7 +89,7 @@ public abstract class BaseSolverViewModel : BindableObject
         switch (args.PropertyName)
         {
             case "ConstantAxesVMs":
-                if (useSpectralPanelDataAndNotNull &&
+                if (useSpectralPanelDataAndNotNull && WindowViewModel.Current != null &&
                     SolutionDomainTypeOptionVm.ConstantAxesVMs.Any(
                         axis => axis.AxisType == IndependentVariableAxis.Wavelength))
                 {
