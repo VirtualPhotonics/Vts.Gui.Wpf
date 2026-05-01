@@ -4,7 +4,6 @@ namespace Vts.Gui.Wpf.Helpers;
 
 internal static class Calculations
 {
-
     /// <summary>
     /// Compares two doubles using a small tolerance to avoid exact equality checks.
     /// </summary>
@@ -12,5 +11,4 @@ internal static class Calculations
     {
         return Math.Abs(a - b) <= tolerance;
     }
-
 }

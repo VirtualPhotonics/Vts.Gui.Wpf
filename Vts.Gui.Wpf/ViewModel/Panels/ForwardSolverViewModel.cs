@@ -1,13 +1,12 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using CommunityToolkit.Mvvm.Input;
 using Vts.Common;
 using Vts.Extensions;
 using Vts.Factories;
 using Vts.Gui.Wpf.Extensions;
-using Vts.Gui.Wpf.Helpers;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.ViewModel.Controls;
 using Vts.Gui.Wpf.ViewModel.Helpers;
@@ -24,30 +23,22 @@ namespace Vts.Gui.Wpf.ViewModel.Panels;
 /// <summary>
 ///     View model implementing Forward Solver panel functionality
 /// </summary>
-public class ForwardSolverViewModel : BindableObject
+public class ForwardSolverViewModel : BaseSolverViewModel
 {
-    private RangeViewModel[] _allRangeVMs;
-
     // private fields to cache created instances of tissue inputs, created on-demand in GetTissueInputVm (vs up-front in constructor)
     private OpticalProperties _currentHomogeneousOpticalProperties;
     private MultiLayerTissueInput _currentMultiLayerTissueInput;
     private SemiInfiniteTissueInput _currentSemiInfiniteTissueInput;
     private SingleEllipsoidTissueInput _currentSingleEllipsoidTissueInput;
 
-    private bool _showOpticalProperties;
-
     private object _tissueInputVm;
     // either an OpticalPropertyViewModel or a MultiRegionTissueViewModel is stored here, and dynamically displayed
 
-    private bool _useSpectralPanelData;
-
     public ForwardSolverViewModel()
     {
-        _showOpticalProperties = true;
-        _useSpectralPanelData = false;
-
-
-        _allRangeVMs = [new RangeViewModel {Title = StringLookup.GetLocalizedString("IndependentVariableAxis_Rho")}];
+        ShowOpticalProperties = true;
+        UseSpectralPanelData = false;
+        AllRangeVMs = [new RangeViewModel { Title = StringLookup.GetLocalizedString("IndependentVariableAxis_Rho") }];
 
 #if WHITELIST 
         ForwardSolverTypeOptionVm = new OptionViewModel<ForwardSolverType>("Forward Model",false, WhiteList.ForwardSolverTypes);
@@ -55,6 +46,7 @@ public class ForwardSolverViewModel : BindableObject
         ForwardSolverTypeOptionVm = new OptionViewModel<ForwardSolverType>("Forward Model", false);
 #endif
         SolutionDomainTypeOptionVm = new SolutionDomainOptionViewModel("Solution Domain", SolutionDomainType.ROfRho);
+        SolutionDomainTypeOptionVm.PropertyChanged += SolutionDomainTypeOptionVm_PropertyChanged;
 
         ForwardAnalysisTypeOptionVm = new OptionViewModel<ForwardAnalysisType>(StringLookup.GetLocalizedString("Heading_ModelAnalysisOutput"), true);
 
@@ -67,89 +59,12 @@ public class ForwardSolverViewModel : BindableObject
             TissueInputVm = GetTissueInputVm(IsMultiRegion ? "MultiLayer" : "SemiInfinite");
             UpdateAvailableOptions();
         };
+
         ForwardSolverTypeOptionVm.SelectedValue = ForwardSolverType.PointSourceSDA; // force the model choice here?
-
-        SolutionDomainTypeOptionVm.PropertyChanged += (_, args) =>
-        {
-            var useSpectralPanelDataAndNotNull = SolutionDomainTypeOptionVm.UseSpectralInputs &&
-                                                 WindowViewModel.Current != null &&
-                                                 WindowViewModel.Current.SpectralMappingVm != null;
-            switch (args.PropertyName)
-            {
-                case "ConstantAxesVMs":
-                    // update solution domain wavelength constant if applicable
-                    if (useSpectralPanelDataAndNotNull &&
-                        WindowViewModel.Current != null &&
-                        SolutionDomainTypeOptionVm.ConstantAxesVMs.Any(
-                            axis => axis.AxisType == IndependentVariableAxis.Wavelength))
-                    {
-                        
-                        WindowViewModel.Current.SpectralMappingVm.Wavelength = SolutionDomainTypeOptionVm.ConstantAxesVMs
-                            .First(axis => axis.AxisType == IndependentVariableAxis.Wavelength).AxisValue;
-                    }
-                    break;
-                case "UseSpectralInputs":
-                    UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
-                    break;
-                case "IndependentAxesVMs":
-                {
-                    AllRangeVMs =
-                        [.. from i in
-                                Enumerable.Range(0,
-                                    SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues.Length)
-                            orderby i descending
-                            // descending so that wavelength takes highest priority, then time/time frequency, then space/spatial frequency
-                            select
-                                useSpectralPanelDataAndNotNull &&
-                                SolutionDomainTypeOptionVm.IndependentVariableAxisOptionVm.SelectedValues[i] ==
-                                IndependentVariableAxis.Wavelength
-                                    ? WindowViewModel.Current.SpectralMappingVm.WavelengthRangeVm
-                                    // bind to same instance, not a copy
-                                    : SolutionDomainTypeOptionVm.IndependentAxesVMs[i].AxisRangeVm];
-
-                    // if the independent axis is wavelength, then hide optical properties (because they come from spectral panel)
-                    ShowOpticalProperties =
-                        _allRangeVMs.All(value => value.AxisType != IndependentVariableAxis.Wavelength);
-
-                    // update solution domain wavelength constant if applicable
-                    if (useSpectralPanelDataAndNotNull &&
-                        WindowViewModel.Current != null &&
-                        SolutionDomainTypeOptionVm.ConstantAxesVMs.Any(
-                            axis => axis.AxisType == IndependentVariableAxis.Wavelength))
-                    {
-                        UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
-                    }
-
-                    break;
-                }
-            }
-        };
 
         ExecuteForwardSolverCommand = new RelayCommand(ExecuteForwardSolver_Executed);
 
-        OpticalPropertyVm.PropertyChanged += (_, _) =>
-        {
-            //need to get the value from the checkbox in case UseSpectralPanelData has not yet been updated
-            if (SolutionDomainTypeOptionVm != null)
-            {
-                UseSpectralPanelData = SolutionDomainTypeOptionVm.UseSpectralInputs;
-            }
-            if (UseSpectralPanelData && WindowViewModel.Current != null &&
-                WindowViewModel.Current.SpectralMappingVm != null)
-            {
-                UpdateSolutionDomainWithWavelength(WindowViewModel.Current.SpectralMappingVm.Wavelength);
-            }
-        };
-    }
-
-    private void UpdateSolutionDomainWithWavelength(double wv)
-    {
-        var wvAxis = SolutionDomainTypeOptionVm.ConstantAxesVMs.FirstOrDefault(axis => axis.AxisType == IndependentVariableAxis.Wavelength);
-        // Use a tolerance for floating point comparisons to avoid exact inequality checks
-        if (wvAxis != null && !Calculations.AreApproximatelyEqual(wvAxis.AxisValue, wv))
-        {
-            wvAxis.AxisValue = wv;
-        }
+        OpticalPropertyVm.PropertyChanged += OpticalPropertyVm_PropertyChanged;
     }
 
     public RelayCommand ExecuteForwardSolverCommand { get; set; }
@@ -159,39 +74,9 @@ public class ForwardSolverViewModel : BindableObject
 
     public bool IsGaussianForwardModel => ForwardSolverTypeOptionVm.SelectedValue.IsGaussianForwardModel();
 
-    public bool ShowOpticalProperties
-    {
-        get => _showOpticalProperties;
-        set
-        {
-            _showOpticalProperties = value;
-            OnPropertyChanged(nameof(ShowOpticalProperties));
-        }
-    }
-
     public bool IsMultiRegion => ForwardSolverTypeOptionVm.SelectedValue.IsMultiRegionForwardModel();
 
     public bool IsSemiInfinite => !ForwardSolverTypeOptionVm.SelectedValue.IsMultiRegionForwardModel();
-
-    public bool UseSpectralPanelData
-    {
-        get => _useSpectralPanelData;
-        set
-        {
-            _useSpectralPanelData = value;
-            OnPropertyChanged(nameof(UseSpectralPanelData));
-        }
-    }
-
-    public SolutionDomainOptionViewModel SolutionDomainTypeOptionVm
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged(nameof(SolutionDomainTypeOptionVm));
-        }
-    }
 
     public OptionViewModel<ForwardSolverType> ForwardSolverTypeOptionVm
     {
@@ -200,16 +85,6 @@ public class ForwardSolverViewModel : BindableObject
         {
             field = value;
             OnPropertyChanged(nameof(ForwardSolverTypeOptionVm));
-        }
-    }
-
-    public RangeViewModel[] AllRangeVMs
-    {
-        get => _allRangeVMs;
-        set
-        {
-            _allRangeVMs = value;
-            OnPropertyChanged(nameof(AllRangeVMs));
         }
     }
 
@@ -338,10 +213,6 @@ public class ForwardSolverViewModel : BindableObject
                 SolutionDomainTypeOptionVm.IsROfFxAndTimeEnabled = true;
                 SolutionDomainTypeOptionVm.IsROfFxAndFtEnabled = true;
             }
-            //SolutionDomainTypeOptionVm.EnableMultiAxis =
-            //    ForwardSolverTypeOptionVm.SelectedValue != ForwardSolverType.TwoLayerSDA;
-            //SolutionDomainTypeOptionVm.EnableSpectralPanelInputs = 
-            //    ForwardSolverTypeOptionVm.SelectedValue != ForwardSolverType.TwoLayerSDA;
         }
 
         if (ForwardAnalysisTypeOptionVm != null)
@@ -360,6 +231,7 @@ public class ForwardSolverViewModel : BindableObject
                 ForwardSolverTypeOptionVm.SelectedValue != ForwardSolverType.TwoLayerSDA;
         } 
     }
+    
     private object GetTissueInputVm(string tissueType)
     {
         // ops to use as the basis for instantiating multi-region tissues based on homogeneous values (for differential comparison)
@@ -396,7 +268,6 @@ public class ForwardSolverViewModel : BindableObject
         }
     }
 
-    // todo: rename? this was to get a concise name for the legend
     private string[] GetLegendLabels()
     {
         string modelString = null;
@@ -450,11 +321,11 @@ public class ForwardSolverViewModel : BindableObject
                        StringLookup.GetLocalizedString("Measurement_Inv_mm");
         }
 
-        var isWavelengthPlot = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
-        if (_allRangeVMs.Length <= 1) return [modelString + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString) + gaussianDiameter];
+        var isWavelengthPlot = AllRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
+        if (AllRangeVMs.Length <= 1) return [modelString + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString) + gaussianDiameter];
         var secondaryRangeVm = isWavelengthPlot
-            ? _allRangeVMs.First(vm => vm.AxisType != IndependentVariableAxis.Wavelength)
-            : _allRangeVMs
+            ? AllRangeVMs.First(vm => vm.AxisType != IndependentVariableAxis.Wavelength)
+            : AllRangeVMs   
                 .First(vm => vm.AxisType != IndependentVariableAxis.Time && vm.AxisType != IndependentVariableAxis.Ft);
 
         var secondaryAxesStrings =
@@ -469,7 +340,6 @@ public class ForwardSolverViewModel : BindableObject
         return
             [.. secondaryAxesStrings.Select(
                 sas => modelString + sas + (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString) + gaussianDiameter)];
-
     }
 
     public IDataPoint[][] ExecuteForwardSolver()
@@ -489,11 +359,11 @@ public class ForwardSolverViewModel : BindableObject
 
     private IDataPoint[][] GetDataPoints(double[] reflectance)
     {
-        var plotIsVsWavelength = _allRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
+        var plotIsVsWavelength = AllRangeVMs.Any(vm => vm.AxisType == IndependentVariableAxis.Wavelength);
         var isComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVm.SelectedValue);
         var forwardAnalysisType = ForwardAnalysisTypeOptionVm.SelectedValue;
         var isDerivativePlot = ForwardAnalysisTypeOptionVm.SelectedValue != ForwardAnalysisType.R;
-        var primaryIndependentValues = _allRangeVMs[0].Values.ToArray();
+        var primaryIndependentValues = AllRangeVMs[0].Values.ToArray();
         var numPointsPerCurve = primaryIndependentValues.Length;
 
         int numForwardValues;
@@ -534,25 +404,6 @@ public class ForwardSolverViewModel : BindableObject
 
             return new ComplexDataPoint(primaryIndependentValues[i], new Complex(reflectance[index], reflectance[index + numForwardValues]));
         }
-    }
-
-    /// <summary>
-    ///     Function to provide ordering information for assembling forward calls
-    /// </summary>
-    /// <param name="axis"></param>
-    /// <returns></returns>
-    private static int GetParameterOrder(IndependentVariableAxis axis)
-    {
-        return axis switch
-        {
-            IndependentVariableAxis.Wavelength => 0,
-            IndependentVariableAxis.Rho => 1,
-            IndependentVariableAxis.Fx => 1,
-            IndependentVariableAxis.Time => 2,
-            IndependentVariableAxis.Ft => 2,
-            IndependentVariableAxis.Z => 3,
-            _ => throw new ArgumentOutOfRangeException(nameof(axis))
-        };
     }
 
     private double[] GetParameterValues(IndependentVariableAxis axis)
