@@ -252,6 +252,7 @@ public class SpectralMappingViewModel : BindableObject
         OnPropertyChanged(nameof(N));
         OnPropertyChanged(nameof(OpticalProperties));
         WindowViewModel.Current.ForwardSolverVm.UpdateOpticalProperties_Executed();
+        WindowViewModel.Current.InverseSolverVm.UpdateOpticalProperties_Executed();
     }
 
     private void ResetConcentrations_Executed(object obj)

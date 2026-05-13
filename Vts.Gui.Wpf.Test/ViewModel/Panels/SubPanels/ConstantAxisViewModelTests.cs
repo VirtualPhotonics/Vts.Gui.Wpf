@@ -27,16 +27,18 @@ internal class ConstantAxisViewModelTests
     [Test]
     public void Verify_Constant_axis_wavelength()
     {
-        Assert.Throws<InvalidOperationException>(() =>
+        var constantAxisViewModel = new ConstantAxisViewModel
         {
-            _ = new ConstantAxisViewModel
-            {
-                AxisLabel = "Wavelength",
-                AxisType = IndependentVariableAxis.Wavelength,
-                AxisUnits = "nm",
-                AxisValue = 700,
-                ImageHeight = 2
-            };
-        });
+            AxisLabel = "Wavelength",
+            AxisType = IndependentVariableAxis.Wavelength,
+            AxisUnits = "nm",
+            AxisValue = 700,
+            ImageHeight = 2
+        };
+        Assert.That(constantAxisViewModel.AxisLabel, Is.EqualTo("Wavelength"));
+        Assert.That(constantAxisViewModel.AxisType, Is.EqualTo(IndependentVariableAxis.Wavelength));
+        Assert.That(constantAxisViewModel.AxisUnits, Is.EqualTo("nm"));
+        Assert.That(constantAxisViewModel.AxisValue, Is.EqualTo(700));
+        Assert.That(constantAxisViewModel.ImageHeight, Is.EqualTo(2));
     }
 }
