@@ -10,7 +10,6 @@ using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Model;
 using Vts.Gui.Wpf.Resources;
 using Vts.Gui.Wpf.ViewModel.Controls;
-using Vts.Gui.Wpf.ViewModel.Helpers;
 using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 using Vts.IO;
 #if WHITELIST
@@ -258,16 +257,6 @@ public class InverseSolverViewModel : BaseSolverViewModel
             [.. secondaryAxesStrings.Select(
                     sas => solverString + modelString + sas + 
                            (isWavelengthPlot ? "\r" + StringLookup.GetLocalizedString("Label_SpectralMuAMuSPrime") : opString))];
-    }
-
-    private PlotAxesLabels GetPlotLabels()
-    {
-        var sd = SolutionDomainTypeOptionVm;
-        var axesLabels = new PlotAxesLabels(
-            sd.SelectedDisplayName, sd.SelectedValue.GetUnits(),
-            sd.IndependentAxesVMs[0],
-            sd.ConstantAxesVMs);
-        return axesLabels;
     }
 
     private void CalculateInitialGuessCommand_Executed()

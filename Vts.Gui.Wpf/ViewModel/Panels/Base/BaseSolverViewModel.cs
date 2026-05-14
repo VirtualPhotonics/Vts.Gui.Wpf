@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using Vts.Factories;
+using Vts.Gui.Wpf.Extensions;
 using Vts.Gui.Wpf.Helpers;
 using Vts.Gui.Wpf.ViewModel.Controls;
+using Vts.Gui.Wpf.ViewModel.Helpers;
 using Vts.Gui.Wpf.ViewModel.Panels.SubPanels;
 
 namespace Vts.Gui.Wpf.ViewModel.Panels;
@@ -161,5 +164,23 @@ public abstract class BaseSolverViewModel : BindableObject
             IndependentVariableAxis.Z => 3,
             _ => throw new ArgumentOutOfRangeException(nameof(axis))
         };
+    }
+
+    /// <summary>
+    /// Gets the plot labels for the current solution domain.
+    /// </summary>
+    /// <returns>The plot labels.</returns>
+    protected PlotAxesLabels GetPlotLabels()
+    {
+        var sd = SolutionDomainTypeOptionVm;
+        var axesLabels = new PlotAxesLabels(
+            sd.SelectedDisplayName, sd.SelectedValue.GetUnits(),
+            sd.IndependentAxesVMs.First(vm =>
+                vm.AxisType == AllRangeVMs[0].AxisType),
+            sd.ConstantAxesVMs)
+        {
+            IsComplexPlot = ComputationFactory.IsComplexSolver(SolutionDomainTypeOptionVm.SelectedValue)
+        };
+        return axesLabels;
     }
 }
